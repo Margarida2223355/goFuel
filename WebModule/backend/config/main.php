@@ -11,7 +11,11 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [],
+    'modules' => [
+        'api' => [
+            'class' => 'app\modules\api\ModuleAPI',
+        ],
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
@@ -43,7 +47,90 @@ return [
             'showScriptName' => false,
             'enableStrictParsing' => false,
             'rules' => [
-                // ...
+                
+                // Stations
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/station',
+                    'extraPatterns' => [
+
+                    ],
+                    'tokens' => [
+
+                    ]
+                ],
+
+                // Pumps
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/pump',
+                    'extraPatterns' => [
+
+                    ],
+                    'tokens' => [
+
+                    ]
+                ],
+
+                // Items
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/item',
+                    'extraPatterns' => [
+
+                    ],
+                    'tokens' => [
+
+                    ]
+                ],
+
+                // Categories
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/category',
+                    'extraPatterns' => [
+
+                    ],
+                    'tokens' => [
+
+                    ]
+                ],
+
+                // Subcategories
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/subcategory',
+                    'extraPatterns' => [
+
+                    ],
+                    'tokens' => [
+
+                    ]
+                ],
+
+                // Invoices
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/invoice',
+                    'extraPatterns' => [
+
+                    ],
+                    'tokens' => [
+
+                    ]
+                ],
+
+                // Invoice Lines
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/invoiceline',
+                    'extraPatterns' => [
+
+                    ],
+                    'tokens' => [
+
+                    ]
+                ],
             ],
         ],
     ],
