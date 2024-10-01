@@ -8,13 +8,12 @@ use Yii;
  * This is the model class for table "user_info".
  *
  * @property int $id
- * @property int|null $user_id
- * @property int|null $nif
- * @property string|null $role
- * @property string|null $email
- * @property string|null $name
- * @property string|null $address
- * @property string|null $postal_code
+ * @property int $user_id
+ * @property int $nif
+ * @property string $role
+ * @property string $name
+ * @property string $address
+ * @property string $postal_code
  */
 class Userinfo extends \yii\db\ActiveRecord
 {
@@ -32,12 +31,11 @@ class Userinfo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'], 'required'],
-            [['id', 'user_id', 'nif'], 'integer'],
+            [['user_id', 'nif', 'role', 'name', 'address', 'postal_code'], 'required'],
+            [['user_id', 'nif'], 'integer'],
             [['role'], 'string'],
-            [['email', 'name', 'address'], 'string', 'max' => 255],
+            [['name', 'address'], 'string', 'max' => 255],
             [['postal_code'], 'string', 'max' => 20],
-            [['id'], 'unique'],
         ];
     }
 
@@ -51,7 +49,6 @@ class Userinfo extends \yii\db\ActiveRecord
             'user_id' => 'User ID',
             'nif' => 'Nif',
             'role' => 'Role',
-            'email' => 'Email',
             'name' => 'Name',
             'address' => 'Address',
             'postal_code' => 'Postal Code',

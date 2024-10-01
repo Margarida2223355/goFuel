@@ -8,9 +8,9 @@ use Yii;
  * This is the model class for table "stations".
  *
  * @property int $id
- * @property string|null $name
- * @property string|null $address
- * @property string|null $postal_code
+ * @property string $name
+ * @property string $address
+ * @property string $postal_code
  */
 class Station extends \yii\db\ActiveRecord
 {
@@ -28,11 +28,9 @@ class Station extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'], 'required'],
-            [['id'], 'integer'],
+            [['name', 'address', 'postal_code'], 'required'],
             [['name', 'address'], 'string', 'max' => 255],
             [['postal_code'], 'string', 'max' => 20],
-            [['id'], 'unique'],
         ];
     }
 

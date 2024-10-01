@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "invoice_states".
  *
  * @property int $id
- * @property string|null $description
+ * @property string $description
  */
 class Invoicestate extends \yii\db\ActiveRecord
 {
@@ -26,10 +26,8 @@ class Invoicestate extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'], 'required'],
-            [['id'], 'integer'],
+            [['description'], 'required'],
             [['description'], 'string', 'max' => 255],
-            [['id'], 'unique'],
         ];
     }
 

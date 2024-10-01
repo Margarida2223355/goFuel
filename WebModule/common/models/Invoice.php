@@ -8,11 +8,11 @@ use Yii;
  * This is the model class for table "invoices".
  *
  * @property int $id
- * @property int|null $client_id
- * @property int|null $station_id
- * @property string|null $invoice_date
- * @property float|null $total
- * @property int|null $state_id
+ * @property int $client_id
+ * @property int $station_id
+ * @property string $invoice_date
+ * @property float $total
+ * @property int $state_id
  */
 class Invoice extends \yii\db\ActiveRecord
 {
@@ -30,11 +30,10 @@ class Invoice extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'], 'required'],
-            [['id', 'client_id', 'station_id', 'state_id'], 'integer'],
+            [['client_id', 'station_id', 'total', 'state_id'], 'required'],
+            [['client_id', 'station_id', 'state_id'], 'integer'],
             [['invoice_date'], 'safe'],
             [['total'], 'number'],
-            [['id'], 'unique'],
         ];
     }
 

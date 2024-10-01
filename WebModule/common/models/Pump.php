@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "pumps".
  *
  * @property int $id
- * @property int|null $station_id
+ * @property int $station_id
  */
 class Pump extends \yii\db\ActiveRecord
 {
@@ -26,9 +26,8 @@ class Pump extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'], 'required'],
-            [['id', 'station_id'], 'integer'],
-            [['id'], 'unique'],
+            [['station_id'], 'required'],
+            [['station_id'], 'integer'],
         ];
     }
 

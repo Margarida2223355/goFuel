@@ -8,9 +8,9 @@ use Yii;
  * This is the model class for table "items".
  *
  * @property int $id
- * @property string|null $description
- * @property float|null $price
- * @property int|null $subcategory_id
+ * @property string $description
+ * @property float $price
+ * @property int $subcategory_id
  */
 class Item extends \yii\db\ActiveRecord
 {
@@ -28,11 +28,10 @@ class Item extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'], 'required'],
-            [['id', 'subcategory_id'], 'integer'],
+            [['description', 'price', 'subcategory_id'], 'required'],
             [['price'], 'number'],
+            [['subcategory_id'], 'integer'],
             [['description'], 'string', 'max' => 255],
-            [['id'], 'unique'],
         ];
     }
 

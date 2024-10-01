@@ -8,10 +8,9 @@ use Yii;
  * This is the model class for table "invoice_lines".
  *
  * @property int $id
- * @property float|null $unit_price
- * @property int|null $qty
- * @property float|null $total
- * @property int|null $invoice_id
+ * @property int $qty
+ * @property float $total
+ * @property int $invoice_id
  */
 class Invoiceline extends \yii\db\ActiveRecord
 {
@@ -29,10 +28,9 @@ class Invoiceline extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'], 'required'],
-            [['id', 'qty', 'invoice_id'], 'integer'],
-            [['unit_price', 'total'], 'number'],
-            [['id'], 'unique'],
+            [['qty', 'total', 'invoice_id'], 'required'],
+            [['qty', 'invoice_id'], 'integer'],
+            [['total'], 'number'],
         ];
     }
 
@@ -43,7 +41,6 @@ class Invoiceline extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'unit_price' => 'Unit Price',
             'qty' => 'Qty',
             'total' => 'Total',
             'invoice_id' => 'Invoice ID',

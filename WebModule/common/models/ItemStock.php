@@ -8,8 +8,8 @@ use Yii;
  * This is the model class for table "item_stocks".
  *
  * @property int $id
- * @property int|null $item_id
- * @property int|null $restock_qty
+ * @property int $item_id
+ * @property int $restock_qty
  */
 class ItemStock extends \yii\db\ActiveRecord
 {
@@ -27,9 +27,8 @@ class ItemStock extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'], 'required'],
-            [['id', 'item_id', 'restock_qty'], 'integer'],
-            [['id'], 'unique'],
+            [['item_id', 'restock_qty'], 'required'],
+            [['item_id', 'restock_qty'], 'integer'],
         ];
     }
 

@@ -8,8 +8,8 @@ use Yii;
  * This is the model class for table "subcategories".
  *
  * @property int $id
- * @property string|null $description
- * @property int|null $category_id
+ * @property string $description
+ * @property int $category_id
  */
 class Subcategory extends \yii\db\ActiveRecord
 {
@@ -27,10 +27,9 @@ class Subcategory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'], 'required'],
-            [['id', 'category_id'], 'integer'],
+            [['description', 'category_id'], 'required'],
+            [['category_id'], 'integer'],
             [['description'], 'string', 'max' => 255],
-            [['id'], 'unique'],
         ];
     }
 
