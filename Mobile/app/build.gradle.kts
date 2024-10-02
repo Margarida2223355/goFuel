@@ -5,6 +5,9 @@ plugins {
 android {
     namespace = "com.example.gofuel"
     compileSdk = 34
+    viewBinding {
+        enable = true
+    }
 
     defaultConfig {
         applicationId = "com.example.gofuel"
