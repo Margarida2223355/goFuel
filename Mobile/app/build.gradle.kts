@@ -43,4 +43,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    // Retrofit to API calls
+    implementation(libs.retrofit2)
+    implementation(libs.retrofit2Conversor)
 }
