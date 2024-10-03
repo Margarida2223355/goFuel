@@ -12,25 +12,13 @@ public class ResultWrapper<T> {
     private T result;
     private String error;
     //endregion
-
-    //region Constructors
-    public ResultWrapper() {
-        this.result = null;
-        this.error = null;
-    }
-
-    public ResultWrapper(T result, String error) {
-        this.result = result;
-        this.error = error;
-    }
-    //endregion
-
+    
     //region Getters and Setters
     public T getResult() {
         return result;
     }
 
-    private void setResult(T result) {
+    public void setResult(T result) {
         this.result = result;
     }
 
@@ -38,7 +26,7 @@ public class ResultWrapper<T> {
         return error;
     }
 
-    private void setError(String error) {
+    public void setError(String error) {
         this.error = error;
     }
     //endregion
