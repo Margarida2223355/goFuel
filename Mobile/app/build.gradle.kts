@@ -47,8 +47,4 @@ dependencies {
     // Retrofit to API calls
     implementation(libs.retrofit2)
     implementation(libs.retrofit2Conversor)
-
-    // Room for database
-    implementation(libs.room.runtime)
-    implementation(libs.room.compiler)
 }
