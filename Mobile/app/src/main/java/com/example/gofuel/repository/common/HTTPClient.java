@@ -19,7 +19,7 @@ public class HTTPClient<T> {
     private T client;
     //endregion
 
-    public HTTPClient(Class<T> serviceClass) {
+    public HTTPClient(Class<T> serviceClass, Context context) {
         // Configure OkHttpClient
         OkHttpClient.Builder httpClientBuider = new OkHttpClient.Builder();
 
@@ -31,7 +31,7 @@ public class HTTPClient<T> {
                     .header(Constants.HEADER_PARAMETER_LANG, Locale.getDefault().toString())
                     .header(Constants.HEADER_PARAMETER_CLIENT,"Mobile");
 
-            if (token != null) { requestBuilder.header(Constants.HEADER_PARAMETER_AUTHORIZATION,"Bearer " + token); }
+            if (token != null) { requestBuilder.header(Constants.HEADER_PARAMETER_AUTHORIZATION,"Bearer" + token); }
 
             Request request = requestBuilder.build();
 
