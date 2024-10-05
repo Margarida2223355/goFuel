@@ -1,12 +1,7 @@
 package com.example.gofuel.model;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
-@Entity(tableName = "stations")
 public class Station {
     //region Properties
-    @PrimaryKey
     private int id;
     private String name;
     private String address;
