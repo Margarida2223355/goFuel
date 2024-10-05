@@ -19,7 +19,7 @@ public class HTTPClient<T> {
     private T client;
     //endregion
 
-    public HTTPClient(Class<T> serviceClass, Context context) {
+    public HTTPClient(Class<T> serviceClass) {
         // Configure OkHttpClient
         OkHttpClient.Builder httpClientBuider = new OkHttpClient.Builder();
 
