@@ -1,6 +1,6 @@
 package com.example.gofuel.repository.station.remote;
 
-import com.example.gofuel.model.station.Station;
+import com.example.gofuel.model.Station;
 import com.example.gofuel.repository.common.HTTPClient;
 import com.example.gofuel.repository.common.ResultWrapper;
 import com.example.gofuel.repository.station.IStationDataSource;
