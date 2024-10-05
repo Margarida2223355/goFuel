@@ -18,7 +18,7 @@ public class ResultWrapper<T> {
         return result;
     }
 
-    public void setResult(T result) {
+    private void setResult(T result) {
         this.result = result;
     }
 
@@ -26,7 +26,7 @@ public class ResultWrapper<T> {
         return error;
     }
 
-    public void setError(String error) {
+    private void setError(String error) {
         this.error = error;
     }
     //endregion
