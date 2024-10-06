@@ -344,3 +344,4 @@ obj/
 !/gradle/wrapper/gradle-wrapper.jar
 
 # End of https://www.toptal.com/developers/gitignore/api/yii,yii2,visualstudiocode,androidstudio,java,phpstorm,phpunit
+WebModule/.vscode

@@ -14,8 +14,9 @@ use Yii;
  * @property string $name
  * @property string $address
  * @property string $postal_code
+ * @property string $phone
  */
-class Userinfo extends \yii\db\ActiveRecord
+class UserInfo extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -31,11 +32,12 @@ class Userinfo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'nif', 'role', 'name', 'address', 'postal_code'], 'required'],
+            [['user_id', 'nif', 'role', 'name', 'address', 'postal_code', 'phone'], 'required'],
             [['user_id', 'nif'], 'integer'],
             [['role'], 'string'],
             [['name', 'address'], 'string', 'max' => 255],
             [['postal_code'], 'string', 'max' => 20],
+            [['phone'], 'string', 'max' => 13],
         ];
     }
 
@@ -52,6 +54,20 @@ class Userinfo extends \yii\db\ActiveRecord
             'name' => 'Name',
             'address' => 'Address',
             'postal_code' => 'Postal Code',
+            'phone' => 'Phone',
         ];
+    }
+
+    public static function getLoggedInUserRole()
+    {
+        $userId = Yii::$app->user->id;
+        $userInfo = self::findOne(['user_id' => $userId]);
+
+        return $userInfo ? $userInfo->role : null;
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 }
