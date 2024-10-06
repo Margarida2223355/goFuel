@@ -11,6 +11,9 @@ use Yii;
  * @property string $name
  * @property string $address
  * @property string $postal_code
+ * @property int $manager_id
+ *
+ * @property UserInfo $manager
  */
 class Station extends \yii\db\ActiveRecord
 {
@@ -28,9 +31,11 @@ class Station extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'address', 'postal_code'], 'required'],
+            [['name', 'address', 'postal_code', 'manager_id'], 'required'],
+            [['manager_id'], 'integer'],
             [['name', 'address'], 'string', 'max' => 255],
             [['postal_code'], 'string', 'max' => 20],
+            [['manager_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserInfo::class, 'targetAttribute' => ['manager_id' => 'id']],
         ];
     }
 
@@ -44,6 +49,17 @@ class Station extends \yii\db\ActiveRecord
             'name' => 'Name',
             'address' => 'Address',
             'postal_code' => 'Postal Code',
+            'manager_id' => 'Manager ID',
         ];
+    }
+
+    /**
+     * Gets query for [[Manager]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getManager()
+    {
+        return $this->hasOne(UserInfo::class, ['id' => 'manager_id']);
     }
 }

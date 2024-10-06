@@ -62,7 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]);
                     },
                     'update' => function ($url, $model) {
-                        return Html::a('<i class="fa fa-pen" aria-hidden="true"></i>', $url, [
+                        return Html::a('<i class="fa fa-pens" aria-hidden="true"></i>', $url, [
                             'title' => 'Atualizar',
                             'style' => 'color: #28a745; text-decoration: none;', // Estilo opcional
                         ]);

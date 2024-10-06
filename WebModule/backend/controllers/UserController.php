@@ -47,43 +47,49 @@ class UserController extends Controller
         // Obtém o usuário logado
         $currentUser = Yii::$app->user->identity;
 
-        // Verifica se o usuário logado tem um registro em userInfo
-        if ($currentUser && $currentUser->userInfo) {
-            $currentUserInfo = $currentUser->userInfo;
-
-            // Inicializa a query
-            $query = User::find()->joinWith('userInfo');
-
-            // Se o usuário logado for Admin, exibe Admins e Managers
-            if ($currentUserInfo->role === 'Admin') {
-                $query->where(['user_info.role' => ['Admin', 'Manager']]);
-            }
-            // Se o usuário logado for Manager, exibe In Charge e Employees
-            elseif ($currentUserInfo->role === 'Manager') {
-                $query->where(['user_info.role' => ['In Charge', 'Employee']]);
-            }
-            // Para outros roles ou se não for Admin ou Manager
-            else {
-                $query->where('0=1'); // Não exibe nada
-            }
-
-            // DataProvider para a GridView
-            $dataProvider = new ActiveDataProvider([
-                'query' => $query,
-                'pagination' => [
-                    'pageSize' => 10,
-                ],
-            ]);
-
-            // Renderiza a view com o DataProvider
-            return $this->render('index', [
-                'dataProvider' => $dataProvider,
-            ]);
-        } else {
-            // Se não houver registro em userInfo ou o usuário não estiver logado
-            throw new \yii\web\ForbiddenHttpException('Você não tem permissão para acessar esta página.');
+        // Verifique se $currentUser está definido
+        if (!$currentUser) {
+            throw new \yii\web\ForbiddenHttpException('Nenhum usuário está logado.');
         }
+
+        // Verifica se o usuário logado tem um registro em userInfo
+        if (!$currentUser->userInfo) {
+            throw new \yii\web\ForbiddenHttpException('O usuário logado não possui um registro em user_info.');
+        }
+
+        // Obtém o userInfo do usuário logado
+        $currentUserInfo = $currentUser->userInfo;
+
+        // Inicializa a query
+        $query = User::find()->joinWith('userInfo');
+
+        // Se o usuário logado for Admin, exibe Admins e Managers
+        if ($currentUserInfo->role === 'Admin') {
+            $query->where(['user_info.role' => ['Admin', 'Manager']]);
+        }
+        // Se o usuário logado for Manager, exibe In Charge e Employees
+        elseif ($currentUserInfo->role === 'Manager') {
+            $query->where(['user_info.role' => ['In Charge', 'Employee']]);
+        }
+        // Para outros roles ou se não for Admin ou Manager
+        else {
+            $query->where('0=1'); // Não exibe nada
+        }
+
+        // DataProvider para a GridView
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
+        // Renderiza a view com o DataProvider
+        return $this->render('index', [
+            'dataProvider' => $dataProvider,
+        ]);
     }
+
 
 
     /**
