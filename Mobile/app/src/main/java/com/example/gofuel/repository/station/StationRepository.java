@@ -1,14 +1,16 @@
 package com.example.gofuel.repository.station;
 
 import android.content.Context;
+import android.util.Log;
 
-import com.example.gofuel.model.station.Station;
+import com.example.gofuel.model.Station;
 import com.example.gofuel.repository.common.AppDatabase;
 import com.example.gofuel.repository.common.ResultWrapper;
 import com.example.gofuel.repository.station.local.StationDB;
 import com.example.gofuel.repository.station.remote.StationRemoteDataSource;
 
 import java.util.List;
+import java.util.concurrent.Executors;
 
 public class StationRepository implements IStationDataSource.Main {
     private static StationRepository instance;
@@ -36,6 +38,7 @@ public class StationRepository implements IStationDataSource.Main {
     public ResultWrapper<List<Station>> getStations() {
         ResultWrapper<List<Station>> result = new StationRemoteDataSource().getStations();
 
+        //
         if (result.getResult() != null) {
             stationDB.deleteAll();
             stationDB.addAll(result.getResult());
