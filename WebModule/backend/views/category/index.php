@@ -1,6 +1,6 @@
 <?php
 
-use common\models\Station;
+use common\models\Category;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -9,15 +9,15 @@ use yii\grid\GridView;
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Stations';
+$this->title = 'Categories';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="station-index">
+<div class="category-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Station', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Category', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 
@@ -26,19 +26,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             'id',
             'name',
-            'address',
-            'postal_code',
-            [
-                'attribute' => 'manager_id',
-                'label' => 'Manager Name',
-                'value' => function ($model) {
-                    return $model->manager ? $model->manager->name : 'Not assigned';
-                }
-            ],
-
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Station $model, $key, $index, $column) {
+                'urlCreator' => function ($action, Category $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                 }
             ],
