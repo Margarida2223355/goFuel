@@ -11,7 +11,7 @@ use Yii;
  * @property int $item_id
  * @property int $restock_qty
  *
- * @property Items $item
+ * @property Item $item
  */
 class ItemStock extends \yii\db\ActiveRecord
 {
@@ -31,7 +31,7 @@ class ItemStock extends \yii\db\ActiveRecord
         return [
             [['item_id', 'restock_qty'], 'required'],
             [['item_id', 'restock_qty'], 'integer'],
-            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Items::class, 'targetAttribute' => ['item_id' => 'id']],
+            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Item::class, 'targetAttribute' => ['item_id' => 'id']],
         ];
     }
 
@@ -54,6 +54,6 @@ class ItemStock extends \yii\db\ActiveRecord
      */
     public function getItem()
     {
-        return $this->hasOne(Items::class, ['id' => 'item_id']);
+        return $this->hasOne(Item::class, ['id' => 'item_id']);
     }
 }

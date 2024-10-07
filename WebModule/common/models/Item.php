@@ -12,8 +12,8 @@ use Yii;
  * @property float $price
  * @property int $subcategory_id
  *
- * @property ItemStocks[] $itemStocks
- * @property Subcategories $subcategory
+ * @property ItemStock[] $itemStocks
+ * @property Subcategory $subcategory
  */
 class Item extends \yii\db\ActiveRecord
 {
@@ -35,7 +35,7 @@ class Item extends \yii\db\ActiveRecord
             [['price'], 'number'],
             [['subcategory_id'], 'integer'],
             [['description'], 'string', 'max' => 255],
-            [['subcategory_id'], 'exist', 'skipOnError' => true, 'targetClass' => Subcategories::class, 'targetAttribute' => ['subcategory_id' => 'id']],
+            [['subcategory_id'], 'exist', 'skipOnError' => true, 'targetClass' => Subcategory::class, 'targetAttribute' => ['subcategory_id' => 'id']],
         ];
     }
 
@@ -59,7 +59,7 @@ class Item extends \yii\db\ActiveRecord
      */
     public function getItemStocks()
     {
-        return $this->hasMany(ItemStocks::class, ['item_id' => 'id']);
+        return $this->hasMany(ItemStock::class, ['item_id' => 'id']);
     }
 
     /**
@@ -69,6 +69,26 @@ class Item extends \yii\db\ActiveRecord
      */
     public function getSubcategory()
     {
-        return $this->hasOne(Subcategories::class, ['id' => 'subcategory_id']);
+        return $this->hasOne(Subcategory::class, ['id' => 'subcategory_id']);
+    }
+
+    /**
+     * Customize fields returned from API
+     * 
+     * @return array
+     */
+    public function fields() {
+        $fields = parent::fields();
+
+        // Remove subcategory_id field
+        unset($fields['subcategory_id']);
+
+        // Add subcategory field
+        $fields['subcategory'] = function() {
+            $subcategory = $this->getSubcategory()->one();
+            return $subcategory ? $subcategory : null;
+        };
+
+        return $fields;
     }
 }

@@ -15,7 +15,7 @@ use Yii;
  * @property string $address
  * @property string $postal_code
  *
- * @property Invoices[] $invoices
+ * @property Invoice[] $invoices
  * @property User $user
  */
 class UserInfo extends \yii\db\ActiveRecord
@@ -66,7 +66,7 @@ class UserInfo extends \yii\db\ActiveRecord
      */
     public function getInvoices()
     {
-        return $this->hasMany(Invoices::class, ['client_id' => 'id']);
+        return $this->hasMany(Invoice::class, ['client_id' => 'id']);
     }
 
     /**

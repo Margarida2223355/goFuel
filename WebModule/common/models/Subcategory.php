@@ -11,8 +11,8 @@ use Yii;
  * @property string $description
  * @property int $category_id
  *
- * @property Categories $category
- * @property Items[] $items
+ * @property Category $category
+ * @property Item[] $items
  */
 class Subcategory extends \yii\db\ActiveRecord
 {
@@ -33,7 +33,7 @@ class Subcategory extends \yii\db\ActiveRecord
             [['description', 'category_id'], 'required'],
             [['category_id'], 'integer'],
             [['description'], 'string', 'max' => 255],
-            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::class, 'targetAttribute' => ['category_id' => 'id']],
+            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::class, 'targetAttribute' => ['category_id' => 'id']],
         ];
     }
 
@@ -56,7 +56,7 @@ class Subcategory extends \yii\db\ActiveRecord
      */
     public function getCategory()
     {
-        return $this->hasOne(Categories::class, ['id' => 'category_id']);
+        return $this->hasOne(Category::class, ['id' => 'category_id']);
     }
 
     /**
@@ -66,6 +66,26 @@ class Subcategory extends \yii\db\ActiveRecord
      */
     public function getItems()
     {
-        return $this->hasMany(Items::class, ['subcategory_id' => 'id']);
+        return $this->hasMany(Item::class, ['subcategory_id' => 'id']);
+    }
+
+    /**
+     * Customize fields returned from API
+     * 
+     * @return array
+     */
+    public function fields() {
+        $fields = parent::fields();
+
+        // Remove category_id field
+        unset($fields['category_id']);
+
+        // Add category field
+        $fields['category'] = function() {
+            $category = $this->getCategory()->one();
+            return $category ? $category : null;
+        };
+
+        return $fields;
     }
 }

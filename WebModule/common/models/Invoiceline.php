@@ -12,7 +12,7 @@ use Yii;
  * @property float $total
  * @property int $invoice_id
  *
- * @property Invoices $invoice
+ * @property Invoice $invoice
  */
 class InvoiceLine extends \yii\db\ActiveRecord
 {
@@ -33,7 +33,7 @@ class InvoiceLine extends \yii\db\ActiveRecord
             [['qty', 'total', 'invoice_id'], 'required'],
             [['qty', 'invoice_id'], 'integer'],
             [['total'], 'number'],
-            [['invoice_id'], 'exist', 'skipOnError' => true, 'targetClass' => Invoices::class, 'targetAttribute' => ['invoice_id' => 'id']],
+            [['invoice_id'], 'exist', 'skipOnError' => true, 'targetClass' => Invoice::class, 'targetAttribute' => ['invoice_id' => 'id']],
         ];
     }
 
@@ -57,6 +57,26 @@ class InvoiceLine extends \yii\db\ActiveRecord
      */
     public function getInvoice()
     {
-        return $this->hasOne(Invoices::class, ['id' => 'invoice_id']);
+        return $this->hasOne(Invoice::class, ['id' => 'invoice_id']);
+    }
+
+    /**
+     * Customize fields returned from API
+     * 
+     * @return array
+     */
+    public function fields() {
+        $fields = parent::fields();
+
+        // Remove invoice_id field
+        unset($fields['invoice_id']);
+
+        // Add invoice field
+        $fields['invoice'] = function() {
+            $invoice = $this->getInvoice()->one();
+            return $invoice ? $invoice : null;
+        };
+
+        return $fields;
     }
 }

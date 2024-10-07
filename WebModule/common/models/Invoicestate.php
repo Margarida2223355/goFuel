@@ -10,7 +10,7 @@ use Yii;
  * @property int $id
  * @property string $description
  *
- * @property Invoices[] $invoices
+ * @property Invoice[] $invoices
  */
 class InvoiceState extends \yii\db\ActiveRecord
 {
@@ -51,6 +51,6 @@ class InvoiceState extends \yii\db\ActiveRecord
      */
     public function getInvoices()
     {
-        return $this->hasMany(Invoices::class, ['state_id' => 'id']);
+        return $this->hasMany(Invoice::class, ['state_id' => 'id']);
     }
 }
