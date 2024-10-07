@@ -11,6 +11,9 @@ use Yii;
  * @property string $name
  * @property string $address
  * @property string $postal_code
+ *
+ * @property Invoices[] $invoices
+ * @property Pumps[] $pumps
  */
 class Station extends \yii\db\ActiveRecord
 {
@@ -45,5 +48,25 @@ class Station extends \yii\db\ActiveRecord
             'address' => 'Address',
             'postal_code' => 'Postal Code',
         ];
+    }
+
+    /**
+     * Gets query for [[Invoices]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getInvoices()
+    {
+        return $this->hasMany(Invoices::class, ['station_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Pumps]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPumps()
+    {
+        return $this->hasMany(Pumps::class, ['station_id' => 'id']);
     }
 }

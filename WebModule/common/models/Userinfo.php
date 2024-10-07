@@ -14,8 +14,11 @@ use Yii;
  * @property string $name
  * @property string $address
  * @property string $postal_code
+ *
+ * @property Invoices[] $invoices
+ * @property User $user
  */
-class Userinfo extends \yii\db\ActiveRecord
+class UserInfo extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -36,6 +39,7 @@ class Userinfo extends \yii\db\ActiveRecord
             [['role'], 'string'],
             [['name', 'address'], 'string', 'max' => 255],
             [['postal_code'], 'string', 'max' => 20],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -53,5 +57,25 @@ class Userinfo extends \yii\db\ActiveRecord
             'address' => 'Address',
             'postal_code' => 'Postal Code',
         ];
+    }
+
+    /**
+     * Gets query for [[Invoices]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getInvoices()
+    {
+        return $this->hasMany(Invoices::class, ['client_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[User]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 }

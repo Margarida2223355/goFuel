@@ -11,8 +11,10 @@ use Yii;
  * @property int $qty
  * @property float $total
  * @property int $invoice_id
+ *
+ * @property Invoices $invoice
  */
-class Invoiceline extends \yii\db\ActiveRecord
+class InvoiceLine extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -31,6 +33,7 @@ class Invoiceline extends \yii\db\ActiveRecord
             [['qty', 'total', 'invoice_id'], 'required'],
             [['qty', 'invoice_id'], 'integer'],
             [['total'], 'number'],
+            [['invoice_id'], 'exist', 'skipOnError' => true, 'targetClass' => Invoices::class, 'targetAttribute' => ['invoice_id' => 'id']],
         ];
     }
 
@@ -45,5 +48,15 @@ class Invoiceline extends \yii\db\ActiveRecord
             'total' => 'Total',
             'invoice_id' => 'Invoice ID',
         ];
+    }
+
+    /**
+     * Gets query for [[Invoice]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getInvoice()
+    {
+        return $this->hasOne(Invoices::class, ['id' => 'invoice_id']);
     }
 }
