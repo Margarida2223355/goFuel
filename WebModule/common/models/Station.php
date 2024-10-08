@@ -62,4 +62,14 @@ class Station extends \yii\db\ActiveRecord
     {
         return $this->hasOne(UserInfo::class, ['id' => 'manager_id']);
     }
+
+    public function getStationItems()
+    {
+        return $this->hasMany(StationItem::class, ['station_id' => 'id']);
+    }
+
+    public function getItems()
+    {
+        return $this->hasMany(Item::class, ['id' => 'item_id'])->via('stationItems');
+    }
 }

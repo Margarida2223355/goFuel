@@ -13,7 +13,6 @@ $this->title = 'Users';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -62,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]);
                     },
                     'update' => function ($url, $model) {
-                        return Html::a('<i class="fa fa-pens" aria-hidden="true"></i>', $url, [
+                        return Html::a('<i class="fa fa-pen" aria-hidden="true"></i>', $url, [
                             'title' => 'Atualizar',
                             'style' => 'color: #28a745; text-decoration: none;', // Estilo opcional
                         ]);

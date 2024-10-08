@@ -2,7 +2,9 @@
 
 namespace backend\controllers;
 
+use common\models\Item;
 use common\models\Station;
+use common\models\StationItem;
 use common\models\UserInfo;
 use Yii;
 use yii\data\ActiveDataProvider;
@@ -59,34 +61,72 @@ class StationController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single Station model.
-     * @param int $id ID
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionView($id)
     {
+        $currentUser = Yii::$app->user->identity;
+
+        // Verifica se o usuário logado é um Manager e tem permissão para acessar esta estação
+        if ($currentUser && $currentUser->userInfo->role === 'Manager') {
+            $station = Station::findOne(['id' => $id, 'manager_id' => $currentUser->userInfo->id]);
+
+            if (!$station) {
+                throw new NotFoundHttpException('Você não tem permissão para acessar essa estação.');
+            }
+        } else {
+            throw new \yii\web\ForbiddenHttpException('Você não tem permissão para acessar esta página.');
+        }
+
+        // DataProvider para os itens associados a esta estação
+        $itemsDataProvider = new \yii\data\ActiveDataProvider([
+            'query' => StationItem::find()->where(['station_id' => $station->id])->with('item'),
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
+        // Itens disponíveis que ainda não estão associados a esta estação
+        $availableItems = Item::find()
+            ->where(['NOT IN', 'id', StationItem::find()->select('item_id')->where(['station_id' => $station->id])])
+            ->all();
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'station' => $station,
+            'itemsDataProvider' => $itemsDataProvider,
+            'availableItems' => $availableItems,
         ]);
     }
 
-    /**
-     * Creates a new Station model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
+
+    public function actionAddItem()
+    {
+        $stationId = Yii::$app->request->post('station_id');
+        $itemId = Yii::$app->request->post('item_id');
+        $price = Yii::$app->request->post('price');
+
+        if ($stationId && $itemId && $price) {
+            $stationItem = new StationItem();
+            $stationItem->station_id = $stationId;
+            $stationItem->item_id = $itemId;
+            $stationItem->price = $price;
+
+            if ($stationItem->save()) {
+                Yii::$app->session->setFlash('success', 'Item added successfully with price.');
+            } else {
+                Yii::$app->session->setFlash('error', 'Failed to add item.');
+            }
+        }
+
+        return $this->redirect(['station/view', 'id' => $stationId]);
+    }
+
     public function actionCreate()
     {
         $model = new Station();
 
-        // Recupera todos os managers da tabela user_info
         $managers = UserInfo::find()
             ->where(['role' => 'Manager'])
             ->all();
 
-        // Array para a DropDownList [id => name]
         $managersList = \yii\helpers\ArrayHelper::map($managers, 'id', 'name');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -95,28 +135,18 @@ class StationController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'managersList' => $managersList,  // Passa os managers para a view
+            'managersList' => $managersList,
         ]);
     }
 
-
-    /**
-     * Updates an existing Station model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id ID
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
-        // Recupera todos os managers da tabela user_info
         $managers = UserInfo::find()
             ->where(['role' => 'Manager'])
             ->all();
 
-        // Array para a DropDownList [id => name]
         $managersList = \yii\helpers\ArrayHelper::map($managers, 'id', 'name');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -129,13 +159,6 @@ class StationController extends Controller
         ]);
     }
 
-    /**
-     * Deletes an existing Station model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id ID
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
@@ -143,13 +166,6 @@ class StationController extends Controller
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the Station model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return Station the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = Station::findOne(['id' => $id])) !== null) {

@@ -38,9 +38,29 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Station $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                }
+                'template' => '{view} {update} {delete} {reset-password}',
+                'buttons' => [
+                    'view' => function ($url, $model) {
+                        return Html::a('<i class="fa fa-eye" aria-hidden="true"></i>', $url, [
+                            'title' => 'Visualizar',
+                            'style' => 'color: #007bff; text-decoration: none;', // Estilo opcional
+                        ]);
+                    },
+                    'update' => function ($url, $model) {
+                        return Html::a('<i class="fa fa-pen" aria-hidden="true"></i>', $url, [
+                            'title' => 'Atualizar',
+                            'style' => 'color: #28a745; text-decoration: none;', // Estilo opcional
+                        ]);
+                    },
+                    'delete' => function ($url, $model) {
+                        return Html::a('<i class="fa fa-trash" aria-hidden="true"></i>', $url, [
+                            'title' => 'Delete',
+                            'data-method' => 'post',
+                            'data-confirm' => 'Tem certeza que deseja apagar esta station?',
+                            'style' => 'color: #dc3545; text-decoration: none;', // Estilo opcional
+                        ]);
+                    },
+                ],
             ],
         ],
     ]); ?>
