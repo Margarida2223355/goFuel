@@ -72,4 +72,10 @@ class Station extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Item::class, ['id' => 'item_id'])->via('stationItems');
     }
+
+    public function getManagers()
+    {
+        return $this->hasMany(UserInfo::class, ['id' => 'manager_id'])
+            ->viaTable('manager_station', ['station_id' => 'id']);
+    }
 }

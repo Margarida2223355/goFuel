@@ -18,26 +18,18 @@ use Yii;
  */
 class UserInfo extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
-        return 'user_info';
+        return 'user_info'; // Nome da sua tabela
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
-            [['user_id', 'nif', 'role', 'name', 'address', 'postal_code', 'phone'], 'required'],
-            [['user_id', 'nif'], 'integer'],
-            [['role'], 'string'],
-            [['name', 'address'], 'string', 'max' => 255],
-            [['postal_code'], 'string', 'max' => 20],
-            [['phone'], 'string', 'max' => 13],
+            [['user_id', 'nif', 'name', 'address', 'postal_code', 'phone'], 'required'], // Adicione 'phone' aqui
+            [['user_id'], 'integer'],
+            [['nif', 'postal_code'], 'string', 'max' => 20],
+            [['name', 'address', 'phone'], 'string', 'max' => 255],
         ];
     }
 
@@ -50,7 +42,6 @@ class UserInfo extends \yii\db\ActiveRecord
             'id' => 'ID',
             'user_id' => 'User ID',
             'nif' => 'Nif',
-            'role' => 'Role',
             'name' => 'Name',
             'address' => 'Address',
             'postal_code' => 'Postal Code',
@@ -69,5 +60,11 @@ class UserInfo extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    public function getStations()
+    {
+        return $this->hasMany(Station::class, ['id' => 'station_id'])
+            ->viaTable('manager_station', ['manager_id' => 'id']);
     }
 }

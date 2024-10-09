@@ -14,6 +14,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
 
+    <p>
+        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
+
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= GridView::widget([
@@ -33,12 +37,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Phone', // NIF do UserInfo
                 'value' => function ($model) {
                     return $model->userInfo ? $model->userInfo->phone : 'N/A'; // Acessando o campo NIF de UserInfo
-                },
-            ],
-            [
-                'label' => 'Role', // Role do UserInfo
-                'value' => function ($model) {
-                    return $model->userInfo ? $model->userInfo->role : 'N/A'; // Acessando o campo Role de UserInfo
                 },
             ],
 
@@ -71,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'title' => 'Deletar',
                             'data-method' => 'post',
                             'data-confirm' => 'Tem certeza que deseja deletar este usuário?',
-                            'style' => 'color: #dc3545; text-decoration: none;', // Estilo opcional
+                            'style' => 'color: #dc3545; text-decoration: none;',
                         ]);
                     },
                 ],

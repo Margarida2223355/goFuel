@@ -36,47 +36,30 @@ class UserController extends Controller
         );
     }
 
-    /**
-     * Lists all User models.
-     *
-     * @return string
-     */
-
     public function actionIndex()
     {
-        // Obtém o usuário logado
         $currentUser = Yii::$app->user->identity;
 
-        // Verifique se $currentUser está definido
         if (!$currentUser) {
-            throw new \yii\web\ForbiddenHttpException('Nenhum usuário está logado.');
+            throw new \yii\web\ForbiddenHttpException('O usuário logado não possui permissão para visualizar esta página.');
         }
 
-        // Verifica se o usuário logado tem um registro em userInfo
-        if (!$currentUser->userInfo) {
-            throw new \yii\web\ForbiddenHttpException('O usuário logado não possui um registro em user_info.');
-        }
-
-        // Obtém o userInfo do usuário logado
-        $currentUserInfo = $currentUser->userInfo;
-
-        // Inicializa a query
         $query = User::find()->joinWith('userInfo');
 
-        // Se o usuário logado for Admin, exibe Admins e Managers
-        if ($currentUserInfo->role === 'Admin') {
-            $query->where(['user_info.role' => ['Admin', 'Manager']]);
-        }
-        // Se o usuário logado for Manager, exibe In Charge e Employees
-        elseif ($currentUserInfo->role === 'Manager') {
-            $query->where(['user_info.role' => ['In Charge', 'Employee']]);
-        }
-        // Para outros roles ou se não for Admin ou Manager
-        else {
-            $query->where('0=1'); // Não exibe nada
+        $auth = Yii::$app->authManager;
+        $roles = $auth->getRolesByUser($currentUser->id);
+
+        $roleNames = array_keys($roles);
+        if (in_array('Admin', $roleNames)) {
+            $query->innerJoin('auth_assignment', 'auth_assignment.user_id = user.id')
+                ->where(['auth_assignment.item_name' => ['Admin', 'Manager']]);
+        } elseif (in_array('Manager', $roleNames)) {
+            $query->innerJoin('auth_assignment', 'auth_assignment.user_id = user.id')
+                ->where(['auth_assignment.item_name' => ['In Charge', 'Employee']]);
+        } else {
+            $query->where('0=1');
         }
 
-        // DataProvider para a GridView
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -84,27 +67,23 @@ class UserController extends Controller
             ],
         ]);
 
-        // Renderiza a view com o DataProvider
         return $this->render('index', [
             'dataProvider' => $dataProvider,
         ]);
     }
 
 
-
-    /**
-     * Displays a single User model.
-     * @param int $id
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-
     public function actionView($id)
     {
 
         $model = UserInfo::findOne(['user_id' => $this->findModel($id)]);
+        $auth = Yii::$app->authManager;
+        $roles = $auth->getRolesByUser($model->id);
+        $role = !empty($roles) ? implode(', ', array_keys($roles)) : 'No Role';
+
         return $this->render('view', [
             'model' => $model,
+            'role' => $role,
         ]);
     }
 
@@ -128,6 +107,8 @@ class UserController extends Controller
         ]);
     }
 
+
+
     /**
      * Updates an existing User model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -135,62 +116,54 @@ class UserController extends Controller
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
+
+
     public function actionUpdate($id)
     {
-        // Carrega o modelo User baseado no ID fornecido
         $user = User::findOne($id);
         if (!$user) {
             throw new NotFoundHttpException('O usuário não foi encontrado.');
         }
 
-        // Carrega o modelo UserInfo associado ao User
         $userInfo = $user->userInfo;
         if (!$userInfo) {
             throw new NotFoundHttpException('As informações do usuário não foram encontradas.');
         }
 
-        // Instancia o UserForm
         $userForm = new UserForm();
+        $userForm->loadUser($user);
+        $userForm->loadUserInfo($userInfo);
 
-        // Carrega os dados do User e UserInfo no UserForm
-        if ($userForm->load(Yii::$app->request->post())) {
-            // Atribui os dados carregados ao modelo User e UserInfo
-            $user->attributes = $userForm->userAttributes(); // método que retorna atributos do User
-            $userInfo->attributes = $userForm->userInfoAttributes(); // método que retorna atributos do UserInfo
+        if ($userForm->load(Yii::$app->request->post()) && $userForm->validate()) {
+            $user->attributes = $userForm->attributes;
+            $userInfo->attributes = $userForm->attributes;
 
-            // Validação para ambos os modelos
-            if ($user->validate() && $userInfo->validate()) {
-                // Inicia uma transação
-                $transaction = Yii::$app->db->beginTransaction();
-                try {
-                    // Salva o modelo User
-                    if ($user->save(false)) {
-                        // Salva o modelo UserInfo
-                        $userInfo->save(false);
+            // Inicia uma transação
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if ($user->save(false) && $userInfo->save(false)) {
+                    $auth = Yii::$app->authManager;
+                    $auth->revokeAll($user->id); // Revoga todas as roles atuais
+                    $role = $auth->getRole($userForm->role);
+                    if ($role) {
+                        $auth->assign($role, $user->id); // Atribui a nova role
                     }
-
-                    // Comita a transação
                     $transaction->commit();
-
-                    // Redireciona para a página de visualização do usuário atualizado
                     return $this->redirect(['view', 'id' => $user->id]);
-                } catch (\Exception $e) {
-                    // Rollback em caso de erro
-                    $transaction->rollBack();
-                    throw $e;
                 }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                throw $e;
             }
-        } else {
-            // Preenche o UserForm com os dados atuais
-            $userForm->loadUser($user);
-            $userForm->loadUserInfo($userInfo);
         }
 
-        // Renderiza o formulário de update
+        // Renderiza o formulário de atualização
         return $this->render('update', [
-            'userForm' => $userForm,
+            'model' => $userForm, // Passa o formulário como 'model'
         ]);
     }
+
+
 
     /**
      * Deletes an existing User model.

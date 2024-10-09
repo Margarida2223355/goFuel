@@ -20,10 +20,13 @@ return [
         'fixture' => [
             'class' => \yii\console\controllers\FixtureController::class,
             'namespace' => 'common\fixtures',
-          ],
+        ],
     ],
     'components' => [
-        'log' => [
+        'components' => [
+            'authManager' => [
+                'class' => 'yii\rbac\DbManager', // Usando o DbManager para RBAC
+            ],
             'targets' => [
                 [
                     'class' => \yii\log\FileTarget::class,
@@ -31,6 +34,7 @@ return [
                 ],
             ],
         ],
+
     ],
     'params' => $params,
 ];

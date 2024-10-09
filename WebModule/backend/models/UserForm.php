@@ -16,7 +16,7 @@ class UserForm extends Model
     public $address = '';
     public $postal_code = '';
     public $role = '';
-    public $phone = '';
+    public $phone = 0;
     public $id = 0;
 
     private $_user;
@@ -61,58 +61,71 @@ class UserForm extends Model
 
         ];
     }
-
     public function getAvailableRoles()
     {
-        $role = UserInfo::getLoggedInUserRole();
-
-        if ($role === 'Admin') {
-            return ['Admin' => 'Admin', 'Manager' => 'Manager'];
-        } else {
-            return ['In Charge' => 'In Charge', 'Employee' => 'Employee'];
+        $roles = [];
+        if (Yii::$app->user->can('Admin')) {
+            $roles = ['Admin' => 'Admin', 'Manager' => 'Manager'];
+        } elseif (Yii::$app->user->can('Manager')) {
+            $roles = ['In Charge' => 'In Charge', 'Employee' => 'Employee'];
         }
+        return $roles;
+    }
+
+    public function getIsNewRecord()
+    {
+        return empty($this->username);
     }
 
     public function save()
     {
-
         if (!$this->validate()) {
             return false;
         }
-
-        // Verificar se a role atribuída está dentro das roles permitidas
-        if (!in_array($this->role, $this->getAvailableRoles())) {
+        if (!in_array($this->role, array_keys($this->getAvailableRoles()))) {
             $this->addError('role', 'Você não tem permissão para atribuir esta role.');
             return false;
         }
+
         $this->_user = new User();
         $this->_userInfo = new UserInfo();
-        // Salvar os dados do User e UserInfo
+        
         $this->_user->username = $this->username;
         $this->_user->email = $this->email;
         $this->_user->auth_key = \Yii::$app->security->generateRandomString();
         $this->_user->setPassword('password');
-        $this->_user->status = 10;
+        $this->_user->status = 10; // Ativo
         $this->_user->created_at = time();
         $this->_user->updated_at = time();
 
         if ($this->_user->save()) {
-            $this->_userInfo->user_id = $this->_user->id;
+            $this->_userInfo->user_id = $this->_user->id; // Atribui o ID do usuário
             $this->_userInfo->nif = $this->nif;
             $this->_userInfo->name = $this->name;
             $this->_userInfo->address = $this->address;
             $this->_userInfo->postal_code = $this->postal_code;
             $this->_userInfo->phone = $this->phone;
-            $this->_userInfo->role = $this->role;
-
+            
             if ($this->_userInfo->save()) {
+                $auth = Yii::$app->authManager;
+                $role = $auth->getRole($this->role);
+                if ($role) {
+                    $auth->assign($role, $this->_user->id);
+                }
+
                 $this->id = $this->_userInfo->id;
                 return true;
+            } else {
+                Yii::error('Falha ao salvar UserInfo: ' . json_encode($this->_userInfo->getErrors()), __METHOD__);
             }
+        } else {
+            Yii::error('Falha ao salvar User: ' . json_encode($this->_user->getErrors()), __METHOD__);
         }
 
-        return false;
+        return false; // Retorna falso se não conseguir salvar
     }
+
+
 
     public function loadUser($user)
     {
