@@ -50,5 +50,8 @@ dependencies {
 
     // Room for database
     implementation(libs.room.runtime)
-    implementation(libs.room.compiler)
+    annotationProcessor(libs.room.compiler)
+
+    // Gson
+    implementation(libs.gson)
 }
