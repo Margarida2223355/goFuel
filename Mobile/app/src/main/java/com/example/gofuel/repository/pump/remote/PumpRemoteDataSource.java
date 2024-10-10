@@ -1,6 +1,6 @@
 package com.example.gofuel.repository.pump.remote;
 
-import com.example.gofuel.model.pump.Pump;
+import com.example.gofuel.model.Pump;
 import com.example.gofuel.repository.common.HTTPClient;
 import com.example.gofuel.repository.common.ResultWrapper;
 import com.example.gofuel.repository.pump.IPumpDataSource;
