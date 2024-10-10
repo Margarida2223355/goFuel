@@ -5,16 +5,23 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import com.example.gofuel.model.Station;
+import androidx.room.TypeConverters;
+
+import com.example.gofuel.model.Pump;
+import com.example.gofuel.model.station.Station;
+import com.example.gofuel.model.station.StationConverter;
+import com.example.gofuel.repository.pump.local.PumpDB;
 import com.example.gofuel.repository.station.local.StationDB;
 
 @Database(
-        entities = {Station.class},
+        entities = {Station.class, Pump.class},
         version = 1
 )
+@TypeConverters({StationConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase INSTANCE;
     public abstract StationDB stationDB();
+    public abstract PumpDB pumpDB();
 
     public static AppDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
