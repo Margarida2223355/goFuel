@@ -1,6 +1,6 @@
 package com.example.gofuel.repository.station;
 
-import com.example.gofuel.model.Station;
+import com.example.gofuel.model.station.Station;
 import com.example.gofuel.repository.common.ResultWrapper;
 
 import java.util.List;

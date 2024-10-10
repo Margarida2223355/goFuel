@@ -1,6 +1,6 @@
 package com.example.gofuel.repository.station.remote;
 
-import com.example.gofuel.model.Station;
+import com.example.gofuel.model.station.Station;
 
 import java.util.List;
 
