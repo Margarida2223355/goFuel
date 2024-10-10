@@ -4,7 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.example.gofuel.model.pump.Pump;
+import com.example.gofuel.model.Pump;
 
 import java.util.List;
 
