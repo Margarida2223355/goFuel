@@ -1,7 +1,7 @@
 package com.example.gofuel.repository.pump.remote;
 
 
-import com.example.gofuel.model.pump.Pump;
+import com.example.gofuel.model.Pump;
 
 import java.util.List;
 
