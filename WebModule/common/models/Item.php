@@ -9,7 +9,6 @@ use Yii;
  *
  * @property int $id
  * @property string $description
- * @property float $price
  * @property int $subcategory_id
  *
  * @property Subcategory $subcategory
@@ -30,8 +29,7 @@ class Item extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['description', 'price', 'subcategory_id'], 'required'],
-            [['price'], 'number'],
+            [['description', 'subcategory_id'], 'required'],
             [['subcategory_id'], 'integer'],
             [['description'], 'string', 'max' => 255],
             [['subcategory_id'], 'exist', 'skipOnError' => true, 'targetClass' => Subcategory::class, 'targetAttribute' => ['subcategory_id' => 'id']],
@@ -46,7 +44,6 @@ class Item extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'description' => 'Description',
-            'price' => 'Price',
             'subcategory_id' => 'Subcategory ID',
         ];
     }

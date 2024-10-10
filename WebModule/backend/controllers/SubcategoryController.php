@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\Category;
 use Yii;
 use common\models\Subcategory;
 use yii\web\Controller;
@@ -16,56 +17,61 @@ class SubcategoryController extends Controller
     {
         $model = new Subcategory();
 
-        // Carrega os dados postados no modelo
-        if ($model->load(Yii::$app->request->post())) {
-            // Tenta salvar a subcategoria no banco de dados
-            if ($model->save()) {
-                // Se a subcategoria for salva com sucesso, redirecione de volta para a página da categoria
-                return $this->redirect(['category/view', 'id' => $model->category_id]);
+        if (Yii::$app->request->isPost) {
+            $data = Yii::$app->request->post();
+            if (isset($data['Subcategory']['id'])) {
+                // Atualizar
+                $model = Subcategory::findOne($data['Subcategory']['id']);
+                if ($model) {
+                    $model->description = $data['Subcategory']['description'];
+                    if ($model->save()) {
+                        return $this->redirect(['category/view', 'id' => $model->category_id]);
+                    }
+                }
+            } else {
+                // Criar
+                $model->load($data);
+                if ($model->save()) {
+                    return $this->redirect(['category/view', 'id' => $model->category_id]);
+                }
             }
         }
 
-        // Caso falhe, redireciona para a página de categorias
-        return $this->redirect(['category/index']);
+        // Caso não seja POST, renderiza a view com o model vazio ou existente
+        return $this->render('view', [
+            'model' => $model,
+        ]);
     }
-
 
     public function actionUpdate($id)
     {
-        // Carrega o model existente da subcategoria
         $model = Subcategory::findOne($id);
-
-        if (!$model) {
+        if ($model === null) {
             throw new NotFoundHttpException('The requested subcategory does not exist.');
         }
 
-        // Processa o envio do formulário
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Subcategory updated successfully.');
-
-            // Redireciona para a página de visualização da categoria (ou outra página relevante)
-            return $this->redirect(['category/view', 'id' => $model->category_id]);
+            return $this->redirect(['category/update', 'id' => $model->category_id]);
         }
 
-        // Se não for enviado, exibe o formulário
         return $this->render('update', [
             'model' => $model,
+            // Passar o modelo da categoria e outros dados necessários
         ]);
     }
 
     public function actionDelete($id)
     {
-        // Encontra o modelo da subcategoria com base no ID fornecido
-        $model = $this->findModel($id);
+        $model = $this->findModel($id); // Verifica se a subcategoria existe
+        $categoryId = $model->category_id; // Guarda o ID da categoria associada
 
-        // Armazena o ID da categoria associada para redirecionamento
-        $categoryId = $model->category_id;
-
-        // Tenta excluir o modelo
+        // Deleta a subcategoria
         if ($model->delete()) {
-            // Redireciona de volta para a página de atualização da categoria
-            return $this->redirect(['category/update', 'id' => $categoryId]);
+            // Redireciona para a view da categoria após a exclusão
+            return $this->redirect(['category/view', 'id' => $categoryId]);
         }
+
+        throw new NotFoundHttpException('The requested subcategory does not exist.');
     }
 
     protected function findModel($id)

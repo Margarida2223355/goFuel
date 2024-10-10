@@ -1,34 +1,38 @@
 <?php
 
-use common\models\Category;
-use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\grid\ActionColumn;
+use yii\helpers\Html;
 use yii\grid\GridView;
 
-/** @var yii\web\View $this */
-/** @var yii\data\ActiveDataProvider $dataProvider */
+/* @var $this yii\web\View */
+/* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Categories';
+$this->title = 'Items Management';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="category-index">
+<div class="item-index">
 
     <div class="d-flex align-items-center mb-3">
         <h1><?= Html::encode($this->title) ?></h1>
-        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>', ['category/create'], [
+        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>', ['item/create'], [
             'class' => 'btn',
-            'title' => 'Create Category',
+            'title' => 'Create Item',
             'style' => 'color: green; text-decoration: none; margin-right: 10px; margin-left: 15px;',
         ]) ?>
     </div>
 
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
+
             'id',
-            'name',
+            'description',
+            [
+                'label' => 'Category - Subcategory',
+                'value' => function ($model) {
+                    return $model->subcategory ? $model->subcategory->category->name . ' - ' . $model->subcategory->description : 'N/A';
+                },
+            ],
             [
                 'class' => ActionColumn::class,
                 'template' => '{view} {update} {delete} {reset-password}',
@@ -57,6 +61,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
-
 
 </div>

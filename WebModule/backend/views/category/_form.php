@@ -14,9 +14,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-    </div>
+    <?= Html::submitButton('<i class="fa fa-save" aria-hidden="true"></i> Save', [
+        'class' => 'btn',
+        'style' => 'color: blue; border-color: black;',
+        'title' => 'Update Category'
+    ]) ?>
 
     <?php ActiveForm::end(); ?>
 

@@ -1,5 +1,6 @@
 <?php
 
+use yii\grid\ActionColumn;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\grid\GridView;
@@ -15,23 +16,25 @@ $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <div class="category-form">
+    <?php $form = ActiveForm::begin(); ?>
 
-        <?php $form = ActiveForm::begin(); ?>
+    <div class="form-group d-flex align-items-center">
 
-        <div class="form-group">
-            <label for="category-name">Category Name</label>
-            <div class="input-group">
-                <?= Html::activeTextInput($model, 'name', ['class' => 'form-control', 'id' => 'category-name', 'placeholder' => 'Enter category name']) ?>
-                <div class="input-group-append">
-                    <?= Html::submitButton('Update', ['class' => 'btn btn-primary']) ?>
-                </div>
-            </div>
-        </div>
+        <?= Html::activeTextInput($model, 'name', [
+            'class' => 'form-control me-2',
+            'id' => 'category-name',
+            'placeholder' => 'Enter category name'
+        ]) ?>
 
-        <?php ActiveForm::end(); ?>
-
+        <?= Html::submitButton('<i class="fa fa-save" aria-hidden="true"></i>', [
+            'class' => 'btn',
+            'style' => 'color: blue; border-color: black;',
+            'title' => 'Update Category'
+        ]) ?>
     </div>
+
+    <?php ActiveForm::end(); ?>
+
 
     <h3>Subcategories</h3>
 
@@ -41,11 +44,29 @@ $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
             ['class' => 'yii\grid\SerialColumn'],
             'description',
             [
-                'class' => 'yii\grid\ActionColumn',
-                'template' => '{update} {delete}', // Inclui o botão de delete
-                'urlCreator' => function ($action, $model) {
-                    return ['subcategory/' . $action, 'id' => $model->id]; // Gera a URL para a ação
-                },
+                'class' => ActionColumn::class,
+                'template' => '{update} {delete}',
+                'buttons' => [
+                    'update' => function ($url, $model) {
+                        return Html::a('<i class="fa fa-pen" aria-hidden="true"></i>', '#', [
+                            'title' => 'Update',
+                            'style' => 'color: #28a745; text-decoration: none;',
+                            'onclick' => "setSubcategoryData({$model->id}, '{$model->description}'); return false;", // Chama a função JavaScript
+                        ]);
+                    },
+                    'delete' => function ($url, $model) {
+                        return Html::a(
+                            '<i class="fa fa-trash" aria-hidden="true"></i>',
+                            ['subcategory/delete', 'id' => $model->id],
+                            [
+                                'title' => 'Delete',
+                                'data-method' => 'post',
+                                'data-confirm' => 'Are you sure you want to delete this subcategory?',
+                                'style' => 'color: #dc3545; text-decoration: none;',
+                            ]
+                        );
+                    },
+                ],
             ],
         ],
     ]); ?>
@@ -53,23 +74,32 @@ $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
     <h3>Add New Subcategory</h3>
 
     <?php $form = ActiveForm::begin([
-        'action' => ['subcategory/create'], // A ação que processa a criação
+        'action' => ['subcategory/create'],
         'method' => 'post',
     ]); ?>
 
-    <div class="form-group">
-        <div class="input-group">
-            <!-- Campo hidden para enviar o category_id -->
-            <?= Html::hiddenInput('Subcategory[category_id]', $model->id) ?>
+    <div class="form-group d-flex align-items-center">
+        <?= Html::hiddenInput('Subcategory[id]', '', ['id' => 'subcategory-id']) ?> <!-- Campo para o ID da subcategoria -->
 
-            <!-- Campo para a descrição da nova subcategoria -->
-            <?= Html::activeTextInput($newSubcategory, 'description', ['class' => 'form-control', 'placeholder' => 'Add new subcategory']) ?>
-            <div class="input-group-append">
-                <?= Html::submitButton('Add Subcategory', ['class' => 'btn btn-success']) ?>
-            </div>
-        </div>
+        <?= Html::activeTextInput($newSubcategory, 'description', [
+            'class' => 'form-control me-2',
+            'id' => 'subcategory-description', // ID para acesso no JavaScript
+            'placeholder' => 'Add new subcategory'
+        ]) ?>
+
+        <?= Html::submitButton('<i class="fa fa-plus" aria-hidden="true"></i>', [
+            'class' => 'btn',
+            'style' => 'color: green; border-color: black; height: calc(1.5em + .75rem + 2px);',
+            'title' => 'Add Subcategory'
+        ]) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
-
 </div>
+
+<script>
+    function setSubcategoryData(id, description) {
+        document.getElementById('subcategory-description').value = description; // Define a descrição no input
+        document.getElementById('subcategory-id').value = id; // Define o ID da subcategoria para a atualização
+    }
+</script>

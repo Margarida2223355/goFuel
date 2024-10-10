@@ -42,6 +42,7 @@ AppAsset::register($this);
             ['label' => 'Users Management', 'url' => ['/user/index']],
             ['label' => 'Stations Management', 'url' => ['/station/index']],
             ['label' => 'Categories Management', 'url' => ['/category/index']],
+            ['label' => 'Item Management', 'url' => ['/item/index']],
             ['label' => 'Gii', 'url' => ['/gii'], 'linkOptions' => ['target' => '_blank']],
         ];
         if (Yii::$app->user->isGuest) {

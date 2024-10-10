@@ -1,5 +1,7 @@
 <?php
 
+use common\models\Station;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -23,6 +25,11 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'role')->dropDownList($model->getAvailableRoles(), ['prompt' => 'Selecione uma role']) ?>
+
+    <?= $form->field($model, 'station_id')->dropDownList(
+        ArrayHelper::map(Station::find()->all(), 'id', 'name'), // Carrega todas as estações para a dropdown
+        ['prompt' => 'Select a Station'] // Placeholder
+    ) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Criar' : 'Atualizar', ['class' => 'btn btn-success']) ?>

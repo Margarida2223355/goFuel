@@ -5,6 +5,8 @@ namespace backend\controllers;
 use common\models\Item;
 use common\models\Station;
 use common\models\StationItem;
+use common\models\StationUser;
+use common\models\User;
 use common\models\UserInfo;
 use Yii;
 use yii\data\ActiveDataProvider;
@@ -63,39 +65,16 @@ class StationController extends Controller
 
     public function actionView($id)
     {
-        $currentUser = Yii::$app->user->identity;
+        $station = Station::findOne($id); // Busca a estação pelo ID
 
-        // Verifica se o usuário logado é um Manager e tem permissão para acessar esta estação
-        if ($currentUser && $currentUser->userInfo->role === 'Manager') {
-            $station = Station::findOne(['id' => $id, 'manager_id' => $currentUser->userInfo->id]);
-
-            if (!$station) {
-                throw new NotFoundHttpException('Você não tem permissão para acessar essa estação.');
-            }
-        } else {
-            throw new \yii\web\ForbiddenHttpException('Você não tem permissão para acessar esta página.');
+        if (!$station) {
+            throw new \yii\web\NotFoundHttpException('A estação não foi encontrada.');
         }
 
-        // DataProvider para os itens associados a esta estação
-        $itemsDataProvider = new \yii\data\ActiveDataProvider([
-            'query' => StationItem::find()->where(['station_id' => $station->id])->with('item'),
-            'pagination' => [
-                'pageSize' => 10,
-            ],
-        ]);
-
-        // Itens disponíveis que ainda não estão associados a esta estação
-        $availableItems = Item::find()
-            ->where(['NOT IN', 'id', StationItem::find()->select('item_id')->where(['station_id' => $station->id])])
-            ->all();
-
         return $this->render('view', [
-            'station' => $station,
-            'itemsDataProvider' => $itemsDataProvider,
-            'availableItems' => $availableItems,
+            'station' => $station, // Passa o modelo da estação para a view
         ]);
     }
-
 
     public function actionAddItem()
     {
@@ -123,13 +102,24 @@ class StationController extends Controller
     {
         $model = new Station();
 
-        $managers = UserInfo::find()
-            ->where(['role' => 'Manager'])
+        $managers = User::find()
+            ->joinWith('authAssignments')
+            ->where(['auth_assignment.item_name' => 'Manager'])
             ->all();
 
-        $managersList = \yii\helpers\ArrayHelper::map($managers, 'id', 'name');
+        $managersList = \yii\helpers\ArrayHelper::map($managers, 'id', function ($model) {
+            return $model->userInfo ? $model->userInfo->name : 'N/A';
+        });
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            // Associa a estação ao manager
+            $managerId = Yii::$app->request->post('Station')['manager_id'];
+            if ($managerId) {
+                $stationUser = new StationUser();
+                $stationUser->user_id = $managerId;
+                $stationUser->station_id = $model->id;
+                $stationUser->save();
+            }
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -138,6 +128,8 @@ class StationController extends Controller
             'managersList' => $managersList,
         ]);
     }
+
+
 
     public function actionUpdate($id)
     {

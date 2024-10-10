@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
-        'managersList' => $managersList,  // Passa a lista de managers para o formulário
+        'managersList' => $managersList,
     ]) ?>
 
 </div>

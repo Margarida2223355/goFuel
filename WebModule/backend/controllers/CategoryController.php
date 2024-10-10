@@ -85,6 +85,7 @@ class CategoryController extends Controller
         $subcategoriesDataProvider = new \yii\data\ActiveDataProvider([
             'query' => Subcategory::find()->where(['category_id' => $id]),
         ]);
+        $isUpdate = false;
 
         return $this->render('view', [
             'model' => $model,
