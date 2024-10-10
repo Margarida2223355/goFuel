@@ -1,4 +1,4 @@
-package com.example.gofuel.model;
+package com.example.gofuel.model.station;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 public class Station {
     //region Properties
     @PrimaryKey
-    private int id;
+    private final int id;
     private String name;
     private String address;
     private String postal_code;
