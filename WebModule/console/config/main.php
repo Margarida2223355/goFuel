@@ -23,6 +23,9 @@ return [
           ],
     ],
     'components' => [
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager', // Usando o DbManager para RBAC
+        ],
         'log' => [
             'targets' => [
                 [
