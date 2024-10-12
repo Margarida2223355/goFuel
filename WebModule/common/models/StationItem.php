@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "station_items".
@@ -10,65 +11,36 @@ use Yii;
  * @property int $id
  * @property int $station_id
  * @property int $item_id
- * @property float $price
+ * @property double $price
  *
- * @property Items $item
- * @property Stations $station
+ * @property Station $station
+ * @property Item $item
  */
-class StationItem extends \yii\db\ActiveRecord
+class StationItem extends ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
         return 'station_items';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
             [['station_id', 'item_id', 'price'], 'required'],
             [['station_id', 'item_id'], 'integer'],
             [['price'], 'number'],
-            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Items::class, 'targetAttribute' => ['item_id' => 'id']],
-            [['station_id'], 'exist', 'skipOnError' => true, 'targetClass' => Stations::class, 'targetAttribute' => ['station_id' => 'id']],
+            [['station_id'], 'exist', 'skipOnError' => true, 'targetClass' => Station::class, 'targetAttribute' => ['station_id' => 'id']],
+            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Item::class, 'targetAttribute' => ['item_id' => 'id']],
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'station_id' => 'Station ID',
-            'item_id' => 'Item ID',
-            'price' => 'Price',
-        ];
-    }
-
-    /**
-     * Gets query for [[Item]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getItem()
-    {
-        return $this->hasOne(Items::class, ['id' => 'item_id']);
-    }
-
-    /**
-     * Gets query for [[Station]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
     public function getStation()
     {
-        return $this->hasOne(Stations::class, ['id' => 'station_id']);
+        return $this->hasOne(Station::class, ['id' => 'station_id']);
+    }
+
+    public function getItem()
+    {
+        return $this->hasOne(Item::class, ['id' => 'item_id']);
     }
 }

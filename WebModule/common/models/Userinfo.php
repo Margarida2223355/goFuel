@@ -14,32 +14,22 @@ use Yii;
  * @property string $name
  * @property string $address
  * @property string $postal_code
- *
- * @property Invoice[] $invoices
- * @property User $user
+ * @property string $phone
  */
 class UserInfo extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
-        return 'user_info';
+        return 'user_info'; // Nome da sua tabela
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
-            [['user_id', 'nif', 'role', 'name', 'address', 'postal_code'], 'required'],
-            [['user_id', 'nif'], 'integer'],
-            [['role'], 'string'],
-            [['name', 'address'], 'string', 'max' => 255],
-            [['postal_code'], 'string', 'max' => 20],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
+            [['user_id', 'nif', 'name', 'address', 'postal_code', 'phone'], 'required'], // Adicione 'phone' aqui
+            [['user_id'], 'integer'],
+            [['nif', 'postal_code'], 'string', 'max' => 20],
+            [['name', 'address', 'phone'], 'string', 'max' => 255],
         ];
     }
 
@@ -52,30 +42,29 @@ class UserInfo extends \yii\db\ActiveRecord
             'id' => 'ID',
             'user_id' => 'User ID',
             'nif' => 'Nif',
-            'role' => 'Role',
             'name' => 'Name',
             'address' => 'Address',
             'postal_code' => 'Postal Code',
+            'phone' => 'Phone',
         ];
     }
 
-    /**
-     * Gets query for [[Invoices]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getInvoices()
+    public static function getLoggedInUserRole()
     {
-        return $this->hasMany(Invoice::class, ['client_id' => 'id']);
+        $userId = Yii::$app->user->id;
+        $userInfo = self::findOne(['user_id' => $userId]);
+
+        return $userInfo ? $userInfo->role : null;
     }
 
-    /**
-     * Gets query for [[User]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    public function getStations()
+    {
+        return $this->hasMany(Station::class, ['id' => 'station_id'])
+            ->viaTable('manager_station', ['manager_id' => 'id']);
     }
 }

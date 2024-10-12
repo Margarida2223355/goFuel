@@ -12,7 +12,6 @@ use Yii;
  * @property int $category_id
  *
  * @property Category $category
- * @property Item[] $items
  */
 class Subcategory extends \yii\db\ActiveRecord
 {
@@ -57,35 +56,5 @@ class Subcategory extends \yii\db\ActiveRecord
     public function getCategory()
     {
         return $this->hasOne(Category::class, ['id' => 'category_id']);
-    }
-
-    /**
-     * Gets query for [[Items]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getItems()
-    {
-        return $this->hasMany(Item::class, ['subcategory_id' => 'id']);
-    }
-
-    /**
-     * Customize fields returned from API
-     * 
-     * @return array
-     */
-    public function fields() {
-        $fields = parent::fields();
-
-        // Remove category_id field
-        unset($fields['category_id']);
-
-        // Add category field
-        $fields['category'] = function() {
-            $category = $this->getCategory()->one();
-            return $category ? $category : null;
-        };
-
-        return $fields;
     }
 }

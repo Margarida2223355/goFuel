@@ -10,7 +10,7 @@ use Yii;
  * @property int $user_id
  * @property int $station_id
  *
- * @property Stations $station
+ * @property Station $station
  * @property User $user
  */
 class StationUser extends \yii\db\ActiveRecord
@@ -31,9 +31,7 @@ class StationUser extends \yii\db\ActiveRecord
         return [
             [['user_id', 'station_id'], 'required'],
             [['user_id', 'station_id'], 'integer'],
-            [['user_id', 'station_id'], 'unique', 'targetAttribute' => ['user_id', 'station_id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
-            [['station_id'], 'exist', 'skipOnError' => true, 'targetClass' => Stations::class, 'targetAttribute' => ['station_id' => 'id']],
+            [['user_id', 'station_id'], 'unique', 'targetAttribute' => ['user_id', 'station_id']], // Se quiser evitar duplicatas
         ];
     }
 
@@ -55,7 +53,7 @@ class StationUser extends \yii\db\ActiveRecord
      */
     public function getStation()
     {
-        return $this->hasOne(Stations::class, ['id' => 'station_id']);
+        return $this->hasOne(Station::class, ['id' => 'station_id']);
     }
 
     /**

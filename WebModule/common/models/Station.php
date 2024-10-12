@@ -11,9 +11,9 @@ use Yii;
  * @property string $name
  * @property string $address
  * @property string $postal_code
+ * @property int $manager_id
  *
- * @property Invoice[] $invoices
- * @property Pump[] $pumps
+ * @property UserInfo $manager
  */
 class Station extends \yii\db\ActiveRecord
 {
@@ -31,9 +31,11 @@ class Station extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'address', 'postal_code'], 'required'],
+            [['name', 'address', 'postal_code', 'manager_id'], 'required'],
+            [['manager_id'], 'integer'],
             [['name', 'address'], 'string', 'max' => 255],
             [['postal_code'], 'string', 'max' => 20],
+            [['manager_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserInfo::class, 'targetAttribute' => ['manager_id' => 'id']],
         ];
     }
 
@@ -47,26 +49,67 @@ class Station extends \yii\db\ActiveRecord
             'name' => 'Name',
             'address' => 'Address',
             'postal_code' => 'Postal Code',
+            'manager_id' => 'Manager ID',
         ];
     }
 
     /**
-     * Gets query for [[Invoice]].
+     * Gets query for [[Manager]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getInvoices()
+    public function getManager()
     {
-        return $this->hasMany(Invoice::class, ['station_id' => 'id']);
+        return $this->hasOne(UserInfo::class, ['id' => 'manager_id']);
     }
 
-    /**
-     * Gets query for [[Pumps]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPumps()
+    public function getStationItems()
     {
-        return $this->hasMany(Pump::class, ['station_id' => 'id']);
+        return $this->hasMany(StationItem::class, ['station_id' => 'id']);
+    }
+
+    public function getItems()
+    {
+        return $this->hasMany(Item::class, ['id' => 'item_id'])->via('stationItems');
+    }
+
+    /*public function getManagers()
+    {
+        return $this->hasMany(UserInfo::class, ['id' => 'manager_id'])
+            ->viaTable('manager_station', ['station_id' => 'id']);
+    }*/
+
+    public function getManagers()
+    {
+        return $this->hasMany(User::className(), ['id' => 'user_id'])
+            ->viaTable('station_user', ['station_id' => 'id'], ['user_id' => 'id'])
+            ->andWhere(['role' => 'Manager']);
+    }
+
+    public function getStations()
+    {
+        return $this->hasMany(Station::class, ['id' => 'station_id'])
+            ->viaTable('station_user', ['user_id' => 'id'], ['station_id' => 'id']);
+    }
+
+    public function getStationUsers()
+    {
+        return $this->hasMany(User::class, ['id' => 'user_id'])
+            ->viaTable('station_user', ['station_id' => 'id'], ['user_id' => 'id']);
+    }
+
+
+    public function getInCharge()
+    {
+        return $this->hasMany(User::className(), ['id' => 'user_id'])
+            ->viaTable('station_user', ['station_id' => 'id'], ['user_id' => 'id'])
+            ->andWhere(['role' => 'In Charge']);
+    }
+
+    public function getEmployees()
+    {
+        return $this->hasMany(User::className(), ['id' => 'user_id'])
+            ->viaTable('station_user', ['station_id' => 'id'], ['user_id' => 'id'])
+            ->andWhere(['role' => 'Employee']);
     }
 }

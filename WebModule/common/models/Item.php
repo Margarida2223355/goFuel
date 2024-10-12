@@ -9,10 +9,8 @@ use Yii;
  *
  * @property int $id
  * @property string $description
- * @property float $price
  * @property int $subcategory_id
  *
- * @property ItemStock[] $itemStocks
  * @property Subcategory $subcategory
  */
 class Item extends \yii\db\ActiveRecord
@@ -31,8 +29,7 @@ class Item extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['description', 'price', 'subcategory_id'], 'required'],
-            [['price'], 'number'],
+            [['description', 'subcategory_id'], 'required'],
             [['subcategory_id'], 'integer'],
             [['description'], 'string', 'max' => 255],
             [['subcategory_id'], 'exist', 'skipOnError' => true, 'targetClass' => Subcategory::class, 'targetAttribute' => ['subcategory_id' => 'id']],
@@ -47,19 +44,8 @@ class Item extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'description' => 'Description',
-            'price' => 'Price',
             'subcategory_id' => 'Subcategory ID',
         ];
-    }
-
-    /**
-     * Gets query for [[ItemStocks]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getItemStocks()
-    {
-        return $this->hasMany(ItemStock::class, ['item_id' => 'id']);
     }
 
     /**
@@ -72,23 +58,13 @@ class Item extends \yii\db\ActiveRecord
         return $this->hasOne(Subcategory::class, ['id' => 'subcategory_id']);
     }
 
-    /**
-     * Customize fields returned from API
-     * 
-     * @return array
-     */
-    public function fields() {
-        $fields = parent::fields();
+    public function getStationItems()
+    {
+        return $this->hasMany(StationItem::class, ['item_id' => 'id']);
+    }
 
-        // Remove subcategory_id field
-        unset($fields['subcategory_id']);
-
-        // Add subcategory field
-        $fields['subcategory'] = function() {
-            $subcategory = $this->getSubcategory()->one();
-            return $subcategory ? $subcategory : null;
-        };
-
-        return $fields;
+    public function getStations()
+    {
+        return $this->hasMany(Station::class, ['id' => 'station_id'])->via('stationItems');
     }
 }

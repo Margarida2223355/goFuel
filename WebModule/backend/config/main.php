@@ -42,94 +42,70 @@ return [
             'errorAction' => 'site/error',
         ],
 
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager', // Usando o DbManager para RBAC
+        ],
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'enableStrictParsing' => false,
             'rules' => [
-                
+
                 // Stations
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/station',
-                    'extraPatterns' => [
-
-                    ],
-                    'tokens' => [
-
-                    ]
+                    'extraPatterns' => [],
+                    'tokens' => []
                 ],
 
                 // Pumps
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/pump',
-                    'extraPatterns' => [
-
-                    ],
-                    'tokens' => [
-
-                    ]
+                    'extraPatterns' => [],
+                    'tokens' => []
                 ],
 
                 // Items
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/item',
-                    'extraPatterns' => [
-
-                    ],
-                    'tokens' => [
-
-                    ]
+                    'extraPatterns' => [],
+                    'tokens' => []
                 ],
 
                 // Categories
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/category',
-                    'extraPatterns' => [
-
-                    ],
-                    'tokens' => [
-
-                    ]
+                    'extraPatterns' => [],
+                    'tokens' => []
                 ],
 
                 // Subcategories
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/subcategory',
-                    'extraPatterns' => [
-
-                    ],
-                    'tokens' => [
-
-                    ]
+                    'extraPatterns' => [],
+                    'tokens' => []
                 ],
 
                 // Invoices
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/invoice',
-                    'extraPatterns' => [
-
-                    ],
-                    'tokens' => [
-
-                    ]
+                    'extraPatterns' => [],
+                    'tokens' => []
                 ],
 
                 // Invoice Lines
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/invoiceline',
-                    'extraPatterns' => [
-
-                    ],
-                    'tokens' => [
-
-                    ]
+                    'extraPatterns' => [],
+                    'tokens' => []
                 ],
 
                 // Invoice States
