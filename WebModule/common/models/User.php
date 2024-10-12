@@ -18,7 +18,10 @@ use Yii;
  * @property int $updated_at
  * @property string|null $verification_token
  *
- * @property UserInfo[] $userInfos
+ * @property StationUsers[] $stationUsers
+ * @property Stations[] $stations
+ * @property Stations[] $stations0
+ * @property UserInfo $userInfo
  */
 class User extends \yii\db\ActiveRecord
 {
@@ -43,6 +46,7 @@ class User extends \yii\db\ActiveRecord
             [['username'], 'unique'],
             [['email'], 'unique'],
             [['password_reset_token'], 'unique'],
+            [['id'], 'exist', 'skipOnError' => true, 'targetClass' => UserInfo::class, 'targetAttribute' => ['id' => 'id']],
         ];
     }
 
@@ -66,12 +70,52 @@ class User extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[UserInfos]].
+     * Gets query for [[Id0]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUserInfos()
+    public function getId0()
     {
-        return $this->hasMany(UserInfo::class, ['user_id' => 'id']);
+        return $this->hasOne(UserInfo::class, ['id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[StationUsers]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStationUsers()
+    {
+        return $this->hasMany(StationUsers::class, ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Stations]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStations()
+    {
+        return $this->hasMany(Stations::class, ['manager_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Stations0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStations0()
+    {
+        return $this->hasMany(Stations::class, ['id' => 'station_id'])->viaTable('station_users', ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[UserInfo]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserInfo()
+    {
+        return $this->hasOne(UserInfo::class, ['id' => 'id']);
     }
 }
