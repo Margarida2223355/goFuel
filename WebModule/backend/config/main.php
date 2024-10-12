@@ -107,6 +107,30 @@ return [
                     'extraPatterns' => [],
                     'tokens' => []
                 ],
+
+                // Invoice States
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/invoicestate',
+                    'extraPatterns' => [
+
+                    ],
+                    'tokens' => [
+
+                    ]
+                ],
+
+                // Users
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/userinfo',
+                    'extraPatterns' => [
+
+                    ],
+                    'tokens' => [
+
+                    ]
+                ],
             ],
         ],
     ],
