@@ -7,7 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import com.example.gofuel.model.Pump;
+import com.example.gofuel.model.pump.Pump;
 import com.example.gofuel.model.station.Station;
 import com.example.gofuel.model.station.StationConverter;
 import com.example.gofuel.repository.pump.local.PumpDB;
