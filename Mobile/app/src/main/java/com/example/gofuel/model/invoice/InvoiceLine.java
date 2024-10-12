@@ -1,0 +1,51 @@
+package com.example.gofuel.model.invoice;
+
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+import com.example.gofuel.model.item.Item;
+import com.example.gofuel.model.pump.Pump;
+
+@Entity(tableName = "invoicelines")
+public class InvoiceLine {
+    @PrimaryKey
+    private final int id;
+    private Item item;
+    private Pump pump;
+    private int qty;
+    private double total;
+    private Invoice invoice;
+
+    public InvoiceLine(int id, Item item, Pump pump, int qty, double total, Invoice invoice) {
+        this.id = id;
+        this.item = item;
+        this.pump = pump;
+        this.qty = qty;
+        this.total = total;
+        this.invoice = invoice;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public Pump getPump() {
+        return pump;
+    }
+
+    public int getQty() {
+        return qty;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public Invoice getInvoice() {
+        return invoice;
+    }
+}

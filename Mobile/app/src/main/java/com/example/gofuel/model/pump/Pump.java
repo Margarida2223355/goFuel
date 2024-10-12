@@ -1,4 +1,4 @@
-package com.example.gofuel.model;
+package com.example.gofuel.model.pump;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

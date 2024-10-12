@@ -1,7 +1,7 @@
 package com.example.gofuel.repository.pump;
 
 
-import com.example.gofuel.model.Pump;
+import com.example.gofuel.model.pump.Pump;
 import com.example.gofuel.repository.common.ResultWrapper;
 
 import java.util.List;
