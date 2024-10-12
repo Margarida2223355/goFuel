@@ -2,15 +2,13 @@ package com.example.gofuel.repository.pump;
 
 import android.content.Context;
 
-import com.example.gofuel.model.Pump;
+import com.example.gofuel.model.pump.Pump;
 import com.example.gofuel.repository.common.AppDatabase;
 import com.example.gofuel.repository.common.ResultWrapper;
 import com.example.gofuel.repository.pump.local.PumpDB;
 import com.example.gofuel.repository.pump.remote.PumpRemoteDataSource;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class PumpRepository implements IPumpDataSource.Main {
     private static PumpRepository instance;
