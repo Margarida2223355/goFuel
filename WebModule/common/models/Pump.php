@@ -55,11 +55,6 @@ class Pump extends \yii\db\ActiveRecord
         return $this->hasOne(Station::class, ['id' => 'station_id']);
     }
 
-    /**
-     * Customize fields returned from API
-     * 
-     * @return array
-     */
     public function fields() {
         $fields = parent::fields();
 

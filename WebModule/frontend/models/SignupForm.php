@@ -5,6 +5,7 @@ namespace frontend\models;
 use Yii;
 use yii\base\Model;
 use common\models\User;
+use common\models\UserInfo;
 
 /**
  * Signup form
@@ -57,7 +58,18 @@ class SignupForm extends Model
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
 
-        return $user->save() && $this->sendEmail($user);
+        $userinfo = new UserInfo();
+        $userinfo->nif = "9999999";
+        $userinfo->name = "Margarida";
+        $userinfo->address = "Rua Direita";
+        $userinfo->postal_code = "9999-999";
+        $userinfo->phone = "99999999";
+
+        if ($user->save() && (($userinfo->id = $user->id) !== null) && ($userinfo->save())) {
+            return $this->sendEmail($user);
+        }
+
+        return print_r($user->errors . " + " . $userinfo.errors);
     }
 
     /**

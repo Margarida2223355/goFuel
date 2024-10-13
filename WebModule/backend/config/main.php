@@ -120,10 +120,22 @@ return [
                     ]
                 ],
 
-                // Users
+                // User Infos
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/userinfo',
+                    'extraPatterns' => [
+
+                    ],
+                    'tokens' => [
+
+                    ]
+                ],
+
+                // Users
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/user',
                     'extraPatterns' => [
 
                     ],

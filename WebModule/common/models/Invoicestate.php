@@ -12,7 +12,7 @@ use Yii;
  *
  * @property Invoice[] $invoices
  */
-class InvoiceState extends \yii\db\ActiveRecord
+class Invoicestate extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}

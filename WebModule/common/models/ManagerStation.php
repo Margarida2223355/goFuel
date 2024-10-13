@@ -11,7 +11,7 @@ use Yii;
  * @property int $station_id
  *
  * @property UserInfo $manager
- * @property Stations $station
+ * @property Station $station
  */
 class ManagerStation extends \yii\db\ActiveRecord
 {
@@ -33,7 +33,7 @@ class ManagerStation extends \yii\db\ActiveRecord
             [['manager_id', 'station_id'], 'integer'],
             [['manager_id', 'station_id'], 'unique', 'targetAttribute' => ['manager_id', 'station_id']],
             [['manager_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserInfo::class, 'targetAttribute' => ['manager_id' => 'id']],
-            [['station_id'], 'exist', 'skipOnError' => true, 'targetClass' => Stations::class, 'targetAttribute' => ['station_id' => 'id']],
+            [['station_id'], 'exist', 'skipOnError' => true, 'targetClass' => Station::class, 'targetAttribute' => ['station_id' => 'id']],
         ];
     }
 
@@ -65,6 +65,6 @@ class ManagerStation extends \yii\db\ActiveRecord
      */
     public function getStation()
     {
-        return $this->hasOne(Stations::class, ['id' => 'station_id']);
+        return $this->hasOne(Station::class, ['id' => 'station_id']);
     }
 }

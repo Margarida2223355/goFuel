@@ -8,16 +8,15 @@ use Yii;
  * This is the model class for table "invoice_lines".
  *
  * @property int $id
- * @property int|null $item_id
- * @property int|null $pump_id
+ * @property int $item_id
  * @property int $qty
  * @property float $total
  * @property int $invoice_id
  *
- * @property Items $item
- * @property Pumps $pump
+ * @property Invoice $invoice
+ * @property Item $item
  */
-class InvoiceLine extends \yii\db\ActiveRecord
+class Invoiceline extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -33,11 +32,11 @@ class InvoiceLine extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['item_id', 'pump_id', 'qty', 'invoice_id'], 'integer'],
-            [['qty', 'total', 'invoice_id'], 'required'],
+            [['item_id', 'qty', 'total', 'invoice_id'], 'required'],
+            [['item_id', 'qty', 'invoice_id'], 'integer'],
             [['total'], 'number'],
-            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Items::class, 'targetAttribute' => ['item_id' => 'id']],
-            [['pump_id'], 'exist', 'skipOnError' => true, 'targetClass' => Pumps::class, 'targetAttribute' => ['pump_id' => 'id']],
+            [['invoice_id'], 'exist', 'skipOnError' => true, 'targetClass' => Invoice::class, 'targetAttribute' => ['invoice_id' => 'id']],
+            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Item::class, 'targetAttribute' => ['item_id' => 'id']],
         ];
     }
 
@@ -49,11 +48,20 @@ class InvoiceLine extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'item_id' => 'Item ID',
-            'pump_id' => 'Pump ID',
             'qty' => 'Qty',
             'total' => 'Total',
             'invoice_id' => 'Invoice ID',
         ];
+    }
+
+    /**
+     * Gets query for [[Invoice]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getInvoice()
+    {
+        return $this->hasOne(Invoice::class, ['id' => 'invoice_id']);
     }
 
     /**
@@ -63,44 +71,25 @@ class InvoiceLine extends \yii\db\ActiveRecord
      */
     public function getItem()
     {
-        return $this->hasOne(Items::class, ['id' => 'item_id']);
+        return $this->hasOne(Item::class, ['id' => 'item_id']);
     }
 
-    /**
-     * Gets query for [[Pump]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPump()
-    {
-        return $this->hasOne(Pumps::class, ['id' => 'pump_id']);
-    }
-
-
-    /**
-     * Customize fields returned from API
-     * 
-     * @return array
-     */
     public function fields() {
         $fields = parent::fields();
 
-        // Remove client_id and station_id fields
-        unset($fields['item_id'], $fields['pump_id']);
+        // Remove item_id and invoice_id fields
+        unset($fields['item_id'], $fields['invoice_id']);
 
-        // Add client and station fields
-        $fields = array_merge($fields, [
+        // Add item, and invoice fields with array_merge
+        return array_merge($fields, [
             'item' => function() {
                 $item = $this->getItem()->one();
                 return $item ? $item : null;
             },
-
-            'pump' => function() {
-                $pump = $this->getPump()->one();
-                return $pump ? $pump : null;
-            }
+            'invoice' => function() {
+                $invoice = $this->getInvoice()->one();
+                return $invoice ? $invoice : null;
+            },
         ]);
-
-        return $fields;
     }
 }

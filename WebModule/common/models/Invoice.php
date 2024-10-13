@@ -17,7 +17,7 @@ use Yii;
  * @property UserInfo $client
  * @property InvoiceLine[] $invoiceLines
  * @property InvoiceState $state
- * @property Stations $station
+ * @property Station $station
  */
 class Invoice extends \yii\db\ActiveRecord
 {
@@ -100,30 +100,26 @@ class Invoice extends \yii\db\ActiveRecord
         return $this->hasOne(Station::class, ['id' => 'station_id']);
     }
 
-    /**
-     * Customize fields returned from API
-     * 
-     * @return array
-     */
     public function fields() {
         $fields = parent::fields();
 
-        // Remove client_id and station_id fields
-        unset($fields['client_id'], $fields['station_id']);
+        // Remove client_id, station_id and state_id fields
+        unset($fields['client_id'], $fields['station_id'], $fields['state_id']);
 
-        // Add client and station fields
-        $fields = array_merge($fields, [
+        // Add client, station and state fields with array_merge
+        return array_merge($fields, [
             'client' => function() {
                 $client = $this->getClient()->one();
                 return $client ? $client : null;
             },
-
             'station' => function() {
                 $station = $this->getStation()->one();
                 return $station ? $station : null;
-            }
+            },
+            'state' => function() {
+                $state = $this->getState()->one();
+                return $state ? $state : null;
+            },
         ]);
-
-        return $fields;
     }
 }
