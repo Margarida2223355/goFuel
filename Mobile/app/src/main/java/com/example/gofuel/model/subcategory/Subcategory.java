@@ -29,4 +29,12 @@ public class Subcategory {
     public Category getCategory() {
         return category;
     }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 }

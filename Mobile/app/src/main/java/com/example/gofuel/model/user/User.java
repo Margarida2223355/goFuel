@@ -59,4 +59,24 @@ public class User {
     public Station getStation() {
         return station;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setPostal_code(String postal_code) {
+        this.postal_code = postal_code;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setStation(Station station) {
+        this.station = station;
+    }
 }

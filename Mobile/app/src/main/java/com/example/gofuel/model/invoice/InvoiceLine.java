@@ -48,4 +48,24 @@ public class InvoiceLine {
     public Invoice getInvoice() {
         return invoice;
     }
+
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
+    public void setPump(Pump pump) {
+        this.pump = pump;
+    }
+
+    public void setQty(int qty) {
+        this.qty = qty;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
+    }
 }

@@ -28,4 +28,12 @@ public class Item {
     public Subcategory getSubcategory() {
         return subcategory;
     }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setSubcategory(Subcategory subcategory) {
+        this.subcategory = subcategory;
+    }
 }

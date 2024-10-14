@@ -3,10 +3,8 @@ package com.example.gofuel.model.category;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "categories")
 public class Category {
-    @PrimaryKey
-    private final int id;
+    private int id;
     private String name;
 
     public Category(int id, String name) {
@@ -20,5 +18,9 @@ public class Category {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
