@@ -19,29 +19,25 @@ class SubcategoryController extends Controller
 
         if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post();
-            if (isset($data['Subcategory']['id'])) {
-                // Atualizar
-                $model = Subcategory::findOne($data['Subcategory']['id']);
-                if ($model) {
-                    $model->description = $data['Subcategory']['description'];
-                    if ($model->save()) {
-                        return $this->redirect(['category/view', 'id' => $model->category_id]);
-                    }
-                }
-            } else {
-                // Criar
-                $model->load($data);
+
+            // Se o ID da subcategoria existir, carrega o modelo para edição
+            if (isset($data['Subcategory']['id']) && !empty($data['Subcategory']['id'])) {
+                $model = Subcategory::findOne($data['Subcategory']['id']); // Carrega o modelo existente
+            }
+
+            // Carrega os dados do post no modelo
+            if ($model->load($data)) {
                 if ($model->save()) {
+                    // Redireciona de volta para a página da categoria
                     return $this->redirect(['category/view', 'id' => $model->category_id]);
                 }
             }
         }
 
-        // Caso não seja POST, renderiza a view com o model vazio ou existente
-        return $this->render('view', [
-            'model' => $model,
-        ]);
+        // Renderiza a página novamente em caso de erro
+        return $this->redirect(['category/view', 'id' => $model->category_id]);
     }
+
 
     public function actionUpdate($id)
     {
