@@ -143,6 +143,18 @@ return [
 
                     ]
                 ],
+
+                // Station Items
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/station-item',
+                    'extraPatterns' => [
+
+                    ],
+                    'tokens' => [
+
+                    ]
+                ],
             ],
         ],
     ],
