@@ -9,8 +9,10 @@ use Yii;
  *
  * @property int $id
  * @property string $description
+ *
+ * @property Invoice[] $invoices
  */
-class Invoicestate extends \yii\db\ActiveRecord
+class InvoiceState extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -40,5 +42,15 @@ class Invoicestate extends \yii\db\ActiveRecord
             'id' => 'ID',
             'description' => 'Description',
         ];
+    }
+
+    /**
+     * Gets query for [[Invoices]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getInvoices()
+    {
+        return $this->hasMany(Invoice::class, ['state_id' => 'id']);
     }
 }
