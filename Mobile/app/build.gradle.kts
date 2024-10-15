@@ -5,6 +5,9 @@ plugins {
 android {
     namespace = "com.example.gofuel"
     compileSdk = 34
+    viewBinding {
+        enable = true
+    }
 
     defaultConfig {
         applicationId = "com.example.gofuel"
@@ -40,4 +43,15 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    // Retrofit to API calls
+    implementation(libs.retrofit2)
+    implementation(libs.retrofit2Conversor)
+
+    // Room for database
+    implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
+
+    // Gson
+    implementation(libs.gson)
 }
