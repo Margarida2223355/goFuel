@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">GoFuel</string>
+
+    // Menu buttons
+    <string name="btnShop">Shop Button</string>
+    <string name="btnStation">Stations Button</string>
+    <string name="btnInvoice">Invoices Button</string>
+    <string name="btnMenu">Menu Button</string>
 </resources>
