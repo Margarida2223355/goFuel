@@ -44,24 +44,35 @@ class StationController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Station::find(),
-            /*
+        $currentUser = Yii::$app->user->identity;
+
+        if (!$currentUser) {
+            throw new \yii\web\ForbiddenHttpException('O usuário logado não possui permissão para visualizar esta página.');
+        }
+
+        $auth = Yii::$app->authManager;
+        $roles = $auth->getRolesByUser($currentUser->id);
+
+        $query = Station::find();
+
+        if (isset($roles['Admin'])) {
+        } elseif (isset($roles['Manager'])) {
+            $query->where(['manager_id' => $currentUser->id]);
+        } else {
+            throw new \yii\web\ForbiddenHttpException('Você não tem permissão para acessar esta página.');
+        }
+        $dataProvider = new \yii\data\ActiveDataProvider([
+            'query' => $query,
             'pagination' => [
-                'pageSize' => 50
+                'pageSize' => 10,
             ],
-            'sort' => [
-                'defaultOrder' => [
-                    'id' => SORT_DESC,
-                ]
-            ],
-            */
         ]);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
         ]);
     }
+
 
     public function actionView($id)
     {

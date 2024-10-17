@@ -74,7 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'item.description', 
+            'item.description',
             'price',
             [
                 'class' => 'yii\grid\ActionColumn',
@@ -99,6 +99,18 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'data-method' => 'post',
                                 'data-confirm' => 'Tem certeza que deseja deletar esta associação?',
                                 'style' => 'color: #dc3545; text-decoration: none;',
+                            ]
+                        );
+                    },
+                    'restock' => function ($url, $model) {
+                        return Html::a(
+                            '<i class="fa fa-archive"></i>',
+                            ['item/delete-association', 'id' => $model->id],
+                            [
+                                'title' => 'Restock Item',
+                                'data-method' => 'post',
+                                'data-confirm' => 'Do you want to restock this item?',
+                                'style' => 'color: #ffc107; text-decoration: none;',
                             ]
                         );
                     },

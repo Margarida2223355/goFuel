@@ -82,34 +82,27 @@ class Station extends \yii\db\ActiveRecord
     public function getManagers()
     {
         return $this->hasMany(User::className(), ['id' => 'user_id'])
-            ->viaTable('station_user', ['station_id' => 'id'], ['user_id' => 'id'])
+            ->viaTable('station_users', ['station_id' => 'id'])
             ->andWhere(['role' => 'Manager']);
     }
-
-    public function getStations()
-    {
-        return $this->hasMany(Station::class, ['id' => 'station_id'])
-            ->viaTable('station_user', ['user_id' => 'id'], ['station_id' => 'id']);
-    }
-
-    public function getStationUsers()
-    {
-        return $this->hasMany(User::class, ['id' => 'user_id'])
-            ->viaTable('station_user', ['station_id' => 'id'], ['user_id' => 'id']);
-    }
-
 
     public function getInCharge()
     {
         return $this->hasMany(User::className(), ['id' => 'user_id'])
-            ->viaTable('station_user', ['station_id' => 'id'], ['user_id' => 'id'])
+            ->viaTable('station_users', ['station_id' => 'id'])
             ->andWhere(['role' => 'In Charge']);
     }
 
     public function getEmployees()
     {
         return $this->hasMany(User::className(), ['id' => 'user_id'])
-            ->viaTable('station_user', ['station_id' => 'id'], ['user_id' => 'id'])
+            ->viaTable('station_users', ['station_id' => 'id'])
             ->andWhere(['role' => 'Employee']);
+    }
+
+    public function getStationUsers()
+    {
+        return $this->hasMany(User::className(), ['id' => 'user_id'])
+            ->viaTable('station_users', ['station_id' => 'id']);
     }
 }

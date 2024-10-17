@@ -87,10 +87,10 @@ class UserForm extends Model
         }
 
         // Verifica se a role é permitida
-        if (!in_array($this->role, array_keys($this->getAvailableRoles()))) {
+        /*if (!in_array($this->role, array_keys($this->getAvailableRoles()))) {
             $this->addError('role', 'Você não tem permissão para atribuir esta role.');
             return false;
-        }
+        }*/
 
         // Inicializa os modelos para User e UserInfo
         $this->_user = new User();

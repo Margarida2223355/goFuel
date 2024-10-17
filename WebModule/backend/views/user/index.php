@@ -14,11 +14,14 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
 
-    <p>
-        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div class="d-flex align-items-center mb-3">
+        <h1><?= Html::encode($this->title) ?></h1>
+        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>', ['user/create'], [
+            'class' => 'btn',
+            'title' => 'Create User',
+            'style' => 'color: green; text-decoration: none; margin-right: 10px; margin-left: 15px;',
+        ]) ?>
+    </div>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

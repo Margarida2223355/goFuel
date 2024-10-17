@@ -16,10 +16,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'restock_qty')->textInput() ?>
+
     <?= $form->field($model, 'subcategory_id')->dropDownList(
         \yii\helpers\ArrayHelper::map($subcategories, 'id', 'description'), // Mapeia subcategorias
         ['prompt' => 'Select a Subcategory'] // Prompt inicial
     ) ?>
+
 
     <div class="form-group">
         <?= Html::submitButton('Create', ['class' => 'btn btn-success']) ?>

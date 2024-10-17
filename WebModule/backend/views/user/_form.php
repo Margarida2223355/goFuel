@@ -24,11 +24,14 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'postal_code')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'role')->dropDownList($model->getAvailableRoles(), ['prompt' => 'Selecione uma role']) ?>
+    <?= $form->field($model, 'role')->dropDownList(
+        $model->getAvailableRoles(),
+        ['prompt' => 'Select a Role']
+    ) ?>
 
     <?= $form->field($model, 'station_id')->dropDownList(
-        ArrayHelper::map(Station::find()->all(), 'id', 'name'), // Carrega todas as estações para a dropdown
-        ['prompt' => 'Select a Station'] // Placeholder
+        ArrayHelper::map(Station::find()->all(), 'id', 'name'),
+        ['prompt' => 'Select a Station']
     ) ?>
 
     <div class="form-group">

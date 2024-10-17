@@ -44,6 +44,7 @@ class UserController extends Controller
             throw new \yii\web\ForbiddenHttpException('O usuário logado não possui permissão para visualizar esta página.');
         }
 
+        // Inicialize a consulta do User com junção com UserInfo
         $query = User::find()->joinWith('userInfo');
 
         $auth = Yii::$app->authManager;
@@ -51,12 +52,15 @@ class UserController extends Controller
 
         $roleNames = array_keys($roles);
         if (in_array('Admin', $roleNames)) {
+            // Admin pode ver Admins e Managers
             $query->innerJoin('auth_assignment', 'auth_assignment.user_id = user.id')
                 ->where(['auth_assignment.item_name' => ['Admin', 'Manager']]);
         } elseif (in_array('Manager', $roleNames)) {
+            // Manager pode ver In Charge e Employees
             $query->innerJoin('auth_assignment', 'auth_assignment.user_id = user.id')
                 ->where(['auth_assignment.item_name' => ['In Charge', 'Employee']]);
         } else {
+            // Para qualquer outra role, não deve ver nada
             $query->where('0=1');
         }
 
@@ -71,6 +75,8 @@ class UserController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+
+
 
 
     public function actionView($id)
@@ -96,8 +102,8 @@ class UserController extends Controller
     public function actionCreate()
     {
         $model = new UserForm();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $model->load(Yii::$app->request->post());
+        if (/*$model->load(Yii::$app->request->post()) &&*/$model->save()) {
             Yii::$app->session->setFlash('success', 'Usuário criado com sucesso.');
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -143,10 +149,10 @@ class UserController extends Controller
             try {
                 if ($user->save(false) && $userInfo->save(false)) {
                     $auth = Yii::$app->authManager;
-                    $auth->revokeAll($user->id); // Revoga todas as roles atuais
+                    $auth->revokeAll($user->id);
                     $role = $auth->getRole($userForm->role);
                     if ($role) {
-                        $auth->assign($role, $user->id); // Atribui a nova role
+                        $auth->assign($role, $user->id);
                     }
                     $transaction->commit();
                     return $this->redirect(['view', 'id' => $user->id]);
@@ -156,10 +162,8 @@ class UserController extends Controller
                 throw $e;
             }
         }
-
-        // Renderiza o formulário de atualização
         return $this->render('update', [
-            'model' => $userForm, // Passa o formulário como 'model'
+            'model' => $userForm,
         ]);
     }
 

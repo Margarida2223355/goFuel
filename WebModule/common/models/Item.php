@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property string $description
  * @property int $subcategory_id
+ * @property int $restock_qty
  *
  * @property Subcategory $subcategory
  */
@@ -30,7 +31,7 @@ class Item extends \yii\db\ActiveRecord
     {
         return [
             [['description', 'subcategory_id'], 'required'],
-            [['subcategory_id'], 'integer'],
+            [['subcategory_id', 'restock_qty'], 'integer'],
             [['description'], 'string', 'max' => 255],
             [['subcategory_id'], 'exist', 'skipOnError' => true, 'targetClass' => Subcategory::class, 'targetAttribute' => ['subcategory_id' => 'id']],
         ];
@@ -45,6 +46,7 @@ class Item extends \yii\db\ActiveRecord
             'id' => 'ID',
             'description' => 'Description',
             'subcategory_id' => 'Subcategory ID',
+            'restock_qty' => 'Restock Quantity',
         ];
     }
 
