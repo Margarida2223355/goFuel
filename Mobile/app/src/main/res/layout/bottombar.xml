@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+     <com.google.android.material.bottomappbar.BottomAppBar
+         android:id="@+id/bottomAppbar"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_gravity="bottom"
+         app:contentInsetStart="0dp"
+         app:backgroundTint="@color/primary"
+         app:fabCradleMargin="15dp"
+         app:fabCradleRoundedCornerRadius="30dp"
+         app:fabCradleVerticalOffset="10dp">
+
+          <com.google.android.material.bottomnavigation.BottomNavigationView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_gravity="bottom"
+              app:menu="@menu/menu_navbar"
+              app:labelVisibilityMode="unlabeled"
+              app:itemIconTint="@color/black"
+              android:background="@android:color/transparent"
+              app:elevation="0dp"/>
+
+     </com.google.android.material.bottomappbar.BottomAppBar>
+
+     <com.google.android.material.floatingactionbutton.FloatingActionButton
+         android:id="@+id/menuBtn"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:src="@drawable/menuicon"
+         android:contentDescription="@string/btnMenu"
+         app:backgroundTint="@color/primary"
+         app:layout_anchor="@id/bottomAppbar"/>
+
+     <include
+         layout="@layout/app_menu"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_gravity="center"
+         app:layout_anchor="@id/menuBtn"
+         app:layout_anchorGravity="center"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

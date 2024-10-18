@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="@string/btnHome"
+        android:id="@+id/homeButton"
+        android:icon="@drawable/homeicon"/>
+
+    <item
+        android:title=""
+        android:id="@+id/placeholder"/>
+
+    <item
+        android:title="@string/btnLogout"
+        android:id="@+id/logoutButton"
+        android:icon="@drawable/logouticon"/>
+</menu>
