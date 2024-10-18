@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">GoFuel</string>
+
+    // Menu buttons
+    <string name="btnShop">Shop Button</string>
+    <string name="btnStation">Stations Button</string>
+    <string name="btnInvoice">Invoices Button</string>
+
+    // Bottom nav bar
+    <string name="btnHome">Home Button</string>
+    <string name="btnLogout">Logout Button</string>
+    <string name="btnMenu">Menu Floating Button</string>
 </resources>

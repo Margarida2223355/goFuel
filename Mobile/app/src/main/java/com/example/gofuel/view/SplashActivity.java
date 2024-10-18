@@ -3,6 +3,7 @@ package com.example.gofuel.view;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,6 +40,7 @@ public class SplashActivity extends AppCompatActivity {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         Log.i("-->", "Animation finished!");
+                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                     }
                 })
                 .start();
