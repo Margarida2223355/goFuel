@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -54,4 +55,7 @@ dependencies {
 
     // Gson
     implementation(libs.gson)
+
+    // Firebase
+    implementation(platform(libs.firebase))
 }

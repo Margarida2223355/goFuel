@@ -10,6 +10,8 @@ constraintlayout = "2.1.4"
 retrofitVersion = "2.9.0"
 room = "2.6.1"
 gsonVersion = "2.10.1"
+googleServicesVersion = "4.4.2"
+firebaseVersion = "33.4.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -24,7 +26,8 @@ retrofit2Conversor = { group = "com.squareup.retrofit2", name = "converter-gson"
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gsonVersion" }
+firebase = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServicesVersion" }
