@@ -1,6 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="AppTheme" parent="Theme.MaterialComponents">
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="android:windowBackground">@drawable/background</item>
+        <item name="bottomAppBarStyle">@style/BottomAppBarStyle</item>
+    </style>
+
+    <style name="BottomAppBarStyle">
+        <item name="backgroundTint">@color/primary</item>
     </style>
 </resources>
