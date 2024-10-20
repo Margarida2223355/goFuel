@@ -10,21 +10,19 @@
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:layout_gravity="bottom"
-         app:contentInsetStart="0dp"
          app:backgroundTint="@color/primary"
-         app:fabCradleMargin="15dp"
+         app:fabCradleMargin="20dp"
          app:fabCradleRoundedCornerRadius="30dp"
-         app:fabCradleVerticalOffset="10dp">
+         app:fabCradleVerticalOffset="20dp">
 
-          <com.google.android.material.bottomnavigation.BottomNavigationView
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_gravity="bottom"
-              app:menu="@menu/menu_navbar"
-              app:labelVisibilityMode="unlabeled"
-              app:itemIconTint="@color/black"
-              android:background="@android:color/transparent"
-              app:elevation="0dp"/>
+     <com.google.android.material.bottomnavigation.BottomNavigationView
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:background="@android:color/transparent"
+         app:menu="@menu/menu_navbar"
+         app:labelVisibilityMode="unlabeled"
+         app:itemIconTint="@color/nav_item_selector"
+         app:elevation="0dp"/>
 
      </com.google.android.material.bottomappbar.BottomAppBar>
 
@@ -37,7 +35,7 @@
          app:backgroundTint="@color/primary"
          app:layout_anchor="@id/bottomAppbar"/>
 
-     <include
+    <include
          layout="@layout/app_menu"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
