@@ -6,10 +6,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.gofuel.databinding.ActivitySplashBinding;
@@ -30,8 +28,6 @@ public class SplashActivity extends AppCompatActivity {
     // Use this method to get Y position of iplLogo. This method make sure the layout is all set
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-
         binding.iplLogo.animate()
                 .translationY(-binding.iplLogo.getY())
                 .setStartDelay(500)
@@ -40,7 +36,11 @@ public class SplashActivity extends AppCompatActivity {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         Log.i("-->", "Animation finished!");
-                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+
+                        if (hasFocus) {
+                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                            finish();
+                        }
                     }
                 })
                 .start();
