@@ -36,6 +36,7 @@
          app:layout_anchor="@id/bottomAppbar"/>
 
     <include
+        android:id="@+id/app_menu"
          layout="@layout/app_menu"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"

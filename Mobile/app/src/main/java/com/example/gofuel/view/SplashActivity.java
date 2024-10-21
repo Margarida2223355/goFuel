@@ -38,7 +38,7 @@ public class SplashActivity extends AppCompatActivity {
                         Log.i("-->", "Animation finished!");
 
                         if (hasFocus) {
-                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             finish();
                         }
                     }
