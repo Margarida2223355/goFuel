@@ -29,14 +29,14 @@ public class MainActivity extends AppCompatActivity {
 
         //region Setup Menu buttons
         menuButtonsInstance = MyApplication.getMenuButtonsInstance(this);
-        menuButtons = menuButtonsInstance.getMenuButtons();
+        menuButtons = menuButtonsInstance.getMenuButtons(binding);
         //endregion
 
         //region Listener to menu button click
         binding.bottombar.menuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getBaseContext(), "Menu button", Toast.LENGTH_SHORT).show();
+                menuButtonsInstance.animateButtons(view);
             }
         });
         //endregion
