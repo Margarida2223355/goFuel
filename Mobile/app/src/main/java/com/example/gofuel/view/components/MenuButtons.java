@@ -1,7 +1,11 @@
 package com.example.gofuel.view.components;
 
+import static java.lang.Math.PI;
+import static java.lang.Math.sin;
+
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
@@ -11,22 +15,25 @@ import java.util.ArrayList;
 
 public class MenuButtons {
     private BottombarBinding bottombarBinding;
-    private FrameLayout menuButtons;
+    private ArrayList<ImageButton> menuButtons;
 
     public MenuButtons(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
         bottombarBinding = BottombarBinding.inflate(inflater);
-
-        menuButtons = bottombarBinding.appMenu.getRoot();
+        menuButtons = new ArrayList<>();
     }
 
     public ArrayList<ImageButton> getMenuButtons() {
-        ArrayList<ImageButton> buttons = new ArrayList<>();
+        FrameLayout frame = bottombarBinding.appMenu.getRoot();
 
-        for(int i=0; i<menuButtons.getChildCount(); i++) {
-            buttons.add((ImageButton) menuButtons.getChildAt(i));
+        for(int i=0; i<frame.getChildCount(); i++) {
+            menuButtons.add((ImageButton) frame.getChildAt(i));
         }
 
-        return buttons;
+        return menuButtons;
+    }
+
+    public void animateButtons(Context context) {
+        
     }
 }

@@ -10,12 +10,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.gofuel.MyApplication;
 import com.example.gofuel.databinding.ActivityHomeBinding;
+import com.example.gofuel.view.components.MenuButtons;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityHomeBinding binding;
+    private MenuButtons menuButtonsInstance;
     private ArrayList<ImageButton> menuButtons;
 
     @Override
@@ -26,7 +28,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         //region Setup Menu buttons
-        menuButtons = MyApplication.getMenuButtonsInstance(this).getMenuButtons();
+        menuButtonsInstance = MyApplication.getMenuButtonsInstance(this);
+        menuButtons = menuButtonsInstance.getMenuButtons();
         //endregion
 
         //region Listener to menu button click
