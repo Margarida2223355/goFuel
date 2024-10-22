@@ -86,6 +86,11 @@ class Station extends \yii\db\ActiveRecord
             ->andWhere(['role' => 'Manager']);
     }
 
+    public function getManagerStations()
+    {
+        return $this->hasMany(ManagerStation::class, ['station_id' => 'id']);
+    }
+
     public function getInCharge()
     {
         return $this->hasMany(User::className(), ['id' => 'user_id'])

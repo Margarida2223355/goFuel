@@ -39,11 +39,11 @@ class ItemController extends Controller
     {
         $auth = Yii::$app->authManager;
 
-        // Verifica se o usuário logado é Admin
+        // Verifica se o logged user é admin
         $isAdmin = $auth->checkAccess(Yii::$app->user->id, 'Admin');
 
         if ($isAdmin) {
-            // Caso seja Admin, mostra todos os itens de todas as estações
+            // Se sim, busca os items
             $dataProvider = new \yii\data\ActiveDataProvider([
                 'query' => Item::find(),
             ]);
@@ -80,7 +80,7 @@ class ItemController extends Controller
             $stationId = $stations[0]->id;
         }
 
-        // Caso exista um `stationId` válido, busca os itens da estação
+        // Caso exista um stationId válido, busca os itens da estação
         if ($stationId) {
             $dataProvider = new \yii\data\ActiveDataProvider([
                 'query' => StationItem::find()->where(['station_id' => $stationId])->with('item'),
@@ -99,6 +99,8 @@ class ItemController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+
+
 
     public function actionView($id)
     {
@@ -224,26 +226,43 @@ class ItemController extends Controller
         ]);
     }
 
-    public function actionRestock($id, $stationId)
+    public function actionRestock($id)
     {
-        $itemStock = ItemStock::findOne(['item_id' => $id, 'station_id' => $stationId]);
-
-        if ($itemStock === null) {
-            Yii::$app->session->setFlash('error', 'Stock para este item não foi encontrado.');
-            return $this->redirect(['index']);
+        // Encontra o item baseado no ID
+        $item = Item::findOne($id);
+        if (!$item) {
+            throw new NotFoundHttpException('Item not found.');
         }
 
-        // Atualizar o stock com a quantidade de restock
-        $itemStock->stock += $itemStock->item->restock_qty;
+        // Encontra o stock do item para a estação atual
+        $stationId = Yii::$app->user->identity->station_id; // Pega a estação do usuário logado (In Charge)
+        $itemStock = ItemStock::findOne(['item_id' => $id, 'station_id' => $stationId]);
 
-        if ($itemStock->save()) {
-            Yii::$app->session->setFlash('success', 'Restock feito com sucesso!');
+        if ($itemStock) {
+            // Incrementa o estoque de acordo com a quantidade de restock definida no item
+            $itemStock->stock += $item->restock_qty;
+            if ($itemStock->save()) {
+                Yii::$app->session->setFlash('success', 'Item restocked successfully.');
+            } else {
+                Yii::$app->session->setFlash('error', 'Failed to restock item.');
+            }
         } else {
-            Yii::$app->session->setFlash('error', 'Erro ao fazer restock do item.');
+            // Se não existir um registro de stock, cria um novo
+            $itemStock = new ItemStock();
+            $itemStock->item_id = $id;
+            $itemStock->station_id = $stationId;
+            $itemStock->stock = $item->restock_qty; // Inicia o estoque com a quantidade de restock
+
+            if ($itemStock->save()) {
+                Yii::$app->session->setFlash('success', 'Item restocked successfully.');
+            } else {
+                Yii::$app->session->setFlash('error', 'Failed to restock item.');
+            }
         }
 
         return $this->redirect(['index']);
     }
+
 
 
     protected function findModel($id)
