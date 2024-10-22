@@ -8,7 +8,8 @@
 
     <item
         android:title=""
-        android:id="@+id/placeholder"/>
+        android:id="@+id/placeholder"
+        android:enabled="false"/>
 
     <item
         android:title="@string/btnLogout"
