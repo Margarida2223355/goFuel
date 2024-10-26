@@ -10,4 +10,8 @@
     <string name="btnHome">Home Button</string>
     <string name="btnLogout">Logout Button</string>
     <string name="btnMenu">Menu Floating Button</string>
+
+    // Fragments Titles
+    <string name="stationTitle">Lojas</string>
+    <string name="invoiceTitle">Faturas</string>
 </resources>
