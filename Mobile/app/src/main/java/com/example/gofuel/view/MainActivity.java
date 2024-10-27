@@ -68,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(MyApplication.getAppContext(), view.getContentDescription(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MyApplication.getAppContext(), view.getContentDescription(), Toast.LENGTH_SHORT).show();
+                    menuButtonsInstance.animateButtons(view);
                     changeFragment(view);
                 }
             });

@@ -13,6 +13,7 @@ import com.example.gofuel.databinding.ItemStationBinding;
 import com.example.gofuel.model.station.Station;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StationAdapter extends BaseAdapter {
     private ArrayList<Station> stations = new ArrayList<>();
