@@ -1,35 +1,33 @@
 <?php
 
-/** @var yii\web\View $this */
-/** @var yii\bootstrap5\ActiveForm $form */
-/** @var \frontend\models\SignupForm $model */
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
-use yii\bootstrap5\Html;
-use yii\bootstrap5\ActiveForm;
+/* @var $this yii\web\View */
+/* @var $model app\models\UserForm */
+/* @var $form yii\widgets\ActiveForm */
 
-$this->title = 'Signup';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-signup">
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>Please fill out the following fields to signup:</p>
+<div class="user-form">
 
-    <div class="row">
-        <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
+    <?php $form = ActiveForm::begin(); ?>
 
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+    <h3>User</h3>
+    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'password')->passwordInput() ?>
+    <?= $form->field($model, 'nif')->textInput() ?>
+    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'postal_code')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
 
-                <?= $form->field($model, 'email') ?>
-
-                <?= $form->field($model, 'password')->passwordInput() ?>
-
-                <div class="form-group">
-                    <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
-                </div>
-
-            <?php ActiveForm::end(); ?>
-        </div>
+    <div class="form-group">
+        <?= Html::submitButton('SignUp', ['class' => 'btn btn-success']) ?>
     </div>
+
+    <?php ActiveForm::end(); ?>
+
 </div>

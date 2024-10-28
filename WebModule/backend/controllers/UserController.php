@@ -76,9 +76,6 @@ class UserController extends Controller
         ]);
     }
 
-
-
-
     public function actionView($id)
     {
 
@@ -93,12 +90,6 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new User model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
-
     public function actionCreate()
     {
         $model = new UserForm();
@@ -112,17 +103,6 @@ class UserController extends Controller
             'model' => $model,
         ]);
     }
-
-
-
-    /**
-     * Updates an existing User model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-
 
     public function actionUpdate($id)
     {
