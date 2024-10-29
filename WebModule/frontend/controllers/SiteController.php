@@ -2,6 +2,8 @@
 
 namespace frontend\controllers;
 
+use common\models\ClientStation;
+use common\models\Invoice;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -11,6 +13,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
+use common\models\Station;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
@@ -75,7 +78,19 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $currentUser = Yii::$app->user->identity;
+
+        $starredStation = ClientStation::findOne(['id_client' => $currentUser->id]);
+
+        if ($starredStation) {
+            $station = Station::findOne($starredStation->id_station);
+        } else {
+            $station = null;
+        }
+
+        $userInvoices = Invoice::findAll(['client_id' => $currentUser->id]);
+
+        return $this->render('index', ['station' => $station, 'invoices' => $userInvoices]);
     }
 
     /**

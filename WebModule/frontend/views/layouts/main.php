@@ -20,6 +20,8 @@ AppAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <?php $this->registerCsrfMetaTags() ?>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
@@ -52,7 +54,7 @@ AppAsset::register($this);
         ] : [
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Service Areas', 'url' => ['#']],
+            ['label' => 'Service Areas', 'url' => ['/station/index']],
             ['label' => 'Cart', 'url' => ['#']],
             ['label' => 'Profile', 'url' => ['/#']],
             ['label' => 'GII', 'url' => ['/gii']],

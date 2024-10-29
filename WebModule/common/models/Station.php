@@ -110,4 +110,11 @@ class Station extends \yii\db\ActiveRecord
         return $this->hasMany(User::className(), ['id' => 'user_id'])
             ->viaTable('station_users', ['station_id' => 'id']);
     }
+
+    public function isFavoritedByUser($userId)
+    {
+        return ClientStation::find()
+            ->where(['id_client' => $userId, 'id_station' => $this->id])
+            ->exists();
+    }
 }
