@@ -24,6 +24,13 @@ public class SplashActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         binding = ActivitySplashBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        binding.loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loginCardAnimation();
+            }
+        });
     }
 
     // Use this method to get Y position of iplLogo. This method make sure the layout is all set
@@ -46,5 +53,9 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 })
                 .start();
+    }
+
+    private void loginCardAnimation() {
+
     }
 }
