@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,10 +38,11 @@ public class SplashActivity extends AppCompatActivity {
                     public void onAnimationEnd(Animator animation) {
                         Log.i("-->", "Animation finished!");
 
-                        if (hasFocus) {
+                        /*if (hasFocus) {
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             finish();
-                        }
+                        }*/
+                        binding.loginFrame.setVisibility(View.VISIBLE);
                     }
                 })
                 .start();

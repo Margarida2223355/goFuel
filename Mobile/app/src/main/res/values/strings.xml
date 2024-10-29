@@ -14,4 +14,5 @@
     // Fragments Titles
     <string name="stationTitle">Lojas</string>
     <string name="invoiceTitle">Faturas</string>
+    <string name="loginBtn">Login</string>
 </resources>
