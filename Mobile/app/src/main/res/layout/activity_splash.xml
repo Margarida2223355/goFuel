@@ -22,7 +22,7 @@
         android:id="@+id/loginFrame"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.5"
@@ -61,7 +61,8 @@
             app:layout_constraintBottom_toBottomOf="@id/loginBtn"
             app:layout_constraintEnd_toEndOf="@id/loginBtn"
             app:layout_constraintStart_toStartOf="@id/loginBtn"
-            app:layout_constraintTop_toTopOf="@id/loginBtn">
+            app:layout_constraintTop_toTopOf="@id/loginBtn"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
