@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,7 +29,14 @@ public class SplashActivity extends AppCompatActivity {
         binding.loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loginCardAnimation();
+                showLoginCard();
+            }
+        });
+
+        binding.main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideLoginCard();
             }
         });
     }
@@ -55,7 +63,46 @@ public class SplashActivity extends AppCompatActivity {
                 .start();
     }
 
-    private void loginCardAnimation() {
+    private void showLoginCard() {
+        // Initialize login card with scale zero
+        binding.loginCard.setVisibility(View.VISIBLE);
+        binding.loginCard.setScaleX(0f);
+        binding.loginCard.setScaleY(0f);
+        binding.loginCard.setPivotX(binding.loginBtn.getWidth() / 2f);
+        binding.loginCard.setPivotY(0f);
 
+        // Animate to expand login card
+        binding.loginCard.animate()
+                .scaleX(1f)
+                .scaleY(1f)
+                .setInterpolator(new AccelerateDecelerateInterpolator())
+                .setDuration(400)
+                .start();
+
+        binding.loginBtn.animate()
+                .alpha(0f)
+                .setDuration(300)
+                .start();
+    }
+
+    private void hideLoginCard() {
+        //Animation to hide login card
+        binding.loginCard.animate()
+                .scaleX(0f)
+                .scaleY(0f)
+                .setInterpolator(new AccelerateDecelerateInterpolator())
+                .setDuration(400)
+                .withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.loginCard.setVisibility(View.GONE);
+                        binding.loginBtn.setVisibility(View.VISIBLE);
+                        binding.loginBtn.animate()
+                                .alpha(1f)
+                                .setDuration(300)
+                                .start();
+                    }
+                })
+                .start();
     }
 }
