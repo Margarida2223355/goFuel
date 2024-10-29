@@ -3,4 +3,6 @@
     <color name="primary">#FEC454</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="primaryButton">#B3FEC454</color>
+    <color name="blackButton">#4D000000</color>
 </resources>
