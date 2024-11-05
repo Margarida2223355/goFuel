@@ -12,8 +12,9 @@
             <div class="image">
                 <i class="fa fa-user"></i>
             </div>
+            
             <div class="info">
-                <a href="#" class="d-block"></a>
+                <a href="#" class="d-block"><?= Yii::$app->user->identity->username ?></a>
             </div>
         </div>
 
@@ -40,6 +41,7 @@
                     ['label' => 'Stations', 'icon' => 'building', 'url' => ['/station/index']],
                     ['label' => 'Categories', 'icon' => 'tags', 'url' => ['/category/index']],
                     ['label' => 'Items', 'icon' => 'box', 'url' => ['/item/index']],
+                    ['label' => 'Invoices', 'icon' => 'file', 'url' => ['/invoice/index']],
                     ['label' => 'MULTI LEVEL EXAMPLE', 'header' => true],
                     /*['label' => 'Level1'],
                     [

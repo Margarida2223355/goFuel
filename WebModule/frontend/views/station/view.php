@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $model->name;
                 'template' => '{add-to-cart}',
                 'buttons' => [
                     'add-to-cart' => function ($url, $stationItem, $key) {
-                        return Html::a('<i class="fa fa-shopping-cart"></i>', ['station/add-to-cart', 'item_id' => $stationItem->item_id], [
+                        return Html::a('<i class="fa fa-shopping-cart"></i>', ['invoice/addtocart', 'id' => $stationItem->id], [
                             'class' => 'btn btn-sm',
                             'style' => 'color: #FFD100; text-decoration: none;',
                             'data-method' => 'post',

@@ -74,12 +74,14 @@ class SignupForm extends Model
             $this->_userInfo->phone = $this->phone;
             if ($this->_userInfo->save()) {
                 $auth = \Yii::$app->authManager;
-                $authorRole = $auth->getRole('Client');
-                $auth->assign($authorRole, $this->_user->getId());
+                $clientRole = $auth->getRole('Client');
+                $auth->assign($clientRole, $this->_user->getId());
             } else {
                 Yii::error('Falha ao salvar UserInfo: ' . json_encode($this->_userInfo->getErrors()), __METHOD__);
             }
         }
+
+        return $this->_user->save();
     }
 
     /**

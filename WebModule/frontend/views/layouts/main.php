@@ -55,10 +55,10 @@ AppAsset::register($this);
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Service Areas', 'url' => ['/station/index']],
-            ['label' => 'Cart', 'url' => ['#']],
-            ['label' => 'Profile', 'url' => ['/#']],
+            ['label' => 'Cart', 'url' => ['/invoice/index-cart']],
+            ['label' => 'All Invoices', 'url' => ['/invoice/index']],
+            ['label' => 'Profile', 'url' => ['/site/profile', 'id' => Yii::$app->user->identity->id]],
             ['label' => 'GII', 'url' => ['/gii']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
         ];
 
         // Itens de autenticação à direita
@@ -66,7 +66,7 @@ AppAsset::register($this);
             ['label' => 'Login', 'url' => ['/site/login'], 'linkOptions' => ['style' => 'color: #0000EE;']],
             ['label' => 'Signup', 'url' => ['/site/signup'], 'linkOptions' => ['style' => 'color: #0000EE;']],
         ] : [
-            ['label' => 'Logout', 'url' => ['/site/logout'], 'linkOptions' => ['style' => 'color: #0000EE;', 'data-method' => 'post']],
+            ['label' => 'Logout (' . Yii::$app->user->identity->username . Yii::$app->user->identity->id . ')', 'url' => ['/site/logout'], 'linkOptions' => ['style' => 'color: #0000EE;', 'data-method' => 'post']],
         ];
 
         // Renderizar os itens do menu
