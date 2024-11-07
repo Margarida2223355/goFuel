@@ -91,7 +91,9 @@ class SiteController extends Controller
 
             return $this->render('index', ['station' => $station, 'invoices' => $userInvoices]);
         } else {
-            return $this->render('index');
+            $station = null;
+            $userInvoices = null;
+            return $this->render('index', ['station' => $station, 'invoices' => $userInvoices]);
         }
     }
 
