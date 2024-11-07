@@ -5,19 +5,20 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `{{%station_items}}`.
  */
-class m241106_232317_create_station_items_table extends Migration
+class m241107_192756_create_station_items_table extends Migration
 {
     public function safeUp()
     {
         $this->createTable('station_items', [
-            'id' => $this->primaryKey(),
             'station_id' => $this->integer()->notNull(),
             'item_id' => $this->integer()->notNull(),
-            'price' => $this->decimal(10, 2)->notNull(),
-        ], 'CHARACTER SET utf8mb4 COLLATE=utf8mb4_0900_ai_ci ENGINE=InnoDB');
+            'price' => $this->decimal(10, 2),
+        ]);
 
-        $this->addForeignKey('fk_station_items_station', 'station_items', 'station_id', 'stations', 'id', 'CASCADE', 'CASCADE');
-        $this->addForeignKey('fk_station_items_item', 'station_items', 'item_id', 'items', 'id', 'CASCADE', 'CASCADE');
+        $this->addPrimaryKey('pk_station_items', 'station_items', ['station_id', 'item_id']);
+
+        $this->addForeignKey('fk_station_items_station', 'station_items', 'station_id', 'stations', 'id', 'CASCADE');
+        $this->addForeignKey('fk_station_items_item', 'station_items', 'item_id', 'items', 'id', 'CASCADE');
     }
 
     public function safeDown()

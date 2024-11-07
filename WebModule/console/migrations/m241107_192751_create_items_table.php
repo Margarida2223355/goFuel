@@ -5,18 +5,25 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `{{%items}}`.
  */
-class m241106_231423_create_items_table extends Migration
+class m241107_192751_create_items_table extends Migration
 {
     public function safeUp()
     {
         $this->createTable('items', [
             'id' => $this->primaryKey(),
-            'description' => $this->string(255)->notNull(),
+            'name' => $this->string()->notNull(),
+            'price' => $this->decimal(10, 2),
             'subcategory_id' => $this->integer()->notNull(),
-            'restock_qty' => $this->integer()->notNull(),
-        ], 'CHARACTER SET utf8mb4 COLLATE=utf8mb4_0900_ai_ci ENGINE=InnoDB');
+        ]);
 
-        $this->addForeignKey('fk_items_subcategory', 'items', 'subcategory_id', 'subcategories', 'id', 'RESTRICT', 'RESTRICT');
+        $this->addForeignKey(
+            'fk_items_subcategory',
+            'items',
+            'subcategory_id',
+            'subcategories',
+            'id',
+            'CASCADE'
+        );
     }
 
     public function safeDown()
