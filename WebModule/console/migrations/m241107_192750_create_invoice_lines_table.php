@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `{{%invoice_lines}}`.
  */
-class m241107_192748_create_invoice_lines_table extends Migration
+class m241107_192750_create_invoice_lines_table extends Migration
 {
     public function safeUp()
     {
