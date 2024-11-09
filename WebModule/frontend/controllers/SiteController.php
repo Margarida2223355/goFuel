@@ -75,7 +75,22 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $currentUser = Yii::$app->user->identity;
+        if ($currentUser) {
+            $starredStation = ClientStation::findOne(['id_client' => $currentUser->id]);
+
+            if ($starredStation) {
+                $station = Station::findOne($starredStation->id_station);
+            } else {
+                $station = null;
+            }
+
+            $userInvoices = Invoice::find(['client_id' => $currentUser->id, 'state_id' != 1])->all();
+
+            return $this->render('index', ['station' => $station, 'invoices' => $userInvoices]);
+        } else {
+            return $this->render('index');
+        }
     }
 
     /**
