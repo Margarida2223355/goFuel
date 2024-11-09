@@ -1,4 +1,4 @@
-main > .container {
+main>.container {
     padding: 70px 15px 20px;
 }
 
@@ -8,7 +8,7 @@ main > .container {
     height: 60px;
 }
 
-.footer > .container {
+.footer>.container {
     padding-right: 15px;
     padding-left: 15px;
 }
@@ -18,8 +18,19 @@ main > .container {
     font-style: italic;
 }
 
+.sidebar-collapse .logo-expanded {
+    display: none;
+    /* Esconde o logo expandido quando a sidebar está colapsada */
+}
+
+.sidebar-collapse .logo-collapsed {
+    display: block !important;
+    /* Mostra o logo colapsado */
+}
+
 /* add sorting icons to gridview sort links */
-a.asc:after, a.desc:after {
+a.asc:after,
+a.desc:after {
     content: '';
     left: 3px;
     display: inline-block;
@@ -65,26 +76,26 @@ a.desc:after {
 }
 
 /* align the logout "link" (button in form) of the navbar */
-.nav li > form > button.logout {
+.nav li>form>button.logout {
     padding-top: 7px;
     color: rgba(255, 255, 255, 0.5);
 }
 
 @media(max-width:767px) {
-    .nav li > form > button.logout {
-        display:block;
+    .nav li>form>button.logout {
+        display: block;
         text-align: left;
         width: 100%;
         padding: 10px 0;
     }
 }
 
-.nav > li > form > button.logout:focus,
-.nav > li > form > button.logout:hover {
+.nav>li>form>button.logout:focus,
+.nav>li>form>button.logout:hover {
     text-decoration: none;
     color: rgba(255, 255, 255, 0.75);
 }
 
-.nav > li > form > button.logout:focus {
+.nav>li>form>button.logout:focus {
     outline: none;
 }

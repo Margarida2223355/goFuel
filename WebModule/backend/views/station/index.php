@@ -13,11 +13,14 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="station-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Station', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <div class="d-flex align-items-center mb-3">
+        <h1><?= Html::encode($this->title) ?></h1>
+        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>', ['station/create'], [
+            'class' => 'btn',
+            'title' => 'Create station',
+            'style' => 'color: green; text-decoration: none; margin-right: 10px; margin-left: 15px;',
+        ]) ?>
+    </div>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -71,6 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ],
         ],
+        'summary' => false,
     ]); ?>
 
 </div>

@@ -31,7 +31,7 @@ $this->registerJsFile($publishedRes[1] . '/control_sidebar.js', ['depends' => '\
 <body class="hold-transition sidebar-mini">
     <?php $this->beginBody() ?>
 
-    <div class="wrapper">
+    <div class="wrapper pt-5">
         <!-- Navbar -->
         <?= $this->render('navbar', ['assetDir' => $assetDir]) ?>
         <!-- /.navbar -->

@@ -66,7 +66,7 @@ AppAsset::register($this);
             ['label' => 'Login', 'url' => ['/site/login'], 'linkOptions' => ['style' => 'color: #0000EE;']],
             ['label' => 'Signup', 'url' => ['/site/signup'], 'linkOptions' => ['style' => 'color: #0000EE;']],
         ] : [
-            ['label' => 'Logout (' . Yii::$app->user->identity->username . Yii::$app->user->identity->id . ')', 'url' => ['/site/logout'], 'linkOptions' => ['style' => 'color: #0000EE;', 'data-method' => 'post']],
+            ['label' => 'Logout (' . Yii::$app->user->identity->userInfo->name . ')', 'url' => ['/site/logout'], 'linkOptions' => ['style' => 'color: #0000EE;', 'data-method' => 'post']],
         ];
 
         // Renderizar os itens do menu

@@ -1,64 +1,37 @@
 <?php
-use yii\helpers\Html;
+
+/** @var yii\web\View $this */
+/** @var yii\bootstrap5\ActiveForm $form */
+/** @var \common\models\LoginForm $model */
+
+use yii\bootstrap5\Html;
+use yii\bootstrap5\ActiveForm;
+
+$this->title = 'Login';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="card">
-    <div class="card-body login-card-body">
-        <p class="login-box-msg">Sign in to start your session</p>
+<div class="site-login d-flex align-items-center justify-content-center" style="min-height: 90vh;">
 
-        <?php $form = \yii\bootstrap4\ActiveForm::begin(['id' => 'login-form']) ?>
+    <div class="row justify-content-center">
+    <h1><?= Html::encode($this->title) ?></h1>
+        <div class="col-lg-12">
+            <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
-        <?= $form->field($model,'username', [
-            'options' => ['class' => 'form-group has-feedback'],
-            'inputTemplate' => '{input}<div class="input-group-append"><div class="input-group-text"><span class="fas fa-envelope"></span></div></div>',
-            'template' => '{beginWrapper}{input}{error}{endWrapper}',
-            'wrapperOptions' => ['class' => 'input-group mb-3']
-        ])
-            ->label(false)
-            ->textInput(['placeholder' => $model->getAttributeLabel('username')]) ?>
+            <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 
-        <?= $form->field($model, 'password', [
-            'options' => ['class' => 'form-group has-feedback'],
-            'inputTemplate' => '{input}<div class="input-group-append"><div class="input-group-text"><span class="fas fa-lock"></span></div></div>',
-            'template' => '{beginWrapper}{input}{error}{endWrapper}',
-            'wrapperOptions' => ['class' => 'input-group mb-3']
-        ])
-            ->label(false)
-            ->passwordInput(['placeholder' => $model->getAttributeLabel('password')]) ?>
+            <?= $form->field($model, 'password')->passwordInput() ?>
 
-        <div class="row">
-            <div class="col-8">
-                <?= $form->field($model, 'rememberMe')->checkbox([
-                    'template' => '<div class="icheck-primary">{input}{label}</div>',
-                    'labelOptions' => [
-                        'class' => ''
-                    ],
-                    'uncheck' => null
-                ]) ?>
+            <!-- <div class="my-1 mx-0" style="color:#999;">
+                If you forgot your password you can <?= Html::a('reset it', ['site/request-password-reset']) ?>.
+                <br>
+                Need new verification email? <?= Html::a('Resend', ['site/resend-verification-email']) ?>
+            </div> -->
+
+            <div class="form-group">
+                <?= Html::submitButton('Login', ['class' => 'btn btn-success', 'name' => 'login-button']) ?>
             </div>
-            <div class="col-4">
-                <?= Html::submitButton('Sign In', ['class' => 'btn btn-primary btn-block']) ?>
-            </div>
+
+            <?php ActiveForm::end(); ?>
         </div>
-
-        <?php \yii\bootstrap4\ActiveForm::end(); ?>
-
-        <div class="social-auth-links text-center mb-3">
-            <p>- OR -</p>
-            <a href="#" class="btn btn-block btn-primary">
-                <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
-            </a>
-            <a href="#" class="btn btn-block btn-danger">
-                <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
-            </a>
-        </div>
-        <!-- /.social-auth-links -->
-
-        <p class="mb-1">
-            <a href="forgot-password.html">I forgot my password</a>
-        </p>
-        <p class="mb-0">
-            <a href="register.html" class="text-center">Register a new membership</a>
-        </p>
     </div>
-    <!-- /.login-card-body -->
 </div>

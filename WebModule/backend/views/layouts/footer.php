@@ -1,7 +1,7 @@
-<footer class="main-footer">
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
-    All rights reserved.
-    <div class="float-right d-none d-sm-inline-block">
-        <b>Version</b> 3.1.0
-    </div>
+<?php
+
+use yii\bootstrap5\Html;
+?>
+<footer class="main-footer" style="height: 50px;">
+    <p class="float-center">&copy; <?= Html::encode(Yii::$app->name) ?> | David Domingues <?= date('Y') ?></p>
 </footer>

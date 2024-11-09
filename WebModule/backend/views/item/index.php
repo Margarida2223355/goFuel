@@ -70,10 +70,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <!-- Coluna para o botão de submit -->
                 <div class="me-2">
-                    <?= Html::submitButton('<i class="fa fa-plus" aria-hidden="true"></i>', [
+                    <?= Html::submitButton('<i class="fa fa-plus" aria-hidden="true"></i>&ensp;Add Item', [
                         'class' => 'btn d-flex align-items-center justify-content-center',
                         'style' => 'color: green; border-color: green; background-color: transparent; border-width: 2px; border-style: solid; border-radius: 5px; padding: 6px 10px;',
-                        'title' => 'Add Item'
                     ]) ?>
                 </div>
             </div>
@@ -165,6 +164,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ],
         ],
+        'summary' => false,
     ]); ?>
 </div>
 

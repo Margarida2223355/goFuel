@@ -1,7 +1,12 @@
 <?php
-$this->title = 'Starter Page';
+
+use yii\helpers\Html;
+
+$this->title = 'Homepage';
 $this->params['breadcrumbs'] = [['label' => $this->title]];
 ?>
+
+<h1><?= Html::encode($this->title) ?></h1>
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-6">
@@ -9,6 +14,8 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
                 'type' => 'success',
                 'body' => '<h3>Congratulations!</h3>',
             ]) ?>
+        </div>
+        <div class="col-lg-6">
             <?= \hail812\adminlte\widgets\Callout::widget([
                 'type' => 'danger',
                 'head' => 'I am a danger callout!',
@@ -17,7 +24,7 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
         </div>
     </div>
 
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-12 col-sm-6 col-md-3">
             <?= \hail812\adminlte\widgets\InfoBox::widget([
                 'text' => 'CPU Traffic',
@@ -39,7 +46,7 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
             <?= \hail812\adminlte\widgets\InfoBox::widget([
                 'text' => 'Bookmarks',
                 'number' => '410',
-                 'theme' => 'success',
+                'theme' => 'success',
                 'icon' => 'far fa-flag',
             ]) ?>
         </div>
@@ -77,7 +84,7 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
                 ]
             ]) ?>
             <?= \hail812\adminlte\widgets\Ribbon::widget([
-                'id' => $infoBox->id.'-ribbon',
+                'id' => $infoBox->id . '-ribbon',
                 'text' => 'Ribbon',
             ]) ?>
             <?php \hail812\adminlte\widgets\InfoBox::end() ?>
@@ -113,7 +120,7 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
                 'theme' => 'success'
             ]) ?>
             <?= \hail812\adminlte\widgets\Ribbon::widget([
-                'id' => $smallBox->id.'-ribbon',
+                'id' => $smallBox->id . '-ribbon',
                 'text' => 'Ribbon',
                 'theme' => 'warning',
                 'size' => 'lg',
@@ -130,5 +137,5 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
                 'loadingStyle' => true
             ]) ?>
         </div>
-    </div>
+    </div> -->
 </div>
