@@ -137,7 +137,7 @@ return [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/user',
                     'extraPatterns' => [
-
+                        'GET login' => 'login',
                     ],
                     'tokens' => [
 
