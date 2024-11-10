@@ -8,16 +8,26 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.gofuel.MyApplication;
 import com.example.gofuel.databinding.ActivitySplashBinding;
+import com.example.gofuel.model.user.User;
+import com.example.gofuel.modelView.User.LoginCallback;
+import com.example.gofuel.modelView.User.UserViewModel;
+import com.example.gofuel.repository.user.UserRepository;
+
+import java.util.Objects;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
 
     private ActivitySplashBinding binding;
+    private UserViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,17 +36,49 @@ public class SplashActivity extends AppCompatActivity {
         binding = ActivitySplashBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        viewModel = new UserViewModel();
+
+        //region Login Button to show login card
         binding.loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showLoginCard();
+
+                binding.username.setText("margarida");
+                binding.password.setText("123456789");
             }
         });
+        //endregion
 
+        //region Hide login card when background click
         binding.main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 hideLoginCard();
+            }
+        });
+        //endregion
+
+        binding.loginCardBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewModel.login(
+                        Objects.requireNonNull(binding.username.getText()).toString(),
+                        Objects.requireNonNull(binding.password.getText()).toString(),
+                        new LoginCallback() {
+                            @Override
+                            public void onSuccess(User user) {
+                                MyApplication.setUser(user);
+                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                finish();
+                            }
+
+                            @Override
+                            public void onError(String error) {
+                                Toast.makeText(getApplicationContext(), "Erro no login: " + error, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                );
             }
         });
     }
@@ -52,17 +94,13 @@ public class SplashActivity extends AppCompatActivity {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         Log.i("-->", "Animation finished!");
-
-                        /*if (hasFocus) {
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                            finish();
-                        }*/
-                        binding.loginFrame.setVisibility(View.VISIBLE);
+                        binding.loginFrame.setVisibility(View.VISIBLE); // Show login button after animation
                     }
                 })
                 .start();
     }
 
+    //region Private Funcs
     private void showLoginCard() {
         // Initialize login card with scale zero
         binding.loginCard.setVisibility(View.VISIBLE);
@@ -105,4 +143,5 @@ public class SplashActivity extends AppCompatActivity {
                 })
                 .start();
     }
+    //endregion
 }

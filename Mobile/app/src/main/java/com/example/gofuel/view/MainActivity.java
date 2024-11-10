@@ -13,7 +13,8 @@ import androidx.fragment.app.FragmentManager;
 import com.example.gofuel.MyApplication;
 import com.example.gofuel.R;
 import com.example.gofuel.databinding.ActivityHomeBinding;
-import com.example.gofuel.view.Fragments.StationFragment;
+import com.example.gofuel.model.user.User;
+import com.example.gofuel.view.fragments.StationFragment;
 import com.example.gofuel.view.components.MenuButtons;
 
 import java.util.ArrayList;
@@ -31,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        User user = MyApplication.getUser();
+        Toast.makeText(this, "user: " + user.getName(), Toast.LENGTH_SHORT).show();
 
         //region Setup Fragment
         fragmentManager = getSupportFragmentManager();

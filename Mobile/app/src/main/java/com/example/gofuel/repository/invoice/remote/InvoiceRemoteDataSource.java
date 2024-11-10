@@ -14,7 +14,7 @@ public class InvoiceRemoteDataSource implements IInvoiceDataSource.Main {
     private final InvoiceAPI invoiceAPI;
 
     public InvoiceRemoteDataSource() {
-        this.invoiceAPI = new HTTPClient<>(InvoiceAPI.class).get();
+        this.invoiceAPI = new HTTPClient<>(InvoiceAPI.class, null, null).get();
     }
 
     // Method for local DB
