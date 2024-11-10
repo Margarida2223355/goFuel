@@ -32,7 +32,9 @@
         }
 
         public function actionLogin() {
-            return $this -> user;
+            return Userinfo::findOne([
+                'id' => $this -> user -> id
+            ]);
         }
     }
 ?>
