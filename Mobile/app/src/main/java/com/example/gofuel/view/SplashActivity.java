@@ -3,6 +3,7 @@ package com.example.gofuel.view;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -62,9 +63,18 @@ public class SplashActivity extends AppCompatActivity {
         binding.loginCardBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewModel.login(
-                        Objects.requireNonNull(binding.username.getText()).toString(),
-                        Objects.requireNonNull(binding.password.getText()).toString(),
+                if (binding.username.getText().toString().isEmpty() || binding.password.getText().toString().isEmpty()) {
+                    new AlertDialog.Builder(SplashActivity.this)
+                            .setTitle("Login")
+                            .setMessage("Faltam dados para login")
+                            .setPositiveButton("OK", null)
+                            .show();
+                }
+
+                else {
+                    viewModel.login(
+                        binding.username.getText().toString(),
+                        binding.password.getText().toString(),
                         new LoginCallback() {
                             @Override
                             public void onSuccess(User user) {
@@ -75,10 +85,17 @@ public class SplashActivity extends AppCompatActivity {
 
                             @Override
                             public void onError(String error) {
-                                Toast.makeText(getApplicationContext(), "Erro no login: " + error, Toast.LENGTH_SHORT).show();
+                                runOnUiThread(() -> {
+                                    new AlertDialog.Builder(SplashActivity.this)
+                                            .setTitle("Erro login")
+                                            .setMessage(error)
+                                            .setPositiveButton("OK", null)
+                                            .show();
+                                });
                             }
                         }
                 );
+                }
             }
         });
     }

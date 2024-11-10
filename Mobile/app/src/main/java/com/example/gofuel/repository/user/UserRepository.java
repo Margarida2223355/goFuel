@@ -40,13 +40,7 @@ public class UserRepository implements IUserDataSource.Main {
         }
 
         else {
-            if (!userDB.getAllUsers().isEmpty()) {
-                result = new ResultWrapper<>(userDB.getAllUsers().get(0), null);
-            }
-
-            else {
-                result = new ResultWrapper<>(null, "No data on local DB");
-            }
+            result = new ResultWrapper<>(null, "Username/Password incorrect!");
         }
 
         return result;
