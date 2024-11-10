@@ -20,18 +20,31 @@ import com.example.gofuel.model.pump.PumpConverter;
 import com.example.gofuel.model.station.Station;
 import com.example.gofuel.model.station.StationConverter;
 import com.example.gofuel.model.subcategory.SubcategoryConverter;
+import com.example.gofuel.model.user.User;
 import com.example.gofuel.model.user.UserConverter;
 import com.example.gofuel.repository.invoice.local.InvoiceDB;
 import com.example.gofuel.repository.invoiceLine.local.InvoiceLineDB;
 import com.example.gofuel.repository.item.local.ItemDB;
 import com.example.gofuel.repository.pump.local.PumpDB;
 import com.example.gofuel.repository.station.local.StationDB;
+import com.example.gofuel.repository.user.local.UserDB;
 
 @Database(
-        entities = {Station.class, Pump.class, Item.class, Invoice.class, InvoiceLine.class},
+        entities = {Station.class, Pump.class, Item.class, Invoice.class, InvoiceLine.class, User.class},
         version = 1
 )
-@TypeConverters({StationConverter.class, CategoryConverter.class, InvoiceConverter.class, InvoicestateConverter.class, ItemConverter.class, PumpConverter.class, SubcategoryConverter.class, UserConverter.class, DateConverter.class})
+@TypeConverters({
+        StationConverter.class,
+        CategoryConverter.class,
+        InvoiceConverter.class,
+        InvoicestateConverter.class,
+        ItemConverter.class,
+        PumpConverter.class,
+        SubcategoryConverter.class,
+        UserConverter.class,
+        DateConverter.class,
+        UserConverter.class
+})
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase INSTANCE;
     public abstract StationDB stationDB();
@@ -39,6 +52,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ItemDB itemDB();
     public abstract InvoiceDB invoiceDB();
     public abstract InvoiceLineDB invoiceLineDB();
+    public abstract UserDB userDB();
 
     public static AppDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
