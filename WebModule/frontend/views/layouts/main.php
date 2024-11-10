@@ -21,6 +21,7 @@ AppAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <?php $this->registerCsrfMetaTags() ?>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="./web/img/logo_mini.png" type="image/x-icon">
 
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
@@ -46,8 +47,8 @@ AppAsset::register($this);
             ],
         ]);
 
-        // Itens de menu
-        $menuItemsCenter = Yii::$app->user->isGuest ? [
+        // Menu items
+        $menuItems = Yii::$app->user->isGuest ? [
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'GII', 'url' => ['/gii']],
@@ -61,7 +62,7 @@ AppAsset::register($this);
             ['label' => 'GII', 'url' => ['/gii']],
         ];
 
-        // Itens de autenticação à direita
+        // Right items
         $menuItemsRight = Yii::$app->user->isGuest ? [
             ['label' => 'Login', 'url' => ['/site/login'], 'linkOptions' => ['style' => 'color: #0000EE;']],
             ['label' => 'Signup', 'url' => ['/site/signup'], 'linkOptions' => ['style' => 'color: #0000EE;']],
@@ -69,13 +70,13 @@ AppAsset::register($this);
             ['label' => 'Logout (' . Yii::$app->user->identity->userInfo->name . ')', 'url' => ['/site/logout'], 'linkOptions' => ['style' => 'color: #0000EE;', 'data-method' => 'post']],
         ];
 
-        // Renderizar os itens do menu
+        // Render items on nav
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav me-auto p-4 p-lg-0'],
-            'items' => $menuItemsCenter,
+            'items' => $menuItems,
         ]);
 
-        // Renderizar os itens de autenticação à direita
+        // Auth items
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav ms-auto p-4 p-lg-0'],
             'items' => $menuItemsRight,

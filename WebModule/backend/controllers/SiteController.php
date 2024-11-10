@@ -31,6 +31,9 @@ class SiteController extends Controller
                         'actions' => ['logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            return !Yii::$app->user->can('client');
+                        }
                     ],
                 ],
             ],
@@ -42,6 +45,7 @@ class SiteController extends Controller
             ],
         ];
     }
+
 
     /**
      * {@inheritdoc}
@@ -80,6 +84,11 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            if (Yii::$app->user->can('Client')) {
+                Yii::$app->user->logout();
+                Yii::$app->session->setFlash('error', 'You don\'t have access to this website. Please, contact support.');
+                return $this->redirect(['site/login']);
+            }
             return $this->goBack();
         }
 
@@ -89,6 +98,7 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+
 
     /**
      * Logout action.

@@ -25,13 +25,14 @@ $this->registerJsFile($publishedRes[1] . '/control_sidebar.js', ['depends' => '\
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="icon" href="<?= Yii::getAlias('@web') ?>/img/logo_mini.png" type="image/x-icon">
 </head>
 
 <body class="hold-transition sidebar-mini">
     <?php $this->beginBody() ?>
 
-    <div class="wrapper pt-5">
+    <div class="wrapper">
         <!-- Navbar -->
         <?= $this->render('navbar', ['assetDir' => $assetDir]) ?>
         <!-- /.navbar -->

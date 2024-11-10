@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 ?>
-<nav class="main-header navbar navbar-expand navbar-white navbar-light fixed-top pd-5">
+<nav class="main-header navbar navbar-expand navbar-white navbar-light fixed-top">
     <ul class="navbar-nav me-auto">
         <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
@@ -21,7 +21,7 @@ use yii\helpers\Url;
 
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-            <?= Html::a('<i class="fas fa-sign-out-alt"></i>', ['/site/logout'], ['data-method' => 'post', 'class' => 'nav-link']) ?>
+            <?= Html::a('<i class="fa-solid fa-right-from-bracket"></i>', ['/site/logout'], ['data-method' => 'post', 'class' => 'nav-link']) ?>
         </li>
         <li class="nav-item">
             <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">

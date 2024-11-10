@@ -10,10 +10,18 @@ use yii\bootstrap5\ActiveForm;
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-login d-flex align-items-center justify-content-center" style="min-height: 90vh;">
+<div class="align-items-center justify-content-center py-5">
+    <?php if (Yii::$app->session->hasFlash('error')): ?>
+        <div class="alert alert-danger">
+            <?= Yii::$app->session->getFlash('error') ?>
+        </div>
+</div>
+<?php endif; ?>
+<div class="site-login d-flex align-items-center justify-content-center" style="min-height: 50vh;">
+
 
     <div class="row justify-content-center">
-    <h1><?= Html::encode($this->title) ?></h1>
+        <h1><?= Html::encode($this->title) ?></h1>
         <div class="col-lg-12">
             <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
