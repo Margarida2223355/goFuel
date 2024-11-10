@@ -1,6 +1,7 @@
 package com.example.gofuel.util;
 
 import com.example.gofuel.model.station.Station;
+import com.example.gofuel.model.user.User;
 
 import java.util.ArrayList;
 import java.util.List;

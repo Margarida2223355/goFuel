@@ -24,6 +24,22 @@
     <style name="TitleTextStyle">
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">20dp</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="ButtonNameStyle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="loginCardStyle">
+        <item name="hintTextColor">@color/white</item>
+        <item name="boxBackgroundColor">@color/black</item>
+        <item name="android:alpha">0.5</item>
+        <item name="boxCornerRadiusTopStart">10dp</item>
+        <item name="boxCornerRadiusTopEnd">10dp</item>
+        <item name="boxCornerRadiusBottomStart">10dp</item>
+        <item name="boxCornerRadiusBottomEnd">10dp</item>
     </style>
 </resources>

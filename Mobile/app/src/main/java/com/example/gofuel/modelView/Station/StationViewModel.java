@@ -1,8 +1,6 @@
 package com.example.gofuel.modelView.Station;
 
-import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -13,7 +11,6 @@ import com.example.gofuel.repository.common.ResultWrapper;
 import com.example.gofuel.repository.station.StationRepository;
 import com.example.gofuel.util.State;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class StationViewModel extends ViewModel {

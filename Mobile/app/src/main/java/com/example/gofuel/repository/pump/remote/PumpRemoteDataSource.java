@@ -13,7 +13,7 @@ public class PumpRemoteDataSource implements IPumpDataSource.Main {
     private final PumpAPI pumpAPI;
 
     public PumpRemoteDataSource() {
-        this.pumpAPI = new HTTPClient<>(PumpAPI.class).get();
+        this.pumpAPI = new HTTPClient<>(PumpAPI.class, null, null).get();
     }
 
     // Method for local DB

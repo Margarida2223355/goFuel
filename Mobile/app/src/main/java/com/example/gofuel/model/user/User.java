@@ -9,31 +9,23 @@ import com.example.gofuel.model.station.Station;
 public class User {
     @PrimaryKey
     private final int id;
-    private final int user_id;
     private final int nif;
     private String name;
     private String address;
     private String postal_code;
     private String phone;
-    private Station station;
 
-    public User(int id, int user_id, int nif, String name, String address, String postal_code, String phone, Station station) {
+    public User(int id, int nif, String name, String address, String postal_code, String phone) {
         this.id = id;
-        this.user_id = user_id;
         this.nif = nif;
         this.name = name;
         this.address = address;
         this.postal_code = postal_code;
         this.phone = phone;
-        this.station = station;
     }
 
     public int getId() {
         return id;
-    }
-
-    public int getUser_id() {
-        return user_id;
     }
 
     public int getNif() {
@@ -56,10 +48,6 @@ public class User {
         return phone;
     }
 
-    public Station getStation() {
-        return station;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -74,9 +62,5 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public void setStation(Station station) {
-        this.station = station;
     }
 }
