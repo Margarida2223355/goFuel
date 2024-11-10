@@ -39,7 +39,6 @@ class ItemController extends Controller
     {
         $auth = Yii::$app->authManager;
 
-        // Verifica se o logged user é admin
         $isAdmin = $auth->checkAccess(Yii::$app->user->id, 'Admin');
 
         if ($isAdmin) {

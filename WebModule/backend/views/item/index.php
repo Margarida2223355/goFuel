@@ -20,7 +20,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <!-- Formulário para selecionar a estação -->
     <?= Html::beginForm(['item/index'], 'post', ['id' => 'station-form', 'class' => 'w-100']) ?>
     <div class="form-group w-100">
         <?= Html::dropDownList(
@@ -29,37 +28,32 @@ $this->params['breadcrumbs'][] = $this->title;
             \yii\helpers\ArrayHelper::map($stations, 'id', 'name'),
             [
                 'prompt' => 'Select a Station',
-                'id' => 'station-dropdown', // ID para o JavaScript
-                'class' => 'form-control w-100', // Certificando que o dropdown ocupa toda a largura
-                'onchange' => 'this.form.submit();' // Submete o formulário quando seleciona uma estação
+                'id' => 'station-dropdown',
+                'class' => 'form-control w-100',
+                'onchange' => 'this.form.submit();'
             ]
         ) ?>
     </div>
     <?= Html::endForm() ?>
     <br>
-
-    <!-- Formulário de associação de itens a uma estação -->
     <?php if ($stationId): ?>
-        <div class="item-form mb-3 w-100"> <!-- Mantém "w-100" para ocupar toda a largura -->
+        <div class="item-form mb-3 w-100 justify-content-center">
             <?php $form = ActiveForm::begin([
                 'action' => ['item/associate'],
                 'method' => 'post',
-                'options' => ['class' => 'w-100'], // Certificando que o form ocupa toda a largura
+                'options' => ['class' => 'w-100'],
             ]); ?>
 
             <?= Html::hiddenInput('station_id', $stationId) ?>
 
-            <div class="row"> <!-- Removi container-fluid e usei apenas row -->
-                <!-- Coluna para selecionar item -->
-                <div class="col-md-6"> <!-- Coluna ocupando 6/12 da largura -->
+            <div class="row">
+                <div class="col-md-6">
                     <?= $form->field($model, 'item_id')->dropDownList(
                         \yii\helpers\ArrayHelper::map(\common\models\Item::find()->all(), 'id', 'description'),
-                        ['prompt' => 'Select an Item', 'class' => 'form-control w-100'] // Certifica que o campo ocupa 100% da coluna
+                        ['prompt' => 'Select an Item', 'class' => 'form-control w-100']
                     )->label(false) ?>
                 </div>
-
-                <!-- Coluna para o campo de preço -->
-                <div class="col-md-3"> <!-- Coluna ocupando 3/12 da largura -->
+                <div class="col-md-3">
                     <?= $form->field($model, 'price')->textInput([
                         'type' => 'number',
                         'step' => '0.01',
@@ -67,8 +61,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         'placeholder' => 'Enter price'
                     ])->label(false) ?>
                 </div>
-
-                <!-- Coluna para o botão de submit -->
                 <div class="me-2">
                     <?= Html::submitButton('<i class="fa fa-plus" aria-hidden="true"></i>&ensp;Add Item', [
                         'class' => 'btn d-flex align-items-center justify-content-center',
@@ -94,16 +86,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Current Stock',
                 'value' => function ($model) {
                     $userId = Yii::$app->user->id;
-
-                    // Busca a estação associada ao usuário atual
                     $stationUser = \common\models\StationUser::findOne(['user_id' => $userId]);
-
                     if ($stationUser) {
                         $stationId = $stationUser->station_id;
-
-                        // Agora busca o stock para o item e estação específicos
                         $itemStock = \common\models\ItemStock::findOne(['item_id' => $model->id, 'station_id' => $stationId]);
-
                         return $itemStock ? $itemStock->stock : 'No Stock Available';
                     }
 
@@ -152,7 +138,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'restock' => function ($url, $model) {
                         return Html::a(
                             '<i class="fa fa-box"></i>',
-                            ['item/restock', 'id' => $model->id], // URL para a action
+                            ['item/restock', 'id' => $model->id],
                             [
                                 'title' => 'Restock Item',
                                 'data-confirm' => 'Do you want to restock this item?',

@@ -123,7 +123,6 @@ class StationController extends Controller
         });
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            // Associa a estação ao manager
             $managerId = Yii::$app->request->post('Station')['manager_id'];
             if ($managerId) {
                 $stationUser = new StationUser();

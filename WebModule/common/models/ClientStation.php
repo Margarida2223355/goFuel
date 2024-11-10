@@ -33,7 +33,7 @@ class ClientStation extends \yii\db\ActiveRecord
             [['id_client', 'id_station'], 'integer'],
             [['id_client', 'id_station'], 'unique', 'targetAttribute' => ['id_client', 'id_station']],
             [['id_client'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['id_client' => 'id']],
-            [['id_station'], 'exist', 'skipOnError' => true, 'targetClass' => UserInfo::class, 'targetAttribute' => ['id_station' => 'id']],
+            [['id_station'], 'exist', 'skipOnError' => true, 'targetClass' => Station::class, 'targetAttribute' => ['id_station' => 'id']],
         ];
     }
 
@@ -65,6 +65,6 @@ class ClientStation extends \yii\db\ActiveRecord
      */
     public function getStation()
     {
-        return $this->hasOne(UserInfo::class, ['id' => 'id_station']);
+        return $this->hasOne(Station::class, ['id' => 'id_station']);
     }
 }
