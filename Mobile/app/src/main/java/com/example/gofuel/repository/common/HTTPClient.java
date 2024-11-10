@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.example.gofuel.util.Constants;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -15,11 +17,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HTTPClient<T> {
     //region Properties
-    public static String token = null;
+    public static String credentials = null;
     private T client;
     //endregion
 
-    public HTTPClient(Class<T> serviceClass) {
+    public HTTPClient(Class<T> serviceClass, String username, String password) {
+        setBasicAuthCredentials(username, password);
+
         // Configure OkHttpClient
         OkHttpClient.Builder httpClientBuider = new OkHttpClient.Builder();
 
@@ -31,7 +35,7 @@ public class HTTPClient<T> {
                     .header(Constants.HEADER_PARAMETER_LANG, Locale.getDefault().toString())
                     .header(Constants.HEADER_PARAMETER_CLIENT,"Mobile");
 
-            if (token != null) { requestBuilder.header(Constants.HEADER_PARAMETER_AUTHORIZATION,"Bearer " + token); }
+            if (credentials != null) { requestBuilder.header(Constants.HEADER_PARAMETER_AUTHORIZATION, "Basic " + credentials); }
 
             Request request = requestBuilder.build();
 
@@ -60,5 +64,9 @@ public class HTTPClient<T> {
 
     public T get() {
         return client;
+    }
+
+    public static void setBasicAuthCredentials(String username, String password) {
+        credentials = Base64.getEncoder().encodeToString((username + ":" + password).getBytes(StandardCharsets.UTF_8));
     }
 }
