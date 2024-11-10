@@ -1,4 +1,4 @@
-package com.example.gofuel.view.Fragments;
+package com.example.gofuel.view.fragments;
 
 import android.os.Bundle;
 
@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import com.example.gofuel.databinding.FragmentStationListBinding;
 import com.example.gofuel.model.station.Station;
@@ -17,7 +16,6 @@ import com.example.gofuel.modelView.Station.StationViewModel;
 import com.example.gofuel.util.State;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class StationFragment extends Fragment {
 
