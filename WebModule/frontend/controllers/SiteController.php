@@ -2,6 +2,8 @@
 
 namespace frontend\controllers;
 
+use common\models\ClientStation;
+use common\models\Invoice;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -11,10 +13,14 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
+use common\models\Station;
+use common\models\User;
+use common\models\UserInfo;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use yii\web\NotFoundHttpException;
 
 /**
  * Site controller
@@ -68,11 +74,7 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return mixed
-     */
+
     public function actionIndex()
     {
         $currentUser = Yii::$app->user->identity;
@@ -89,7 +91,9 @@ class SiteController extends Controller
 
             return $this->render('index', ['station' => $station, 'invoices' => $userInvoices]);
         } else {
-            return $this->render('index');
+            $station = null;
+            $userInvoices = null;
+            return $this->render('index', ['station' => $station, 'invoices' => $userInvoices]);
         }
     }
 
@@ -169,15 +173,65 @@ class SiteController extends Controller
     public function actionSignup()
     {
         $model = new SignupForm();
-        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
+        $model->load(Yii::$app->request->post());
+        if (/*$model->load(Yii::$app->request->post()) &&*/$model->signup()) {
             Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
-            return $this->goHome();
+            return $this->redirect(['about']);
         }
 
         return $this->render('signup', [
             'model' => $model,
         ]);
     }
+
+    public function actionProfile($id)
+    {
+        $user = User::findOne($id);
+        if ($user === null) {
+            throw new NotFoundHttpException('Usuário não encontrado.');
+        }
+
+        $userInfo = UserInfo::findOne(['user_id' => $user->id]);
+        if ($userInfo === null) {
+            throw new NotFoundHttpException('Informações do usuário não encontradas.');
+        }
+
+        $model = new SignupForm();
+        $model->username = $user->username;
+        $model->email = $user->email;
+        $model->nif = $userInfo->nif;
+        $model->name = $userInfo->name;
+        $model->address = $userInfo->address;
+        $model->postal_code = $userInfo->postal_code;
+        $model->phone = $userInfo->phone;
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $user->username = $model->username;
+            $user->email = $model->email;
+            if (!$user->save()) {
+                Yii::$app->session->setFlash('error', 'Falha ao atualizar o usuário: ' . json_encode($user->getErrors()));
+                return $this->refresh();
+            }
+
+            $userInfo->nif = $model->nif;
+            $userInfo->name = $model->name;
+            $userInfo->address = $model->address;
+            $userInfo->postal_code = $model->postal_code;
+            $userInfo->phone = $model->phone;
+
+            if ($userInfo->save()) {
+                Yii::$app->session->setFlash('success', 'Dados atualizados com sucesso.');
+                return $this->redirect(['profile', 'id' => $user->id]);
+            } else {
+                Yii::$app->session->setFlash('error', 'Falha ao atualizar as informações do usuário: ' . json_encode($userInfo->getErrors()));
+            }
+        }
+        return $this->render('profile', [
+            'model' => $model,
+            'user' => $user,
+        ]);
+    }
+
 
     /**
      * Requests password reset.

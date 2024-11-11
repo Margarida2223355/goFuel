@@ -13,6 +13,7 @@ use Yii;
  * @property string $invoice_date
  * @property float $total
  * @property int $state_id
+ * @property string|null $code
  *
  * @property UserInfo $client
  * @property InvoiceLine[] $invoiceLines
@@ -39,9 +40,10 @@ class Invoice extends \yii\db\ActiveRecord
             [['client_id', 'station_id', 'state_id'], 'integer'],
             [['invoice_date'], 'safe'],
             [['total'], 'number'],
+            [['code'], 'string', 'max' => 45],
             [['state_id'], 'exist', 'skipOnError' => true, 'targetClass' => InvoiceState::class, 'targetAttribute' => ['state_id' => 'id']],
             [['station_id'], 'exist', 'skipOnError' => true, 'targetClass' => Station::class, 'targetAttribute' => ['station_id' => 'id']],
-            [['client_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserInfo::class, 'targetAttribute' => ['client_id' => 'id']],
+            [['client_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['client_id' => 'id']],
         ];
     }
 
@@ -57,6 +59,7 @@ class Invoice extends \yii\db\ActiveRecord
             'invoice_date' => 'Invoice Date',
             'total' => 'Total',
             'state_id' => 'State ID',
+            'code' => 'Code',
         ];
     }
 
@@ -67,7 +70,7 @@ class Invoice extends \yii\db\ActiveRecord
      */
     public function getClient()
     {
-        return $this->hasOne(UserInfo::class, ['id' => 'client_id']);
+        return $this->hasOne(User::class, ['id' => 'client_id']);
     }
 
     /**
@@ -100,19 +103,26 @@ class Invoice extends \yii\db\ActiveRecord
         return $this->hasOne(Station::class, ['id' => 'station_id']);
     }
 
-    public function fields() {
+    /**
+     * Customize fields returned from API
+     * 
+     * @return array
+     */
+    public function fields()
+    {
         $fields = parent::fields();
 
         // Remove client_id, station_id and state_id fields
         unset($fields['client_id'], $fields['station_id'], $fields['state_id']);
 
-        // Add client, station and state fields with array_merge
-        return array_merge($fields, [
-            'client' => function() {
+        // Add client and station fields
+        $fields = array_merge($fields, [
+            'client' => function () {
                 $client = $this->getClient()->one();
                 return $client ? $client : null;
             },
-            'station' => function() {
+
+            'station' => function () {
                 $station = $this->getStation()->one();
                 return $station ? $station : null;
             },
@@ -121,5 +131,16 @@ class Invoice extends \yii\db\ActiveRecord
                 return $state ? $state : null;
             },
         ]);
+    }
+
+    public function updateTotal()
+    {
+        $total = 0;
+        foreach ($this->invoiceLines as $line) {
+            $total += $line->total;
+        }
+
+        $this->total = $total;
+        $this->update();
     }
 }

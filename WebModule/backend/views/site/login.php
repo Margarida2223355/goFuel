@@ -4,29 +4,42 @@
 /** @var yii\bootstrap5\ActiveForm $form */
 /** @var \common\models\LoginForm $model */
 
-use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
+use yii\bootstrap5\ActiveForm;
 
 $this->title = 'Login';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-login">
-    <div class="mt-5 offset-lg-3 col-lg-6">
+<div class="align-items-center justify-content-center py-5">
+    <?php if (Yii::$app->session->hasFlash('error')): ?>
+        <div class="alert alert-danger">
+            <?= Yii::$app->session->getFlash('error') ?>
+        </div>
+</div>
+<?php endif; ?>
+<div class="site-login d-flex align-items-center justify-content-center" style="min-height: 50vh;">
+
+
+    <div class="row justify-content-center">
         <h1><?= Html::encode($this->title) ?></h1>
-
-        <p>Please fill out the following fields to login:</p>
-
-        <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
+        <div class="col-lg-12">
+            <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
             <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 
             <?= $form->field($model, 'password')->passwordInput() ?>
 
-            <?= $form->field($model, 'rememberMe')->checkbox() ?>
+            <!-- <div class="my-1 mx-0" style="color:#999;">
+                If you forgot your password you can <?= Html::a('reset it', ['site/request-password-reset']) ?>.
+                <br>
+                Need new verification email? <?= Html::a('Resend', ['site/resend-verification-email']) ?>
+            </div> -->
 
             <div class="form-group">
-                <?= Html::submitButton('Login', ['class' => 'btn btn-primary btn-block', 'name' => 'login-button']) ?>
+                <?= Html::submitButton('Login', ['class' => 'btn btn-success', 'name' => 'login-button']) ?>
             </div>
 
-        <?php ActiveForm::end(); ?>
+            <?php ActiveForm::end(); ?>
+        </div>
     </div>
 </div>

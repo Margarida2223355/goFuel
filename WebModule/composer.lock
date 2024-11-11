@@ -4,8 +4,51 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2158b2fbf2c2f964ea5d76c3986297c9",
+    "content-hash": "825cc56cf0c423874be51a9d82a526fe",
     "packages": [
+        {
+            "name": "almasaeed2010/adminlte",
+            "version": "v3.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ColorlibHQ/AdminLTE.git",
+                "reference": "bd4d9c72931f1dd28601b6bfb387554a381ad540"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ColorlibHQ/AdminLTE/zipball/bd4d9c72931f1dd28601b6bfb387554a381ad540",
+                "reference": "bd4d9c72931f1dd28601b6bfb387554a381ad540",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Colorlib"
+                }
+            ],
+            "description": "AdminLTE - admin control panel and dashboard that's based on Bootstrap 4",
+            "homepage": "https://adminlte.io/",
+            "keywords": [
+                "JS",
+                "admin",
+                "back-end",
+                "css",
+                "less",
+                "responsive",
+                "template",
+                "theme",
+                "web"
+            ],
+            "support": {
+                "issues": "https://github.com/ColorlibHQ/AdminLTE/issues",
+                "source": "https://github.com/ColorlibHQ/AdminLTE/tree/v3.2.0"
+            },
+            "time": "2022-02-07T20:33:09+00:00"
+        },
         {
             "name": "bower-asset/bootstrap",
             "version": "v5.2.3",
@@ -23,16 +66,16 @@
         },
         {
             "name": "bower-asset/inputmask",
-            "version": "5.0.8",
+            "version": "5.0.9",
             "source": {
                 "type": "git",
-                "url": "git@github.com:RobinHerbots/Inputmask.git",
-                "reference": "e0f39e0c93569c6b494c3a57edef2c59313a6b64"
+                "url": "https://github.com/RobinHerbots/Inputmask.git",
+                "reference": "310a33557e2944daf86d5946a5e8c82b9118f8f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RobinHerbots/Inputmask/zipball/e0f39e0c93569c6b494c3a57edef2c59313a6b64",
-                "reference": "e0f39e0c93569c6b494c3a57edef2c59313a6b64"
+                "url": "https://api.github.com/repos/RobinHerbots/Inputmask/zipball/310a33557e2944daf86d5946a5e8c82b9118f8f7",
+                "reference": "310a33557e2944daf86d5946a5e8c82b9118f8f7"
             },
             "require": {
                 "bower-asset/jquery": ">=1.7"
@@ -354,20 +397,20 @@
         },
         {
             "name": "ezyang/htmlpurifier",
-            "version": "v4.17.0",
+            "version": "v4.18.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "bbc513d79acf6691fa9cf10f192c90dd2957f18c"
+                "reference": "cb56001e54359df7ae76dc522d08845dc741621b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/bbc513d79acf6691fa9cf10f192c90dd2957f18c",
-                "reference": "bbc513d79acf6691fa9cf10f192c90dd2957f18c",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/cb56001e54359df7ae76dc522d08845dc741621b",
+                "reference": "cb56001e54359df7ae76dc522d08845dc741621b",
                 "shasum": ""
             },
             "require": {
-                "php": "~5.6.0 || ~7.0.0 || ~7.1.0 || ~7.2.0 || ~7.3.0 || ~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0"
+                "php": "~5.6.0 || ~7.0.0 || ~7.1.0 || ~7.2.0 || ~7.3.0 || ~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0"
             },
             "require-dev": {
                 "cerdic/css-tidy": "^1.7 || ^2.0",
@@ -409,9 +452,115 @@
             ],
             "support": {
                 "issues": "https://github.com/ezyang/htmlpurifier/issues",
-                "source": "https://github.com/ezyang/htmlpurifier/tree/v4.17.0"
+                "source": "https://github.com/ezyang/htmlpurifier/tree/v4.18.0"
             },
-            "time": "2023-11-17T15:01:25+00:00"
+            "time": "2024-11-01T03:51:45+00:00"
+        },
+        {
+            "name": "hail812/yii2-adminlte-widgets",
+            "version": "v1.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hail812/yii2-adminlte-widgets.git",
+                "reference": "bc942430d7a5f5636f6c492553b5f444bf4a6df6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hail812/yii2-adminlte-widgets/zipball/bc942430d7a5f5636f6c492553b5f444bf4a6df6",
+                "reference": "bc942430d7a5f5636f6c492553b5f444bf4a6df6",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "~2.0.0",
+                "yiisoft/yii2-bootstrap4": "~2.0.8"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "hail812\\adminlte\\widgets\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "hail",
+                    "email": "hail812@163.com"
+                }
+            ],
+            "description": "yii2 adminlte widgets",
+            "keywords": [
+                "extension",
+                "yii2"
+            ],
+            "support": {
+                "issues": "https://github.com/hail812/yii2-adminlte-widgets/issues",
+                "source": "https://github.com/hail812/yii2-adminlte-widgets/tree/v1.0.5"
+            },
+            "time": "2022-05-25T05:58:29+00:00"
+        },
+        {
+            "name": "hail812/yii2-adminlte3",
+            "version": "v1.1.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hail812/yii2-adminlte3.git",
+                "reference": "bcdec8f5e2f9caf7f3a34fad8cdfdd5dbc3a9c31"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hail812/yii2-adminlte3/zipball/bcdec8f5e2f9caf7f3a34fad8cdfdd5dbc3a9c31",
+                "reference": "bcdec8f5e2f9caf7f3a34fad8cdfdd5dbc3a9c31",
+                "shasum": ""
+            },
+            "require": {
+                "almasaeed2010/adminlte": "~3.1",
+                "hail812/yii2-adminlte-widgets": "~1.0.2",
+                "php": ">=7.0",
+                "yiisoft/yii2": "~2.0.0",
+                "yiisoft/yii2-bootstrap4": "~2.0.8"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "hail812\\adminlte3\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "hail",
+                    "email": "hail812@163.com"
+                }
+            ],
+            "description": "adminlte3 for yii2",
+            "keywords": [
+                "AdminLTE",
+                "extension",
+                "yii2"
+            ],
+            "support": {
+                "issues": "https://github.com/hail812/yii2-adminlte3/issues",
+                "source": "https://github.com/hail812/yii2-adminlte3/tree/v1.1.9"
+            },
+            "time": "2023-10-23T05:58:30+00:00"
+        },
+        {
+            "name": "npm-asset/bootstrap",
+            "version": "4.6.2",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/bootstrap/-/bootstrap-4.6.2.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
         },
         {
             "name": "paragonie/random_compat",
@@ -680,16 +829,16 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v5.4.40",
+            "version": "v5.4.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "a54e2a8a114065f31020d6a89ede83e34c3b27a4"
+                "reference": "72982eb416f61003e9bb6e91f8b3213600dcf9e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/a54e2a8a114065f31020d6a89ede83e34c3b27a4",
-                "reference": "a54e2a8a114065f31020d6a89ede83e34c3b27a4",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/72982eb416f61003e9bb6e91f8b3213600dcf9e9",
+                "reference": "72982eb416f61003e9bb6e91f8b3213600dcf9e9",
                 "shasum": ""
             },
             "require": {
@@ -745,7 +894,7 @@
             "description": "Provides tools that allow your application components to communicate with each other by dispatching events and listening to them",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/event-dispatcher/tree/v5.4.40"
+                "source": "https://github.com/symfony/event-dispatcher/tree/v5.4.45"
             },
             "funding": [
                 {
@@ -761,7 +910,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-31T14:33:22+00:00"
+            "time": "2024-09-25T14:11:13+00:00"
         },
         {
             "name": "symfony/event-dispatcher-contracts",
@@ -844,16 +993,16 @@
         },
         {
             "name": "symfony/mailer",
-            "version": "v5.4.44",
+            "version": "v5.4.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mailer.git",
-                "reference": "2a5e44d984872cb161b24fc4dedba7fd7632185f"
+                "reference": "f732e1fafdf0f4a2d865e91f1018aaca174aeed9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mailer/zipball/2a5e44d984872cb161b24fc4dedba7fd7632185f",
-                "reference": "2a5e44d984872cb161b24fc4dedba7fd7632185f",
+                "url": "https://api.github.com/repos/symfony/mailer/zipball/f732e1fafdf0f4a2d865e91f1018aaca174aeed9",
+                "reference": "f732e1fafdf0f4a2d865e91f1018aaca174aeed9",
                 "shasum": ""
             },
             "require": {
@@ -900,7 +1049,7 @@
             "description": "Helps sending emails",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/mailer/tree/v5.4.44"
+                "source": "https://github.com/symfony/mailer/tree/v5.4.45"
             },
             "funding": [
                 {
@@ -916,20 +1065,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-08T09:19:02+00:00"
+            "time": "2024-09-25T14:11:13+00:00"
         },
         {
             "name": "symfony/mime",
-            "version": "v5.4.43",
+            "version": "v5.4.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mime.git",
-                "reference": "a02711d6ce461edada8c0f8641aa536709b99b47"
+                "reference": "8c1b9b3e5b52981551fc6044539af1d974e39064"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mime/zipball/a02711d6ce461edada8c0f8641aa536709b99b47",
-                "reference": "a02711d6ce461edada8c0f8641aa536709b99b47",
+                "url": "https://api.github.com/repos/symfony/mime/zipball/8c1b9b3e5b52981551fc6044539af1d974e39064",
+                "reference": "8c1b9b3e5b52981551fc6044539af1d974e39064",
                 "shasum": ""
             },
             "require": {
@@ -985,7 +1134,7 @@
                 "mime-type"
             ],
             "support": {
-                "source": "https://github.com/symfony/mime/tree/v5.4.43"
+                "source": "https://github.com/symfony/mime/tree/v5.4.45"
             },
             "funding": [
                 {
@@ -1001,7 +1150,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-08-13T10:38:38+00:00"
+            "time": "2024-10-23T20:18:32+00:00"
         },
         {
             "name": "symfony/polyfill-intl-idn",
@@ -1533,6 +1682,106 @@
             "time": "2024-07-18T19:50:00+00:00"
         },
         {
+            "name": "yiisoft/yii2-bootstrap4",
+            "version": "2.0.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yiisoft/yii2-bootstrap4.git",
+                "reference": "6681a7ca2319499c1c35f09e803c5337e56b3dae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yiisoft/yii2-bootstrap4/zipball/6681a7ca2319499c1c35f09e803c5337e56b3dae",
+                "reference": "6681a7ca2319499c1c35f09e803c5337e56b3dae",
+                "shasum": ""
+            },
+            "require": {
+                "npm-asset/bootstrap": "^4.3",
+                "yiisoft/yii2": "^2.0.43"
+            },
+            "require-dev": {
+                "cweagans/composer-patches": "^1.7",
+                "phpunit/phpunit": "4.8.34",
+                "yiisoft/yii2-coding-standards": "~2.0"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                },
+                "patches": {
+                    "phpunit/phpunit-mock-objects": {
+                        "Fix PHP 7 and 8 compatibility": "https://yiisoft.github.io/phpunit-patches/phpunit_mock_objects.patch"
+                    },
+                    "phpunit/phpunit": {
+                        "Fix PHP 7 compatibility": "https://yiisoft.github.io/phpunit-patches/phpunit_php7.patch",
+                        "Fix PHP 8 compatibility": "https://yiisoft.github.io/phpunit-patches/phpunit_php8.patch"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "yii\\bootstrap4\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Qiang Xue",
+                    "email": "qiang.xue@gmail.com",
+                    "homepage": "https://www.yiiframework.com/"
+                },
+                {
+                    "name": "Alexander Makarov",
+                    "email": "sam@rmcreative.ru",
+                    "homepage": "https://rmcreative.ru/"
+                },
+                {
+                    "name": "Antonio Ramirez",
+                    "email": "amigo.cobos@gmail.com"
+                },
+                {
+                    "name": "Paul Klimov",
+                    "email": "klimov.paul@gmail.com"
+                },
+                {
+                    "name": "Simon Karlen",
+                    "email": "simi.albi@outlook.com"
+                }
+            ],
+            "description": "The Twitter Bootstrap extension for the Yii framework",
+            "keywords": [
+                "bootstrap",
+                "bootstrap4",
+                "yii2"
+            ],
+            "support": {
+                "forum": "https://www.yiiframework.com/forum/",
+                "irc": "irc://irc.freenode.net/yii",
+                "issues": "https://github.com/yiisoft/yii2-bootstrap4/issues",
+                "source": "https://github.com/yiisoft/yii2-bootstrap4",
+                "wiki": "https://www.yiiframework.com/wiki/"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/yiisoft",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/yiisoft",
+                    "type": "open_collective"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/yiisoft/yii2-bootstrap4",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2023-05-22T18:39:25+00:00"
+        },
+        {
             "name": "yiisoft/yii2-bootstrap5",
             "version": "2.0.4",
             "source": {
@@ -1768,25 +2017,25 @@
     "packages-dev": [
         {
             "name": "behat/gherkin",
-            "version": "v4.9.0",
+            "version": "v4.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Gherkin.git",
-                "reference": "0bc8d1e30e96183e4f36db9dc79caead300beff4"
+                "reference": "cbb83c4c435dd8d05a161f2a5ae322e61b2f4db6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Gherkin/zipball/0bc8d1e30e96183e4f36db9dc79caead300beff4",
-                "reference": "0bc8d1e30e96183e4f36db9dc79caead300beff4",
+                "url": "https://api.github.com/repos/Behat/Gherkin/zipball/cbb83c4c435dd8d05a161f2a5ae322e61b2f4db6",
+                "reference": "cbb83c4c435dd8d05a161f2a5ae322e61b2f4db6",
                 "shasum": ""
             },
             "require": {
                 "php": "~7.2|~8.0"
             },
             "require-dev": {
-                "cucumber/cucumber": "dev-gherkin-22.0.0",
+                "cucumber/cucumber": "dev-gherkin-24.1.0",
                 "phpunit/phpunit": "~8|~9",
-                "symfony/yaml": "~3|~4|~5"
+                "symfony/yaml": "~3|~4|~5|~6|~7"
             },
             "suggest": {
                 "symfony/yaml": "If you want to parse features, represented in YAML files"
@@ -1825,9 +2074,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Behat/Gherkin/issues",
-                "source": "https://github.com/Behat/Gherkin/tree/v4.9.0"
+                "source": "https://github.com/Behat/Gherkin/tree/v4.10.0"
             },
-            "time": "2021-10-12T13:05:09+00:00"
+            "time": "2024-10-19T14:46:06+00:00"
         },
         {
             "name": "codeception/codeception",
@@ -2657,16 +2906,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v5.2.0",
+            "version": "v5.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "23c79fbbfb725fb92af9bcf41065c8e9a0d49ddb"
+                "reference": "8eea230464783aa9671db8eea6f8c6ac5285794b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/23c79fbbfb725fb92af9bcf41065c8e9a0d49ddb",
-                "reference": "23c79fbbfb725fb92af9bcf41065c8e9a0d49ddb",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/8eea230464783aa9671db8eea6f8c6ac5285794b",
+                "reference": "8eea230464783aa9671db8eea6f8c6ac5285794b",
                 "shasum": ""
             },
             "require": {
@@ -2709,9 +2958,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
-                "source": "https://github.com/nikic/PHP-Parser/tree/v5.2.0"
+                "source": "https://github.com/nikic/PHP-Parser/tree/v5.3.1"
             },
-            "time": "2024-09-15T16:40:33+00:00"
+            "time": "2024-10-08T18:51:32+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -4470,16 +4719,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v5.4.45",
+            "version": "v5.4.46",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "108d436c2af470858bdaba3257baab3a74172017"
+                "reference": "fb0d4760e7147d81ab4d9e2d57d56268261b4e4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/108d436c2af470858bdaba3257baab3a74172017",
-                "reference": "108d436c2af470858bdaba3257baab3a74172017",
+                "url": "https://api.github.com/repos/symfony/console/zipball/fb0d4760e7147d81ab4d9e2d57d56268261b4e4e",
+                "reference": "fb0d4760e7147d81ab4d9e2d57d56268261b4e4e",
                 "shasum": ""
             },
             "require": {
@@ -4549,7 +4798,7 @@
                 "terminal"
             ],
             "support": {
-                "source": "https://github.com/symfony/console/tree/v5.4.45"
+                "source": "https://github.com/symfony/console/tree/v5.4.46"
             },
             "funding": [
                 {
@@ -4565,20 +4814,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-10-08T07:27:17+00:00"
+            "time": "2024-11-05T14:17:06+00:00"
         },
         {
             "name": "symfony/css-selector",
-            "version": "v5.4.40",
+            "version": "v5.4.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/css-selector.git",
-                "reference": "ea43887e9afd2029509662d4f95e8b5ef6fc9bbb"
+                "reference": "4f7f3c35fba88146b56d0025d20ace3f3901f097"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/css-selector/zipball/ea43887e9afd2029509662d4f95e8b5ef6fc9bbb",
-                "reference": "ea43887e9afd2029509662d4f95e8b5ef6fc9bbb",
+                "url": "https://api.github.com/repos/symfony/css-selector/zipball/4f7f3c35fba88146b56d0025d20ace3f3901f097",
+                "reference": "4f7f3c35fba88146b56d0025d20ace3f3901f097",
                 "shasum": ""
             },
             "require": {
@@ -4615,7 +4864,7 @@
             "description": "Converts CSS selectors to XPath expressions",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/css-selector/tree/v5.4.40"
+                "source": "https://github.com/symfony/css-selector/tree/v5.4.45"
             },
             "funding": [
                 {
@@ -4631,7 +4880,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-31T14:33:22+00:00"
+            "time": "2024-09-25T14:11:13+00:00"
         },
         {
             "name": "symfony/dom-crawler",
@@ -4709,16 +4958,16 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v5.4.43",
+            "version": "v5.4.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "ae25a9145a900764158d439653d5630191155ca0"
+                "reference": "63741784cd7b9967975eec610b256eed3ede022b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/ae25a9145a900764158d439653d5630191155ca0",
-                "reference": "ae25a9145a900764158d439653d5630191155ca0",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/63741784cd7b9967975eec610b256eed3ede022b",
+                "reference": "63741784cd7b9967975eec610b256eed3ede022b",
                 "shasum": ""
             },
             "require": {
@@ -4752,7 +5001,7 @@
             "description": "Finds files and directories via an intuitive fluent interface",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/finder/tree/v5.4.43"
+                "source": "https://github.com/symfony/finder/tree/v5.4.45"
             },
             "funding": [
                 {
@@ -4768,7 +5017,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-08-13T14:03:51+00:00"
+            "time": "2024-09-28T13:32:08+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -5005,16 +5254,16 @@
         },
         {
             "name": "symfony/string",
-            "version": "v5.4.44",
+            "version": "v5.4.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "832caa16b6d9aac6bf11747315225f5aba384c24"
+                "reference": "7f6807add88b1e2635f3c6de5e1ace631ed7cad2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/832caa16b6d9aac6bf11747315225f5aba384c24",
-                "reference": "832caa16b6d9aac6bf11747315225f5aba384c24",
+                "url": "https://api.github.com/repos/symfony/string/zipball/7f6807add88b1e2635f3c6de5e1ace631ed7cad2",
+                "reference": "7f6807add88b1e2635f3c6de5e1ace631ed7cad2",
                 "shasum": ""
             },
             "require": {
@@ -5071,7 +5320,7 @@
                 "utf8"
             ],
             "support": {
-                "source": "https://github.com/symfony/string/tree/v5.4.44"
+                "source": "https://github.com/symfony/string/tree/v5.4.45"
             },
             "funding": [
                 {
@@ -5087,20 +5336,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-20T07:56:40+00:00"
+            "time": "2024-09-25T14:11:13+00:00"
         },
         {
             "name": "symfony/yaml",
-            "version": "v5.4.44",
+            "version": "v5.4.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "7025b964f123bbf1896d7563db6ec7f1f63e918a"
+                "reference": "a454d47278cc16a5db371fe73ae66a78a633371e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/7025b964f123bbf1896d7563db6ec7f1f63e918a",
-                "reference": "7025b964f123bbf1896d7563db6ec7f1f63e918a",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/a454d47278cc16a5db371fe73ae66a78a633371e",
+                "reference": "a454d47278cc16a5db371fe73ae66a78a633371e",
                 "shasum": ""
             },
             "require": {
@@ -5146,7 +5395,7 @@
             "description": "Loads and dumps YAML files",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/yaml/tree/v5.4.44"
+                "source": "https://github.com/symfony/yaml/tree/v5.4.45"
             },
             "funding": [
                 {
@@ -5162,7 +5411,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-16T14:36:56+00:00"
+            "time": "2024-09-25T14:11:13+00:00"
         },
         {
             "name": "theseer/tokenizer",

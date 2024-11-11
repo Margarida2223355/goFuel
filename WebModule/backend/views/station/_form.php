@@ -17,6 +17,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'postal_code')->textInput(['maxlength' => true]) ?>
 
+    <!-- Dropdown de Managers -->
     <?= $form->field($model, 'manager_id')->dropDownList($managersList, ['prompt' => 'Selecione um Manager']) ?>
 
     <div class="form-group">

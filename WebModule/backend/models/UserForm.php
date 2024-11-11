@@ -87,55 +87,47 @@ class UserForm extends Model
         }
 
         // Verifica se a role é permitida
-        if (!in_array($this->role, array_keys($this->getAvailableRoles()))) {
+        /*if (!in_array($this->role, array_keys($this->getAvailableRoles()))) {
             $this->addError('role', 'Você não tem permissão para atribuir esta role.');
             return false;
-        }
+        }*/
 
-        // Inicializa os modelos para User e UserInfo
         $this->_user = new User();
         $this->_userInfo = new UserInfo();
 
-        // Preenche os dados do usuário
         $this->_user->username = $this->username;
         $this->_user->email = $this->email;
         $this->_user->auth_key = \Yii::$app->security->generateRandomString();
-        $this->_user->setPassword('password'); // Defina uma senha padrão
-        $this->_user->status = 10; // Status ativo
+        $this->_user->setPassword('password');
+        $this->_user->status = 10;
         $this->_user->created_at = time();
         $this->_user->updated_at = time();
 
-        // Salva o usuário
         if ($this->_user->save()) {
-            $this->_userInfo->user_id = $this->_user->id; // Atribui o ID do usuário
+            $this->_userInfo->user_id = $this->_user->id;
             $this->_userInfo->nif = $this->nif;
             $this->_userInfo->name = $this->name;
             $this->_userInfo->address = $this->address;
             $this->_userInfo->postal_code = $this->postal_code;
             $this->_userInfo->phone = $this->phone;
 
-            // Salva as informações do usuário
             if ($this->_userInfo->save()) {
-                // Associar o usuário à estação se o station_id estiver definido
                 if (!empty($this->station_id)) {
-                    // Salva a associação na tabela de ligação se necessário
-                    $stationUser = new StationUser(); // Certifique-se de ter este modelo
+                    $stationUser = new StationUser();
                     $stationUser->user_id = $this->_user->id;
-                    $stationUser->station_id = $this->station_id; // Atribui o ID da estação
+                    $stationUser->station_id = $this->station_id;
 
                     if (!$stationUser->save()) {
                         Yii::error('Falha ao salvar a associação entre o usuário e a estação: ' . json_encode($stationUser->getErrors()), __METHOD__);
                     }
                 }
 
-                // Atribui a role ao usuário
                 $auth = Yii::$app->authManager;
                 $role = $auth->getRole($this->role);
                 if ($role) {
                     $auth->assign($role, $this->_user->id);
                 }
 
-                // Define o ID do UserInfo no modelo
                 $this->id = $this->_userInfo->id;
                 return true;
             } else {
@@ -145,7 +137,7 @@ class UserForm extends Model
             Yii::error('Falha ao salvar User: ' . json_encode($this->_user->getErrors()), __METHOD__);
         }
 
-        return false; // Retorna falso se não conseguir salvar
+        return false;
     }
 
 
@@ -155,7 +147,6 @@ class UserForm extends Model
     {
         $this->username = $user->username;
         $this->email = $user->email;
-        // Não carregue a senha aqui para evitar expor a senha atual
     }
 
     public function loadUserInfo($userInfo)
@@ -171,7 +162,7 @@ class UserForm extends Model
         return [
             'username' => $this->username,
             'email' => $this->email,
-            // 'password' => $this->password, // trate a senha separadamente
+            // 'password' => $this->password,
         ];
     }
 

@@ -23,10 +23,10 @@ return [
         ],
     ],
     'components' => [
-        'authManager' => [
-                'class' => 'yii\rbac\DbManager', // Usando o DbManager para RBAC
-        ],
-        'log' => [
+        'components' => [
+            'authManager' => [
+                'class' => 'yii\rbac\DbManager',
+            ],
             'targets' => [
                 [
                     'class' => \yii\log\FileTarget::class,

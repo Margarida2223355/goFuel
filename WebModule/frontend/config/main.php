@@ -7,11 +7,15 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'app-frontend',
+    'id' => 'frontend-app',
     'basePath' => dirname(__DIR__),
+    'name' => 'GoFuel',
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],
         'request' => [
             'csrfParam' => '_csrf-frontend',
         ],
@@ -40,8 +44,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'enableStrictParsing' => false,
-            'rules' => [
-            ],
+            'rules' => [],
         ],
     ],
     'params' => $params,

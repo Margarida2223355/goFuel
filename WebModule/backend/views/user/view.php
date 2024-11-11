@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\User $model */
 
-$this->title = $model->user->username;
+$this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="user-view">
 
     <div style="display: flex; align-items: center; ">
-        <h1><?= Html::encode($this->title . ' - ' . $role) ?></h1>
+        <h1><?= Html::encode($this->title) ?></h1>
         <div>
             <?= Html::a('<i class="fa fa-pen" aria-hidden="true"></i>', ['update', 'id' => $model->id], [
                 'title' => 'Atualizar',

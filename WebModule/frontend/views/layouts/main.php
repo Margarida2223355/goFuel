@@ -15,70 +15,95 @@ AppAsset::register($this);
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>" class="h-100">
+
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <?php $this->registerCsrfMetaTags() ?>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link rel="icon" href="<?= Yii::getAlias('@web') ?>/img/logo_mini.png" type="image/x-icon">
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
+
 <body class="d-flex flex-column h-100">
-<?php $this->beginBody() ?>
+    <?php $this->beginBody() ?>
 
-<header>
-    <?php
-    NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar navbar-expand-md navbar-dark bg-dark fixed-top',
-        ],
-    ]);
-    $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'About', 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/site/contact']],
-    ];
-    if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-    }
+    <header>
+        <?php
+        $logoImage = Yii::$app->user->isGuest ? '@web/img/logo_nav.png' : '@web/img/logo_mini.png';
 
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav me-auto mb-2 mb-md-0'],
-        'items' => $menuItems,
-    ]);
-    if (Yii::$app->user->isGuest) {
-        echo Html::tag('div',Html::a('Login',['/site/login'],['class' => ['btn btn-link login text-decoration-none']]),['class' => ['d-flex']]);
-    } else {
-        echo Html::beginForm(['/site/logout'], 'post', ['class' => 'd-flex'])
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout text-decoration-none']
-            )
-            . Html::endForm();
-    }
-    NavBar::end();
-    ?>
-</header>
+        NavBar::begin([
+            'brandLabel' => Html::img($logoImage, [
+                'data-bs-toggle' => 'tooltip',
+                'title' => 'GoFuel',
+                'style' => 'height: 40px; width: auto;',
+            ]),
+            'brandUrl' => ['site/index'],
+            'options' => [
+                'class' => 'navbar navbar-expand-lg bg-secondary navbar-dark fixed-top py-lg-0 px-lg-5',
+                'data-wow-delay' => '0.1s',
+            ],
+        ]);
 
-<main role="main" class="flex-shrink-0">
-    <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
-    </div>
-</main>
+        // Menu items
+        $menuItems = Yii::$app->user->isGuest ? [
+            ['label' => 'Home', 'url' => ['/site/index']],
+            ['label' => 'About', 'url' => ['/site/about']],
+            ['label' => 'GII', 'url' => ['/gii']],
+        ] : [
+            ['label' => 'Home', 'url' => ['/site/index']],
+            ['label' => 'About', 'url' => ['/site/about']],
+            ['label' => 'Service Areas', 'url' => ['/station/index']],
+            ['label' => 'Cart', 'url' => ['/invoice/index-cart']],
+            ['label' => 'All Invoices', 'url' => ['/invoice/index']],
+            ['label' => 'Profile', 'url' => ['/site/profile', 'id' => Yii::$app->user->identity->id]],
+            ['label' => 'GII', 'url' => ['/gii']],
+        ];
 
-<footer class="footer mt-auto py-3 text-muted">
-    <div class="container">
-        <p class="float-start">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
-        <p class="float-end"><?= Yii::powered() ?></p>
-    </div>
-</footer>
+        // Right items
+        $menuItemsRight = Yii::$app->user->isGuest ? [
+            ['label' => 'Login', 'url' => ['/site/login'], 'linkOptions' => ['style' => 'color: #0000EE;']],
+            ['label' => 'Signup', 'url' => ['/site/signup'], 'linkOptions' => ['style' => 'color: #0000EE;']],
+        ] : [
+            ['label' => 'Logout (' . Yii::$app->user->identity->userInfo->name . ')', 'url' => ['/site/logout'], 'linkOptions' => ['style' => 'color: #0000EE;', 'data-method' => 'post']],
+        ];
 
-<?php $this->endBody() ?>
+        // Render items on nav
+        echo Nav::widget([
+            'options' => ['class' => 'navbar-nav me-auto p-4 p-lg-0'],
+            'items' => $menuItems,
+        ]);
+
+        // Auth items
+        echo Nav::widget([
+            'options' => ['class' => 'navbar-nav ms-auto p-4 p-lg-0'],
+            'items' => $menuItemsRight,
+        ]);
+
+        NavBar::end();
+        ?>
+    </header>
+
+    <main role="main" class="flex-shrink-0">
+        <div class="container">
+            <?= Breadcrumbs::widget([
+                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+            ]) ?>
+            <?= Alert::widget() ?>
+            <?= $content ?>
+        </div>
+    </main>
+
+    <footer class="footer mt-auto py-3 text-muted">
+        <div class="container">
+            <p class="float-center">&copy; <?= Html::encode(Yii::$app->name) ?> | David Domingues <?= date('Y') ?></p>
+        </div>
+    </footer>
+
+    <?php $this->endBody() ?>
 </body>
+
 </html>
 <?php $this->endPage();

@@ -78,15 +78,22 @@ $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
         'method' => 'post',
     ]); ?>
 
-    <div class="form-group d-flex align-items-center">
-        <?= Html::hiddenInput('Subcategory[id]', '', ['id' => 'subcategory-id']) ?> <!-- Campo para o ID da subcategoria -->
+    <!-- Campo oculto para o ID da categoria -->
+    <?= Html::activeHiddenInput($newSubcategory, 'category_id', ['value' => $model->id]) ?>
 
+    <!-- Campo oculto para o ID da subcategoria (para edição) -->
+    <?= Html::activeHiddenInput($newSubcategory, 'id', ['value' => $newSubcategory->id]) ?>
+
+    <div class="form-group d-flex align-items-center">
+
+        <!-- Campo de texto para descrição -->
         <?= Html::activeTextInput($newSubcategory, 'description', [
-            'class' => 'form-control me-2',
-            'id' => 'subcategory-description', // ID para acesso no JavaScript
+            'class' => 'form-control me-2', // Classe de margem lateral para espaçamento
+            'id' => 'subcategory-description', // ID para possível JS ou CSS personalizado
             'placeholder' => 'Add new subcategory'
         ]) ?>
 
+        <!-- Botão de envio -->
         <?= Html::submitButton('<i class="fa fa-plus" aria-hidden="true"></i>', [
             'class' => 'btn',
             'style' => 'color: green; border-color: black; height: calc(1.5em + .75rem + 2px);',
@@ -95,6 +102,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
     </div>
 
     <?php ActiveForm::end(); ?>
+
 </div>
 
 <script>

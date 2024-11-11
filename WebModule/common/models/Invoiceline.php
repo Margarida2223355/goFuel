@@ -13,10 +13,10 @@ use Yii;
  * @property float $total
  * @property int $invoice_id
  *
- * @property Invoice $invoice
- * @property Item $item
+ * @property Invoices $invoice
+ * @property Items $item
  */
-class Invoiceline extends \yii\db\ActiveRecord
+class InvoiceLine extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -74,22 +74,8 @@ class Invoiceline extends \yii\db\ActiveRecord
         return $this->hasOne(Item::class, ['id' => 'item_id']);
     }
 
-    public function fields() {
-        $fields = parent::fields();
-
-        // Remove item_id and invoice_id fields
-        unset($fields['item_id'], $fields['invoice_id']);
-
-        // Add item, and invoice fields with array_merge
-        return array_merge($fields, [
-            'item' => function() {
-                $item = $this->getItem()->one();
-                return $item ? $item : null;
-            },
-            'invoice' => function() {
-                $invoice = $this->getInvoice()->one();
-                return $invoice ? $invoice : null;
-            },
-        ]);
+    public function getState()
+    {
+        return $this->hasOne(InvoiceState::class, ['id' => 'state_id']);
     }
 }

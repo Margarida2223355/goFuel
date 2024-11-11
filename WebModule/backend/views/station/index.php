@@ -2,7 +2,6 @@
 
 use common\models\Station;
 use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 
@@ -14,12 +13,14 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="station-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Station', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
+    <div class="d-flex align-items-center mb-3">
+        <h1><?= Html::encode($this->title) ?></h1>
+        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>', ['station/create'], [
+            'class' => 'btn',
+            'title' => 'Create station',
+            'style' => 'color: green; text-decoration: none; margin-right: 10px; margin-left: 15px;',
+        ]) ?>
+    </div>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -38,7 +39,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'class' => ActionColumn::className(),
-                'template' => '{view} {update} {delete} {reset-password}',
+                'template' => '{view} {update} {delete}',
+                'visibleButtons' => [
+                    // O botão delete só será exibido para os admins
+                    'delete' => function ($model) {
+                        return Yii::$app->user->can('Admin');
+                    },
+                    // O botão update será exibido para admins e managers
+                    'update' => function ($model) {
+                        return Yii::$app->user->can('Admin') || Yii::$app->user->can('Manager');
+                    },
+                ],
                 'buttons' => [
                     'view' => function ($url, $model) {
                         return Html::a('<i class="fa fa-eye" aria-hidden="true"></i>', $url, [
@@ -63,7 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ],
         ],
+        'summary' => false,
     ]); ?>
-
 
 </div>

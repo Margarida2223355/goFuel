@@ -7,8 +7,9 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'app-backend',
+    'id' => 'backend-app',
     'basePath' => dirname(__DIR__),
+    'name' => 'GoFuel',
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [
@@ -112,24 +113,16 @@ return [
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/invoicestate',
-                    'extraPatterns' => [
-
-                    ],
-                    'tokens' => [
-
-                    ]
+                    'extraPatterns' => [],
+                    'tokens' => []
                 ],
 
                 // User Infos
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/userinfo',
-                    'extraPatterns' => [
-
-                    ],
-                    'tokens' => [
-
-                    ]
+                    'extraPatterns' => [],
+                    'tokens' => []
                 ],
 
                 // Users
