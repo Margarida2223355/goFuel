@@ -14,6 +14,7 @@ import com.example.gofuel.MyApplication;
 import com.example.gofuel.R;
 import com.example.gofuel.databinding.ActivityHomeBinding;
 import com.example.gofuel.model.user.User;
+import com.example.gofuel.view.fragments.InvoiceFragment;
 import com.example.gofuel.view.fragments.StationFragment;
 import com.example.gofuel.view.components.MenuButtons;
 
@@ -62,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (view.getId() == R.id.btnStation) {
             fragment = new StationFragment();
+        }
+        else if (view.getId() == R.id.btnInvoice) {
+            fragment = new InvoiceFragment();
         }
 
         if (fragment != null) { fragmentManager.beginTransaction().replace(R.id.fragment, fragment).commit(); }
