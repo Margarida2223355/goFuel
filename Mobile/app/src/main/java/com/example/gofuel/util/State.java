@@ -1,5 +1,6 @@
 package com.example.gofuel.util;
 
+import com.example.gofuel.model.invoice.Invoice;
 import com.example.gofuel.model.station.Station;
 import com.example.gofuel.model.user.User;
 
@@ -18,6 +19,17 @@ public class State {
 
         public List<Station> getStations() {
             return stations;
+        }
+    }
+    public static class InvoiceList extends State {
+        private final List<Invoice> invoices;
+
+        public InvoiceList(List<Invoice> invoices) {
+            this.invoices = invoices;
+        }
+
+        public List<Invoice> getInvoices() {
+            return invoices;
         }
     }
 }
