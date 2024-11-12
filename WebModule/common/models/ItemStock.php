@@ -9,9 +9,11 @@ use Yii;
  *
  * @property int $id
  * @property int $item_id
- * @property int $restock_qty
+ * @property int $station_id
+ * @property int $stock
  *
- * @property Item $item
+ * @property Items $item
+ * @property Stations $station
  */
 class ItemStock extends \yii\db\ActiveRecord
 {
@@ -29,9 +31,10 @@ class ItemStock extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['item_id', 'restock_qty'], 'required'],
-            [['item_id', 'restock_qty'], 'integer'],
+            [['item_id', 'station_id', 'stock'], 'required'],
+            [['item_id', 'station_id', 'stock'], 'integer'],
             [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Item::class, 'targetAttribute' => ['item_id' => 'id']],
+            [['station_id'], 'exist', 'skipOnError' => true, 'targetClass' => Station::class, 'targetAttribute' => ['station_id' => 'id']],
         ];
     }
 
@@ -43,7 +46,8 @@ class ItemStock extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'item_id' => 'Item ID',
-            'restock_qty' => 'Restock Qty',
+            'station_id' => 'Station ID',
+            'stock' => 'Stock',
         ];
     }
 
@@ -55,5 +59,15 @@ class ItemStock extends \yii\db\ActiveRecord
     public function getItem()
     {
         return $this->hasOne(Item::class, ['id' => 'item_id']);
+    }
+
+    /**
+     * Gets query for [[Station]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStation()
+    {
+        return $this->hasOne(Station::class, ['id' => 'station_id']);
     }
 }

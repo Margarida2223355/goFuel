@@ -154,12 +154,12 @@ class ItemController extends Controller
         ]);
     }
 
-    public function actionDelete($id)
+    /*public function actionDelete($id)
     {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-    }
+    }*/
 
     public function actionAssociate()
     {
@@ -233,12 +233,10 @@ class ItemController extends Controller
             throw new NotFoundHttpException('Item not found.');
         }
 
-        // Encontra o stock do item para a estação atual
-        $stationId = Yii::$app->user->identity->station_id; // Pega a estação do usuário logado (In Charge)
+        $stationId = Yii::$app->user->identity->stationUsers->station_id; // Pega a estação do usuário logado (In Charge)
         $itemStock = ItemStock::findOne(['item_id' => $id, 'station_id' => $stationId]);
 
         if ($itemStock) {
-            // Incrementa o estoque de acordo com a quantidade de restock definida no item
             $itemStock->stock += $item->restock_qty;
             if ($itemStock->save()) {
                 Yii::$app->session->setFlash('success', 'Item restocked successfully.');
@@ -246,12 +244,10 @@ class ItemController extends Controller
                 Yii::$app->session->setFlash('error', 'Failed to restock item.');
             }
         } else {
-            // Se não existir um registro de stock, cria um novo
             $itemStock = new ItemStock();
             $itemStock->item_id = $id;
             $itemStock->station_id = $stationId;
-            $itemStock->stock = $item->restock_qty; // Inicia o estoque com a quantidade de restock
-
+            $itemStock->stock += $item->restock_qty;
             if ($itemStock->save()) {
                 Yii::$app->session->setFlash('success', 'Item restocked successfully.');
             } else {

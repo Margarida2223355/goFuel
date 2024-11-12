@@ -54,13 +54,22 @@ $this->params['breadcrumbs'][] = $model->name;
                 'template' => '{add-to-cart}',
                 'buttons' => [
                     'add-to-cart' => function ($url, $stationItem, $key) {
-                        return Html::a('<i class="fa fa-shopping-cart"></i>', ['invoice/addtocart', 'id' => $stationItem->id], [
-                            'class' => 'btn btn-sm',
-                            'style' => 'color: #FFD100; text-decoration: none;',
-                            'data-method' => 'post',
-                            'data-confirm' => 'Do you want to add this item to your cart?',
-                            'title' => 'Add to Cart',
-                        ]);
+                        return Html::beginForm(['invoice/addtocart', 'id' => $stationItem->id], 'post', [
+                            'style' => 'display: inline-flex; align-items: center;'
+                        ]) .
+                            Html::input('number', 'quantity', 1, [
+                                'class' => 'form-control',
+                                'style' => 'width: 100px; margin-right: 5px;',
+                                'min' => 1,
+                                'title' => 'Quantidade'
+                            ]) .
+                            Html::submitButton('<i class="fa fa-shopping-cart"></i>', [
+                                'class' => 'btn btn-sm',
+                                'style' => 'color: #FFD100; text-decoration: none;',
+                                'data-confirm' => 'Do you want to add this item to your cart?',
+                                'title' => 'Add to Cart',
+                            ]) .
+                            Html::endForm();
                     },
                 ],
             ],

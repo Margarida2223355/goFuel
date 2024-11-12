@@ -23,6 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'station.name',
             'invoice_date',
             'total',
+            'state.description',
             [
                 'class' => ActionColumn::className(),
                 'template' => '{view} {delete}',

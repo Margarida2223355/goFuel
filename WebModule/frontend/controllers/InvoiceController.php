@@ -36,6 +36,7 @@ class InvoiceController extends Controller
 
     public function actionAddtocart($id)
     {
+        $quantity = Yii::$app->request->post('quantity', 1);
         $currentUser = Yii::$app->user->identity;
         if (!$currentUser) {
             throw new \yii\web\ForbiddenHttpException("User must be logged in to add items to the cart.");
@@ -61,7 +62,7 @@ class InvoiceController extends Controller
 
             if ($existInvoiceLine) {
                 // Update existing invoice line
-                $existInvoiceLine->qty++;
+                $existInvoiceLine->qty += $quantity;
                 $existInvoiceLine->total = $stationItem->price * $existInvoiceLine->qty;
                 if (!$existInvoiceLine->update()) {
                     throw new \yii\web\ServerErrorHttpException("Failed to update the existing invoice line.");
@@ -70,23 +71,14 @@ class InvoiceController extends Controller
                 // Add new invoice line
                 $invoiceLine = new InvoiceLine();
                 $invoiceLine->item_id = $stationItem->item_id;
-                $invoiceLine->qty = 1;
+                $invoiceLine->qty = $quantity;
                 $invoiceLine->invoice_id = $existInvoice->id;
-                $invoiceLine->total = $stationItem->price;
+                $invoiceLine->total = $stationItem->price * $quantity;
                 if (!$invoiceLine->save()) {
                     throw new \yii\web\ServerErrorHttpException("Failed to save the new invoice line.");
                 }
             }
-
-            // Update the total of the existing invoice
-            $total = InvoiceLine::find()
-                ->where(['invoice_id' => $existInvoice->id])
-                ->sum('total');
-
-            $existInvoice->total = $total;
-            if (!$existInvoice->update()) {
-                throw new \yii\web\ServerErrorHttpException("Failed to update the invoice total.");
-            }
+            $existInvoice->updateTotal();
         } else {
             // Create new invoice if none exists
             $invoice = new Invoice();
@@ -103,19 +95,16 @@ class InvoiceController extends Controller
             // Add a new invoice line
             $invoiceLine = new InvoiceLine();
             $invoiceLine->item_id = $stationItem->item_id;
-            $invoiceLine->qty = 1;
+            $invoiceLine->qty = $quantity;
             $invoiceLine->invoice_id = $invoice->id;
-            $invoiceLine->total = $stationItem->price;
+            $invoiceLine->total = $stationItem->price * $quantity;
 
             if (!$invoiceLine->save()) {
                 throw new \yii\web\ServerErrorHttpException("Failed to save the invoice line for the new invoice.");
             }
 
             // Update the total for the new invoice
-            $invoice->total = $invoiceLine->total;
-            if (!$invoice->update()) {
-                throw new \yii\web\ServerErrorHttpException("Failed to update the total for the new invoice.");
-            }
+            $invoice->updateTotal();
         }
 
         return $this->redirect(['station/view', 'id' => $stationItem->station_id]);

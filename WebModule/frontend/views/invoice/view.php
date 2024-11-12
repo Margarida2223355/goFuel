@@ -69,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             <td><?= Html::encode($line->total / $line->qty) ?></td>
                                             <td><?= Html::encode($line->qty) ?></td>
                                             <td><?= Html::encode($line->total) ?></td>
-                                            <?php if ($model->state_id == 4): ?>
+                                            <?php if ($model->state_id == 1): ?>
                                                 <td>
                                                     <?= Html::a(
                                                         '<i class="fas fa-minus"></i>',

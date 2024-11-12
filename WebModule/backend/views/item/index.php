@@ -73,33 +73,29 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     <?php endif; ?>
 
-
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+            'id',
             'item.description',
             'price',
             [
                 'attribute' => 'stock',
                 'label' => 'Current Stock',
-                'value' => function ($model) {
-                    $userId = Yii::$app->user->id;
-                    $stationUser = \common\models\StationUser::findOne(['user_id' => $userId]);
-                    if ($stationUser) {
-                        $stationId = $stationUser->station_id;
+                'value' => function ($model) use ($stationId) {
+                    if ($stationId) {
+                        // Verifica o estoque para o item e a estação selecionada
                         $itemStock = \common\models\ItemStock::findOne(['item_id' => $model->id, 'station_id' => $stationId]);
                         return $itemStock ? $itemStock->stock : 'No Stock Available';
                     }
-
-                    return 'Station Not Assigned';
+                    return 'Station Not Selected';
                 },
             ],
 
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{delete}',
+                'template' => '{update} {restock} {delete}',
                 'buttons' => [
                     'update' => function ($url, $model) {
                         return Html::a(
@@ -125,25 +121,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'restock' => function ($url, $model) {
                         return Html::a(
-                            '<i class="fa fa-archive"></i>',
-                            ['item/delete-association', 'id' => $model->id],
-                            [
-                                'title' => 'Restock Item',
-                                'data-method' => 'post',
-                                'data-confirm' => 'Do you want to restock this item?',
-                                'style' => 'color: #ffc107; text-decoration: none;',
-                            ]
-                        );
-                    },
-                    'restock' => function ($url, $model) {
-                        return Html::a(
-                            '<i class="fa fa-box"></i>',
+                            '<i class="fa fa-box-open"></i>',
                             ['item/restock', 'id' => $model->id],
                             [
                                 'title' => 'Restock Item',
                                 'data-confirm' => 'Do you want to restock this item?',
                                 'data-method' => 'post',
-                                'style' => 'color: #28a745; text-decoration: none;',
+                                'style' => 'color: #007bff; text-decoration: none;',
                             ]
                         );
                     },
