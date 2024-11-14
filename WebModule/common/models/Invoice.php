@@ -15,7 +15,7 @@ use Yii;
  * @property int $state_id
  * @property string|null $code
  *
- * @property UserInfo $client
+ * @property Userinfo $client
  * @property InvoiceLine[] $invoiceLines
  * @property InvoiceState $state
  * @property Station $station
@@ -43,7 +43,7 @@ class Invoice extends \yii\db\ActiveRecord
             [['code'], 'string', 'max' => 45],
             [['state_id'], 'exist', 'skipOnError' => true, 'targetClass' => InvoiceState::class, 'targetAttribute' => ['state_id' => 'id']],
             [['station_id'], 'exist', 'skipOnError' => true, 'targetClass' => Station::class, 'targetAttribute' => ['station_id' => 'id']],
-            [['client_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['client_id' => 'id']],
+            [['client_id'], 'exist', 'skipOnError' => true, 'targetClass' => Userinfo::class, 'targetAttribute' => ['client_id' => 'id']],
         ];
     }
 
@@ -70,7 +70,7 @@ class Invoice extends \yii\db\ActiveRecord
      */
     public function getClient()
     {
-        return $this->hasOne(User::class, ['id' => 'client_id']);
+        return $this->hasOne(Userinfo::class, ['id' => 'client_id']);
     }
 
     /**
@@ -116,21 +116,22 @@ class Invoice extends \yii\db\ActiveRecord
         unset($fields['client_id'], $fields['station_id'], $fields['state_id']);
 
         // Add client and station fields
-        $fields = array_merge($fields, [
-            'client' => function () {
-                $client = $this->getClient()->one();
-                return $client ? $client : null;
-            },
+        $fields['client'] = function () {
+            $client = $this->getClient()->one();
+            return $client ? $client : null;
+        };
 
-            'station' => function () {
-                $station = $this->getStation()->one();
-                return $station ? $station : null;
-            },
-            'state' => function() {
-                $state = $this->getState()->one();
-                return $state ? $state : null;
-            },
-        ]);
+        $fields['station'] = function () {
+            $station = $this->getStation()->one();
+            return $station ? $station : null;
+        };
+
+        $fields['state'] = function() {
+            $state = $this->getState()->one();
+            return $state ? $state : null;
+        };
+
+        return $fields;
     }
 
     public function updateTotal()
