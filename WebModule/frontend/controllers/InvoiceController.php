@@ -4,6 +4,8 @@ namespace frontend\controllers;
 
 use common\models\Invoice;
 use common\models\InvoiceLine;
+use common\models\Item;
+use common\models\Station;
 use common\models\StationItem;
 use Yii;
 use yii\data\ActiveDataProvider;
@@ -47,6 +49,12 @@ class InvoiceController extends Controller
             throw new \yii\web\NotFoundHttpException("The requested station item does not exist.");
         }
 
+        // Verificação de estoque diretamente na tabela StationItem
+        if ($stationItem->stock < $quantity) {
+            Yii::$app->session->setFlash('error', 'Quantity is not available. Please reduce the quantity.');
+            return $this->redirect(['station/view', 'id' => $stationItem->station_id]);
+        }
+
         $existInvoice = Invoice::findOne([
             'client_id' => $currentUser->id,
             'station_id' => $stationItem->station_id,
@@ -61,14 +69,19 @@ class InvoiceController extends Controller
             ]);
 
             if ($existInvoiceLine) {
-                // Update existing invoice line
+                // Atualiza a linha da invoice existente
+                if ($stationItem->stock < ($existInvoiceLine->qty + $quantity)) {
+                    Yii::$app->session->setFlash('error', 'Not enough stock for the desired quantity.');
+                    return $this->redirect(['station/view', 'id' => $stationItem->station_id]);
+                }
+
                 $existInvoiceLine->qty += $quantity;
                 $existInvoiceLine->total = $stationItem->price * $existInvoiceLine->qty;
                 if (!$existInvoiceLine->update()) {
                     throw new \yii\web\ServerErrorHttpException("Failed to update the existing invoice line.");
                 }
             } else {
-                // Add new invoice line
+                // Adiciona nova linha na invoice
                 $invoiceLine = new InvoiceLine();
                 $invoiceLine->item_id = $stationItem->item_id;
                 $invoiceLine->qty = $quantity;
@@ -80,7 +93,7 @@ class InvoiceController extends Controller
             }
             $existInvoice->updateTotal();
         } else {
-            // Create new invoice if none exists
+            // Cria nova invoice
             $invoice = new Invoice();
             $invoice->client_id = $currentUser->id;
             $invoice->station_id = $stationItem->station_id;
@@ -92,7 +105,7 @@ class InvoiceController extends Controller
                 throw new \yii\web\ServerErrorHttpException("Failed to create a new invoice.");
             }
 
-            // Add a new invoice line
+            // Adiciona uma nova linha na invoice
             $invoiceLine = new InvoiceLine();
             $invoiceLine->item_id = $stationItem->item_id;
             $invoiceLine->qty = $quantity;
@@ -103,12 +116,14 @@ class InvoiceController extends Controller
                 throw new \yii\web\ServerErrorHttpException("Failed to save the invoice line for the new invoice.");
             }
 
-            // Update the total for the new invoice
+            // Atualiza o total da nova invoice
             $invoice->updateTotal();
         }
 
         return $this->redirect(['station/view', 'id' => $stationItem->station_id]);
     }
+
+
 
     public function actionIndex()
     {
@@ -147,10 +162,20 @@ class InvoiceController extends Controller
     public function actionPay($id)
     {
         $invoice = $this->findModel($id);
-        $invoice->state_id = 2;
-        $invoice->code = $this->generateRandomCode();
-        $invoice->save();
 
+        foreach ($invoice->invoiceLines as $line) {
+            $item = StationItem::findOne(['item_id' => $line->item_id, 'station_id' => $invoice->station_id]);
+            if ($item->stock >= $line->qty) {
+                $item->stock -= $line->qty;
+                $invoice->state_id = 2;
+                $invoice->code = $this->generateRandomCode();
+                $invoice->save();
+                $item->save();
+            } else {
+                Yii::$app->session->setFlash('error', 'Quantity is not available. We\'re sorry.');
+                return $this->redirect(['view', 'id' => $id]);
+            }
+        }
         return $this->redirect('index-cart');
     }
 

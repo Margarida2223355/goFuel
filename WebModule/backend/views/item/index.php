@@ -85,9 +85,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Current Stock',
                 'value' => function ($model) use ($stationId) {
                     if ($stationId) {
-                        // Verifica o estoque para o item e a estação selecionada
-                        $itemStock = \common\models\ItemStock::findOne(['item_id' => $model->id, 'station_id' => $stationId]);
-                        return $itemStock ? $itemStock->stock : 'No Stock Available';
+                        $item = \common\models\StationItem::findOne(['item_id' => $model->id, 'station_id' => $stationId]);
+                        return $item ? $item->stock : 'No Stock Available';
                     }
                     return 'Station Not Selected';
                 },

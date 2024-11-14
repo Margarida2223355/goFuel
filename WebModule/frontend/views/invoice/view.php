@@ -57,8 +57,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <th>Unit Price (€)</th>
                                         <th>Quantity</th>
                                         <th>Total (€)</th>
-                                        <?php if ($model->state_id == 4): ?>
-                                            <th>Actions<th>
+                                        <?php if ($model->state_id == 1): ?>
+                                            <th>Actions</th>
                                         <?php endif; ?>
                                     </tr>
                                 </thead>

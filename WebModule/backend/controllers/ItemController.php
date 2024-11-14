@@ -4,7 +4,6 @@ namespace backend\controllers;
 
 use backend\models\ItemStationForm;
 use common\models\Item;
-use common\models\ItemStock;
 use common\models\Station;
 use common\models\StationItem;
 use common\models\Subcategory;
@@ -170,12 +169,14 @@ class ItemController extends Controller
             $model->station_id = Yii::$app->request->post('station_id');
             $model->item_id = Yii::$app->request->post('ItemStationForm')['item_id'];
             $model->price = Yii::$app->request->post('ItemStationForm')['price'];
+            $item = Item::findOne(Yii::$app->request->post('ItemStationForm')['item_id']);
 
             if ($model->validate()) {
                 $stationItem = new StationItem();
                 $stationItem->station_id = $stationId;
                 $stationItem->item_id = $model->item_id;
                 $stationItem->price = $model->price;
+                $stationItem->stock = $item->restock_qty;
 
                 if ($stationItem->save()) {
                     Yii::$app->session->setFlash('success', 'Item associated successfully.');
@@ -234,21 +235,11 @@ class ItemController extends Controller
         }
 
         $stationId = Yii::$app->user->identity->stationUsers->station_id; // Pega a estação do usuário logado (In Charge)
-        $itemStock = ItemStock::findOne(['item_id' => $id, 'station_id' => $stationId]);
+        $item = StationItem::findOne(['item_id' => $id, 'station_id' => $stationId]);
 
-        if ($itemStock) {
-            $itemStock->stock += $item->restock_qty;
-            if ($itemStock->save()) {
-                Yii::$app->session->setFlash('success', 'Item restocked successfully.');
-            } else {
-                Yii::$app->session->setFlash('error', 'Failed to restock item.');
-            }
-        } else {
-            $itemStock = new ItemStock();
-            $itemStock->item_id = $id;
-            $itemStock->station_id = $stationId;
-            $itemStock->stock += $item->restock_qty;
-            if ($itemStock->save()) {
+        if ($item) {
+            $item->stock += $item->restock_qty;
+            if ($item->save()) {
                 Yii::$app->session->setFlash('success', 'Item restocked successfully.');
             } else {
                 Yii::$app->session->setFlash('error', 'Failed to restock item.');

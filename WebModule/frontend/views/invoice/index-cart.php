@@ -9,7 +9,7 @@ use yii\grid\GridView;
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Cartx';
+$this->title = 'Cart';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="invoice-index">

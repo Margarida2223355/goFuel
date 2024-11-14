@@ -3,7 +3,6 @@
 namespace common\models;
 
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "station_items".
@@ -11,36 +10,67 @@ use yii\db\ActiveRecord;
  * @property int $id
  * @property int $station_id
  * @property int $item_id
- * @property double $price
+ * @property float $price
+ * @property int $stock
  *
- * @property Station $station
  * @property Item $item
+ * @property Station $station
  */
-class StationItem extends ActiveRecord
+class StationItem extends \yii\db\ActiveRecord
 {
+    /**
+     * {@inheritdoc}
+     */
     public static function tableName()
     {
         return 'station_items';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function rules()
     {
         return [
             [['station_id', 'item_id', 'price'], 'required'],
-            [['station_id', 'item_id'], 'integer'],
+            [['station_id', 'item_id', 'stock'], 'integer'],
             [['price'], 'number'],
-            [['station_id'], 'exist', 'skipOnError' => true, 'targetClass' => Station::class, 'targetAttribute' => ['station_id' => 'id']],
             [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Item::class, 'targetAttribute' => ['item_id' => 'id']],
+            [['station_id'], 'exist', 'skipOnError' => true, 'targetClass' => Station::class, 'targetAttribute' => ['station_id' => 'id']],
         ];
     }
 
-    public function getStation()
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
     {
-        return $this->hasOne(Station::class, ['id' => 'station_id']);
+        return [
+            'id' => 'ID',
+            'station_id' => 'Station ID',
+            'item_id' => 'Item ID',
+            'price' => 'Price',
+            'stock' => 'Stock',
+        ];
     }
 
+    /**
+     * Gets query for [[Item]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
     public function getItem()
     {
         return $this->hasOne(Item::class, ['id' => 'item_id']);
+    }
+
+    /**
+     * Gets query for [[Station]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStation()
+    {
+        return $this->hasOne(Station::class, ['id' => 'station_id']);
     }
 }
