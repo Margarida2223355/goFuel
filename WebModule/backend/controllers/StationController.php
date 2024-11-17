@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\ItemStationForm;
 use common\models\Item;
 use common\models\Station;
 use common\models\StationItem;
@@ -14,9 +15,6 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
-/**
- * StationController implements the CRUD actions for Station model.
- */
 class StationController extends Controller
 {
     /**
@@ -37,11 +35,6 @@ class StationController extends Controller
         );
     }
 
-    /**
-     * Lists all Station models.
-     *
-     * @return string
-     */
     public function actionIndex()
     {
         $currentUser = Yii::$app->user->identity;
@@ -76,14 +69,25 @@ class StationController extends Controller
 
     public function actionView($id)
     {
-        $station = Station::findOne($id); // Busca a estação pelo ID
 
-        if (!$station) {
-            throw new \yii\web\NotFoundHttpException('A estação não foi encontrada.');
+        $station = $this->findModel($id);
+        $model = new ItemStationForm();
+
+        if ($id) {
+            $dataProvider = new \yii\data\ActiveDataProvider([
+                'query' => StationItem::find()->where(['station_id' => $id])->with('item'),
+            ]);
+        } else {
+            $dataProvider = new \yii\data\ArrayDataProvider([
+                'allModels' => [],
+            ]);
         }
 
         return $this->render('view', [
-            'station' => $station, // Passa o modelo da estação para a view
+            'station' => $station,
+            'model' => $model,
+            'id' => $id,
+            'dataProvider' => $dataProvider,
         ]);
     }
 

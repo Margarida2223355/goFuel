@@ -34,6 +34,26 @@ class InvoicelineController extends Controller
         );
     }
 
+    public function actionUpdateQuantity($id)
+    {
+        $line = InvoiceLine::findOne($id);
+        $quantity = Yii::$app->request->post('quantity', 1);
+        $action = Yii::$app->request->post('action');
+
+        if ($line && $quantity > 0) {
+            if ($action === 'minus') {
+                $line->qty = max(0, $line->qty - $quantity);
+            } elseif ($action === 'plus') {
+                $line->qty += $quantity;
+            }
+            $line->total = $line->qty * $line->unit_price;
+            $line->save();
+        }
+
+        return $this->redirect(['invoice/view', 'id' => $line->invoice_id]);
+    }
+
+
     public function actionMinus($id)
     {
         $line = $this->findModel($id);

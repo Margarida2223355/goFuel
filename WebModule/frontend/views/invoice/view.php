@@ -71,28 +71,48 @@ $this->params['breadcrumbs'][] = $this->title;
                                             <td><?= Html::encode($line->total) ?></td>
                                             <?php if ($model->state_id == 1): ?>
                                                 <td>
-                                                    <?= Html::a(
-                                                        '<i class="fas fa-minus"></i>',
-                                                        Url::to(['invoiceline/minus', 'id' => $line->id]),
-                                                        ['title' => 'Minus', 'class' => 'btn btn-sm btn-secondary']
-                                                    ) ?>
-                                                    <?= Html::a(
-                                                        '<i class="fas fa-trash"></i>',
-                                                        Url::to(['invoiceline/delete', 'id' => $line->id]),
-                                                        [
-                                                            'title' => 'Delete',
-                                                            'class' => 'btn btn-sm btn-danger',
-                                                            'data' => [
-                                                                'confirm' => 'Are you sure you want to delete this item?',
-                                                                'method' => 'post',
-                                                            ],
-                                                        ]
-                                                    ) ?>
-                                                    <?= Html::a(
-                                                        '<i class="fas fa-plus"></i>',
-                                                        Url::to(['invoiceline/plus', 'id' => $line->id]),
-                                                        ['title' => 'Plus', 'class' => 'btn btn-sm btn-success']
-                                                    ) ?>
+                                                    <?= Html::beginForm(['invoiceline/update-quantity', 'id' => $line->id], 'post') ?>
+                                                    <div class="input-group">
+                                                        <?= Html::input('number', 'quantity', 1, [
+                                                            'class' => 'form-control',
+                                                            'min' => 1,
+                                                            'style' => 'width: 60px;',
+                                                            'title' => 'Enter quantity'
+                                                        ]) ?>
+                                                        <div class="input-group-append">
+                                                            <?= Html::submitButton(
+                                                                '<i class="fas fa-minus"></i>',
+                                                                [
+                                                                    'class' => 'btn btn-sm btn-secondary',
+                                                                    'name' => 'action',
+                                                                    'value' => 'minus',
+                                                                    'title' => 'Remove Quantity'
+                                                                ]
+                                                            ) ?>
+                                                            <?= Html::submitButton(
+                                                                '<i class="fas fa-plus"></i>',
+                                                                [
+                                                                    'class' => 'btn btn-sm btn-success',
+                                                                    'name' => 'action',
+                                                                    'value' => 'plus',
+                                                                    'title' => 'Add Quantity'
+                                                                ]
+                                                            ) ?>
+                                                            <?= Html::a(
+                                                                '<i class="fas fa-trash"></i>',
+                                                                Url::to(['invoiceline/delete', 'id' => $line->id]),
+                                                                [
+                                                                    'title' => 'Delete',
+                                                                    'class' => 'btn btn-sm btn-danger ',
+                                                                    'data' => [
+                                                                        'confirm' => 'Are you sure you want to delete this item?',
+                                                                        'method' => 'post',
+                                                                    ],
+                                                                ]
+                                                            ) ?>
+                                                        </div>
+                                                    </div>
+                                                    <?= Html::endForm() ?>
                                                 </td>
                                             <?php endif ?>
                                         </tr>

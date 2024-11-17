@@ -10,14 +10,24 @@ use yii\widgets\ActiveForm;
 
 <div class="category-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'action'  => ['category/create'],
+        'options' => ['class' => 'form-inline d-flex align-items-center mb-5'],
+    ]); ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'name', [
+        'options' => ['class' => 'form-group mb-0 me-2'],
+        'template' => "{input}\n{error}",
+    ])->textInput([
+        'maxlength' => true,
+        'placeholder' => 'New Category Name', // Placeholder para clareza
+        'class' => 'form-control',
+    ]) ?>
 
-    <?= Html::submitButton('<i class="fa fa-save" aria-hidden="true"></i> Save', [
+    <?= Html::submitButton('<i class="fa fa-plus" aria-hidden="true"></i>', [
         'class' => 'btn',
-        'style' => 'color: blue; border-color: black;',
-        'title' => 'Update Category'
+        'style' => 'color: green; border-color: black; height: calc(1.5em + .75rem + 2px);',
+        'title' => 'Add Subcategory'
     ]) ?>
 
     <?php ActiveForm::end(); ?>

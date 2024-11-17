@@ -70,21 +70,17 @@ class ItemController extends Controller
 
         $model = new ItemStationForm();
 
-        // Verifica se o usuário selecionou uma estação via POST ou GET
         $stationId = Yii::$app->request->post('stationId') ?? Yii::$app->request->get('stationId');
 
-        // Se o usuário tem estações associadas mas não escolheu uma, seleciona a primeira estação associada
         if (!$stationId && !empty($stations)) {
             $stationId = $stations[0]->id;
         }
 
-        // Caso exista um stationId válido, busca os itens da estação
         if ($stationId) {
             $dataProvider = new \yii\data\ActiveDataProvider([
                 'query' => StationItem::find()->where(['station_id' => $stationId])->with('item'),
             ]);
         } else {
-            // Se não há uma estação válida, retorna um array vazio
             $dataProvider = new \yii\data\ArrayDataProvider([
                 'allModels' => [],
             ]);
@@ -228,13 +224,12 @@ class ItemController extends Controller
 
     public function actionRestock($id)
     {
-        // Encontra o item baseado no ID
         $item = Item::findOne($id);
         if (!$item) {
             throw new NotFoundHttpException('Item not found.');
         }
 
-        $stationId = Yii::$app->user->identity->stationUsers->station_id; // Pega a estação do usuário logado (In Charge)
+        $stationId = Yii::$app->user->identity->stationUsers->station_id;
         $item = StationItem::findOne(['item_id' => $id, 'station_id' => $stationId]);
 
         if ($item) {

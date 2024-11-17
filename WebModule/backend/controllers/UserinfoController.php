@@ -13,9 +13,6 @@ use yii\filters\VerbFilter;
  */
 class UserinfoController extends Controller
 {
-    /**
-     * @inheritDoc
-     */
     public function behaviors()
     {
         return array_merge(
@@ -31,11 +28,6 @@ class UserinfoController extends Controller
         );
     }
 
-    /**
-     * Lists all Userinfo models.
-     *
-     * @return string
-     */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
@@ -57,12 +49,6 @@ class UserinfoController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single Userinfo model.
-     * @param int $id ID
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionView($id)
     {
         return $this->render('view', [
@@ -70,11 +56,6 @@ class UserinfoController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new Userinfo model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
     public function actionCreate()
     {
         $model = new Userinfo();
@@ -92,13 +73,6 @@ class UserinfoController extends Controller
         ]);
     }
 
-    /**
-     * Updates an existing Userinfo model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id ID
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -112,13 +86,6 @@ class UserinfoController extends Controller
         ]);
     }
 
-    /**
-     * Deletes an existing Userinfo model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id ID
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
@@ -126,13 +93,6 @@ class UserinfoController extends Controller
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the Userinfo model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return Userinfo the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = Userinfo::findOne(['id' => $id])) !== null) {

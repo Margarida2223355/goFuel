@@ -38,4 +38,10 @@ use yii\helpers\Url;
         display: flex;
         justify-content: center;
     }
+
+    .sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active,
+    .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
+        background-color: #FEC454 !important;
+        color: #000 !important;
+    }
 </style>
