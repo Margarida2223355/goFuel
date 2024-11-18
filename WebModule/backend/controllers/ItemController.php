@@ -91,6 +91,7 @@ class ItemController extends Controller
             'stations' => $stations,
             'stationId' => $stationId,
             'dataProvider' => $dataProvider,
+            'isUpdate' => false,
         ]);
     }
 
@@ -192,6 +193,7 @@ class ItemController extends Controller
     public function actionDeleteAssociation($id)
     {
         $model = StationItem::findOne($id);
+
         $stationId = $model->station_id;
 
         if ($model !== null) {
@@ -212,15 +214,20 @@ class ItemController extends Controller
             throw new NotFoundHttpException('A associação não foi encontrada.');
         }
 
-        if ($stationItem->load(Yii::$app->request->post()) && $stationItem->save()) {
-            Yii::$app->session->setFlash('success', 'Preço atualizado com sucesso.');
-            return $this->redirect(['index', 'stationId' => $stationItem->station_id]);
-        }
+        $stations = Station::find()->where(['manager_id' => Yii::$app->user->id])->all();
+        $dataProvider = new \yii\data\ActiveDataProvider([
+            'query' => StationItem::find()->where(['station_id' => $stationItem->station_id])->with('item'),
+        ]);
 
-        return $this->render('update-association', [
+        return $this->render('index', [
             'model' => $stationItem,
+            'stations' => $stations,
+            'stationId' => $stationItem->station_id,
+            'dataProvider' => $dataProvider,
+            'isUpdate' => true,
         ]);
     }
+
 
     public function actionRestock($id)
     {

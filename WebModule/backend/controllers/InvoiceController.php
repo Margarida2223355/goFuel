@@ -75,6 +75,7 @@ class InvoiceController extends Controller
 
     public function actionView($id)
     {
+        // Validate state
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -104,7 +105,7 @@ class InvoiceController extends Controller
         ]);
     }
 
-    public function actionUpdate($id)
+    /*public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
@@ -115,13 +116,19 @@ class InvoiceController extends Controller
         return $this->render('update', [
             'model' => $model,
         ]);
-    }
+    }*/
 
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
 
-        return $this->redirect(['index']);
+        $model->state_id = 3;
+
+        if ($model->save) {
+            return $this->redirect(['index']);
+        }
+
+        //SetErrorFlash
     }
 
     protected function findModel($id)
