@@ -12,15 +12,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
-/**
- * UserController implements the CRUD actions for User model.
- */
 class UserController extends Controller
 {
-    /**
-     * @inheritDoc
-     */
-
     public function behaviors()
     {
         return array_merge(
@@ -44,23 +37,18 @@ class UserController extends Controller
             throw new \yii\web\ForbiddenHttpException('O usuário logado não possui permissão para visualizar esta página.');
         }
 
-        // Inicialize a consulta do User com junção com UserInfo
-        $query = User::find()->joinWith('userInfo');
+        $query = User::find();
 
         $auth = Yii::$app->authManager;
         $roles = $auth->getRolesByUser($currentUser->id);
 
         $roleNames = array_keys($roles);
         if (in_array('Admin', $roleNames)) {
-            // Admin pode ver Admins e Managers
-            $query->innerJoin('auth_assignment', 'auth_assignment.user_id = user.id')
-                ->where(['auth_assignment.item_name' => ['Admin', 'Manager']]);
+            $query->all();
         } elseif (in_array('Manager', $roleNames)) {
-            // Manager pode ver In Charge e Employees
             $query->innerJoin('auth_assignment', 'auth_assignment.user_id = user.id')
                 ->where(['auth_assignment.item_name' => ['In Charge', 'Employee']]);
         } else {
-            // Para qualquer outra role, não deve ver nada
             $query->where('0=1');
         }
 
@@ -124,7 +112,6 @@ class UserController extends Controller
             $user->attributes = $userForm->attributes;
             $userInfo->attributes = $userForm->attributes;
 
-            // Inicia uma transação
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 if ($user->save(false) && $userInfo->save(false)) {
@@ -147,15 +134,6 @@ class UserController extends Controller
         ]);
     }
 
-
-
-    /**
-     * Deletes an existing User model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
@@ -163,13 +141,6 @@ class UserController extends Controller
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the User model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id
-     * @return User the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = User::findOne(['id' => $id])) !== null) {
@@ -186,10 +157,8 @@ class UserController extends Controller
             throw new NotFoundHttpException('O usuário não foi encontrado.');
         }
 
-        // Define a nova senha padrão
-        $defaultPassword = 'SenhaPadrao123'; // Alterar para a senha desejada
-
-        // Redefine a senha
+        $defaultPassword = 'password'; 
+        
         $user->setPassword($defaultPassword);
 
         if ($user->save(false)) {
@@ -198,6 +167,6 @@ class UserController extends Controller
             Yii::$app->session->setFlash('error', 'Erro ao redefinir a senha.');
         }
 
-        return $this->redirect(['index']); // Redireciona para a lista de usuários
+        return $this->redirect(['index']);
     }
 }

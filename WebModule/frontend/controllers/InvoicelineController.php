@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use common\models\Invoice;
 use common\models\Invoiceline;
 use common\models\StationItem;
+use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -33,10 +34,29 @@ class InvoicelineController extends Controller
         );
     }
 
+    public function actionUpdateQuantity($id)
+    {
+        $line = InvoiceLine::findOne($id);
+        $quantity = Yii::$app->request->post('quantity', 1);
+        $action = Yii::$app->request->post('action');
+
+        if ($line && $quantity > 0) {
+            if ($action === 'minus') {
+                $line->qty = max(0, $line->qty - $quantity);
+            } elseif ($action === 'plus') {
+                $line->qty += $quantity;
+            }
+            $line->total = $line->qty * $line->unit_price;
+            $line->save();
+        }
+
+        return $this->redirect(['invoice/view', 'id' => $line->invoice_id]);
+    }
+
+
     public function actionMinus($id)
     {
         $line = $this->findModel($id);
-
         $stationItem = StationItem::findOne(['station_id' => $line->invoice->station_id, 'item_id' => $line->item_id]);
 
         if ($line->qty == 1) {
@@ -48,7 +68,6 @@ class InvoicelineController extends Controller
         }
 
         $invoice = Invoice::findOne($line->invoice_id);
-
         $invoice->updateTotal();
 
         return $this->redirect(['/invoice/view', 'id' => $line->invoice_id]);
@@ -57,25 +76,32 @@ class InvoicelineController extends Controller
     public function actionPlus($id)
     {
         $line = $this->findModel($id);
-
         $stationItem = StationItem::findOne(['station_id' => $line->invoice->station_id, 'item_id' => $line->item_id]);
+
+        if ($stationItem->stock < ($line->qty + 1)) {
+            Yii::$app->session->setFlash('error', 'Not enough stock for the desired quantity.');
+            return $this->redirect(['/invoice/view', 'id' => $line->invoice_id]);
+        }
 
         $line->qty++;
         $line->total = $stationItem->price * $line->qty;
         $line->update();
 
         $invoice = Invoice::findOne($line->invoice_id);
-
         $invoice->updateTotal();
 
         return $this->redirect(['/invoice/view', 'id' => $line->invoice_id]);
     }
+
 
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
         $invoice_id = $model->invoice_id;
         $model->delete();
+
+        $invoice = Invoice::findOne($invoice_id);
+        $invoice->updateTotal();
 
         return $this->redirect(['/invoice/view', 'id' => $invoice_id]);
     }

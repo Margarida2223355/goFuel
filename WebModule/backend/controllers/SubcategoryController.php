@@ -11,8 +11,6 @@ use yii\filters\VerbFilter;
 
 class SubcategoryController extends Controller
 {
-    // Outros métodos
-
     public function actionCreate()
     {
         $model = new Subcategory();
@@ -20,21 +18,17 @@ class SubcategoryController extends Controller
         if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post();
 
-            // Se o ID da subcategoria existir, carrega o modelo para edição
             if (isset($data['Subcategory']['id']) && !empty($data['Subcategory']['id'])) {
-                $model = Subcategory::findOne($data['Subcategory']['id']); // Carrega o modelo existente
+                $model = Subcategory::findOne($data['Subcategory']['id']);
             }
 
-            // Carrega os dados do post no modelo
             if ($model->load($data)) {
                 if ($model->save()) {
-                    // Redireciona de volta para a página da categoria
                     return $this->redirect(['category/view', 'id' => $model->category_id]);
                 }
             }
         }
 
-        // Renderiza a página novamente em caso de erro
         return $this->redirect(['category/view', 'id' => $model->category_id]);
     }
 
@@ -52,18 +46,15 @@ class SubcategoryController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            // Passar o modelo da categoria e outros dados necessários
         ]);
     }
 
     public function actionDelete($id)
     {
-        $model = $this->findModel($id); // Verifica se a subcategoria existe
-        $categoryId = $model->category_id; // Guarda o ID da categoria associada
+        $model = $this->findModel($id);
+        $categoryId = $model->category_id;
 
-        // Deleta a subcategoria
         if ($model->delete()) {
-            // Redireciona para a view da categoria após a exclusão
             return $this->redirect(['category/view', 'id' => $categoryId]);
         }
 
@@ -79,5 +70,4 @@ class SubcategoryController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    // Outros métodos
 }

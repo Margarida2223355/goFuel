@@ -4,7 +4,6 @@ namespace backend\controllers;
 
 use backend\models\ItemStationForm;
 use common\models\Item;
-use common\models\ItemStock;
 use common\models\Station;
 use common\models\StationItem;
 use common\models\Subcategory;
@@ -71,21 +70,17 @@ class ItemController extends Controller
 
         $model = new ItemStationForm();
 
-        // Verifica se o usuário selecionou uma estação via POST ou GET
         $stationId = Yii::$app->request->post('stationId') ?? Yii::$app->request->get('stationId');
 
-        // Se o usuário tem estações associadas mas não escolheu uma, seleciona a primeira estação associada
         if (!$stationId && !empty($stations)) {
             $stationId = $stations[0]->id;
         }
 
-        // Caso exista um stationId válido, busca os itens da estação
         if ($stationId) {
             $dataProvider = new \yii\data\ActiveDataProvider([
                 'query' => StationItem::find()->where(['station_id' => $stationId])->with('item'),
             ]);
         } else {
-            // Se não há uma estação válida, retorna um array vazio
             $dataProvider = new \yii\data\ArrayDataProvider([
                 'allModels' => [],
             ]);
@@ -96,6 +91,7 @@ class ItemController extends Controller
             'stations' => $stations,
             'stationId' => $stationId,
             'dataProvider' => $dataProvider,
+            'isUpdate' => false,
         ]);
     }
 
@@ -154,12 +150,12 @@ class ItemController extends Controller
         ]);
     }
 
-    public function actionDelete($id)
+    /*public function actionDelete($id)
     {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-    }
+    }*/
 
     public function actionAssociate()
     {
@@ -170,12 +166,14 @@ class ItemController extends Controller
             $model->station_id = Yii::$app->request->post('station_id');
             $model->item_id = Yii::$app->request->post('ItemStationForm')['item_id'];
             $model->price = Yii::$app->request->post('ItemStationForm')['price'];
+            $item = Item::findOne(Yii::$app->request->post('ItemStationForm')['item_id']);
 
             if ($model->validate()) {
                 $stationItem = new StationItem();
                 $stationItem->station_id = $stationId;
                 $stationItem->item_id = $model->item_id;
                 $stationItem->price = $model->price;
+                $stationItem->stock = $item->restock_qty;
 
                 if ($stationItem->save()) {
                     Yii::$app->session->setFlash('success', 'Item associated successfully.');
@@ -195,6 +193,7 @@ class ItemController extends Controller
     public function actionDeleteAssociation($id)
     {
         $model = StationItem::findOne($id);
+
         $stationId = $model->station_id;
 
         if ($model !== null) {
@@ -215,44 +214,34 @@ class ItemController extends Controller
             throw new NotFoundHttpException('A associação não foi encontrada.');
         }
 
-        if ($stationItem->load(Yii::$app->request->post()) && $stationItem->save()) {
-            Yii::$app->session->setFlash('success', 'Preço atualizado com sucesso.');
-            return $this->redirect(['index', 'stationId' => $stationItem->station_id]);
-        }
+        $stations = Station::find()->where(['manager_id' => Yii::$app->user->id])->all();
+        $dataProvider = new \yii\data\ActiveDataProvider([
+            'query' => StationItem::find()->where(['station_id' => $stationItem->station_id])->with('item'),
+        ]);
 
-        return $this->render('update-association', [
+        return $this->render('index', [
             'model' => $stationItem,
+            'stations' => $stations,
+            'stationId' => $stationItem->station_id,
+            'dataProvider' => $dataProvider,
+            'isUpdate' => true,
         ]);
     }
 
+
     public function actionRestock($id)
     {
-        // Encontra o item baseado no ID
         $item = Item::findOne($id);
         if (!$item) {
             throw new NotFoundHttpException('Item not found.');
         }
 
-        // Encontra o stock do item para a estação atual
-        $stationId = Yii::$app->user->identity->station_id; // Pega a estação do usuário logado (In Charge)
-        $itemStock = ItemStock::findOne(['item_id' => $id, 'station_id' => $stationId]);
+        $stationId = Yii::$app->user->identity->stationUsers->station_id;
+        $item = StationItem::findOne(['item_id' => $id, 'station_id' => $stationId]);
 
-        if ($itemStock) {
-            // Incrementa o estoque de acordo com a quantidade de restock definida no item
-            $itemStock->stock += $item->restock_qty;
-            if ($itemStock->save()) {
-                Yii::$app->session->setFlash('success', 'Item restocked successfully.');
-            } else {
-                Yii::$app->session->setFlash('error', 'Failed to restock item.');
-            }
-        } else {
-            // Se não existir um registro de stock, cria um novo
-            $itemStock = new ItemStock();
-            $itemStock->item_id = $id;
-            $itemStock->station_id = $stationId;
-            $itemStock->stock = $item->restock_qty; // Inicia o estoque com a quantidade de restock
-
-            if ($itemStock->save()) {
+        if ($item) {
+            $item->stock += $item->restock_qty;
+            if ($item->save()) {
                 Yii::$app->session->setFlash('success', 'Item restocked successfully.');
             } else {
                 Yii::$app->session->setFlash('error', 'Failed to restock item.');

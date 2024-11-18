@@ -112,4 +112,9 @@ class Station extends \yii\db\ActiveRecord
             ->where(['id_client' => $userId, 'id_station' => $this->id])
             ->exists();
     }
+
+    public function getPumps()
+    {
+        return $this->hasMany(Pump::class, ['station_id' => 'id']);
+    }
 }

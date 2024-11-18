@@ -34,11 +34,6 @@ class InvoiceController extends Controller
         );
     }
 
-    /**
-     * Lists all Invoice models.
-     *
-     * @return string
-     */
     public function actionIndex()
     {
         $currentUser = Yii::$app->user->identity;
@@ -80,6 +75,7 @@ class InvoiceController extends Controller
 
     public function actionView($id)
     {
+        // Validate state
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -109,7 +105,7 @@ class InvoiceController extends Controller
         ]);
     }
 
-    public function actionUpdate($id)
+    /*public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
@@ -120,29 +116,21 @@ class InvoiceController extends Controller
         return $this->render('update', [
             'model' => $model,
         ]);
-    }
+    }*/
 
-    /**
-     * Deletes an existing Invoice model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id ID
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
 
-        return $this->redirect(['index']);
+        $model->state_id = 3;
+
+        if ($model->save) {
+            return $this->redirect(['index']);
+        }
+
+        //SetErrorFlash
     }
 
-    /**
-     * Finds the Invoice model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return Invoice the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = Invoice::findOne(['id' => $id])) !== null) {

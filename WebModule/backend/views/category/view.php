@@ -48,66 +48,60 @@ $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
                 'template' => '{update} {delete}',
                 'buttons' => [
                     'update' => function ($url, $model) {
-                        return Html::a('<i class="fa fa-pen" aria-hidden="true"></i>', '#', [
-                            'title' => 'Update',
-                            'style' => 'color: #28a745; text-decoration: none;',
-                            'onclick' => "setSubcategoryData({$model->id}, '{$model->description}'); return false;", // Chama a função JavaScript
-                        ]);
+                        if (Yii::$app->user->can('Admin')) {
+                            return Html::a('<i class="fa fa-pen" aria-hidden="true"></i>', '#', [
+                                'title' => 'Update',
+                                'style' => 'color: #28a745; text-decoration: none;',
+                                'onclick' => "setSubcategoryData({$model->id}, '{$model->description}'); return false;", // Chama a função JavaScript
+                            ]);
+                        }
                     },
                     'delete' => function ($url, $model) {
-                        return Html::a(
-                            '<i class="fa fa-trash" aria-hidden="true"></i>',
-                            ['subcategory/delete', 'id' => $model->id],
-                            [
-                                'title' => 'Delete',
-                                'data-method' => 'post',
-                                'data-confirm' => 'Are you sure you want to delete this subcategory?',
-                                'style' => 'color: #dc3545; text-decoration: none;',
-                            ]
-                        );
+                        if (Yii::$app->user->can('Admin')) {
+                            return Html::a(
+                                '<i class="fa fa-trash" aria-hidden="true"></i>',
+                                ['subcategory/delete', 'id' => $model->id],
+                                [
+                                    'title' => 'Delete',
+                                    'data-method' => 'post',
+                                    'data-confirm' => 'Are you sure you want to delete this subcategory?',
+                                    'style' => 'color: #dc3545; text-decoration: none;',
+                                ]
+                            );
+                        }
                     },
                 ],
             ],
         ],
     ]); ?>
+    <?php if (Yii::$app->user->can('Admin')) { ?>
+        <h3>Add New Subcategory</h3>
 
-    <h3>Add New Subcategory</h3>
+        <?php
+        $form = ActiveForm::begin([
+            'action' => ['subcategory/create'],
+            'method' => 'post',
+        ]); ?>
 
-    <?php $form = ActiveForm::begin([
-        'action' => ['subcategory/create'],
-        'method' => 'post',
-    ]); ?>
+        <?= Html::activeHiddenInput($newSubcategory, 'category_id', ['value' => $model->id]) ?>
 
-    <!-- Campo oculto para o ID da categoria -->
-    <?= Html::activeHiddenInput($newSubcategory, 'category_id', ['value' => $model->id]) ?>
+        <?= Html::activeHiddenInput($newSubcategory, 'id', ['value' => $newSubcategory->id]) ?>
 
-    <!-- Campo oculto para o ID da subcategoria (para edição) -->
-    <?= Html::activeHiddenInput($newSubcategory, 'id', ['value' => $newSubcategory->id]) ?>
+        <div class="form-group d-flex align-items-center">
 
-    <div class="form-group d-flex align-items-center">
+            <?= Html::activeTextInput($newSubcategory, 'description', [
+                'class' => 'form-control me-2',
+                'id' => 'subcategory-description',
+                'placeholder' => 'Add new subcategory'
+            ]) ?>
 
-        <!-- Campo de texto para descrição -->
-        <?= Html::activeTextInput($newSubcategory, 'description', [
-            'class' => 'form-control me-2', // Classe de margem lateral para espaçamento
-            'id' => 'subcategory-description', // ID para possível JS ou CSS personalizado
-            'placeholder' => 'Add new subcategory'
-        ]) ?>
+            <?= Html::submitButton('<i class="fa fa-plus" aria-hidden="true"></i>', [
+                'class' => 'btn',
+                'style' => 'color: green; border-color: black; height: calc(1.5em + .75rem + 2px);',
+                'title' => 'Add Subcategory'
+            ]) ?>
+        </div>
 
-        <!-- Botão de envio -->
-        <?= Html::submitButton('<i class="fa fa-plus" aria-hidden="true"></i>', [
-            'class' => 'btn',
-            'style' => 'color: green; border-color: black; height: calc(1.5em + .75rem + 2px);',
-            'title' => 'Add Subcategory'
-        ]) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
-
+    <?php ActiveForm::end();
+    } ?>
 </div>
-
-<script>
-    function setSubcategoryData(id, description) {
-        document.getElementById('subcategory-description').value = description; // Define a descrição no input
-        document.getElementById('subcategory-id').value = id; // Define o ID da subcategoria para a atualização
-    }
-</script>

@@ -26,19 +26,19 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'columns' => [
 
-            'id', // ID do User
-            'username', // Username do User
+            'id',
+            'username',
             [
-                'label' => 'Nome', // Nome do UserInfo
+                'label' => 'Nome',
                 'value' => function ($model) {
-                    return $model->userInfo ? $model->userInfo->name : 'N/A'; // Acessando o campo Nome de UserInfo
+                    return $model->userInfo ? $model->userInfo->name : 'N/A';
                 },
             ],
-            'email', // Email do User
+            'email',
             [
-                'label' => 'Phone', // NIF do UserInfo
+                'label' => 'Phone',
                 'value' => function ($model) {
-                    return $model->userInfo ? $model->userInfo->phone : 'N/A'; // Acessando o campo NIF de UserInfo
+                    return $model->userInfo ? $model->userInfo->phone : 'N/A';
                 },
             ],
 
@@ -48,27 +48,30 @@ $this->params['breadcrumbs'][] = $this->title;
                 'buttons' => [
                     'reset-password' => function ($url, $model) {
                         return Html::a('<i class="fa fa-lock" aria-hidden="true"></i>', $url, [
-                            'title' => 'Resetar Senha',
+                            'title' => 'Reset password',
                             'data-method' => 'post',
                             'data-confirm' => 'Tem certeza que deseja redefinir a senha para o padrão?',
-                            'style' => 'color: #ffcc00; text-decoration: none;', // Estilo opcional
+                            'style' => 'color: #ffcc00; text-decoration: none;',
                         ]);
                     },
                     'view' => function ($url, $model) {
                         return Html::a('<i class="fa fa-eye" aria-hidden="true"></i>', $url, [
-                            'title' => 'Visualizar',
-                            'style' => 'color: #007bff; text-decoration: none;', // Estilo opcional
+                            'title' => 'Vew detsails',
+                            'style' => 'color: #007bff; text-decoration: none;',
                         ]);
                     },
                     'update' => function ($url, $model) {
-                        return Html::a('<i class="fa fa-pen" aria-hidden="true"></i>', $url, [
-                            'title' => 'Atualizar',
-                            'style' => 'color: #28a745; text-decoration: none;', // Estilo opcional
-                        ]);
+                        if ($model->id == Yii::$app->user->id) {
+                            return Html::a('<i class="fa fa-pen" aria-hidden="true"></i>', $url, [
+                                'title' => 'Update',
+                                'style' => 'color: #28a745; text-decoration: none;',
+                            ]);
+                        }
+                        return '';
                     },
                     'delete' => function ($url, $model) {
                         return Html::a('<i class="fa fa-trash" aria-hidden="true"></i>', $url, [
-                            'title' => 'Deletar',
+                            'title' => 'Dlete',
                             'data-method' => 'post',
                             'data-confirm' => 'Tem certeza que deseja deletar este usuário?',
                             'style' => 'color: #dc3545; text-decoration: none;',

@@ -5,6 +5,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
@@ -16,12 +17,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="d-flex align-items-center mb-3">
         <h1><?= Html::encode($this->title) ?></h1>
-        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>', ['category/create'], [
-            'class' => 'btn',
-            'title' => 'Create Category',
-            'style' => 'color: green; text-decoration: none; margin-right: 10px; margin-left: 15px;',
-        ]) ?>
+        <?php if (Yii::$app->user->can("Admin")): ?>
+            <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>', ['category/create'], [
+                'class' => 'btn',
+                'title' => 'Create Category',
+                'style' => 'color: green; text-decoration: none; margin-right: 10px; margin-left: 15px;',
+            ]) ?>
+        <?php endif; ?>
     </div>
+
+
+    <?= $this->render('_form', [
+        'model' => $model,
+    ]) ?>
 
 
     <?= GridView::widget([
@@ -40,18 +48,24 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]);
                     },
                     'update' => function ($url, $model) {
-                        return Html::a('<i class="fa fa-pen" aria-hidden="true"></i>', $url, [
-                            'title' => 'Update',
-                            'style' => 'color: #28a745; text-decoration: none;',
-                        ]);
+                        if (Yii::$app->user->can('Admin')) {
+                            return Html::a('<i class="fa fa-pen" aria-hidden="true"></i>', $url, [
+                                'title' => 'Update',
+                                'style' => 'color: #28a745; text-decoration: none;',
+                            ]);
+                        }
+                        return '';
                     },
                     'delete' => function ($url, $model) {
-                        return Html::a('<i class="fa fa-trash" aria-hidden="true"></i>', $url, [
-                            'title' => 'Delete',
-                            'data-method' => 'post',
-                            'data-confirm' => 'Confirm Item Elimination?',
-                            'style' => 'color: #dc3545; text-decoration: none;',
-                        ]);
+                        if (Yii::$app->user->can('Admin')) {
+                            return Html::a('<i class="fa fa-trash" aria-hidden="true"></i>', $url, [
+                                'title' => 'Delete',
+                                'data-method' => 'post',
+                                'data-confirm' => 'Confirm Item Elimination?',
+                                'style' => 'color: #dc3545; text-decoration: none;',
+                            ]);
+                        }
+                        return '';
                     },
                 ],
             ],

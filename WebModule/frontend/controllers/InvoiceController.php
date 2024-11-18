@@ -4,6 +4,8 @@ namespace frontend\controllers;
 
 use common\models\Invoice;
 use common\models\InvoiceLine;
+use common\models\Item;
+use common\models\Station;
 use common\models\StationItem;
 use Yii;
 use yii\data\ActiveDataProvider;
@@ -36,6 +38,7 @@ class InvoiceController extends Controller
 
     public function actionAddtocart($id)
     {
+        $quantity = Yii::$app->request->post('quantity', 1);
         $currentUser = Yii::$app->user->identity;
         if (!$currentUser) {
             throw new \yii\web\ForbiddenHttpException("User must be logged in to add items to the cart.");
@@ -44,6 +47,12 @@ class InvoiceController extends Controller
         $stationItem = StationItem::findOne($id);
         if (!$stationItem) {
             throw new \yii\web\NotFoundHttpException("The requested station item does not exist.");
+        }
+
+        // Verificação de estoque diretamente na tabela StationItem
+        if ($stationItem->stock < $quantity) {
+            Yii::$app->session->setFlash('error', 'Quantity is not available. Please reduce the quantity.');
+            return $this->redirect(['station/view', 'id' => $stationItem->station_id]);
         }
 
         $existInvoice = Invoice::findOne([
@@ -60,35 +69,31 @@ class InvoiceController extends Controller
             ]);
 
             if ($existInvoiceLine) {
-                // Update existing invoice line
-                $existInvoiceLine->qty++;
+                // Atualiza a linha da invoice existente
+                if ($stationItem->stock < ($existInvoiceLine->qty + $quantity)) {
+                    Yii::$app->session->setFlash('error', 'Not enough stock for the desired quantity.');
+                    return $this->redirect(['station/view', 'id' => $stationItem->station_id]);
+                }
+
+                $existInvoiceLine->qty += $quantity;
                 $existInvoiceLine->total = $stationItem->price * $existInvoiceLine->qty;
                 if (!$existInvoiceLine->update()) {
                     throw new \yii\web\ServerErrorHttpException("Failed to update the existing invoice line.");
                 }
             } else {
-                // Add new invoice line
+                // Adiciona nova linha na invoice
                 $invoiceLine = new InvoiceLine();
                 $invoiceLine->item_id = $stationItem->item_id;
-                $invoiceLine->qty = 1;
+                $invoiceLine->qty = $quantity;
                 $invoiceLine->invoice_id = $existInvoice->id;
-                $invoiceLine->total = $stationItem->price;
+                $invoiceLine->total = $stationItem->price * $quantity;
                 if (!$invoiceLine->save()) {
                     throw new \yii\web\ServerErrorHttpException("Failed to save the new invoice line.");
                 }
             }
-
-            // Update the total of the existing invoice
-            $total = InvoiceLine::find()
-                ->where(['invoice_id' => $existInvoice->id])
-                ->sum('total');
-
-            $existInvoice->total = $total;
-            if (!$existInvoice->update()) {
-                throw new \yii\web\ServerErrorHttpException("Failed to update the invoice total.");
-            }
+            $existInvoice->updateTotal();
         } else {
-            // Create new invoice if none exists
+            // Cria nova invoice
             $invoice = new Invoice();
             $invoice->client_id = $currentUser->id;
             $invoice->station_id = $stationItem->station_id;
@@ -100,26 +105,25 @@ class InvoiceController extends Controller
                 throw new \yii\web\ServerErrorHttpException("Failed to create a new invoice.");
             }
 
-            // Add a new invoice line
+            // Adiciona uma nova linha na invoice
             $invoiceLine = new InvoiceLine();
             $invoiceLine->item_id = $stationItem->item_id;
-            $invoiceLine->qty = 1;
+            $invoiceLine->qty = $quantity;
             $invoiceLine->invoice_id = $invoice->id;
-            $invoiceLine->total = $stationItem->price;
+            $invoiceLine->total = $stationItem->price * $quantity;
 
             if (!$invoiceLine->save()) {
                 throw new \yii\web\ServerErrorHttpException("Failed to save the invoice line for the new invoice.");
             }
 
-            // Update the total for the new invoice
-            $invoice->total = $invoiceLine->total;
-            if (!$invoice->update()) {
-                throw new \yii\web\ServerErrorHttpException("Failed to update the total for the new invoice.");
-            }
+            // Atualiza o total da nova invoice
+            $invoice->updateTotal();
         }
 
         return $this->redirect(['station/view', 'id' => $stationItem->station_id]);
     }
+
+
 
     public function actionIndex()
     {
@@ -158,10 +162,20 @@ class InvoiceController extends Controller
     public function actionPay($id)
     {
         $invoice = $this->findModel($id);
-        $invoice->state_id = 2;
-        $invoice->code = $this->generateRandomCode();
-        $invoice->save();
 
+        foreach ($invoice->invoiceLines as $line) {
+            $item = StationItem::findOne(['item_id' => $line->item_id, 'station_id' => $invoice->station_id]);
+            if ($item->stock >= $line->qty) {
+                $item->stock -= $line->qty;
+                $invoice->state_id = 2;
+                $invoice->code = $this->generateRandomCode();
+                $invoice->save();
+                $item->save();
+            } else {
+                Yii::$app->session->setFlash('error', 'Quantity is not available. We\'re sorry.');
+                return $this->redirect(['view', 'id' => $id]);
+            }
+        }
         return $this->redirect('index-cart');
     }
 

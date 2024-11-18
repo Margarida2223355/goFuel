@@ -11,6 +11,7 @@ use Yii;
  * @property int $station_id
  * @property int $item_id
  * @property float $price
+ * @property int $stock
  *
  * @property Item $item
  * @property Station $station
@@ -32,7 +33,7 @@ class StationItem extends \yii\db\ActiveRecord
     {
         return [
             [['station_id', 'item_id', 'price'], 'required'],
-            [['station_id', 'item_id'], 'integer'],
+            [['station_id', 'item_id', 'stock'], 'integer'],
             [['price'], 'number'],
             [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Item::class, 'targetAttribute' => ['item_id' => 'id']],
             [['station_id'], 'exist', 'skipOnError' => true, 'targetClass' => Station::class, 'targetAttribute' => ['station_id' => 'id']],
@@ -49,6 +50,7 @@ class StationItem extends \yii\db\ActiveRecord
             'station_id' => 'Station ID',
             'item_id' => 'Item ID',
             'price' => 'Price',
+            'stock' => 'Stock',
         ];
     }
 

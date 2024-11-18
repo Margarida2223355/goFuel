@@ -29,6 +29,16 @@ class CategoryController extends Controller
                         'delete' => ['POST'],
                     ],
                 ],
+                'access' => [
+                    'class' => \yii\filters\AccessControl::className(),
+                    'only' => ['create', 'update', 'delete'],
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['Admin'],
+                        ],
+                    ],
+                ],
             ]
         );
     }
@@ -53,35 +63,25 @@ class CategoryController extends Controller
             ],
             */
         ]);
+        $model = new Category();
 
         return $this->render('index', [
+            'model' => $model,
             'dataProvider' => $dataProvider,
         ]);
     }
 
-    /**
-     * Displays a single Category model.
-     * @param int $id ID
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-
-
     public function actionView($id)
     {
-        // Carregar o modelo da categoria com base no ID
         $model = $this->findModel($id);
 
-        // Criar um novo modelo de Subcategory para o formulário de adição
         $newSubcategory = new Subcategory();
 
-        // Se o formulário da categoria for submetido e os dados forem válidos, salve a categoria
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Category updated successfully!');
-            return $this->refresh(); // Recarregar a página para exibir as mudanças
+            return $this->refresh();
         }
 
-        // Carregar as subcategorias associadas à categoria
         $subcategoriesDataProvider = new \yii\data\ActiveDataProvider([
             'query' => Subcategory::find()->where(['category_id' => $id]),
         ]);
@@ -95,18 +95,13 @@ class CategoryController extends Controller
     }
 
 
-    /**
-     * Creates a new Category model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
     public function actionCreate()
     {
         $model = new Category();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect('index');
             }
         } else {
             $model->loadDefaultValues();
@@ -117,34 +112,21 @@ class CategoryController extends Controller
         ]);
     }
 
-    /*
-     * Updates an existing Category model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id ID
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-    */
-    
-     public function actionUpdate($id)
+    public function actionUpdate($id)
     {
-        // Carrega o modelo da categoria que será atualizado
         $model = $this->findModel($id);
 
-        // Criar um novo modelo de Subcategory para o formulário de adição de subcategorias
         $newSubcategory = new Subcategory();
 
-        // Se o formulário da categoria for submetido e os dados forem válidos, salva a categoria
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Category updated successfully!');
-            return $this->redirect(['view', 'id' => $model->id]);  // Mantém a mesma página (view)
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        // Carregar as subcategorias associadas à categoria
         $subcategoriesDataProvider = new \yii\data\ActiveDataProvider([
             'query' => Subcategory::find()->where(['category_id' => $id]),
         ]);
 
-        // Renderizar a view com o formulário de categoria e a tabela de subcategorias
         return $this->render('view', [
             'model' => $model,
             'newSubcategory' => $newSubcategory,
@@ -152,14 +134,7 @@ class CategoryController extends Controller
         ]);
     }
 
-
-    /**
-     * Deletes an existing Category model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id ID
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+ 
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
@@ -167,13 +142,6 @@ class CategoryController extends Controller
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the Category model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return Category the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = Category::findOne(['id' => $id])) !== null) {

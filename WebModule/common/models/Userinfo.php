@@ -113,21 +113,6 @@ class UserInfo extends \yii\db\ActiveRecord
         return $this->hasMany(Station::class, ['id' => 'station_id'])->viaTable('manager_station', ['manager_id' => 'id']);
     }
 
-    /**
-     * Gets query for [[Stations0]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getStations0()
-    {
-        return $this->hasMany(Station::class, ['id' => 'station_id'])->viaTable('station_users', ['user_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[User]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'id']);

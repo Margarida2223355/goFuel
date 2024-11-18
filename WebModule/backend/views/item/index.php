@@ -4,6 +4,7 @@ use common\models\Station;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\grid\GridView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -39,7 +40,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php if ($stationId): ?>
         <div class="item-form mb-3 w-100 justify-content-center">
             <?php $form = ActiveForm::begin([
-                'action' => ['item/associate'],
+                'action' => $isUpdate
+                    ? Url::to(['station-item/update-association', 'id' => $model->id])
+                    : Url::to(['station-item/associate', 'station_id' => $stationId, 'item_id' => null]),
                 'method' => 'post',
                 'options' => ['class' => 'w-100'],
             ]); ?>
@@ -50,7 +53,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="col-md-6">
                     <?= $form->field($model, 'item_id')->dropDownList(
                         \yii\helpers\ArrayHelper::map(\common\models\Item::find()->all(), 'id', 'description'),
-                        ['prompt' => 'Select an Item', 'class' => 'form-control w-100']
+                        [
+                            'prompt' => 'Select an Item',
+                            'class' => 'form-control w-100',
+                            'disabled' => $isUpdate
+                        ]
                     )->label(false) ?>
                 </div>
                 <div class="col-md-3">
@@ -58,14 +65,22 @@ $this->params['breadcrumbs'][] = $this->title;
                         'type' => 'number',
                         'step' => '0.01',
                         'class' => 'form-control w-100',
-                        'placeholder' => 'Enter price'
+                        'placeholder' => 'Enter price',
+                        'value' => $model->price,
                     ])->label(false) ?>
                 </div>
                 <div class="me-2">
-                    <?= Html::submitButton('<i class="fa fa-plus" aria-hidden="true"></i>&ensp;Add Item', [
-                        'class' => 'btn d-flex align-items-center justify-content-center',
-                        'style' => 'color: green; border-color: green; background-color: transparent; border-width: 2px; border-style: solid; border-radius: 5px; padding: 6px 10px;',
-                    ]) ?>
+                    <?= Html::submitButton(
+                        $isUpdate
+                            ? '<i class="fa fa-save" aria-hidden="true"></i>&ensp;Save Changes'
+                            : '<i class="fa fa-plus" aria-hidden="true"></i>&ensp;Add Item',
+                        [
+                            'class' => 'btn d-flex align-items-center justify-content-center',
+                            'style' => $isUpdate
+                                ? 'color: green; border-color: green; background-color: transparent; border-width: 2px; border-style: solid; border-radius: 5px; padding: 6px 10px;'
+                                : 'color: green; border-color: green; background-color: transparent; border-width: 2px; border-style: solid; border-radius: 5px; padding: 6px 10px;',
+                        ]
+                    ) ?>
                 </div>
             </div>
 
@@ -73,33 +88,28 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     <?php endif; ?>
 
-
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+            'id',
             'item.description',
             'price',
             [
                 'attribute' => 'stock',
                 'label' => 'Current Stock',
-                'value' => function ($model) {
-                    $userId = Yii::$app->user->id;
-                    $stationUser = \common\models\StationUser::findOne(['user_id' => $userId]);
-                    if ($stationUser) {
-                        $stationId = $stationUser->station_id;
-                        $itemStock = \common\models\ItemStock::findOne(['item_id' => $model->id, 'station_id' => $stationId]);
-                        return $itemStock ? $itemStock->stock : 'No Stock Available';
+                'value' => function ($model) use ($stationId) {
+                    if ($stationId) {
+                        $item = \common\models\StationItem::findOne(['item_id' => $model->id, 'station_id' => $stationId]);
+                        return $item ? $item->stock : 'No Stock Available';
                     }
-
-                    return 'Station Not Assigned';
+                    return 'Station Not Selected';
                 },
             ],
 
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{delete}',
+                'template' => '{update} {restock} {delete}',
                 'buttons' => [
                     'update' => function ($url, $model) {
                         return Html::a(
@@ -114,7 +124,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'delete' => function ($url, $model) {
                         return Html::a(
                             '<i class="fa fa-trash" aria-hidden="true"></i>',
-                            ['item/delete-association', 'id' => $model->id],
+                            ['station-item/delete-association', 'id' => $model->id],
                             [
                                 'title' => 'Deletar',
                                 'data-method' => 'post',
@@ -125,25 +135,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'restock' => function ($url, $model) {
                         return Html::a(
-                            '<i class="fa fa-archive"></i>',
-                            ['item/delete-association', 'id' => $model->id],
-                            [
-                                'title' => 'Restock Item',
-                                'data-method' => 'post',
-                                'data-confirm' => 'Do you want to restock this item?',
-                                'style' => 'color: #ffc107; text-decoration: none;',
-                            ]
-                        );
-                    },
-                    'restock' => function ($url, $model) {
-                        return Html::a(
-                            '<i class="fa fa-box"></i>',
+                            '<i class="fa fa-box-open"></i>',
                             ['item/restock', 'id' => $model->id],
                             [
                                 'title' => 'Restock Item',
                                 'data-confirm' => 'Do you want to restock this item?',
                                 'data-method' => 'post',
-                                'style' => 'color: #28a745; text-decoration: none;',
+                                'style' => 'color: #007bff; text-decoration: none;',
                             ]
                         );
                     },
