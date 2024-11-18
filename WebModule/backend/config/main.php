@@ -117,12 +117,36 @@ return [
                     'tokens' => []
                 ],
 
-                // Users
+                // User Infos
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/userinfo',
                     'extraPatterns' => [],
                     'tokens' => []
+                ],
+
+                // Users
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/user',
+                    'extraPatterns' => [
+                        'GET login' => 'login',
+                    ],
+                    'tokens' => [
+
+                    ]
+                ],
+
+                // Station Items
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/station-item',
+                    'extraPatterns' => [
+
+                    ],
+                    'tokens' => [
+
+                    ]
                 ],
             ],
         ],

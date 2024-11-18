@@ -1,16 +1,20 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.google.services)
 }
 
 android {
     namespace = "com.example.gofuel"
     compileSdk = 34
+    viewBinding {
+        enable = true
+    }
 
     defaultConfig {
         applicationId = "com.example.gofuel"
-        minSdk = 24
+        minSdk = 28
         targetSdk = 34
-        versionCode = 1
+        versionCode = 4
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -40,4 +44,18 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    // Retrofit to API calls
+    implementation(libs.retrofit2)
+    implementation(libs.retrofit2Conversor)
+
+    // Room for database
+    implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
+
+    // Gson
+    implementation(libs.gson)
+
+    // Firebase
+    implementation(platform(libs.firebase))
 }

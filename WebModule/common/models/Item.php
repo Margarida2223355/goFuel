@@ -12,6 +12,9 @@ use Yii;
  * @property int $subcategory_id
  * @property int $restock_qty
  *
+ * @property InvoiceLine[] $invoiceLines
+ * @property ItemStock[] $itemStocks
+ * @property StationItem[] $stationItems
  * @property Subcategory $subcategory
  */
 class Item extends \yii\db\ActiveRecord
@@ -51,6 +54,36 @@ class Item extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[InvoiceLines]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getInvoiceLines()
+    {
+        return $this->hasMany(InvoiceLine::class, ['item_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[ItemStocks]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getItemStocks()
+    {
+        return $this->hasMany(ItemStock::class, ['item_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[StationItems]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStationItems()
+    {
+        return $this->hasMany(StationItem::class, ['item_id' => 'id']);
+    }
+
+    /**
      * Gets query for [[Subcategory]].
      *
      * @return \yii\db\ActiveQuery
@@ -60,13 +93,18 @@ class Item extends \yii\db\ActiveRecord
         return $this->hasOne(Subcategory::class, ['id' => 'subcategory_id']);
     }
 
-    public function getStationItems()
-    {
-        return $this->hasMany(StationItem::class, ['item_id' => 'id']);
-    }
+    public function fields() {
+        $fields = parent::fields();
 
-    public function getStations()
-    {
-        return $this->hasMany(Station::class, ['id' => 'station_id'])->via('stationItems');
+        // Remove subcategory_id field
+        unset($fields['subcategory_id'],  $fields['category_id']);
+
+        // Add subcategory field
+        $fields['subcategory'] = function() {
+            $subcategory = $this->getSubcategory()->one(); // Busca a subcategoria
+            return $subcategory ? $subcategory : null;
+        };
+
+        return $fields;
     }
 }

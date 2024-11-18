@@ -73,4 +73,23 @@ class StationItem extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Station::class, ['id' => 'station_id']);
     }
+
+    public function fields() {
+        $fields = parent::fields();
+
+        // Remove station_id and item_id fields
+        unset($fields['station_id'], $fields['item_id']);
+
+        // Add station and item fields with array_merge
+        return array_merge($fields, [
+            'station' => function() {
+                $station = $this->getStation()->one();
+                return $station ? $station : null;
+            },
+            'item' => function() {
+                $item = $this->getItem()->one();
+                return $item ? $item : null;
+            }
+        ]);
+    }
 }

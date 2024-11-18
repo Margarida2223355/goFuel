@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnShop"
+        android:src="@drawable/shopicon"
+        android:layout_gravity="bottom|center"
+        android:background="@null"
+        android:contentDescription="@string/btnShop"
+        android:visibility="invisible"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnStation"
+        android:src="@drawable/stationicon"
+        android:layout_gravity="bottom|center"
+        android:background="@null"
+        android:contentDescription="@string/btnStation"
+        android:visibility="invisible"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnInvoice"
+        android:src="@drawable/invoiceicon"
+        android:layout_gravity="bottom|center"
+        android:background="@null"
+        android:contentDescription="@string/btnInvoice"
+        android:visibility="invisible"/>
+</FrameLayout>

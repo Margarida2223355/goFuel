@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "148235274724",
+    "project_id": "gofuel-4f644",
+    "storage_bucket": "gofuel-4f644.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:148235274724:android:38e1067be9b1b83c925ff1",
+        "android_client_info": {
+          "package_name": "com.example.gofuel"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAp87JKKFNSZINnDlImds7mwuB8Bv_4Q0A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
