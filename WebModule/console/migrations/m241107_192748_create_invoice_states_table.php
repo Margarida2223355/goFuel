@@ -13,6 +13,13 @@ class m241107_192748_create_invoice_states_table extends Migration
             'id' => $this->primaryKey(),
             'state' => $this->string()->notNull(),
         ]);
+
+        $this->batchInsert('{{%invoice_states}}', ['id', 'state'], [
+            [1, 'Cart'],
+            [2, 'Pending'],
+            [3, 'Cancelled'],
+            [4, 'Finished'],
+        ]);
     }
 
     public function safeDown()

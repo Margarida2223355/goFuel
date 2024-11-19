@@ -24,6 +24,13 @@ class m241107_192750_create_invoice_lines_table extends Migration
             'id',
             'CASCADE'
         );
+
+        $this->batchInsert('{{%invoice_lines}}', ['id', 'item_id', 'quantity', 'price', 'invoice_id'], [
+            [10, 5, 2, 2, 8],
+            [11, 2, 1, 1.5, 10],
+            [12, 1, 10, 13, 11],
+            [17, 2, 1, 1.5, 12],
+        ]);
     }
 
     public function safeDown()

@@ -18,6 +18,11 @@ class m241107_192747_create_client_station_table extends Migration
 
         $this->addForeignKey('fk_client_station_client', 'client_station', 'client_id', 'user', 'id', 'CASCADE');
         $this->addForeignKey('fk_client_station_station', 'client_station', 'station_id', 'stations', 'id', 'CASCADE');
+
+        $this->batchInsert('{{%client_station}}', ['client_id', 'station_id'], [
+            [5, 2],
+            [6, 2],
+        ]);
     }
 
     public function safeDown()

@@ -14,10 +14,12 @@ class m241107_192742_create_categories_table extends Migration
             'name' => $this->string()->notNull(),
         ]);
 
-        $this->batchInsert('categories', ['id', 'name'], [
-            [1, 'Category 1'],
-            [2, 'Category 2'],
-            [3, 'Category 3'],
+        $this->batchInsert('{{%categories}}', ['id', 'name'], [
+            [1, 'Gasoline'],
+            [2, 'Diesel'],
+            [3, 'Snacks'],
+            [4, 'Accessories'],
+            [5, 'Tobacco'],
         ]);
     }
 

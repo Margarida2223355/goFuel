@@ -23,6 +23,23 @@ class m241107_192743_create_subcategories_table extends Migration
             'id',
             'CASCADE'
         );
+
+        $this->batchInsert('{{%subcategories}}', ['id', 'name', 'category_id'], [
+            [1, 'Unleaded 95', 1],
+            [2, 'Unleaded 98', 1],
+            [3, 'Diesel Regular', 2],
+            [4, 'Diesel Premium', 2],
+            [5, 'Chips', 3],
+            [6, 'Soda', 3],
+            [7, 'Car Fresheners', 4],
+            [8, 'Car Chargers', 4],
+            [9, 'Conventional Tobacco', 5],
+            [10, 'Heated Tobacco', 5],
+            [14, 'Leaded 95', 1],
+            [15, 'Leaded 98', 1],
+            [16, 'Rolling Tabacco', 5],
+            [17, 'Filters', 5],
+        ]);
     }
 
     public function safeDown()

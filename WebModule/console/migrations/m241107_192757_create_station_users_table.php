@@ -18,6 +18,12 @@ class m241107_192757_create_station_users_table extends Migration
 
         $this->addForeignKey('fk_station_users_station', 'station_users', 'station_id', 'stations', 'id', 'CASCADE');
         $this->addForeignKey('fk_station_users_user', 'station_users', 'user_id', 'user', 'id', 'CASCADE');
+
+        $this->batchInsert('{{%station_users}}', ['station_id', 'user_id'], [
+            [2, 1],
+            [3, 2],
+            [4, 2],
+        ]);
     }
 
     public function safeDown()

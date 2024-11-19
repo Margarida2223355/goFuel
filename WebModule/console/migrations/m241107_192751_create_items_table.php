@@ -24,6 +24,14 @@ class m241107_192751_create_items_table extends Migration
             'id',
             'CASCADE'
         );
+        $this->batchInsert('{{%items}}', ['id', 'name', 'category_id', 'price'], [
+            [1, 'Unleaded 95 - 1L', 1, 1000],
+            [2, 'Unleaded 98 - 1L', 2, 1000],
+            [3, 'Diesel Regular - 1L', 3, 1200],
+            [4, 'Diesel Premium - 1L', 4, 1200],
+            [5, 'Pack of Chips', 5, 24],
+            [8, 'Car Charger', 8, 16],
+        ]);
     }
 
     public function safeDown()

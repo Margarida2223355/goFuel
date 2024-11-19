@@ -9,18 +9,51 @@ class m241107_192744_create_stations_table extends Migration
 {
     public function safeUp()
     {
-        $this->createTable('stations', [
+        $this->createTable('{{%stations}}', [
             'id' => $this->primaryKey(),
-            'name' => $this->string()->notNull(),
-            'address' => $this->string(),
-            'postal_code' => $this->string(),
-            'manager_id' => $this->integer(),
-            'phone' => $this->string(15),
+            'name' => $this->string(255)->notNull(),
+            'address' => $this->string(255)->notNull(),
+            'postal_code' => $this->string(20)->notNull(),
+            'manager_id' => $this->integer()->notNull(),
+            'phone' => $this->string(45)->defaultValue(null),
+        ]);
+
+        // Criação do índice para a coluna `manager_id`
+        $this->createIndex(
+            '{{%idx-stations-manager_id}}',
+            '{{%stations}}',
+            'manager_id'
+        );
+
+        // Adição da chave estrangeira para a tabela `user`
+        $this->addForeignKey(
+            '{{%fk-stations-manager_id}}',
+            '{{%stations}}',
+            'manager_id',
+            '{{%user}}',
+            'id',
+            'CASCADE'
+        );
+
+        $this->batchInsert('{{%stations}}', ['id', 'name', 'address', 'postal_code', 'manager_id', 'phone'], [
+            [1, 'Station 1', '123 Main St', '1000-001', 2, '914241533'],
+            [2, 'Station 2', '456 Side St', '1000-002', 2, '236598556'],
+            [4, 'Station Sei lá', 'Rua de Test', '2365-875', 3, '221896745'],
         ]);
     }
 
     public function safeDown()
     {
-        $this->dropTable('stations');
+        $this->dropForeignKey(
+            '{{%fk-stations-manager_id}}',
+            '{{%stations}}'
+        );
+
+        $this->dropIndex(
+            '{{%idx-stations-manager_id}}',
+            '{{%stations}}'
+        );
+
+        $this->dropTable('{{%stations}}');
     }
 }
