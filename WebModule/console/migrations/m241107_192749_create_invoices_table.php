@@ -9,17 +9,61 @@ class m241107_192749_create_invoices_table extends Migration
 {
     public function safeUp()
     {
-        $this->createTable('invoices', [
+        $this->createTable('{{%invoices}}', [
             'id' => $this->primaryKey(),
-            'user_id' => $this->integer()->notNull(),
-            'state_id' => $this->integer()->notNull(),
-            'date' => $this->dateTime()->notNull(),
+            'client_id' => $this->integer()->notNull(),
+            'station_id' => $this->integer()->notNull(),
+            'invoice_date' => $this->dateTime()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
+            'total' => $this->double()->notNull(),
+            'state_id' => $this->integer()->notNull()->defaultValue(2),
+            'code' => $this->string(45)->defaultValue(null),
         ]);
 
-        $this->addForeignKey('fk_invoices_user', 'invoices', 'user_id', 'user', 'id', 'CASCADE');
-        $this->addForeignKey('fk_invoices_state', 'invoices', 'state_id', 'invoice_states', 'id', 'CASCADE');
+        $this->createIndex(
+            '{{%idx-invoices-station_id}}',
+            '{{%invoices}}',
+            'station_id'
+        );
+        $this->createIndex(
+            '{{%idx-invoices-state_id}}',
+            '{{%invoices}}',
+            'state_id'
+        );
+        $this->createIndex(
+            '{{%idx-invoices-client_id}}',
+            '{{%invoices}}',
+            'client_id'
+        );
 
-        $this->batchInsert('{{%invoices}}', ['id', 'client_id', 'state_id', 'created_at', 'total', 'station_id', 'reference'], [
+        $this->addForeignKey(
+            '{{%fk-invoices-station_id}}',
+            '{{%invoices}}',
+            'station_id',
+            '{{%stations}}',
+            'id',
+            'RESTRICT',
+            'RESTRICT'
+        );
+        $this->addForeignKey(
+            '{{%fk-invoices-state_id}}',
+            '{{%invoices}}',
+            'state_id',
+            '{{%invoice_states}}',
+            'id',
+            'RESTRICT',
+            'RESTRICT'
+        );
+        $this->addForeignKey(
+            '{{%fk-invoices-client_id}}',
+            '{{%invoices}}',
+            'client_id',
+            '{{%user}}',
+            'id',
+            'RESTRICT',
+            'RESTRICT'
+        );
+
+        $this->batchInsert('{{%invoices}}', ['id', 'client_id', 'station_id', 'invoice_date', 'total', 'state_id', 'code'], [
             [8, 6, 2, '2024-10-31 21:22:19', 2, 2, 'AQL1L6'],
             [10, 6, 1, '2024-11-04 19:24:55', 1.5, 2, 'IZG4ME'],
             [11, 5, 1, '2024-11-12 21:02:36', 13, 2, 'F3XMY9'],
