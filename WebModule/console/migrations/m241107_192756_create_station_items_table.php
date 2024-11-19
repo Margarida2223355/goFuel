@@ -21,12 +21,12 @@ class m241107_192756_create_station_items_table extends Migration
         $this->addForeignKey('fk_station_items_station', 'station_items', 'station_id', 'stations', 'id', 'CASCADE');
         $this->addForeignKey('fk_station_items_item', 'station_items', 'item_id', 'items', 'id', 'CASCADE');
 
-        $this->batchInsert('{{%station_items}}', ['id', 'station_id', 'item_id', 'price', 'stock'], [
-            [1, 1, 1, 1.3, 5000],
-            [2, 1, 2, 1.6, 5000],
-            [3, 1, 3, 1, 25],
-            [5, 2, 5, 1, 1000],
-            [6, 2, 8, 4.3, 1000],
+        $this->batchInsert('{{%station_items}}', [ 'station_id', 'item_id', 'price', 'stock'], [
+            [1, 1, 1.3, 5000],
+            [1, 2, 1.6, 5000],
+            [1, 3, 1, 25],
+            [2, 5, 1, 1000],
+            [2, 8, 4.3, 1000],
         ]);
     }
 
