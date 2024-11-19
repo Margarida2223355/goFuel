@@ -28,13 +28,13 @@ class m241107_192746_create_user_info_table extends Migration
             'CASCADE'
         );
 
-        $this->batchInsert('{{%user}}', ['id', 'username', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'status', 'created_at', 'updated_at', 'verification_token'], [
-            [1, 'admin', 'adminAuthKey', '$2y$10$aWKuiO3Eqm9iYWqOTZT8.eomK7VLcx/evTLXK1R89MZ9/xJ.1P1O.', null, 'admin@example.com', 10, 0, 0, null],
-            [2, 'manager', 'managerAuthKey', '$2y$10$aWKuiO3Eqm9iYWqOTZT8.eomK7VLcx/evTLXK1R89MZ9/xJ.1P1O.', null, 'manager@example.com', 10, 0, 0, null],
-            [3, 'incharge', 'inchargeAuthKey', '$2y$10$aWKuiO3Eqm9iYWqOTZT8.eomK7VLcx/evTLXK1R89MZ9/xJ.1P1O.', null, 'incharge@example.com', 10, 0, 0, null],
-            [4, 'employee', 'employeeAuthKey', '$2y$10$aWKuiO3Eqm9iYWqOTZT8.eomK7VLcx/evTLXK1R89MZ9/xJ.1P1O.', null, 'employee@example.com', 10, 0, 0, null],
-            [5, 'client', 'clientAuthKey', '$2y$10$aWKuiO3Eqm9iYWqOTZT8.eomK7VLcx/evTLXK1R89MZ9/xJ.1P1O.', null, 'client@example.com', 10, 0, 1731168731, null],
-            [6, 'f.roldao', 'NSnXYl5yzkxfYWvjUMjAkrEBCEnKfhTT', '$2y$13$touBeY34pYqDhtIF.2G.dOCFzGW5TcY4bk6z5fzlbH4eA.fHnWVjK', null, 'f.roldao@oneclient.com', 10, 1730409678, 1731806938, null],
+        $this->batchInsert('{{%user_info}}', ['id', 'user_id', 'nif', 'full_name', 'address', 'postal_code', 'phone'], [
+            [1, 1, 123456789, 'Admin', 'Rua Admin 1', '1000-001', '0'],
+            [2, 2, 987654321, 'Manager', 'Rua Manager 2', '1000-002', '911234564'],
+            [3, 3, 123789456, 'In Charge', 'Rua InCharge 3', '1000-003', '963963963'],
+            [4, 4, 456123789, 'Employee', 'Rua Employee 4', '1000-004', '914914500'],
+            [5, 5, 456123784, 'Client', 'Rua Employee 4', '1000-004', '926926596'],
+            [6, 6, 465465444, 'Francisco Roldão', 'Rua do Rei', '2365-886', '265265265'],
         ]);
     }
 
