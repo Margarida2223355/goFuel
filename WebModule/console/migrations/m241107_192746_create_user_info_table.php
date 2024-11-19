@@ -12,7 +12,7 @@ class m241107_192746_create_user_info_table extends Migration
         $this->createTable('user_info', [
             'id' => $this->primaryKey(),
             'user_id' => $this->integer()->notNull(),
-            'national_id' => $this->string()->notNull(),
+            'nif' => $this->string()->notNull(),
             'name' => $this->string()->notNull(),
             'address' => $this->string(),
             'postal_code' => $this->string(),
