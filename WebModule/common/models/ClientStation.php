@@ -7,11 +7,11 @@ use Yii;
 /**
  * This is the model class for table "client_station".
  *
- * @property int $id_client
- * @property int $id_station
+ * @property int $client_id
+ * @property int $station_id
  *
  * @property User $client
- * @property UserInfo $station
+ * @property Station $station
  */
 class ClientStation extends \yii\db\ActiveRecord
 {
@@ -29,11 +29,11 @@ class ClientStation extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_client', 'id_station'], 'required'],
-            [['id_client', 'id_station'], 'integer'],
-            [['id_client', 'id_station'], 'unique', 'targetAttribute' => ['id_client', 'id_station']],
-            [['id_client'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['id_client' => 'id']],
-            [['id_station'], 'exist', 'skipOnError' => true, 'targetClass' => Station::class, 'targetAttribute' => ['id_station' => 'id']],
+            [['client_id', 'station_id'], 'required'],
+            [['client_id', 'station_id'], 'integer'],
+            [['client_id', 'station_id'], 'unique', 'targetAttribute' => ['client_id', 'station_id']],
+            [['client_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['client_id' => 'id']],
+            [['station_id'], 'exist', 'skipOnError' => true, 'targetClass' => Station::class, 'targetAttribute' => ['station_id' => 'id']],
         ];
     }
 
@@ -43,8 +43,8 @@ class ClientStation extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_client' => 'Id Client',
-            'id_station' => 'Id Station',
+            'client_id' => 'Client ID',
+            'station_id' => 'Station ID',
         ];
     }
 
@@ -55,7 +55,7 @@ class ClientStation extends \yii\db\ActiveRecord
      */
     public function getClient()
     {
-        return $this->hasOne(User::class, ['id' => 'id_client']);
+        return $this->hasOne(User::class, ['id' => 'client_id']);
     }
 
     /**
@@ -65,6 +65,6 @@ class ClientStation extends \yii\db\ActiveRecord
      */
     public function getStation()
     {
-        return $this->hasOne(Station::class, ['id' => 'id_station']);
+        return $this->hasOne(Station::class, ['id' => 'station_id']);
     }
 }
