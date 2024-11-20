@@ -82,7 +82,7 @@ class SiteController extends Controller
             $starredStation = ClientStation::findOne(['client_id' => $currentUser->id]);
 
             if ($starredStation) {
-                $station = Station::findOne($starredStation->id_station);
+                $station = Station::findOne($starredStation->station_id);
             } else {
                 $station = null;
             }
