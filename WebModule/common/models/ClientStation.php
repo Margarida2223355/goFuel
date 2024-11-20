@@ -67,4 +67,22 @@ class ClientStation extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Station::class, ['id' => 'station_id']);
     }
+
+    public function fields() {
+        $fields = parent::fields();
+
+        unset($fields['client_id'],  $fields['station_id']);
+
+        $fields['client'] = function() {
+            $client = $this->getClient()->one();
+            return $client ? $client->getUserInfo()->one() : null;
+        };
+
+        $fields['station'] = function() {
+            $station = $this->getStation()->one();
+            return $station ? $station : null;
+        };
+
+        return $fields;
+    }
 }
