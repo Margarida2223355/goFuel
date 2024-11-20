@@ -17,5 +17,18 @@
 
             return Invoice::find() -> where(['client_id' => $userID]) -> all();
         }
+
+        public function actionGetPaidInvoices() {
+            $userID = \Yii::$app -> request -> getHeaders() -> get('X-USER-ID');
+
+            if (!$userID) {
+                throw new UnauthorizedHttpException('No user ID provided');
+            }
+
+            return Invoice::find()
+                ->joinWith('state')
+                ->where(['client_id' => $userID, 'invoice_states.state' => 'Finished'])
+                ->all();
+        }
     }
 ?>

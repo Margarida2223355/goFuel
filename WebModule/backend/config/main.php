@@ -99,6 +99,7 @@ return [
                     'controller' => 'api/invoice',
                     'extraPatterns' => [
                         'GET userinvoices' => 'get-user-invoices',
+                        'GET paidinvoices' => 'get-paid-invoices',
                     ],
                     'tokens' => []
                 ],
