@@ -80,16 +80,17 @@ class StationItem extends \yii\db\ActiveRecord
         // Remove station_id and item_id fields
         unset($fields['station_id'], $fields['item_id']);
 
-        // Add station and item fields with array_merge
-        return array_merge($fields, [
-            'station' => function() {
-                $station = $this->getStation()->one();
-                return $station ? $station : null;
-            },
-            'item' => function() {
-                $item = $this->getItem()->one();
-                return $item ? $item : null;
-            }
-        ]);
+        // Add station and item fields
+        $fields['station'] = function() {
+            $station = $this->getStation()->one();
+            return $station ? $station : null;
+        };
+
+        $fields['item'] = function() {
+            $item = $this->getItem()->one();
+            return $item ? $item : null;
+        };
+
+        return $fields;
     }
 }
