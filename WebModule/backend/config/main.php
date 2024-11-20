@@ -97,7 +97,10 @@ return [
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/invoice',
-                    'extraPatterns' => [],
+                    'extraPatterns' => [
+                        'GET userinvoices' => 'get-user-invoices',
+                        'GET paidinvoices' => 'get-paid-invoices',
+                    ],
                     'tokens' => []
                 ],
 
@@ -132,21 +135,23 @@ return [
                     'extraPatterns' => [
                         'GET login' => 'login',
                     ],
-                    'tokens' => [
-
-                    ]
+                    'tokens' => []
                 ],
 
                 // Station Items
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/station-item',
-                    'extraPatterns' => [
+                    'extraPatterns' => [],
+                    'tokens' => []
+                ],
 
-                    ],
-                    'tokens' => [
-
-                    ]
+                // Favorite Stations
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/client-station',
+                    'extraPatterns' => [],
+                    'tokens' => []
                 ],
             ],
         ],

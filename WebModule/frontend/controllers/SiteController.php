@@ -79,10 +79,10 @@ class SiteController extends Controller
     {
         $currentUser = Yii::$app->user->identity;
         if ($currentUser) {
-            $starredStation = ClientStation::findOne(['id_client' => $currentUser->id]);
+            $starredStation = ClientStation::findOne(['client_id' => $currentUser->id]);
 
             if ($starredStation) {
-                $station = Station::findOne($starredStation->id_station);
+                $station = Station::findOne($starredStation->station_id);
             } else {
                 $station = null;
             }
