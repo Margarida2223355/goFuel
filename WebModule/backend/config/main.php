@@ -97,7 +97,9 @@ return [
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/invoice',
-                    'extraPatterns' => [],
+                    'extraPatterns' => [
+                        'GET userinvoices' => 'get-user-invoices',
+                    ],
                     'tokens' => []
                 ],
 
