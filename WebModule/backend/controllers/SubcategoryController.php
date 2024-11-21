@@ -11,6 +11,33 @@ use yii\filters\VerbFilter;
 
 class SubcategoryController extends Controller
 {
+
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => \yii\filters\AccessControl::class,
+                'only' => ['create', 'update', 'delete'],
+                'rules' => [
+                    [
+                        'actions' => ['create', 'update', 'delete'],
+                        'allow' => true,
+                        'roles' => ['Admin'],
+                    ],
+                    [
+                        'actions' => ['create', 'update', 'delete'],
+                        'allow' => false,
+                        'roles' => ['Manager', 'Incharge', 'Employee'],
+                    ],
+                ],
+                'denyCallback' => function ($rule, $action) {
+                    \Yii::$app->session->setFlash('error', 'Você não tem permissão para acessar esta página.');
+                    return \Yii::$app->getResponse()->redirect(\Yii::$app->request->referrer ?: \Yii::$app->homeUrl);
+                },
+            ],
+        ];
+    }
+
     public function actionCreate()
     {
         $model = new Subcategory();
@@ -69,5 +96,4 @@ class SubcategoryController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-
 }

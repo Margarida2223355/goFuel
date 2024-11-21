@@ -13,6 +13,32 @@ use yii\web\NotFoundHttpException;
 class StationItemController extends Controller
 {
 
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => \yii\filters\AccessControl::class,
+                'only' => ['add-item-to-station', 'remove-item-from-station', 'delete'],
+                'rules' => [
+                    [
+                        'actions' => ['add-item-to-station', 'remove-item-from-station', 'delete'],
+                        'allow' => true,
+                        'roles' => ['Manager'],
+                    ],
+                    [
+                        'actions' => ['add-item-to-station', 'remove-item-from-station', 'delete'],
+                        'allow' => false,
+                        'roles' => ['Admin', 'Incharge', 'Employee'],
+                    ],
+                ],
+                'denyCallback' => function ($rule, $action) {
+                    \Yii::$app->session->setFlash('error', 'Você não tem permissão para acessar esta página.');
+                    return \Yii::$app->getResponse()->redirect(\Yii::$app->request->referrer ?: \Yii::$app->homeUrl);
+                },
+            ],
+        ];
+    }
+
     public function actionAssociate()
     {
         $model = new ItemStationForm();
