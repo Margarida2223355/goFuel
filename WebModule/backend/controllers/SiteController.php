@@ -111,6 +111,7 @@ class SiteController extends Controller
                 ]);
                 break;
             case 'Emploee':
+                $role = 'In Charge';
                 break;
             case 'Client':
 

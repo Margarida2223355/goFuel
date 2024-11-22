@@ -100,7 +100,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Current Stock',
                 'value' => function ($model) use ($stationId) {
                     if ($stationId) {
-                        $item = \common\models\StationItem::findOne(['item_id' => $model->id, 'station_id' => $stationId]);
+                        $item = \common\models\StationItem::findOne(['item_id' => $model->item_id, 'station_id' => $stationId]);
                         return $item ? $item->stock : 'No Stock Available';
                     }
                     return 'Station Not Selected';
@@ -114,7 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'update' => function ($url, $model) {
                         return Html::a(
                             '<i class="fa fa-pen" aria-hidden="true"></i>',
-                            ['item/update-association', 'id' => $model->id],
+                            ['item/update-association', 'id' => $model->item_id],
                             [
                                 'title' => 'Atualizar',
                                 'style' => 'color: #28a745; text-decoration: none;'
@@ -124,7 +124,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'delete' => function ($url, $model) {
                         return Html::a(
                             '<i class="fa fa-trash" aria-hidden="true"></i>',
-                            ['station-item/delete-association', 'id' => $model->id],
+                            ['station-item/delete-association', 'id' => $model->item_id],
                             [
                                 'title' => 'Deletar',
                                 'data-method' => 'post',
@@ -136,7 +136,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'restock' => function ($url, $model) {
                         return Html::a(
                             '<i class="fa fa-box-open"></i>',
-                            ['item/restock', 'id' => $model->id],
+                            ['item/restock', 'id' => $model->item_id],
                             [
                                 'title' => 'Restock Item',
                                 'data-confirm' => 'Do you want to restock this item?',

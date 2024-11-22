@@ -264,7 +264,6 @@ class ItemController extends Controller
         ]);
     }
 
-
     public function actionRestock($id)
     {
         $item = Item::findOne($id);
@@ -286,8 +285,6 @@ class ItemController extends Controller
 
         return $this->redirect(['index']);
     }
-
-
 
     protected function findModel($id)
     {

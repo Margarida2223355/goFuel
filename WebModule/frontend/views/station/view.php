@@ -13,7 +13,10 @@ $this->params['breadcrumbs'][] = ['label' => 'Stations', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $model->name;
 \yii\web\YiiAsset::register($this);
 ?>
+
 <div class="station-view">
+
+
 
     <h1><?= Html::encode($model->name) ?></h1>
 
@@ -55,7 +58,7 @@ $this->params['breadcrumbs'][] = $model->name;
                 'template' => '{add-to-cart}',
                 'buttons' => [
                     'add-to-cart' => function ($url, $stationItem, $key) {
-                        return Html::beginForm(['invoice/addtocart', 'id' => $stationItem->item_id], 'post', [
+                        return Html::beginForm(['invoice/addtocart', 'item_id' => $stationItem->item_id, 'station_id' => $stationItem->station_id], 'post', [
                             'style' => 'display: inline-flex; align-items: center;'
                         ]) .
                             Html::input('number', 'quantity', 1, [

@@ -49,7 +49,6 @@ class InvoiceController extends Controller
         ];
     }
 
-
     public function actionIndex()
     {
         $currentUser = Yii::$app->user->identity;
@@ -91,7 +90,6 @@ class InvoiceController extends Controller
 
     public function actionView($id)
     {
-        // Validate state
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);

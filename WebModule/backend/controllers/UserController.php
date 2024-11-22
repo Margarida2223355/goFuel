@@ -78,11 +78,33 @@ class UserController extends Controller
         ]);
     }
 
+    public function actionChangerole()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $userId = Yii::$app->request->post('user_id');
+        $newRole = Yii::$app->request->post('role');
+
+        $auth = Yii::$app->authManager;
+
+        if ($userId && $newRole) {
+            $user = User::findOne($userId);
+            $auth->revokeAll($userId);
+            $role = $auth->getRole($newRole);
+            if ($role) {
+                $auth->assign($role, $userId);
+                Yii::$app->session->setFlash('success', $user->userInfo->name . '\'s role has been changed');
+            }
+            Yii::$app->session->setFlash('error', 'Invalid Role');
+        }
+        Yii::$app->session->setFlash('error', 'Invalid Parameters');
+    }
+
+
     public function actionCreate()
     {
         $model = new UserForm();
         $model->load(Yii::$app->request->post());
-        if (/*$model->load(Yii::$app->request->post()) &&*/$model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Usuário criado com sucesso.');
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -157,8 +179,8 @@ class UserController extends Controller
             throw new NotFoundHttpException('O usuário não foi encontrado.');
         }
 
-        $defaultPassword = 'password'; 
-        
+        $defaultPassword = 'password';
+
         $user->setPassword($defaultPassword);
 
         if ($user->save(false)) {

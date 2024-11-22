@@ -36,7 +36,7 @@ class InvoiceController extends Controller
         );
     }
 
-    public function actionAddtocart($id)
+    public function actionAddtocart($item_id, $station_id)
     {
         $quantity = Yii::$app->request->post('quantity', 1);
         $currentUser = Yii::$app->user->identity;
@@ -44,7 +44,7 @@ class InvoiceController extends Controller
             throw new \yii\web\ForbiddenHttpException("User must be logged in to add items to the cart.");
         }
 
-        $stationItem = StationItem::findOne($id);
+        $stationItem = StationItem::findOne(['item_id' => $item_id, 'station_id' => $station_id]);
         if (!$stationItem) {
             throw new \yii\web\NotFoundHttpException("The requested station item does not exist.");
         }
@@ -119,6 +119,7 @@ class InvoiceController extends Controller
             // Atualiza o total da nova invoice
             $invoice->updateTotal();
         }
+        Yii::$app->session->setFlash('success', 'Not enough stock for the desired quantity.');
 
         return $this->redirect(['station/view', 'id' => $stationItem->station_id]);
     }

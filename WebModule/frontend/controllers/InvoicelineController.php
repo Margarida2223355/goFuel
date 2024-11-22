@@ -39,6 +39,7 @@ class InvoicelineController extends Controller
         $line = InvoiceLine::findOne($id);
         $quantity = Yii::$app->request->post('quantity', 1);
         $action = Yii::$app->request->post('action');
+        $invoice = Invoice::findOne($line->invoice_id);
 
         if ($line && $quantity > 0) {
             if ($action === 'minus') {
@@ -48,6 +49,7 @@ class InvoicelineController extends Controller
             }
             $line->total = $line->qty * $line->item->price;
             $line->save();
+            $invoice->updateTotal();
         }
 
         return $this->redirect(['invoice/view', 'id' => $line->invoice_id]);

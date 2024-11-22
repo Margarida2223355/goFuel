@@ -31,10 +31,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'state.description',
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{finish} {view}', // Define os botões que podem aparecer
+                'template' => '{finish} {view}',
                 'buttons' => [
                     'finish' => function ($url, $model, $key) {
-                        // Só exibe o botão "Finish" se state_id for 2
                         if ($model->state_id == 2) {
                             return Html::a('<i class="fas fa-clipboard-check"></i>', ['invoice/finish', 'id' => $model->id], [
                                 'title' => 'Finish',
@@ -44,7 +43,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         return '';
                     },
                     'view' => function ($url, $model, $key) {
-                        // Exibe o botão "View" para todos os estados, exceto quando state_id for 1
                         if ($model->state_id != 1) {
                             return Html::a('<i class="fas fa-eye"></i>', ['invoice/view', 'id' => $model->id], [
                                 'title' => 'Ver',
@@ -54,15 +52,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         return '';
                     },
                 ],
-                'urlCreator' => function ($action, $model, $key, $index) {
-                    // Define a URL para cada ação (view e finish)
-                    if ($action === 'view') {
-                        return Url::to(['invoice/view', 'id' => $model->id]);
-                    } elseif ($action === 'finish') {
-                        return Url::to(['invoice/finish', 'id' => $model->id]);
-                    }
-                    return '#';
-                },
             ],
         ],
         'summary' => false,

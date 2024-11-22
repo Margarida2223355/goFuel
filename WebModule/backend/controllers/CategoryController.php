@@ -43,12 +43,6 @@ class CategoryController extends Controller
         ];
     }
 
-
-    /**
-     * Lists all Category models.
-     *
-     * @return string
-     */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
@@ -95,7 +89,6 @@ class CategoryController extends Controller
         ]);
     }
 
-
     public function actionCreate()
     {
         $model = new Category();
@@ -134,7 +127,6 @@ class CategoryController extends Controller
             'subcategoriesDataProvider' => $subcategoriesDataProvider,
         ]);
     }
-
 
     public function actionDelete($id)
     {

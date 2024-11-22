@@ -81,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Current Stock',
                 'value' => function ($model) use ($id) {
                     if ($id) {
-                        $item = \common\models\StationItem::findOne(['item_id' => $model->id, 'station_id' => $id]);
+                        $item = \common\models\StationItem::findOne(['item_id' => $model->item_id, 'station_id' => $id]);
                         return $item ? $item->stock : 'No Stock Available';
                     }
                     return 'Station Not Selected';

@@ -11,7 +11,7 @@ class m241107_192743_create_subcategories_table extends Migration
     {
         $this->createTable('subcategories', [
             'id' => $this->primaryKey(),
-            'name' => $this->string()->notNull(),
+            'description' => $this->string()->notNull(),
             'category_id' => $this->integer()->notNull(),
         ]);
 
@@ -24,7 +24,7 @@ class m241107_192743_create_subcategories_table extends Migration
             'CASCADE'
         );
 
-        $this->batchInsert('{{%subcategories}}', ['id', 'name', 'category_id'], [
+        $this->batchInsert('{{%subcategories}}', ['id', 'description', 'category_id'], [
             [1, 'Unleaded 95', 1],
             [2, 'Unleaded 98', 1],
             [3, 'Diesel Regular', 2],

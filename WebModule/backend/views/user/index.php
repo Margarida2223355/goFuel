@@ -12,6 +12,17 @@ use yii\grid\GridView;
 $this->title = 'Users';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+<?php if (Yii::$app->session->hasFlash('success')): ?>
+    <div class="alert alert-success">
+        <?= Yii::$app->session->getFlash('success') ?>
+    </div>
+<?php elseif (Yii::$app->session->hasFlash('error')): ?>
+    <div class="alert alert-danger">
+        <?= Yii::$app->session->getFlash('error') ?>
+    </div>
+<?php endif; ?>
+
 <div class="user-index">
     <div class="d-flex align-items-center mb-3">
         <h1><?= Html::encode($this->title) ?></h1>
@@ -36,9 +47,23 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'email',
             [
-                'label' => 'Phone',
+                'label' => 'Role',
+                'format' => 'raw',
                 'value' => function ($model) {
-                    return $model->userInfo ? $model->userInfo->phone : 'N/A';
+                    $authManager = Yii::$app->authManager;
+                    $roles = $authManager->getRoles();
+                    $userRole = $authManager->getRolesByUser($model->id);
+                    $currentRole = reset($userRole);
+                    $dropdown = Html::dropDownList(
+                        "role_{$model->id}",
+                        $currentRole ? $currentRole->name : null,
+                        array_map(fn($role) => $role->name, $roles),
+                        [
+                            'class' => 'form-control role-selector',
+                            'data-id' => $model->id,
+                        ]
+                    );
+                    return $dropdown;
                 },
             ],
 
@@ -84,3 +109,28 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 </div>
+
+<?php
+$script = <<<JS
+$('.role-selector').on('change', function () {
+    const userId = $(this).data('id');
+    const newRole = $(this).val();
+    $.ajax({
+        url: 'changerole',
+        type: 'POST',
+        data: {
+            user_id: userId,
+            role: newRole,
+            _csrf: yii.getCsrfToken(),
+        },
+        success: function () {
+            location.reload();
+        },
+        error: function () {
+            alert('Erro ao atualizar a role.');
+        }
+    });
+});
+JS;
+$this->registerJs($script);
+?>
