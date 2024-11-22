@@ -176,7 +176,7 @@ class InvoiceController extends Controller
                 return $this->redirect(['view', 'id' => $id]);
             }
         }
-        return $this->redirect('index-cart');
+        return $this->redirect('index');
     }
 
     private function generateRandomCode()

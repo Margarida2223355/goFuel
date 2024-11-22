@@ -11,7 +11,7 @@ class m241107_192747_create_items_table extends Migration
     {
         $this->createTable('items', [
             'id' => $this->primaryKey(),
-            'name' => $this->string()->notNull(),
+            'description' => $this->string()->notNull(),
             'price' => $this->decimal(10, 2),
             'subcategory_id' => $this->integer()->notNull(),
         ]);
@@ -24,7 +24,7 @@ class m241107_192747_create_items_table extends Migration
             'id',
             'CASCADE'
         );
-        $this->batchInsert('{{%items}}', ['id', 'name', 'subcategory_id', 'price'], [
+        $this->batchInsert('{{%items}}', ['id', 'description', 'subcategory_id', 'price'], [
             [1, 'Unleaded 95 - 1L', 1, 1000],
             [2, 'Unleaded 98 - 1L', 2, 1000],
             [3, 'Diesel Regular - 1L', 3, 1200],

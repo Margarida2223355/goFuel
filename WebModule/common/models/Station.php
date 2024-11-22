@@ -109,7 +109,7 @@ class Station extends \yii\db\ActiveRecord
     public function isFavoritedByUser($userId)
     {
         return ClientStation::find()
-            ->where(['id_client' => $userId, 'id_station' => $this->id])
+            ->where(['client_id' => $userId, 'station_id' => $this->id])
             ->exists();
     }
 

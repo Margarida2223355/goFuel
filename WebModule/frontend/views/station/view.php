@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $model->name;
                 'template' => '{add-to-cart}',
                 'buttons' => [
                     'add-to-cart' => function ($url, $stationItem, $key) {
-                        return Html::beginForm(['invoice/addtocart', 'id' => $stationItem->id], 'post', [
+                        return Html::beginForm(['invoice/addtocart', 'id' => $stationItem->item_id], 'post', [
                             'style' => 'display: inline-flex; align-items: center;'
                         ]) .
                             Html::input('number', 'quantity', 1, [

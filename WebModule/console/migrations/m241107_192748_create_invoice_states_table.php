@@ -11,10 +11,10 @@ class m241107_192748_create_invoice_states_table extends Migration
     {
         $this->createTable('invoice_states', [
             'id' => $this->primaryKey(),
-            'state' => $this->string()->notNull(),
+            'description' => $this->string()->notNull(),
         ]);
 
-        $this->batchInsert('{{%invoice_states}}', ['id', 'state'], [
+        $this->batchInsert('{{%invoice_states}}', ['id', 'description'], [
             [1, 'Cart'],
             [2, 'Pending'],
             [3, 'Cancelled'],

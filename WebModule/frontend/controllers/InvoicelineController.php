@@ -46,7 +46,7 @@ class InvoicelineController extends Controller
             } elseif ($action === 'plus') {
                 $line->qty += $quantity;
             }
-            $line->total = $line->qty * $line->unit_price;
+            $line->total = $line->qty * $line->item->price;
             $line->save();
         }
 

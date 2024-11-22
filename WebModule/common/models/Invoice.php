@@ -70,7 +70,7 @@ class Invoice extends \yii\db\ActiveRecord
      */
     public function getClient()
     {
-        return $this->hasOne(UserInfo::class, ['id' => 'client_id']);
+        return $this->hasOne(User::class, ['id' => 'client_id']);
     }
 
     /**

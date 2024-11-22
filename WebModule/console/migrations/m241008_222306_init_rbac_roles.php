@@ -11,14 +11,13 @@ class m241008_222306_init_rbac_roles extends Migration
     {
         $auth = Yii::$app->authManager;
 
-        // Criando as roles
         $admin = $auth->createRole('Admin');
         $manager = $auth->createRole('Manager');
         $inCharge = $auth->createRole('In Charge');
         $employee = $auth->createRole('Employee');
         $client = $auth->createRole('Client');
 
-        // Adicionando as roles no sistema
+
         $auth->add($admin);
         $auth->add($manager);
         $auth->add($inCharge);
@@ -34,5 +33,5 @@ class m241008_222306_init_rbac_roles extends Migration
         $auth = Yii::$app->authManager;
         $auth->removeAll();
     }
-
+//Permissions e controladores
 }

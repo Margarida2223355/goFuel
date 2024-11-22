@@ -30,7 +30,7 @@ class SiteController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
-                            return !Yii::$app->user->can('client');
+                            return !Yii::$app->user->can('Client');
                         }
                     ],
                 ],
@@ -111,6 +111,10 @@ class SiteController extends Controller
                 ]);
                 break;
             case 'Emploee':
+                break;
+            case 'Client':
+
+                Yii::$app->user->logout();
                 break;
         }
 

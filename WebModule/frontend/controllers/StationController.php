@@ -63,20 +63,20 @@ class StationController extends Controller
     public function actionStarred($station_id)
     {
         $currentUser = Yii::$app->user->identity;
-        $starredStation = ClientStation::findOne(['id_client' => $currentUser->id]);
+        $starredStation = ClientStation::findOne(['client_id' => $currentUser->id]);
 
         if ($starredStation) {
-            if ((int)$starredStation->id_station != $station_id) {
-                $starredStation->id_client = $currentUser->id;
-                $starredStation->id_station = $station_id;
+            if ((int)$starredStation->station_id != $station_id) {
+                $starredStation->client_id = $currentUser->id;
+                $starredStation->station_id = $station_id;
                 $starredStation->update();
             } else {
                 $starredStation->delete();
             }
         } else {
             $starredStation = new ClientStation();
-            $starredStation->id_client = $currentUser->id;
-            $starredStation->id_station = $station_id;
+            $starredStation->client_id = $currentUser->id;
+            $starredStation->station_id = $station_id;
             $starredStation->save();
         }
 
