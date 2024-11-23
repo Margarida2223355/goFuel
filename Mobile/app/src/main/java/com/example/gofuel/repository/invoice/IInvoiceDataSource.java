@@ -2,7 +2,8 @@ package com.example.gofuel.repository.invoice;
 
 
 import com.example.gofuel.model.invoice.Invoice;
-import com.example.gofuel.model.item.Item;
+import com.example.gofuel.model.invoice.finished.FinishedInvoice;
+import com.example.gofuel.model.invoice.pending.PendingInvoice;
 import com.example.gofuel.repository.common.ResultWrapper;
 
 import java.util.List;
@@ -12,9 +13,8 @@ public interface IInvoiceDataSource {
 
     // Remote data source
     interface Remote {
-        ResultWrapper<List<Invoice>> getInvoices();
-        ResultWrapper<List<Invoice>> getPendingInvoices();
-        ResultWrapper<List<Invoice>> getFinishedInvoices();
+        ResultWrapper<List<PendingInvoice>> getPendingInvoices();
+        ResultWrapper<List<FinishedInvoice>> getFinishedInvoices();
     }
 
     // Local data source

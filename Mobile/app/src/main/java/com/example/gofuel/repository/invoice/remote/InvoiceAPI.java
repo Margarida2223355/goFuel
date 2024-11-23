@@ -1,8 +1,8 @@
 package com.example.gofuel.repository.invoice.remote;
 
 
-import com.example.gofuel.model.invoice.Invoice;
-import com.example.gofuel.model.item.Item;
+import com.example.gofuel.model.invoice.finished.FinishedInvoice;
+import com.example.gofuel.model.invoice.pending.PendingInvoice;
 
 import java.util.List;
 
@@ -10,12 +10,9 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 
 public interface InvoiceAPI {
-    @GET("invoice")
-    Call<List<Invoice>> getInvoices();
-
-    @GET("invoices/pendentInvoices")
-    Call<List<Invoice>> getPendingInvoices();
+    @GET("invoices/pendentinvoices")
+    Call<List<PendingInvoice>> getPendingInvoices();
 
      @GET("invoices/paidinvoices")
-    Call<List<Invoice>> getFinishedInvoices();
+    Call<List<FinishedInvoice>> getFinishedInvoices();
 }
