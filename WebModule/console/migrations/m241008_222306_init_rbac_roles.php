@@ -97,58 +97,6 @@ class m241008_222306_init_rbac_roles extends Migration
 
         #endregion
 
-        $permissions = [
-            'Employee' => [
-                'CategoryIndex',
-                'CategoryView',
-                'InvoiceIndex',
-                'InvoiceView',
-                'InvoiceFinish',
-                'ItemIndex',
-                'ItemView',
-                'StationIndex',
-                'StationView',
-                'UserUpdate',
-            ],
-            'Incharge' => [
-                'ItemRestock',
-            ],
-            'Manager' => [
-                'ItemAssociate',
-                'StationItemAssociate',
-                'StationItemDeleteAssociation',
-                'StationItemUpdateAssociation',
-                'StationUpdate',
-                'UserIndex',
-                'UserView',
-                'UserCreate',
-                'UserResetPassword',
-            ],
-            'Admin' => [
-                'CategoryCreate',
-                'CategoryUpdate',
-                'CategoryDelete',
-                'ItemCreate',
-                'ItemUpdate',
-                'StationCreate',
-                'StationDelete',
-                'SubcategoryCreate',
-                'SubcategoryUpdate',
-                'SubcategoryDelete',
-            ],
-        ];
-
-        // Atribui permissões a cada role
-        foreach ($permissions as $roleName => $permissionList) {
-            $role = $auth->getRole($roleName);
-            foreach ($permissionList as $permissionName) {
-                $permission = $auth->getPermission($permissionName);
-                if ($permission !== null && $role !== null) {
-                    $auth->addChild($role, $permission);
-                }
-            }
-        }
-
         #region Roles and Permissions assignment
 
 
