@@ -15,10 +15,10 @@ import com.example.gofuel.model.invoice.Invoice;
 import java.util.ArrayList;
 
 public class InvoiceAdapter extends BaseAdapter {
-    private ArrayList<Invoice> invoices = new ArrayList<>();
+    private ArrayList<? extends Invoice> invoices = new ArrayList<>();
     private final Context context;
 
-    public InvoiceAdapter(Context context, ArrayList<Invoice> invoices) {
+    public InvoiceAdapter(Context context, ArrayList<? extends Invoice> invoices) {
         this.context = context;
         this.invoices = invoices;
     }
