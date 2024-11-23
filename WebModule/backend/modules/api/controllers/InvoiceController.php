@@ -27,7 +27,20 @@
 
             return Invoice::find()
                 ->joinWith('state')
-                ->where(['client_id' => $userID, 'invoice_states.state' => 'Finished'])
+                ->where(['client_id' => $userID, 'invoice_states.description' => 'Finished'])
+                ->all();
+        }
+
+        public function actionGetPendentInvoices() {
+            $userID = \Yii::$app -> request -> getHeaders() -> get('X-USER-ID');
+
+            if (!$userID) {
+                throw new UnauthorizedHttpException('No user ID provided');
+            }
+
+            return Invoice::find()
+                ->joinWith('state')
+                ->where(['client_id' => $userID, 'invoice_states.description' => 'Pending'])
                 ->all();
         }
     }

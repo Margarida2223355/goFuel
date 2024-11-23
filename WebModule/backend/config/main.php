@@ -100,6 +100,7 @@ return [
                     'extraPatterns' => [
                         'GET userinvoices' => 'get-user-invoices',
                         'GET paidinvoices' => 'get-paid-invoices',
+                        'GET pendentinvoices' => 'get-pendent-invoices',
                     ],
                     'tokens' => []
                 ],
