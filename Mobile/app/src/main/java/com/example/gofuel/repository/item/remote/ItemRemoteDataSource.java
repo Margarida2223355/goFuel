@@ -13,7 +13,7 @@ public class ItemRemoteDataSource implements IItemDataSource.Main {
     private final ItemAPI itemAPI;
 
     public ItemRemoteDataSource() {
-        this.itemAPI = new HTTPClient<>(ItemAPI.class, null, null).get();
+        this.itemAPI = new HTTPClient<>(ItemAPI.class).get();
     }
 
     // Method for local DB
