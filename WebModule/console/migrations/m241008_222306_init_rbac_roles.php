@@ -96,6 +96,17 @@ class m241008_222306_init_rbac_roles extends Migration
         $auth->add($auth->createPermission('UserinfoDelete'));
 
         #endregion
+
+        #region Roles and Permissions assignment
+
+
+        #endregion
+
+
+        //Child assignment
+        $auth->addChild($inCharge, $employee);
+        $auth->addChild($manager, $inCharge);
+        $auth->addChild($admin, $manager);
     }
 
     public function safeDown()
