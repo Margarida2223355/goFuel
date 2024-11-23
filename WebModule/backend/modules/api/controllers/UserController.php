@@ -3,7 +3,7 @@
 namespace app\modules\api\controllers;
 
 use common\models\User;
-use common\models\Userinfo;
+use common\models\UserInfo;
 use yii\rest\ActiveController;
 use yii\web\ForbiddenHttpException;
 use yii\filters\auth\HttpBasicAuth;
