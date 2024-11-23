@@ -66,7 +66,7 @@ class m241107_192749_create_invoices_table extends Migration
         $this->batchInsert('{{%invoices}}', ['id', 'client_id', 'station_id', 'invoice_date', 'total', 'state_id', 'code'], [
             [8, 5, 2, '2024-10-31 21:22:19', 2, 2, 'AQL1L6'],
             [10, 5, 1, '2024-11-04 19:24:55', 1.5, 2, 'IZG4ME'],
-            [11, 5, 1, '2024-11-12 21:02:36', 13, 2, 'F3XMY9'],
+            [11, 5, 1, '2024-11-12 21:02:36', 13, 4, 'F3XMY9'],
             [12, 5, 1, '2024-11-14 18:52:23', 1.5, 1, null],
         ]);
     }
