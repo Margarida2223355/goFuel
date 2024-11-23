@@ -9,13 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.gofuel.R;
 import com.example.gofuel.databinding.FragmentInvoiceBinding;
-import com.example.gofuel.model.invoice.Invoice;
-import com.example.gofuel.model.station.Station;
+import com.example.gofuel.model.invoice.pending.PendingInvoice;
 import com.example.gofuel.modelView.Invoice.InvoiceAdapter;
 import com.example.gofuel.modelView.Invoice.InvoiceViewModel;
-import com.example.gofuel.modelView.Station.StationAdapter;
 import com.example.gofuel.util.State;
 
 import java.util.ArrayList;
@@ -43,11 +40,11 @@ public class InvoiceFragment extends Fragment {
                 binding.emptyState.setVisibility(View.GONE);
                 binding.loading.setVisibility(View.VISIBLE);
             }
-            else if (state instanceof State.InvoiceList) {
+            else if (state instanceof State.PendingInvoiceList) {
                 binding.loading.setVisibility(View.GONE);
                 binding.emptyState.setVisibility(View.GONE);
                 binding.invoiceList.setVisibility(View.VISIBLE);
-                ArrayList<Invoice> invoices = new ArrayList<>(((State.InvoiceList) state).getInvoices());
+                ArrayList<PendingInvoice> invoices = new ArrayList<>(((State.PendingInvoiceList) state).getInvoices());
                 binding.invoiceList.setAdapter(new InvoiceAdapter(getContext(), invoices));
             }
 
@@ -58,7 +55,7 @@ public class InvoiceFragment extends Fragment {
             }
         });
 
-        viewModel.loadInvoices();
+        viewModel.loadPendingInvoices();
 
         return view;
     }

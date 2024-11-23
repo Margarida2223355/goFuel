@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.gofuel.MyApplication;
-import com.example.gofuel.model.invoice.Invoice;
+import com.example.gofuel.model.invoice.pending.PendingInvoice;
 import com.example.gofuel.repository.common.ResultWrapper;
 import com.example.gofuel.repository.invoice.InvoiceRepository;
 import com.example.gofuel.util.State;
@@ -25,14 +25,14 @@ public class InvoiceViewModel extends ViewModel {
         return state;
     }
 
-    public void loadInvoices() {
+    public void loadPendingInvoices() {
         state.setValue(new State.Loading());
 
         new Thread(() -> {
-            ResultWrapper<List<Invoice>> result = invoiceRepository.getPendingInvoices();
+            ResultWrapper<List<PendingInvoice>> result = invoiceRepository.getPendingInvoices();
 
             if (result.getResult() != null) {
-                state.postValue(new State.InvoiceList(result.getResult()));
+                state.postValue(new State.PendingInvoiceList(result.getResult()));
             }
             else {
                 Log.e("-->", "Error API: " + result.getError());
