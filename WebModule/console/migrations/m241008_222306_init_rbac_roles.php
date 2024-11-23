@@ -15,7 +15,7 @@ class m241008_222306_init_rbac_roles extends Migration
         //Create roles
         $admin = $auth->createRole('Admin');
         $manager = $auth->createRole('Manager');
-        $inCharge = $auth->createRole('In Charge');
+        $inCharge = $auth->createRole('Incharge');
         $employee = $auth->createRole('Employee');
         $client = $auth->createRole('Client');
 
@@ -48,7 +48,6 @@ class m241008_222306_init_rbac_roles extends Migration
         $auth->add($auth->createPermission('InvoiceIndex'));
         $auth->add($auth->createPermission('InvoiceView'));
         $auth->add($auth->createPermission('InvoiceFinish'));
-        $auth->add($auth->createPermission('InvoiceFindModel'));
 
         //Item permission
         $auth->add($auth->createPermission('ItemIndex'));
@@ -59,7 +58,6 @@ class m241008_222306_init_rbac_roles extends Migration
         $auth->add($auth->createPermission('ItemDeleteAssociation'));
         $auth->add($auth->createPermission('ItemUpdateAssociation'));
         $auth->add($auth->createPermission('ItemRestock'));
-        $auth->add($auth->createPermission('ItemFindModel'));
 
         //Station permission
         $auth->add($auth->createPermission('StationIndex'));
@@ -67,8 +65,6 @@ class m241008_222306_init_rbac_roles extends Migration
         $auth->add($auth->createPermission('StationCreate'));
         $auth->add($auth->createPermission('StationUpdate'));
         $auth->add($auth->createPermission('StationDelete'));
-        $auth->add($auth->createPermission('StationFindModel'));
-
         //StationItem permission
         $auth->add($auth->createPermission('StationItemAssociate'));
         $auth->add($auth->createPermission('StationItemDeleteAssociation'));
@@ -83,19 +79,79 @@ class m241008_222306_init_rbac_roles extends Migration
         $auth->add($auth->createPermission('UserIndex'));
         $auth->add($auth->createPermission('UserView'));
         $auth->add($auth->createPermission('UserChangerole'));
+        $auth->add($auth->createPermission('UserUnblock'));
+        $auth->add($auth->createPermission('UserBlock'));
         $auth->add($auth->createPermission('UserCreate'));
         $auth->add($auth->createPermission('UserUpdate'));
         $auth->add($auth->createPermission('UserDelete'));
         $auth->add($auth->createPermission('UserResetPassword'));
 
         //Userinfo permission
-        $auth->add($auth->createPermission('UserinfoIndex'));
+        /* $auth->add($auth->createPermission('UserinfoIndex'));
         $auth->add($auth->createPermission('UserinfoView'));
         $auth->add($auth->createPermission('UserinfoCreate'));
         $auth->add($auth->createPermission('UserinfoUpdate'));
-        $auth->add($auth->createPermission('UserinfoDelete'));
+        $auth->add($auth->createPermission('UserinfoDelete'));*/
 
         #endregion
+
+        $permissions = [
+            'Employee' => [
+                'CategoryIndex',
+                'CategoryView',
+                'InvoiceIndex',
+                'InvoiceView',
+                'InvoiceFinish',
+                'ItemIndex',
+                'ItemView',
+                'StationIndex',
+                'StationView',
+                'UserUpdate',
+            ],
+            'Incharge' => [
+                'ItemRestock',
+            ],
+            'Manager' => [
+                'ItemAssociate',
+                'StationItemAssociate',
+                'StationItemDeleteAssociation',
+                'StationItemUpdateAssociation',
+                'StationUpdate',
+                'UserIndex',
+                'UserView',
+                'UserCreate',
+                'UserResetPassword',
+                'ItemDeleteAssociation',
+                'ItemUpdateAssociation',
+                'UserUnblock',
+                'UserBlock',
+            ],
+            'Admin' => [
+                'CategoryCreate',
+                'CategoryUpdate',
+                'CategoryDelete',
+                'ItemCreate',
+                'ItemUpdate',
+                'StationCreate',
+                'StationDelete',
+                'SubcategoryCreate',
+                'SubcategoryUpdate',
+                'SubcategoryDelete',
+                'UserChangerole',
+                'UserDelete',
+            ],
+        ];
+
+        // Assign permissiton to each role
+        foreach ($permissions as $roleName => $permissionList) {
+            $role = $auth->getRole($roleName);
+            foreach ($permissionList as $permissionName) {
+                $permission = $auth->getPermission($permissionName);
+                if ($permission !== null && $role !== null) {
+                    $auth->addChild($role, $permission);
+                }
+            }
+        }
 
         #region Roles and Permissions assignment
 
@@ -112,7 +168,82 @@ class m241008_222306_init_rbac_roles extends Migration
     public function safeDown()
     {
         $auth = Yii::$app->authManager;
-        $auth->removeAll();
+
+        // Recupera as roles
+        $admin = $auth->getRole('Admin');
+        $manager = $auth->getRole('Manager');
+        $incharge = $auth->getRole('Incharge');
+        $employee = $auth->getRole('Employee');
+
+        // Remove a hierarquia
+        if ($auth->hasChild($admin, $manager)) {
+            $auth->removeChild($admin, $manager);
+        }
+        if ($auth->hasChild($manager, $incharge)) {
+            $auth->removeChild($manager, $incharge);
+        }
+        if ($auth->hasChild($incharge, $employee)) {
+            $auth->removeChild($incharge, $employee);
+        }
+
+        // Permissões associadas a cada role
+        $permissions = [
+            'Employee' => [
+                'CategoryIndex',
+                'CategoryView',
+                'InvoiceIndex',
+                'InvoiceView',
+                'InvoiceFinish',
+                'ItemIndex',
+                'ItemView',
+                'StationIndex',
+                'StationView',
+                'UserUpdate',
+            ],
+            'Incharge' => [
+                'ItemRestock',
+            ],
+            'Manager' => [
+                'ItemAssociate',
+                'StationItemAssociate',
+                'StationItemDeleteAssociation',
+                'StationItemUpdateAssociation',
+                'StationUpdate',
+                'UserIndex',
+                'UserView',
+                'UserCreate',
+                'UserResetPassword',
+                'ItemDeleteAssociation',
+                'ItemUpdateAssociation',
+                'UserUnblock',
+                'UserBlock',
+            ],
+            'Admin' => [
+                'CategoryCreate',
+                'CategoryUpdate',
+                'CategoryDelete',
+                'ItemCreate',
+                'ItemUpdate',
+                'StationCreate',
+                'StationDelete',
+                'SubcategoryCreate',
+                'SubcategoryUpdate',
+                'SubcategoryDelete',
+                'UserChangerole',
+                'UserDelete',
+            ],
+        ];
+
+        // Remove permissões de cada role
+        foreach ($permissions as $roleName => $permissionList) {
+            $role = $auth->getRole($roleName);
+            foreach ($permissionList as $permissionName) {
+                $permission = $auth->getPermission($permissionName);
+                if ($permission !== null && $role !== null) {
+                    $auth->removeChild($role, $permission);
+                }
+            }
+        }
     }
     //Permissions e controladores
 }
