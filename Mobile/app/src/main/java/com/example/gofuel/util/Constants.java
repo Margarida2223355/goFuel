@@ -2,8 +2,7 @@ package com.example.gofuel.util;
 
 public class Constants {
     //region BASE_URL
-    //public static final String BASE_URL = "http://10.0.2.2:8888/backend/web/api/"; // School
-    public static final String BASE_URL = "http://192.168.1.87:8888/backend/web/api/"; // Home
+    public static final String BASE_URL = "http://54.242.246.148:8080/api/"; // Home
     //endregion
 
     //region HTTP headers
