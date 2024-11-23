@@ -32,7 +32,6 @@ class m130524_201442_init extends Migration
             [3, 'incharge', 'inchargeAuthKey', '$2y$10$aWKuiO3Eqm9iYWqOTZT8.eomK7VLcx/evTLXK1R89MZ9/xJ.1P1O.', null, 'incharge@example.com', 10, 0, 0, null],
             [4, 'employee', 'employeeAuthKey', '$2y$10$aWKuiO3Eqm9iYWqOTZT8.eomK7VLcx/evTLXK1R89MZ9/xJ.1P1O.', null, 'employee@example.com', 10, 0, 0, null],
             [5, 'client', 'clientAuthKey', '$2y$10$aWKuiO3Eqm9iYWqOTZT8.eomK7VLcx/evTLXK1R89MZ9/xJ.1P1O.', null, 'client@example.com', 10, 0, 1731168731, null],
-            [6, 'f.roldao', 'NSnXYl5yzkxfYWvjUMjAkrEBCEnKfhTT', '$2y$13$touBeY34pYqDhtIF.2G.dOCFzGW5TcY4bk6z5fzlbH4eA.fHnWVjK', null, 'f.roldao@oneclient.com', 10, 1730409678, 1731806938, null],
         ]);
     }
 
