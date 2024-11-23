@@ -21,7 +21,6 @@ class m241107_192747_create_client_station_table extends Migration
 
         $this->batchInsert('{{%client_station}}', ['client_id', 'station_id'], [
             [5, 2],
-            [6, 2],
         ]);
     }
 
