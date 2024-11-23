@@ -1,4 +1,4 @@
-package com.example.gofuel.model.invoice;
+package com.example.gofuel.model.invoice.common;
 
 import androidx.room.TypeConverter;
 

@@ -4,7 +4,6 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.example.gofuel.model.invoice.Invoice;
 import com.example.gofuel.model.invoice.InvoiceLine;
 
 import java.util.List;

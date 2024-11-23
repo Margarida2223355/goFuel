@@ -8,11 +8,14 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import com.example.gofuel.model.category.CategoryConverter;
-import com.example.gofuel.model.invoice.DateConverter;
-import com.example.gofuel.model.invoice.Invoice;
-import com.example.gofuel.model.invoice.InvoiceConverter;
+import com.example.gofuel.model.invoice.common.DateConverter;
+import com.example.gofuel.model.invoice.common.InvoiceConverter;
+import com.example.gofuel.model.invoice.finished.FinishedInvoice;
 import com.example.gofuel.model.invoice.InvoiceLine;
-import com.example.gofuel.model.invoice.InvoicestateConverter;
+import com.example.gofuel.model.invoice.common.InvoicestateConverter;
+import com.example.gofuel.model.invoice.finished.FinishedInvoiceConverter;
+import com.example.gofuel.model.invoice.pending.PendingInvoice;
+import com.example.gofuel.model.invoice.pending.PendingInvoiceConverter;
 import com.example.gofuel.model.item.Item;
 import com.example.gofuel.model.item.ItemConverter;
 import com.example.gofuel.model.pump.Pump;
@@ -22,7 +25,8 @@ import com.example.gofuel.model.station.StationConverter;
 import com.example.gofuel.model.subcategory.SubcategoryConverter;
 import com.example.gofuel.model.user.User;
 import com.example.gofuel.model.user.UserConverter;
-import com.example.gofuel.repository.invoice.local.InvoiceDB;
+import com.example.gofuel.repository.invoice.local.FinishedInvoiceDB;
+import com.example.gofuel.repository.invoice.local.PendingInvoiceDB;
 import com.example.gofuel.repository.invoiceLine.local.InvoiceLineDB;
 import com.example.gofuel.repository.item.local.ItemDB;
 import com.example.gofuel.repository.pump.local.PumpDB;
@@ -30,7 +34,7 @@ import com.example.gofuel.repository.station.local.StationDB;
 import com.example.gofuel.repository.user.local.UserDB;
 
 @Database(
-        entities = {Station.class, Pump.class, Item.class, Invoice.class, InvoiceLine.class, User.class},
+        entities = {Station.class, Pump.class, Item.class, InvoiceLine.class, User.class, PendingInvoice.class, FinishedInvoice.class},
         version = 1
 )
 @TypeConverters({
@@ -43,14 +47,17 @@ import com.example.gofuel.repository.user.local.UserDB;
         SubcategoryConverter.class,
         UserConverter.class,
         DateConverter.class,
-        UserConverter.class
+        UserConverter.class,
+        PendingInvoiceConverter.class,
+        FinishedInvoiceConverter.class
 })
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase INSTANCE;
     public abstract StationDB stationDB();
     public abstract PumpDB pumpDB();
     public abstract ItemDB itemDB();
-    public abstract InvoiceDB invoiceDB();
+    public abstract PendingInvoiceDB pendingInvoiceDB();
+    public abstract FinishedInvoiceDB finishedInvoiceDB();
     public abstract InvoiceLineDB invoiceLineDB();
     public abstract UserDB userDB();
 

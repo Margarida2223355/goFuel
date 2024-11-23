@@ -1,9 +1,8 @@
 package com.example.gofuel.util;
 
+import com.example.gofuel.model.invoice.pending.PendingInvoice;
 import com.example.gofuel.model.station.Station;
-import com.example.gofuel.model.user.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class State {
@@ -18,6 +17,17 @@ public class State {
 
         public List<Station> getStations() {
             return stations;
+        }
+    }
+    public static class PendingInvoiceList extends State {
+        private final List<PendingInvoice> invoices;
+
+        public PendingInvoiceList(List<PendingInvoice> invoices) {
+            this.invoices = invoices;
+        }
+
+        public List<PendingInvoice> getInvoices() {
+            return invoices;
         }
     }
 }
