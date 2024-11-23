@@ -3,10 +3,11 @@ package com.example.gofuel.repository.invoice;
 import android.content.Context;
 
 import com.example.gofuel.model.invoice.Invoice;
-import com.example.gofuel.model.item.Item;
 import com.example.gofuel.repository.common.AppDatabase;
 import com.example.gofuel.repository.common.ResultWrapper;
+import com.example.gofuel.repository.invoice.local.FinishedInvoiceDB;
 import com.example.gofuel.repository.invoice.local.InvoiceDB;
+import com.example.gofuel.repository.invoice.local.PendingInvoiceDB;
 import com.example.gofuel.repository.invoice.remote.InvoiceRemoteDataSource;
 
 import java.util.List;
@@ -14,10 +15,14 @@ import java.util.List;
 public class InvoiceRepository implements IInvoiceDataSource.Main {
     private static InvoiceRepository instance;
     private final InvoiceDB invoiceDB;
+    private final PendingInvoiceDB pendingInvoiceDB;
+    private final FinishedInvoiceDB finishedInvoiceDB;
 
     private InvoiceRepository(Context context) {
         AppDatabase db = AppDatabase.getDatabase(context);
         invoiceDB = db.invoiceDB();
+        pendingInvoiceDB = db.pendingInvoiceDB();
+        finishedInvoiceDB = db.finishedInvoiceDB();
     }
 
     public static InvoiceRepository getInstance(Context context) {
@@ -41,12 +46,63 @@ public class InvoiceRepository implements IInvoiceDataSource.Main {
             invoiceDB.deleteAll();
             invoiceDB.addAll(result.getResult());
         }
+
         else {
             // If there's data on local DB, return it
-            if(!invoiceDB.getAllInvoices().isEmpty()) { result = new ResultWrapper <>(invoiceDB.getAllInvoices(), null); }
+            if (!invoiceDB.getAllInvoices().isEmpty()) {
+                result = new ResultWrapper<>(invoiceDB.getAllInvoices(), null);
+            }
 
             // If there's no data on local DB, return an Error
-            else { result = new ResultWrapper<>(null, "No data on local DB"); }
+            else {
+                result = new ResultWrapper<>(null, "No data on local DB");
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public ResultWrapper<List<Invoice>> getPendingInvoices() {
+        ResultWrapper<List<Invoice>> result = new InvoiceRemoteDataSource().getPendingInvoices();
+
+        if (result.getResult() != null) {
+            pendingInvoiceDB.deleteAll();
+            pendingInvoiceDB.addAll(result.getResult());
+        }
+        else {
+            // If there's data on local DB, return it
+            if (!pendingInvoiceDB.getAllInvoices().isEmpty()) {
+                result = new ResultWrapper<>(pendingInvoiceDB.getAllInvoices(), null);
+            }
+
+            // If there's no data on local DB, return an Error
+            else {
+                result = new ResultWrapper<>(null, "No data on local DB");
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public ResultWrapper<List<Invoice>> getFinishedInvoices() {
+        ResultWrapper<List<Invoice>> result = new InvoiceRemoteDataSource().getFinishedInvoices();
+
+        if (result.getResult() != null) {
+            finishedInvoiceDB.deleteAll();
+            finishedInvoiceDB.addAll(result.getResult());
+        }
+        else {
+            // If there's data on local DB, return it
+            if (!finishedInvoiceDB.getAllInvoices().isEmpty()) {
+                result = new ResultWrapper<>(finishedInvoiceDB.getAllInvoices(), null);
+            }
+
+            // If there's no data on local DB, return an Error
+            else {
+                result = new ResultWrapper<>(null, "No data on local DB");
+            }
         }
 
         return result;

@@ -12,4 +12,10 @@ import retrofit2.http.GET;
 public interface InvoiceAPI {
     @GET("invoice")
     Call<List<Invoice>> getInvoices();
+
+    @GET("invoices/pendentInvoices")
+    Call<List<Invoice>> getPendingInvoices();
+
+     @GET("invoices/paidinvoices")
+    Call<List<Invoice>> getFinishedInvoices();
 }

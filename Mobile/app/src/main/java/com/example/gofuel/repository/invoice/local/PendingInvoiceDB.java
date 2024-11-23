@@ -9,13 +9,13 @@ import com.example.gofuel.model.invoice.Invoice;
 import java.util.List;
 
 @Dao
-public interface InvoiceDB {
+public interface PendingInvoiceDB {
     @Insert
     void addAll(List<Invoice> invoices);
 
-    @Query("SELECT * FROM invoices")
+    @Query("SELECT * FROM pending_invoices")
     List<Invoice> getAllInvoices();
 
-    @Query("DELETE FROM invoices")
+    @Query("DELETE FROM pending_invoices")
     void deleteAll();
 }

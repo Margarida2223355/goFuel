@@ -13,6 +13,8 @@ public interface IInvoiceDataSource {
     // Remote data source
     interface Remote {
         ResultWrapper<List<Invoice>> getInvoices();
+        ResultWrapper<List<Invoice>> getPendingInvoices();
+        ResultWrapper<List<Invoice>> getFinishedInvoices();
     }
 
     // Local data source

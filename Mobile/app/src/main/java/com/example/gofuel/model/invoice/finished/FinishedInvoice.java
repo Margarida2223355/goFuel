@@ -1,16 +1,17 @@
-package com.example.gofuel.model.invoice;
+package com.example.gofuel.model.invoice.finished;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import com.example.gofuel.model.invoice.common.DateConverter;
+import com.example.gofuel.model.invoice.InvoiceState;
 import com.example.gofuel.model.station.Station;
 import com.example.gofuel.model.user.User;
 
-@Entity(tableName = "invoices")
+@Entity(tableName = "finished_invoices")
 @TypeConverters(DateConverter.class)
-public class Invoice {
+public class FinishedInvoice {
     @PrimaryKey
     private final int id;
     private User user;
@@ -19,7 +20,7 @@ public class Invoice {
     private double total;
     private InvoiceState invoiceState;
 
-    public Invoice(int id, User user, Station station, String invoice_date, double total, InvoiceState invoiceState) {
+    public FinishedInvoice(int id, User user, Station station, String invoice_date, double total, InvoiceState invoiceState) {
         this.id = id;
         this.user = user;
         this.station = station;
