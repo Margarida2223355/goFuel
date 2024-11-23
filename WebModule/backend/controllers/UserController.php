@@ -163,15 +163,6 @@ class UserController extends Controller
         return $this->redirect(['index']);
     }
 
-    protected function findModel($id)
-    {
-        if (($model = User::findOne(['id' => $id])) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
-    }
-
     public function actionResetPassword($id)
     {
         $user = User::findOne($id);
@@ -190,5 +181,14 @@ class UserController extends Controller
         }
 
         return $this->redirect(['index']);
+    }
+
+    protected function findModel($id)
+    {
+        if (($model = User::findOne(['id' => $id])) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

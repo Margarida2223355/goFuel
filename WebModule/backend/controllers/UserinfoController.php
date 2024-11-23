@@ -11,7 +11,7 @@ use yii\filters\VerbFilter;
 /**
  * UserinfoController implements the CRUD actions for Userinfo model.
  */
-class UserinfoController extends Controller
+class UserInfoController extends Controller
 {
     public function behaviors()
     {

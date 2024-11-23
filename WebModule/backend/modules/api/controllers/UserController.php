@@ -1,40 +1,43 @@
 <?php
-    namespace app\modules\api\controllers;
 
-    use common\models\User;
-    use common\models\Userinfo;
-    use yii\rest\ActiveController;
-    use yii\web\ForbiddenHttpException;
-    use yii\filters\auth\HttpBasicAuth;
+namespace app\modules\api\controllers;
 
-    class UserController extends ActiveController {
-        public $modelClass = Userinfo::class;
+use common\models\User;
+use common\models\Userinfo;
+use yii\rest\ActiveController;
+use yii\web\ForbiddenHttpException;
+use yii\filters\auth\HttpBasicAuth;
 
-        public function behaviors()
-        {
-            $behaviors = parent::behaviors();
-            $behaviors['authenticator'] = [
-                'class' => HttpBasicAuth::class,
-                'auth' => [$this, 'auth']
-            ];
-            return $behaviors;
-        }
+class UserController extends ActiveController
+{
+    public $modelClass = Userinfo::class;
 
-        public function auth($username, $password) {
-            $user = User::findByUsername($username);
-
-            if ($user && $user->validatePassword($password)) {
-                $this -> user = $user;
-                return $user;
-            }
-
-            throw new ForbiddenHttpException('403: No authentication');
-        }
-
-        public function actionLogin() {
-            return Userinfo::findOne([
-                'id' => $this -> user -> id
-            ]);
-        }
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behaviors['authenticator'] = [
+            'class' => HttpBasicAuth::class,
+            'auth' => [$this, 'auth']
+        ];
+        return $behaviors;
     }
-?>
+
+    public function auth($username, $password)
+    {
+        $user = User::findByUsername($username);
+
+        if ($user && $user->validatePassword($password)) {
+            $this->user = $user;
+            return $user;
+        }
+
+        throw new ForbiddenHttpException('403: No authentication');
+    }
+
+    public function actionLogin()
+    {
+        return UserInfo::findOne([
+            'id' => $this->user->id
+        ]);
+    }
+}
