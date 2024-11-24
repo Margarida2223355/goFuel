@@ -18,15 +18,15 @@ class StationItemController extends Controller
         return [
             'access' => [
                 'class' => \yii\filters\AccessControl::class,
-                'only' => ['add-item-to-station', 'remove-item-from-station', 'delete'],
+                'only' => ['add-item-to-station', 'update-association', 'delete'],
                 'rules' => [
                     [
-                        'actions' => ['add-item-to-station', 'remove-item-from-station', 'delete'],
+                        'actions' => ['add-item-to-station', 'update-association', 'delete'],
                         'allow' => true,
                         'roles' => ['Manager'],
                     ],
                     [
-                        'actions' => ['add-item-to-station', 'remove-item-from-station', 'delete'],
+                        'actions' => ['add-item-to-station', 'update-association', 'delete'],
                         'allow' => false,
                         'roles' => ['Admin', 'Incharge', 'Employee'],
                     ],
@@ -74,25 +74,28 @@ class StationItemController extends Controller
     }
 
 
-    public function actionDeleteAssociation($id)
+    public function actionDeleteAssociation($station_id, $item_id)
     {
-        $model = StationItem::findOne($id);
 
-        $stationId = $model->station_id;
-
-        if ($model !== null) {
-            $model->delete();
-            Yii::$app->session->setFlash('success', 'A associação foi deletada com sucesso.');
+        if ($station_id || $item_id) {
+            $model = $this->findModel($station_id, $item_id);
+            $stationId = $model->station_id;
+            if ($model) {
+                $model->is_deleted = 0;
+                if ($model->save()) {
+                    Yii::$app->session->setFlash('success', 'Item successfully deleted.');
+                }
+            }
         } else {
-            Yii::$app->session->setFlash('error', 'A associação não foi encontrada.');
+            Yii::$app->session->setFlash('error', 'An error occurred.');
         }
 
         return $this->redirect(['item/index', 'stationId' => $stationId]);
     }
 
-    public function actionUpdateAssociation($id)
+    public function actionUpdateAssociation($station_id, $item_id)
     {
-        $stationItem = StationItem::findOne($id);
+        $stationItem = $this->findModel($station_id, $item_id);
 
         if (!$stationItem) {
             throw new NotFoundHttpException('A associação não foi encontrada.');
@@ -104,7 +107,7 @@ class StationItemController extends Controller
 
         $stations = Station::find()->all();
         $dataProvider = new \yii\data\ActiveDataProvider([
-            'query' => StationItem::find()->where(['station_id' => $stationItem->station_id])->with('item'),
+            'query' => StationItem::find()->where(['station_id' => $station_id])->with('item'),
         ]);
 
         return $this->redirect([
@@ -112,5 +115,14 @@ class StationItemController extends Controller
             'stationId' => $stationItem->station_id,
             'isUpdate' => true,
         ]);
+    }
+
+    protected function findModel($station_id, $item_id)
+    {
+        if (($model = StationItem::findOne(['station_id' => $station_id, 'item_id' => $item_id])) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="item-form mb-3 w-100 justify-content-center">
             <?php $form = ActiveForm::begin([
                 'action' => $isUpdate
-                    ? Url::to(['station-item/update-association', 'id' => $model->id])
+                    ? Url::to(['station-item/update-association','station_id' => $model->station_id, 'item_id' => $model->item_id])
                     : Url::to(['station-item/associate', 'station_id' => $stationId, 'item_id' => null]),
                 'method' => 'post',
                 'options' => ['class' => 'w-100'],
@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::hiddenInput('station_id', $stationId) ?>
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <?= $form->field($model, 'item_id')->dropDownList(
                         \yii\helpers\ArrayHelper::map(\common\models\Item::find()->all(), 'id', 'description'),
                         [
@@ -60,7 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]
                     )->label(false) ?>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-5">
                     <?= $form->field($model, 'price')->textInput([
                         'type' => 'number',
                         'step' => '0.01',
@@ -69,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'value' => $model->price,
                     ])->label(false) ?>
                 </div>
-                <div class="me-2">
+                <div class="col-md-2">
                     <?= Html::submitButton(
                         $isUpdate
                             ? '<i class="fa fa-save" aria-hidden="true"></i>&ensp;Save Changes'
@@ -92,7 +92,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'id',
             'item.description',
             'price',
             [
@@ -114,7 +113,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'update' => function ($url, $model) {
                         return Html::a(
                             '<i class="fa fa-pen" aria-hidden="true"></i>',
-                            ['item/update-association', 'id' => $model->item_id],
+                            ['item/update-association', 'station_id' => $model->station_id, 'item_id' => $model->item_id],
                             [
                                 'title' => 'Atualizar',
                                 'style' => 'color: #28a745; text-decoration: none;'
@@ -124,11 +123,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     'delete' => function ($url, $model) {
                         return Html::a(
                             '<i class="fa fa-trash" aria-hidden="true"></i>',
-                            ['station-item/delete-association', 'id' => $model->item_id],
+                            ['station-item/delete-association', 'station_id' => $model->station_id, 'item_id' => $model->item_id],
                             [
                                 'title' => 'Deletar',
                                 'data-method' => 'post',
-                                'data-confirm' => 'Tem certeza que deseja deletar esta associação?',
+                                'data-confirm' => 'Do you realy want to delete this?',
                                 'style' => 'color: #dc3545; text-decoration: none;',
                             ]
                         );

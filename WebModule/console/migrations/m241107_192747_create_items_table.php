@@ -12,8 +12,9 @@ class m241107_192747_create_items_table extends Migration
         $this->createTable('items', [
             'id' => $this->primaryKey(),
             'description' => $this->string()->notNull(),
-            'price' => $this->decimal(10, 2),
             'subcategory_id' => $this->integer()->notNull(),
+            'restock_qty' => $this->integer()->notNull(),
+            'is_deleted' => $this->boolean()->defaultValue(1)->notNull(),
         ]);
 
         $this->addForeignKey(
@@ -24,7 +25,7 @@ class m241107_192747_create_items_table extends Migration
             'id',
             'CASCADE'
         );
-        $this->batchInsert('{{%items}}', ['id', 'description', 'subcategory_id', 'price'], [
+        $this->batchInsert('{{%items}}', ['id', 'description', 'subcategory_id', 'restock_qty'], [
             [1, 'Unleaded 95 - 1L', 1, 1000],
             [2, 'Unleaded 98 - 1L', 2, 1000],
             [3, 'Diesel Regular - 1L', 3, 1200],

@@ -51,7 +51,6 @@ class m241008_222306_init_rbac_roles extends Migration
 
         //Item permission
         $auth->add($auth->createPermission('ItemIndex'));
-        $auth->add($auth->createPermission('ItemView'));
         $auth->add($auth->createPermission('ItemCreate'));
         $auth->add($auth->createPermission('ItemUpdate'));
         $auth->add($auth->createPermission('ItemAssociate'));
@@ -103,7 +102,6 @@ class m241008_222306_init_rbac_roles extends Migration
                 'InvoiceView',
                 'InvoiceFinish',
                 'ItemIndex',
-                'ItemView',
                 'StationIndex',
                 'StationView',
                 'UserUpdate',

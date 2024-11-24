@@ -79,11 +79,16 @@ class ItemController extends Controller
         if ($isAdmin) {
             // Se sim, busca os items
             $dataProvider = new \yii\data\ActiveDataProvider([
-                'query' => Item::find(),
+                'query' => Item::find()->where(['is_deleted' => 1]),
             ]);
+            $model = new Item();
+            $subcategories = Subcategory::find()->all();
 
             return $this->render('admin-index', [
                 'dataProvider' => $dataProvider,
+                'model' => $model,
+                'subcategories' => $subcategories,
+                'isUpdate' => false,
             ]);
         }
 
@@ -114,7 +119,7 @@ class ItemController extends Controller
 
         if ($stationId) {
             $dataProvider = new \yii\data\ActiveDataProvider([
-                'query' => StationItem::find()->where(['station_id' => $stationId])->with('item'),
+                'query' => StationItem::find()->where(['station_id' => $stationId, 'is_deleted' => 1])->with('item'),
             ]);
         } else {
             $dataProvider = new \yii\data\ArrayDataProvider([
@@ -142,56 +147,51 @@ class ItemController extends Controller
 
     public function actionCreate()
     {
-        /*if (!Yii::$app->user->can('createItem')) {
-            throw new ForbiddenHttpException('You are not allowed to perform this action.');
-        }
-
         $model = new Item();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect('index');
         }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);*/
-
-        $model = new Item();
-
-        $subcategories = Subcategory::find()->all();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-            'subcategories' => $subcategories,
-        ]);
     }
 
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
+        $dataProvider = new \yii\data\ActiveDataProvider([
+            'query' => Item::find(),
+        ]);
+        $stationId = Yii::$app->request->post('stationId') ?? Yii::$app->request->get('stationId');
+
         $subcategories = Subcategory::find()->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect('index');
         }
 
-        return $this->render('update', [
+        return $this->render('admin-index', [
+            'dataProvider' => $dataProvider,
             'model' => $model,
             'subcategories' => $subcategories,
+            'isUpdate' => true,
         ]);
     }
 
-    /*public function actionDelete($id)
+    public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        if ($id) {
+            $model = $this->findModel($id);
+            if ($model) {
+                $model->is_deleted = 0;
+                if ($model->save()) {
+                    Yii::$app->session->setFlash('success', 'Item successfully deleted.');
+                }
+            }
+        } else {
+            Yii::$app->session->setFlash('error', 'An error occurred.');
+        }
         return $this->redirect(['index']);
-    }*/
+    }
 
     public function actionAssociate()
     {
@@ -242,9 +242,9 @@ class ItemController extends Controller
         return $this->redirect(['index', 'stationId' => $stationId]);
     }
 
-    public function actionUpdateAssociation($id)
+    public function actionUpdateAssociation($station_id, $item_id)
     {
-        $stationItem = StationItem::findOne($id);
+        $stationItem = StationItem::findOne(['station_id' => $station_id, 'item_id' => $item_id]);
 
         if (!$stationItem) {
             throw new NotFoundHttpException('A associação não foi encontrada.');
@@ -252,7 +252,7 @@ class ItemController extends Controller
 
         $stations = Station::find()->where(['manager_id' => Yii::$app->user->id])->all();
         $dataProvider = new \yii\data\ActiveDataProvider([
-            'query' => StationItem::find()->where(['station_id' => $stationItem->station_id])->with('item'),
+            'query' => StationItem::find()->where(['station_id' => $stationItem->station_id, 'is_deleted' => 1])->with('item'),
         ]);
 
         return $this->render('index', [
