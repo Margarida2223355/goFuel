@@ -13,7 +13,7 @@ public class StationRemoteDataSource implements IStationDataSource.Main {
     private final StationAPI stationAPI;
 
     public StationRemoteDataSource() {
-        this.stationAPI = new HTTPClient<>(StationAPI.class, null, null).get();
+        this.stationAPI = new HTTPClient<>(StationAPI.class).get();
     }
 
     // Method for local DB

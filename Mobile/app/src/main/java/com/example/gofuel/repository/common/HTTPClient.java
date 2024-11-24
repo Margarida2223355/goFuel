@@ -17,13 +17,44 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HTTPClient<T> {
     //region Properties
-    public static String credentials = null;
+    private String credentials = null;
+    private String userID = null;
     private T client;
     //endregion
 
+    //region HTTP Client for Login
     public HTTPClient(Class<T> serviceClass, String username, String password) {
         setBasicAuthCredentials(username, password);
+        initializeHTTPClient(serviceClass);
+    }
+    //endregion
 
+    //region HTTP Client with USER_ID as HEADER
+    public HTTPClient(Class<T> serviceClass, int userID) {
+        setUserID(userID);
+        initializeHTTPClient(serviceClass);
+    }
+    //endregion
+
+    //region HTTP Client
+    public HTTPClient(Class<T> serviceClass) {
+        initializeHTTPClient(serviceClass);
+    }
+    //endregion
+
+    public T get() {
+        return client;
+    }
+
+    private void setBasicAuthCredentials(String username, String password) {
+        credentials = Base64.getEncoder().encodeToString((username + ":" + password).getBytes(StandardCharsets.UTF_8));
+    }
+
+    private void setUserID(int userID) {
+        this.userID = String.valueOf(userID);
+    }
+
+    private void initializeHTTPClient(Class<T> serviceClass) {
         // Configure OkHttpClient
         OkHttpClient.Builder httpClientBuider = new OkHttpClient.Builder();
 
@@ -36,6 +67,7 @@ public class HTTPClient<T> {
                     .header(Constants.HEADER_PARAMETER_CLIENT,"Mobile");
 
             if (credentials != null) { requestBuilder.header(Constants.HEADER_PARAMETER_AUTHORIZATION, "Basic " + credentials); }
+            if (userID != null) { requestBuilder.header("X-USER-ID", userID); }
 
             Request request = requestBuilder.build();
 
@@ -60,13 +92,5 @@ public class HTTPClient<T> {
 
         // Create an instance of API
         client = retrofit.create(serviceClass);
-    }
-
-    public T get() {
-        return client;
-    }
-
-    public static void setBasicAuthCredentials(String username, String password) {
-        credentials = Base64.getEncoder().encodeToString((username + ":" + password).getBytes(StandardCharsets.UTF_8));
     }
 }

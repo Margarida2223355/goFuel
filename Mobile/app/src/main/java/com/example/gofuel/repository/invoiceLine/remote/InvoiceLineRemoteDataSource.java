@@ -1,6 +1,5 @@
 package com.example.gofuel.repository.invoiceLine.remote;
 
-import com.example.gofuel.model.invoice.Invoice;
 import com.example.gofuel.model.invoice.InvoiceLine;
 import com.example.gofuel.repository.common.HTTPClient;
 import com.example.gofuel.repository.common.ResultWrapper;
@@ -14,7 +13,7 @@ public class InvoiceLineRemoteDataSource implements IInvoiceLineDataSource.Main 
     private final InvoiceLineAPI invoiceLineAPI;
 
     public InvoiceLineRemoteDataSource() {
-        this.invoiceLineAPI = new HTTPClient<>(InvoiceLineAPI.class, null, null).get();
+        this.invoiceLineAPI = new HTTPClient<>(InvoiceLineAPI.class).get();
     }
 
     // Method for local DB
