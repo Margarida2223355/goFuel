@@ -2,12 +2,27 @@ main>.container {
     padding: 70px 15px 20px;
 }
 
-.footer {
-    background-color: #f5f5f5;
-    font-size: .9em;
-    height: 60px;
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
+.content-wrapper {
+    flex: 1;
+}
+
+.main-footer {
+    height: 50px;
+    line-height: 50px;
+    background-color: #f8f9fa;
+    text-align: left;
+    padding: 0 15px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000;
+}
 
 .footer>.container {
     padding-right: 15px;
@@ -21,13 +36,11 @@ main>.container {
 
 .sidebar-collapse .logo-expanded {
     display: none;
-    /* Esconde o logo expandido quando a sidebar está colapsada */
-}
+    
 
 .sidebar-collapse .logo-collapsed {
     display: block !important;
-    /* Mostra o logo colapsado */
-}
+    
 
 /* add sorting icons to gridview sort links */
 a.asc:after,

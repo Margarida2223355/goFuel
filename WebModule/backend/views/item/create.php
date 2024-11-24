@@ -9,7 +9,7 @@ $this->title = 'Create Item';
 $this->params['breadcrumbs'][] = ['label' => 'Items', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="item-create">
+<div class="container-fluid ml-1">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

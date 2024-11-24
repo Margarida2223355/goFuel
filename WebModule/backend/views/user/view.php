@@ -11,7 +11,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="user-view">
+<div class="container-fluid ml-1">
 
     <div style="display: flex; align-items: center; ">
         <h1><?= Html::encode($this->title) ?></h1>

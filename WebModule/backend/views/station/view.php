@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
-<div class="station-view">
+<div class="container-fluid ml-1">
 
     <div style="display: flex; align-items: center; ">
         <h1><?= Html::encode($this->title) ?></h1>

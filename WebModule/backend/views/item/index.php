@@ -15,7 +15,7 @@ use yii\helpers\Url;
 $this->title = 'Items - ' . ($stationId ? Station::findOne($stationId)->name : 'All Stations');
 $this->params['breadcrumbs'][] = $this->title; ?>
 
-<div class="items-index">
+<div class="container-fluid ml-1">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

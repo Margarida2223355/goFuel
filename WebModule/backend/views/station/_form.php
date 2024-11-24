@@ -9,7 +9,7 @@ use yii\widgets\ActiveForm;
 
 ?>
 
-<div class="station-form">
+<div class="container-fluid ml-1">
 
     <?php $form = ActiveForm::begin(); ?>
 

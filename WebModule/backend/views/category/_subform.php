@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
-<div class="category-form">
+<div class="container-fluid ml-1">
 
     <?php $form = ActiveForm::begin([
         'action' => ['subcategory/create'],

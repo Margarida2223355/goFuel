@@ -11,7 +11,7 @@ use yii\grid\GridView;
 $this->title = 'Stations';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="station-index">
+<div class="container-fluid mt-5 ml-1">
 
     <div class="d-flex align-items-center mb-3">
         <h1><?= Html::encode($this->title) ?></h1>

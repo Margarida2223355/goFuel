@@ -12,7 +12,7 @@ use yii\grid\GridView;
 $this->title = 'Invoices';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="invoice-index">
+<div class="container-fluid ml-1">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

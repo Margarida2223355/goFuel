@@ -13,8 +13,7 @@ $this->title = 'Users';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-
-<div class="user-index">
+<div class="container-fluid ml-1">
     <?php if (Yii::$app->session->hasFlash('success')): ?>
         <div class="alert alert-success">
             <?= Yii::$app->session->getFlash('success') ?>

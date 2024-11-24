@@ -13,7 +13,7 @@ use yii\widgets\ActiveForm;
 $this->title = 'Categories';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="category-index">
+<div class="container-fluid ml-1">
 
     <?php if (Yii::$app->session->hasFlash('success')): ?>
         <div class="alert alert-success">
@@ -83,6 +83,4 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         'summary' => false,
     ]); ?>
-
-
 </div>

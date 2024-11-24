@@ -12,7 +12,7 @@ use yii\grid\GridView;
 $this->title = 'Category: ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
 ?>
-<div class="category-update">
+<div class="container-fluid ml-1">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

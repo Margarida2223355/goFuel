@@ -9,7 +9,7 @@ use yii\widgets\ActiveForm;
 
 ?>
 
-<div class="user-create">
+<div class="container-fluid ml-1">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

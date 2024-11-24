@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Invoices', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Check Invoice';
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="invoice-check">
+<div class="container-fluid ml-1">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

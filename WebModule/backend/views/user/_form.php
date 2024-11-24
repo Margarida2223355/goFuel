@@ -11,7 +11,7 @@ use yii\widgets\ActiveForm;
 
 ?>
 
-<div class="user-form">
+<div class="container-fluid ml-1">
 
     <?php $form = ActiveForm::begin(); ?>
 
