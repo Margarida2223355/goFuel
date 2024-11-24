@@ -46,45 +46,47 @@ class CategoryController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Category::find(),
-            /*
-            'pagination' => [
-                'pageSize' => 50
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'id' => SORT_DESC,
-                ]
-            ],
-            */
+            'query' => Category::find()->where(['is_deleted' => false]),
         ]);
         $model = new Category();
+        $view = false;
 
         return $this->render('index', [
             'model' => $model,
+            'view' => $view,
             'dataProvider' => $dataProvider,
         ]);
     }
 
-    public function actionView($id)
+    public function actionView($id, $subcategory_id = null)
     {
         $model = $this->findModel($id);
 
-        $newSubcategory = new Subcategory();
-
+        $subcategory = new Subcategory();
+        $view = true;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Category updated successfully!');
             return $this->refresh();
         }
 
         $subcategoriesDataProvider = new \yii\data\ActiveDataProvider([
-            'query' => Subcategory::find()->where(['category_id' => $id]),
+            'query' => Subcategory::find()->where(['category_id' => $id, 'is_deleted' => false]),
         ]);
         $isUpdate = false;
 
+        if ($subcategory_id) {
+            $subcategory = Subcategory::findOne($subcategory_id);
+            $isUpdate = true;
+            if (!$subcategory) {
+                throw new NotFoundHttpException('Subcategory not found.');
+            }
+        }
+
         return $this->render('view', [
             'model' => $model,
-            'newSubcategory' => $newSubcategory,
+            'view' => $view,
+            'isUpdate' => $isUpdate,
+            'subcategory' => $subcategory,
             'subcategoriesDataProvider' => $subcategoriesDataProvider,
         ]);
     }
@@ -110,7 +112,7 @@ class CategoryController extends Controller
     {
         $model = $this->findModel($id);
 
-        $newSubcategory = new Subcategory();
+        $subcategory = new Subcategory();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Category updated successfully!');
@@ -118,19 +120,39 @@ class CategoryController extends Controller
         }
 
         $subcategoriesDataProvider = new \yii\data\ActiveDataProvider([
-            'query' => Subcategory::find()->where(['category_id' => $id]),
+            'query' => Subcategory::find()->where(['category_id' => $id, 'is_deleted' => false]),
         ]);
+        $view = true;
+        $isUpdate = false;
 
         return $this->render('view', [
             'model' => $model,
-            'newSubcategory' => $newSubcategory,
+            'view' => $view,
+            'isUpdate' => $isUpdate,
+            'subcategory' => $subcategory,
             'subcategoriesDataProvider' => $subcategoriesDataProvider,
         ]);
     }
 
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        if ($id) {
+            $model = $this->findModel($id);
+            if ($model) {
+                $model->is_deleted = 1;
+                if ($model->save()) {
+                    foreach ($model->subcategories as $subcategory) {
+                        $subcategory->is_deleted = 1;
+                        $subcategory->save();
+                    }
+                    Yii::$app->session->setFlash('success', 'Category successfully deleted.');
+                }
+            }
+        } else {
+            Yii::$app->session->setFlash('error', 'An error occurred.');
+        }
 
         return $this->redirect(['index']);
     }

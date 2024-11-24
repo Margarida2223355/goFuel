@@ -9,6 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property string $name
+ * @property int $is_deleted
  *
  * @property Subcategory[] $subcategories
  */
@@ -29,6 +30,7 @@ class Category extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
+            [['is_deleted'], 'integer'],
             [['name'], 'string', 'max' => 255],
         ];
     }
@@ -41,6 +43,7 @@ class Category extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
+            'is_deleted' => 'Is Deleted',
         ];
     }
 

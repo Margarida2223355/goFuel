@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property string $description
  * @property int $category_id
+ * @property int $is_deleted
  *
  * @property Category $category
  * @property Item[] $items
@@ -31,7 +32,7 @@ class Subcategory extends \yii\db\ActiveRecord
     {
         return [
             [['description', 'category_id'], 'required'],
-            [['category_id'], 'integer'],
+            [['category_id', 'is_deleted'], 'integer'],
             [['description'], 'string', 'max' => 255],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::class, 'targetAttribute' => ['category_id' => 'id']],
         ];
@@ -46,6 +47,7 @@ class Subcategory extends \yii\db\ActiveRecord
             'id' => 'ID',
             'description' => 'Description',
             'category_id' => 'Category ID',
+            'is_deleted' => 'Is Deleted',
         ];
     }
 
@@ -67,20 +69,5 @@ class Subcategory extends \yii\db\ActiveRecord
     public function getItems()
     {
         return $this->hasMany(Item::class, ['subcategory_id' => 'id']);
-    }
-
-    public function fields() {
-        $fields = parent::fields();
-
-        // Remove category_id field
-        unset($fields['category_id']);
-
-        // Add category field
-        $fields['category'] = function() {
-            $category = $this->getCategory()->one();
-            return $category ? $category : null;
-        };
-
-        return $fields;
     }
 }

@@ -14,7 +14,7 @@ class m241107_192747_create_items_table extends Migration
             'description' => $this->string()->notNull(),
             'subcategory_id' => $this->integer()->notNull(),
             'restock_qty' => $this->integer()->notNull(),
-            'is_deleted' => $this->boolean()->defaultValue(1)->notNull(),
+            'is_deleted' => $this->boolean()->defaultValue(false)->notNull(),
         ]);
 
         $this->addForeignKey(

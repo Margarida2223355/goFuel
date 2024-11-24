@@ -12,24 +12,26 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin([
         'action'  => ['category/create'],
-        'options' => ['class' => 'form-inline d-flex align-items-center mb-5'],
     ]); ?>
-
-    <?= $form->field($model, 'name', [
-        'options' => ['class' => 'form-group mb-0 me-2'],
-        'template' => "{input}\n{error}",
-    ])->textInput([
-        'maxlength' => true,
-        'placeholder' => 'New Category Name', // Placeholder para clareza
-        'class' => 'form-control',
-    ]) ?>
-
-    <?= Html::submitButton('<i class="fa fa-plus" aria-hidden="true"></i>', [
-        'class' => 'btn',
-        'style' => 'color: green; border-color: black; height: calc(1.5em + .75rem + 2px);',
-        'title' => 'Add Subcategory'
-    ]) ?>
+    <div class="row">
+        <div class="col-md-7">
+            <?= $form->field($model, 'name', [])->textInput(['maxlength' => true, 'placeholder' => 'New Category Name', 'class' => 'form-control'])->label(false) ?>
+        </div>
+        <div class="col-md-2">
+            <?= Html::submitButton(
+                $view
+                ? '<i class="fa fa-save" aria-hidden="true"></i>' 
+                : '<i class="fa fa-plus" aria-hidden="true"></i>', [
+                'class' => 'btn',
+                'style' => $view
+                    ? 'color: green; border-color: black; height: calc(1.5em + .75rem + 2px);'
+                    : 'color: green; border-color: black; height: calc(1.5em + .75rem + 2px);',
+                'title' => $view
+                    ? 'Update Category'
+                    : 'Add Category'
+            ]) ?>
+        </div>
+    </div>
 
     <?php ActiveForm::end(); ?>
-
 </div>

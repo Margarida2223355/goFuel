@@ -79,10 +79,10 @@ class ItemController extends Controller
         if ($isAdmin) {
             // Se sim, busca os items
             $dataProvider = new \yii\data\ActiveDataProvider([
-                'query' => Item::find()->where(['is_deleted' => 1]),
+                'query' => Item::find()->where(['is_deleted' => false]),
             ]);
             $model = new Item();
-            $subcategories = Subcategory::find()->all();
+            $subcategories = Subcategory::find()->where(['is_deleted' => false])->all();
 
             return $this->render('admin-index', [
                 'dataProvider' => $dataProvider,
@@ -119,7 +119,7 @@ class ItemController extends Controller
 
         if ($stationId) {
             $dataProvider = new \yii\data\ActiveDataProvider([
-                'query' => StationItem::find()->where(['station_id' => $stationId, 'is_deleted' => 1])->with('item'),
+                'query' => StationItem::find()->where(['station_id' => $stationId, 'is_deleted' => false])->with('item'),
             ]);
         } else {
             $dataProvider = new \yii\data\ArrayDataProvider([
@@ -163,7 +163,7 @@ class ItemController extends Controller
         ]);
         $stationId = Yii::$app->request->post('stationId') ?? Yii::$app->request->get('stationId');
 
-        $subcategories = Subcategory::find()->all();
+        $subcategories = Subcategory::find()->where(['is_deleted' => false])->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect('index');
@@ -252,7 +252,7 @@ class ItemController extends Controller
 
         $stations = Station::find()->where(['manager_id' => Yii::$app->user->id])->all();
         $dataProvider = new \yii\data\ActiveDataProvider([
-            'query' => StationItem::find()->where(['station_id' => $stationItem->station_id, 'is_deleted' => 1])->with('item'),
+            'query' => StationItem::find()->where(['station_id' => $stationItem->station_id, 'is_deleted' => false])->with('item'),
         ]);
 
         return $this->render('index', [

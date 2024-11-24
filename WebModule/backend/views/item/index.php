@@ -13,9 +13,7 @@ use yii\helpers\Url;
 /* @var $model app\models\ItemStationForm */ // Certifique-se de que o tipo está correto
 
 $this->title = 'Items - ' . ($stationId ? Station::findOne($stationId)->name : 'All Stations');
-$this->params['breadcrumbs'][] = $this->title;
-
-?>
+$this->params['breadcrumbs'][] = $this->title; ?>
 
 <div class="items-index">
 
@@ -41,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="item-form mb-3 w-100 justify-content-center">
             <?php $form = ActiveForm::begin([
                 'action' => $isUpdate
-                    ? Url::to(['station-item/update-association','station_id' => $model->station_id, 'item_id' => $model->item_id])
+                    ? Url::to(['station-item/update-association', 'station_id' => $model->station_id, 'item_id' => $model->item_id])
                     : Url::to(['station-item/associate', 'station_id' => $stationId, 'item_id' => null]),
                 'method' => 'post',
                 'options' => ['class' => 'w-100'],

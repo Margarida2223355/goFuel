@@ -5,6 +5,7 @@ namespace backend\controllers;
 use common\models\Category;
 use Yii;
 use common\models\Subcategory;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -60,32 +61,52 @@ class SubcategoryController extends Controller
     }
 
 
-    public function actionUpdate($id)
+    public function actionUpdate($id, $subcategory_id = null)
     {
-        $model = Subcategory::findOne($id);
-        if ($model === null) {
-            throw new NotFoundHttpException('The requested subcategory does not exist.');
+        $model = Category::findOne($id);
+        if (!$model) {
+            throw new NotFoundHttpException('Category not found.');
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['category/update', 'id' => $model->category_id]);
+        // Instanciar uma nova subcategoria por padrão
+        $newSubcategory = new Subcategory();
+
+        // Se o parâmetro `subcategory_id` foi passado, carregue os dados da subcategoria existente
+        if ($subcategory_id) {
+            $newSubcategory = Subcategory::findOne($subcategory_id);
+            if (!$newSubcategory) {
+                throw new NotFoundHttpException('Subcategory not found.');
+            }
         }
 
         return $this->render('update', [
             'model' => $model,
+            'newSubcategory' => $newSubcategory,
+            'subcategoriesDataProvider' => new ActiveDataProvider([
+                'query' => Subcategory::find()->where(['category_id' => $id, 'is_deleted' => false]),
+            ]),
         ]);
     }
 
     public function actionDelete($id)
     {
-        $model = $this->findModel($id);
-        $categoryId = $model->category_id;
 
-        if ($model->delete()) {
-            return $this->redirect(['category/view', 'id' => $categoryId]);
+        if ($id) {
+            $model = $this->findModel($id);
+            $categoryId = $model->category_id;
+            if ($model) {
+                $model->is_deleted = 1;
+                if ($model->save()) {
+                    Yii::$app->session->setFlash('success', 'Category successfully deleted.');
+                }
+            }
+        } else {
+            Yii::$app->session->setFlash('error', 'An error occurred.');
         }
+        return $this->redirect(['category/view', 'id' => $categoryId]);
 
-        throw new NotFoundHttpException('The requested subcategory does not exist.');
+
+        // throw new NotFoundHttpException('The requested subcategory does not exist.');
     }
 
     protected function findModel($id)

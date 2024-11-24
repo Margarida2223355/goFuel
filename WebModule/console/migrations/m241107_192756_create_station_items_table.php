@@ -14,7 +14,7 @@ class m241107_192756_create_station_items_table extends Migration
             'item_id' => $this->integer()->notNull(),
             'price' => $this->decimal(10, 2),
             'stock' => $this->integer()->notNull()->defaultValue(0),
-            'is_deleted' => $this->boolean()->defaultValue(1)->notNull(),
+            'is_deleted' => $this->boolean()->defaultValue(0)->notNull(),
         ]);
 
         $this->addPrimaryKey('pk_station_items', 'station_items', ['station_id', 'item_id']);

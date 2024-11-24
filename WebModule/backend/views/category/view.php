@@ -18,20 +18,10 @@ $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <div class="form-group d-flex align-items-center">
-
-        <?= Html::activeTextInput($model, 'name', [
-            'class' => 'form-control me-2',
-            'id' => 'category-name',
-            'placeholder' => 'Enter category name'
-        ]) ?>
-
-        <?= Html::submitButton('<i class="fa fa-save" aria-hidden="true"></i>', [
-            'class' => 'btn',
-            'style' => 'color: blue; border-color: black;',
-            'title' => 'Update Category'
-        ]) ?>
-    </div>
+    <?= $this->render('_form', [
+        'model' => $model,
+        'view' => $view
+    ]) ?>
 
     <?php ActiveForm::end(); ?>
 
@@ -49,11 +39,14 @@ $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
                 'buttons' => [
                     'update' => function ($url, $model) {
                         if (Yii::$app->user->can('Admin')) {
-                            return Html::a('<i class="fa fa-pen" aria-hidden="true"></i>', '#', [
-                                'title' => 'Update',
-                                'style' => 'color: #28a745; text-decoration: none;',
-                                'onclick' => "setSubcategoryData({$model->id}, '{$model->description}'); return false;", // Chama a função JavaScript
-                            ]);
+                            return Html::a(
+                                '<i class="fa fa-pen" aria-hidden="true"></i>',
+                                ['category/view', 'id' => $model->category_id, 'subcategory_id' => $model->id], // Passa os IDs para category/view
+                                [
+                                    'title' => 'Update',
+                                    'style' => 'color: #28a745; text-decoration: none;',
+                                ]
+                            );
                         }
                     },
                     'delete' => function ($url, $model) {
@@ -74,34 +67,18 @@ $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
             ],
         ],
     ]); ?>
-    <?php if (Yii::$app->user->can('Admin')) { ?>
-        <h3>Add New Subcategory</h3>
+    <?php
+    if (Yii::$app->user->can('Admin')) {
+        if ($isUpdate == true) { ?>
+            <h3>Update Subcategory</h3>
+        <?php } else { ?>
+            <h3>Add New Subcategory</h3>
+        <?php } ?>
 
-        <?php
-        $form = ActiveForm::begin([
-            'action' => ['subcategory/create'],
-            'method' => 'post',
-        ]); ?>
-
-        <?= Html::activeHiddenInput($newSubcategory, 'category_id', ['value' => $model->id]) ?>
-
-        <?= Html::activeHiddenInput($newSubcategory, 'id', ['value' => $newSubcategory->id]) ?>
-
-        <div class="form-group d-flex align-items-center">
-
-            <?= Html::activeTextInput($newSubcategory, 'description', [
-                'class' => 'form-control me-2',
-                'id' => 'subcategory-description',
-                'placeholder' => 'Add new subcategory'
-            ]) ?>
-
-            <?= Html::submitButton('<i class="fa fa-plus" aria-hidden="true"></i>', [
-                'class' => 'btn',
-                'style' => 'color: green; border-color: black; height: calc(1.5em + .75rem + 2px);',
-                'title' => 'Add Subcategory'
-            ]) ?>
-        </div>
-
-    <?php ActiveForm::end();
+    <?= $this->render('_subform', [
+            'model' => $model,
+            'subcategory' => $subcategory,
+            'isUpdate' => $isUpdate
+        ]);
     } ?>
 </div>

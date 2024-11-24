@@ -48,7 +48,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Category - Subcategory',
                 'attribute' => 'category_subcategory',
                 'value' => function ($model) {
-                    return $model->subcategory ? $model->subcategory->category->name . ' - ' . $model->subcategory->description : 'N/A';
+                    if ($model->subcategory->is_deleted == 1) {
+                        return 'Category/Subcategory deleted. Please change.';
+                    } else {
+                        return $model->subcategory ? $model->subcategory->category->name . ' - ' . $model->subcategory->description : 'N/A';
+                    }
                 },
             ],
             'restock_qty',

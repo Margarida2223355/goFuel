@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Yii::$app->session->getFlash('error') ?>
         </div>
     <?php endif; ?>
-    
+
     <div class="d-flex align-items-center mb-3">
         <h1><?= Html::encode($this->title) ?></h1>
         <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>', ['user/create'], [

@@ -21,10 +21,10 @@ use yii\widgets\ActiveForm;
     ]); ?>
     <div class="row">
         <div class="col-md-3">
-            <?= $form->field($model, 'description')->textInput(['maxlength' => true])->label(false) ?>
+            <?= $form->field($model, 'description')->textInput(['maxlength' => true, 'placeholder' => 'Description'])->label(false) ?>
         </div>
         <div class="col-md-3">
-            <?= $form->field($model, 'restock_qty')->textInput()->label(false) ?>
+            <?= $form->field($model, 'restock_qty')->textInput(['placeholder' => 'Restock Quantity'])->label(false) ?>
         </div>
         <div class="col-md-3">
             <?= $form->field($model, 'subcategory_id')->dropDownList(

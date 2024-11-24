@@ -13,6 +13,7 @@ class m241107_192743_create_subcategories_table extends Migration
             'id' => $this->primaryKey(),
             'description' => $this->string()->notNull(),
             'category_id' => $this->integer()->notNull(),
+            'is_deleted' => $this->boolean()->defaultValue(0)->notNull(),
         ]);
 
         $this->addForeignKey(
