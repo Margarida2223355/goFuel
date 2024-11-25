@@ -20,11 +20,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class PendingInvoiceAdapter extends BaseAdapter {
-    private final HashMap<String, Double> pendingValues;
+    private final HashMap<String, String> pendingValues;
     private final Context context;
     private final List<String> keys;
 
-    public PendingInvoiceAdapter(Context context, HashMap<String, Double> pendingValues) {
+    public PendingInvoiceAdapter(Context context, HashMap<String, String> pendingValues) {
         this.context = context;
         this.pendingValues = pendingValues;
         this.keys = new ArrayList<>(pendingValues.keySet());

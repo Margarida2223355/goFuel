@@ -5,6 +5,7 @@ import com.example.gofuel.model.invoice.finished.FinishedInvoice;
 import com.example.gofuel.model.invoice.pending.PendingInvoice;
 import com.example.gofuel.model.station.Station;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class State {
@@ -43,15 +44,27 @@ public class State {
             return invoices;
         }
     }
-    public static class FavoriteStation extends State {
+    public static class MainResults extends State {
         private final List<ClientStation> favoriteStation;
+        private final HashMap<String, String> pendingInvoices;
+        private final List<FinishedInvoice> finishedInvoices;
 
-        public FavoriteStation(List<ClientStation> favoriteStation) {
+        public MainResults(List<ClientStation> favoriteStation, HashMap<String, String> pendingInvoices, List<FinishedInvoice> finishedInvoices) {
             this.favoriteStation = favoriteStation;
+            this.pendingInvoices = pendingInvoices;
+            this.finishedInvoices = finishedInvoices;
         }
 
         public List<ClientStation> getFavoriteStation() {
             return favoriteStation;
+        }
+
+        public List<FinishedInvoice> getFinishedInvoices() {
+            return finishedInvoices;
+        }
+
+        public HashMap<String, String> getPendingInvoices() {
+            return pendingInvoices;
         }
     }
 }
