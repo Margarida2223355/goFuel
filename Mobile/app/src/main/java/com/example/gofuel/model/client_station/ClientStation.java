@@ -1,12 +1,15 @@
 package com.example.gofuel.model.client_station;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import com.example.gofuel.model.station.Station;
 import com.example.gofuel.model.user.User;
 
 @Entity(tableName = "client_station")
 public class ClientStation {
+    @PrimaryKey @NonNull
     private User client;
     private Station station;
 
