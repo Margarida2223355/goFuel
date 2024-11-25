@@ -1,5 +1,6 @@
 package com.example.gofuel.util;
 
+import com.example.gofuel.model.client_station.ClientStation;
 import com.example.gofuel.model.invoice.pending.PendingInvoice;
 import com.example.gofuel.model.station.Station;
 
@@ -28,6 +29,17 @@ public class State {
 
         public List<PendingInvoice> getInvoices() {
             return invoices;
+        }
+    }
+    public static class FavoriteStation extends State {
+        private final List<ClientStation> favoriteStation;
+
+        public FavoriteStation(List<ClientStation> favoriteStation) {
+            this.favoriteStation = favoriteStation;
+        }
+
+        public List<ClientStation> getFavoriteStation() {
+            return favoriteStation;
         }
     }
 }
