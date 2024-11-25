@@ -9,12 +9,12 @@ use Yii;
  *
  * @property int $id
  * @property int $item_id
- * @property int $qty
+ * @property float $qty
  * @property float $total
  * @property int $invoice_id
  *
- * @property Invoices $invoice
- * @property Items $item
+ * @property Invoice $invoice
+ * @property Item $item
  */
 class InvoiceLine extends \yii\db\ActiveRecord
 {
@@ -33,8 +33,8 @@ class InvoiceLine extends \yii\db\ActiveRecord
     {
         return [
             [['item_id', 'qty', 'total', 'invoice_id'], 'required'],
-            [['item_id', 'qty', 'invoice_id'], 'integer'],
-            [['total'], 'number'],
+            [['item_id', 'invoice_id'], 'integer'],
+            [['qty', 'total'], 'number'],
             [['invoice_id'], 'exist', 'skipOnError' => true, 'targetClass' => Invoice::class, 'targetAttribute' => ['invoice_id' => 'id']],
             [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Item::class, 'targetAttribute' => ['item_id' => 'id']],
         ];
@@ -72,10 +72,5 @@ class InvoiceLine extends \yii\db\ActiveRecord
     public function getItem()
     {
         return $this->hasOne(Item::class, ['id' => 'item_id']);
-    }
-
-    public function getState()
-    {
-        return $this->hasOne(InvoiceState::class, ['id' => 'state_id']);
     }
 }

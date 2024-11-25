@@ -15,7 +15,10 @@ use yii\helpers\Url;
                     ['label' => 'Debug', 'icon' => 'bug', 'url' => ['/debug'], 'target' => '_blank'],*/
                     ['label' => 'Homepage', 'icon' => 'home', 'url' => ['/site/index']],
                     ['label' => 'Users', 'icon' => 'users', 'url' => ['user/index']],
-                    ['label' => 'Stations', 'icon' => 'building', 'url' => ['/station/index']],
+
+                    /*Yii::$app->user->can('StationIndex') ? */
+                    ['label' => 'Stations', 'icon' => 'building', 'url' => ['/station/index']], /*: null*/
+
                     ['label' => 'Categories', 'icon' => 'tags', 'url' => ['/category/index']],
                     ['label' => 'Items', 'icon' => 'box', 'url' => ['/item/index']],
                     ['label' => 'Invoices', 'icon' => 'file-lines', 'url' => ['/invoice/index']],
@@ -24,24 +27,10 @@ use yii\helpers\Url;
 
             echo \hail812\adminlte\widgets\Menu::widget([
                 'items' => [
-                    ['label' => Yii::$app->user->identity->userInfo->name, 'icon' => 'user', 'url' => ['/user/update', 'id' => Yii::$app->user->identity->id]],
+                    ['label' => 'Profile (' . Yii::$app->user->identity->userInfo->name . ')', 'icon' => 'user', 'url' => ['/user/update', 'id' => Yii::$app->user->identity->id]],
                 ],
             ]);
             ?>
         </nav>
     </div>
 </aside>
-
-<style>
-    .sidebar {
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-    }
-
-    .sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active,
-    .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
-        background-color: #FEC454 !important;
-        color: #000 !important;
-    }
-</style>

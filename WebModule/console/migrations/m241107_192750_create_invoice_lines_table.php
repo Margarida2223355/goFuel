@@ -12,7 +12,7 @@ class m241107_192750_create_invoice_lines_table extends Migration
         $this->createTable('{{%invoice_lines}}', [
             'id' => $this->primaryKey(),
             'item_id' => $this->integer()->notNull(),
-            'qty' => $this->integer()->notNull(),
+            'qty' => $this->double()->notNull(),
             'total' => $this->double()->notNull(),
             'invoice_id' => $this->integer()->notNull(),
         ]);

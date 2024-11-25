@@ -49,8 +49,10 @@ class InvoiceController extends Controller
             throw new \yii\web\NotFoundHttpException("The requested station item does not exist.");
         }
 
-        // Verificação de estoque diretamente na tabela StationItem
-        if ($stationItem->stock < $quantity) {
+        $isFuel = $stationItem->item->subcategory->category->id == 1;
+        $quantityToAdd = $isFuel ? $quantity / $stationItem->price : $quantity;
+
+        if ($stationItem->stock < $quantityToAdd) {
             Yii::$app->session->setFlash('error', 'Quantity is not available. Please reduce the quantity.');
             return $this->redirect(['station/view', 'id' => $stationItem->station_id]);
         }
@@ -62,38 +64,34 @@ class InvoiceController extends Controller
         ]);
 
         if ($existInvoice) {
-            // Check if the invoice line already exists
             $existInvoiceLine = InvoiceLine::findOne([
                 'invoice_id' => $existInvoice->id,
                 'item_id' => $stationItem->item_id
             ]);
 
             if ($existInvoiceLine) {
-                // Atualiza a linha da invoice existente
-                if ($stationItem->stock < ($existInvoiceLine->qty + $quantity)) {
+                if ($stationItem->stock < ($existInvoiceLine->qty + $quantityToAdd)) {
                     Yii::$app->session->setFlash('error', 'Not enough stock for the desired quantity.');
                     return $this->redirect(['station/view', 'id' => $stationItem->station_id]);
                 }
 
-                $existInvoiceLine->qty += $quantity;
+                $existInvoiceLine->qty += $quantityToAdd;
                 $existInvoiceLine->total = $stationItem->price * $existInvoiceLine->qty;
                 if (!$existInvoiceLine->update()) {
-                    throw new \yii\web\ServerErrorHttpException("Failed to update the existing invoice line.");
+                    throw new \yii\web\ServerErrorHttpException("Failed to update the existing invoicess line.");
                 }
             } else {
-                // Adiciona nova linha na invoice
                 $invoiceLine = new InvoiceLine();
                 $invoiceLine->item_id = $stationItem->item_id;
-                $invoiceLine->qty = $quantity;
+                $invoiceLine->qty = round($quantityToAdd, 2);
                 $invoiceLine->invoice_id = $existInvoice->id;
-                $invoiceLine->total = $stationItem->price * $quantity;
+                $invoiceLine->total = round($stationItem->price * $quantityToAdd, 2);
                 if (!$invoiceLine->save()) {
-                    throw new \yii\web\ServerErrorHttpException("Failed to save the new invoice line.");
+                    throw new \yii\web\ServerErrorHttpException("Failed to save the new invoicssse line.");
                 }
             }
             $existInvoice->updateTotal();
         } else {
-            // Cria nova invoice
             $invoice = new Invoice();
             $invoice->client_id = $currentUser->id;
             $invoice->station_id = $stationItem->station_id;
@@ -105,24 +103,24 @@ class InvoiceController extends Controller
                 throw new \yii\web\ServerErrorHttpException("Failed to create a new invoice.");
             }
 
-            // Adiciona uma nova linha na invoice
             $invoiceLine = new InvoiceLine();
             $invoiceLine->item_id = $stationItem->item_id;
-            $invoiceLine->qty = $quantity;
+            $invoiceLine->qty = round($quantityToAdd, 2);
             $invoiceLine->invoice_id = $invoice->id;
-            $invoiceLine->total = $stationItem->price * $quantity;
+            $invoiceLine->total = $stationItem->price * $quantityToAdd;
 
             if (!$invoiceLine->save()) {
                 throw new \yii\web\ServerErrorHttpException("Failed to save the invoice line for the new invoice.");
             }
 
-            // Atualiza o total da nova invoice
             $invoice->updateTotal();
         }
-        Yii::$app->session->setFlash('success', 'Not enough stock for the desired quantity.');
+
+        Yii::$app->session->setFlash('success', 'Item successfully added to the cart.');
 
         return $this->redirect(['station/view', 'id' => $stationItem->station_id]);
     }
+
 
 
 

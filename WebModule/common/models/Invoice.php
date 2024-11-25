@@ -15,7 +15,7 @@ use Yii;
  * @property int $state_id
  * @property string|null $code
  *
- * @property Userinfo $client
+ * @property User $client
  * @property InvoiceLine[] $invoiceLines
  * @property InvoiceState $state
  * @property Station $station
@@ -36,14 +36,14 @@ class Invoice extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['client_id', 'station_id', 'total', 'state_id'], 'required'],
+            [['client_id', 'station_id', 'total'], 'required'],
             [['client_id', 'station_id', 'state_id'], 'integer'],
             [['invoice_date'], 'safe'],
             [['total'], 'number'],
             [['code'], 'string', 'max' => 45],
+            [['client_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['client_id' => 'id']],
             [['state_id'], 'exist', 'skipOnError' => true, 'targetClass' => InvoiceState::class, 'targetAttribute' => ['state_id' => 'id']],
             [['station_id'], 'exist', 'skipOnError' => true, 'targetClass' => Station::class, 'targetAttribute' => ['station_id' => 'id']],
-            [['client_id'], 'exist', 'skipOnError' => true, 'targetClass' => Userinfo::class, 'targetAttribute' => ['client_id' => 'id']],
         ];
     }
 
@@ -101,37 +101,6 @@ class Invoice extends \yii\db\ActiveRecord
     public function getStation()
     {
         return $this->hasOne(Station::class, ['id' => 'station_id']);
-    }
-
-    /**
-     * Customize fields returned from API
-     * 
-     * @return array
-     */
-    public function fields()
-    {
-        $fields = parent::fields();
-
-        // Remove client_id, station_id and state_id fields
-        unset($fields['client_id'], $fields['station_id'], $fields['state_id']);
-
-        // Add client and station fields
-        $fields['client'] = function () {
-            $client = $this->getClient()->one();
-            return $client ? $client : null;
-        };
-
-        $fields['station'] = function () {
-            $station = $this->getStation()->one();
-            return $station ? $station : null;
-        };
-
-        $fields['state'] = function() {
-            $state = $this->getState()->one();
-            return $state ? $state : null;
-        };
-
-        return $fields;
     }
 
     public function updateTotal()

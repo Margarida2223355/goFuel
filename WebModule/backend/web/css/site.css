@@ -24,6 +24,18 @@ main>.container {
     z-index: 1000;
 }
 
+.sidebar {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+.sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active,
+.sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
+    background-color: #FEC454 !important;
+    color: #000 !important;
+}
+
 .footer>.container {
     padding-right: 15px;
     padding-left: 15px;
@@ -36,11 +48,12 @@ main>.container {
 
 .sidebar-collapse .logo-expanded {
     display: none;
-    
+
+}
 
 .sidebar-collapse .logo-collapsed {
     display: block !important;
-    
+}
 
 /* add sorting icons to gridview sort links */
 a.asc:after,

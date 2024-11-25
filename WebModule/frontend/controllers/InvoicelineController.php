@@ -41,13 +41,26 @@ class InvoicelineController extends Controller
         $action = Yii::$app->request->post('action');
         $invoice = Invoice::findOne($line->invoice_id);
 
+        $item = StationItem::findOne(['item_id' => $line->item_id, 'station_id' => $line->invoice->station_id]);
+
+
         if ($line && $quantity > 0) {
             if ($action === 'minus') {
-                $line->qty = max(0, $line->qty - $quantity);
+                if ($line->item->subcategory->category->id == 1) {
+                    $litersToRemove = $quantity / $item->price;
+                    $line->qty = max(0, $line->qty - $litersToRemove);
+                } else {
+                    $line->qty = max(0, $line->qty - $quantity);
+                }
             } elseif ($action === 'plus') {
-                $line->qty += $quantity;
+                if ($line->item->subcategory->category->id == 1) {
+                    $litersToAdd = $quantity / $item->price;
+                    $line->qty += $litersToAdd;
+                } else {
+                    $line->qty += $quantity;
+                }
             }
-            $line->total = $line->qty * $line->item->price;
+            $line->total = $line->qty * $item->price;
             $line->save();
             $invoice->updateTotal();
         }
