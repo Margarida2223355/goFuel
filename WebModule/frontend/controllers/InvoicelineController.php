@@ -46,14 +46,14 @@ class InvoicelineController extends Controller
 
         if ($line && $quantity > 0) {
             if ($action === 'minus') {
-                if ($line->item->subcategory->category->id == 1) {
+                if ($line->item->subcategory->category->id == 1 || $line->item->subcategory->category->id == 2) {
                     $litersToRemove = $quantity / $item->price;
                     $line->qty = max(0, $line->qty - $litersToRemove);
                 } else {
                     $line->qty = max(0, $line->qty - $quantity);
                 }
             } elseif ($action === 'plus') {
-                if ($line->item->subcategory->category->id == 1) {
+                if ($line->item->subcategory->category->id == 1 || $line->item->subcategory->category->id == 2) {
                     $litersToAdd = $quantity / $item->price;
                     $line->qty += $litersToAdd;
                 } else {
