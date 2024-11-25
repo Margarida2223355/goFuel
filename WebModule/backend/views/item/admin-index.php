@@ -34,6 +34,22 @@ $this->params['breadcrumbs'][] = $this->title;
         'isUpdate' => $isUpdate
     ]) ?>
 
+    <div class="row">
+        <div class="col-6 float-left">
+            <h6>
+                <i class="fa-regular fa-circle-check" style="color: #28a745;"></i> - Enabled Item &emsp;
+                <i class="fa-regular fa-circle-xmark" style="color: #dc3545;"></i> - Disabled Item
+            </h6>
+        </div>
+        <div class="col-6 float-right">
+            <h6 class="float-right">
+                <i class="fa fa-pen" style="color: #28a745;"></i> - Edit Item &emsp;
+                <i class="fa fa-redo" style="color: #ffcc00;"></i> - Enable Item &emsp;
+                <i class="fa fa-trash" style="color: #dc3545;"></i> - Desable Item
+            </h6>
+        </div>
+    </div>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
@@ -44,15 +60,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value' => function ($model) {
                     return $model->is_deleted
-                        ? Html::tag('i', '', ['class' => 'fa-regular fa-circle-check', 'aria-hidden' => 'true', 'style' => 'color: #28a745']) . ' ' . $model->description
-                        : Html::tag('i', '', ['class' => 'fa-regular fa-circle-xmark', 'aria-hidden' => 'true', 'style' => 'color: #dc3545']) . ' ' . $model->description;
+                        ? Html::tag('i', '', ['class' => 'fa-regular fa-circle-xmark', 'aria-hidden' => 'true', 'style' => 'color: #dc3545']) . ' ' . $model->description
+                        : Html::tag('i', '', ['class' => 'fa-regular fa-circle-check', 'aria-hidden' => 'true', 'style' => 'color: #28a745']) . ' ' . $model->description;
                 },
             ],
             [
                 'label' => 'Category - Subcategory',
                 'attribute' => 'category_subcategory',
                 'value' => function ($model) {
-                    if ($model->subcategory->is_deleted == 1) {
+                    if ($model->subcategory->is_deleted == 0) {
                         return $model->subcategory ? $model->subcategory->category->name . ' - ' . $model->subcategory->description : 'N/A';
                     } else {
                         return 'Category/Subcategory deleted. Please change.';
@@ -62,6 +78,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'restock_qty',
             [
                 'class' => ActionColumn::class,
+                'header' => 'Actions',
                 'template' => '{update} {delete}',
                 'buttons' => [
                     'update' => function ($url, $model) {
@@ -71,16 +88,26 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]);
                     },
                     'delete' => function ($url, $model) {
-                        return Html::a('<i class="fa fa-trash" aria-hidden="true"></i>', $url, [
-                            'title' => 'Delete',
-                            'data-method' => 'post',
-                            'data-confirm' => 'Do you realy want delete this item?',
-                            'style' => 'color: #dc3545; text-decoration: none;',
-                        ]);
+                        if ($model->is_deleted == false) {
+                            return Html::a('<i class="fa fa-trash" aria-hidden="true"></i>', $url, [
+                                'title' => 'Desable',
+                                'data-method' => 'post',
+                                'data-confirm' => 'Confirm Item Disablement?',
+                                'style' => 'color: #dc3545; text-decoration: none;',
+                            ]);
+                        } else {
+                            return Html::a('<i class="fa fa-redo" aria-hidden="true"></i>', $url, [
+                                'title' => 'Enable',
+                                'data-method' => 'post',
+                                'data-confirm' => 'Confirm Item Enablement?',
+                                'style' => 'color: #ffcc00; text-decoration: none;',
+                            ]);
+                        }
                     },
                 ],
             ],
         ],
+        'summary' => false,
     ]); ?>
 
 </div>

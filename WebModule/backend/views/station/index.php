@@ -11,32 +11,57 @@ use yii\grid\GridView;
 $this->title = 'Stations';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="container-fluid mt-5 ml-1">
+<div class="container-fluid ml-1">
 
     <div class="d-flex align-items-center mb-3">
         <h1><?= Html::encode($this->title) ?></h1>
-        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>', ['station/create'], [
-            'class' => 'btn',
-            'title' => 'Create station',
-            'style' => 'color: green; text-decoration: none; margin-right: 10px; margin-left: 15px;',
-        ]) ?>
+    </div>
+
+    <?= $this->render('_form', [
+        'model' => $model,
+        'managersList' => $managersList,
+        'isUpdate' => $isUpdate,
+    ]) ?>
+
+    <div class="row">
+        <div class="col-6 float-left">
+            <h6>
+                <i class="fa-regular fa-circle-check" style="color: #28a745;"></i> - Enabled Station &emsp;
+                <i class="fa-regular fa-circle-xmark" style="color: #dc3545;"></i> - Disabled Station
+            </h6>
+        </div>
+        <div class="col-6 float-right">
+            <h6 class="float-right">
+                <i class="fa fa-eye" style="color: #007bff;"></i> - Master Detail &emsp;
+                <i class="fa fa-pen" style="color: #28a745;"></i> - Edit Station &emsp;
+                <i class="fa fa-redo" style="color: #ffcc00;"></i> - Enable Station &emsp;
+                <i class="fa fa-trash" style="color: #dc3545;"></i> - Desable Station
+            </h6>
+        </div>
     </div>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
             'id',
-            'name',
+            [
+                'attribute' => 'name',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return $model->is_deleted
+                        ? Html::tag('i', '', ['class' => 'fa-regular fa-circle-xmark', 'aria-hidden' => 'true', 'style' => 'color: #dc3545']) . ' ' . $model->name
+                        : Html::tag('i', '', ['class' => 'fa-regular fa-circle-check', 'aria-hidden' => 'true', 'style' => 'color: #28a745']) . ' ' . $model->name;
+                },
+            ],
             'address',
             'postal_code',
             [
                 'attribute' => 'manager_id',
                 'label' => 'Manager Name',
                 'value' => function ($model) {
-                    return $model->manager ? $model->manager->name : 'Not assigned';
+                    return $model->manager ? $model->manager->userInfo->name : 'Not assigned';
                 }
             ],
-
             [
                 'class' => ActionColumn::className(),
                 'template' => '{view} {update} {delete}',
@@ -64,12 +89,21 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]);
                     },
                     'delete' => function ($url, $model) {
-                        return Html::a('<i class="fa fa-trash" aria-hidden="true"></i>', $url, [
-                            'title' => 'Delete',
-                            'data-method' => 'post',
-                            'data-confirm' => 'Tem certeza que deseja apagar esta station?',
-                            'style' => 'color: #dc3545; text-decoration: none;', // Estilo opcional
-                        ]);
+                        if ($model->is_deleted == false) {
+                            return Html::a('<i class="fa fa-trash" aria-hidden="true"></i>', $url, [
+                                'title' => 'Desable',
+                                'data-method' => 'post',
+                                'data-confirm' => 'Confirm Station Disablement?',
+                                'style' => 'color: #dc3545; text-decoration: none;',
+                            ]);
+                        } else {
+                            return Html::a('<i class="fa fa-redo" aria-hidden="true"></i>', $url, [
+                                'title' => 'Enable',
+                                'data-method' => 'post',
+                                'data-confirm' => 'Confirm Station Enablement?',
+                                'style' => 'color: #ffcc00; text-decoration: none;',
+                            ]);
+                        }
                     },
                 ],
             ],

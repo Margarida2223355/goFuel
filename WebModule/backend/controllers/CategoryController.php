@@ -47,7 +47,7 @@ class CategoryController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Category::find()->orderBy(['is_deleted' => SORT_DESC]),
+            'query' => Category::find()->orderBy(['is_deleted' => SORT_ASC]),
         ]);
         $model = new Category();
         $view = false;
@@ -71,7 +71,7 @@ class CategoryController extends Controller
         }
 
         $subcategoriesDataProvider = new \yii\data\ActiveDataProvider([
-            'query' => Subcategory::find()->where(['category_id' => $id])->orderBy(['is_deleted' => SORT_DESC]),
+            'query' => Subcategory::find()->where(['category_id' => $id])->orderBy(['is_deleted' => SORT_ASC]),
         ]);
         $isUpdate = false;
 
@@ -121,7 +121,7 @@ class CategoryController extends Controller
         }
 
         $subcategoriesDataProvider = new \yii\data\ActiveDataProvider([
-            'query' => Subcategory::find()->where(['category_id' => $id])->orderBy(['is_deleted' => SORT_DESC]),
+            'query' => Subcategory::find()->where(['category_id' => $id])->orderBy(['is_deleted' => SORT_ASC]),
         ]);
         $view = true;
         $isUpdate = false;

@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'postal_code',
             [
                 'label' => 'Manager',
-                'value' => $station->manager->name, // Supondo que o manager tenha uma relação 'name' ou 'username'
+                'value' => $station->manager->userInfo->name, // Supondo que o manager tenha uma relação 'name' ou 'username'
             ],
         ],
     ]) ?>

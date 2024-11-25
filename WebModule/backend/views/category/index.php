@@ -67,8 +67,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value' => function ($model) {
                     return $model->is_deleted
-                        ? Html::tag('i', '', ['class' => 'fa-regular fa-circle-check', 'aria-hidden' => 'true', 'style' => 'color: #28a745']) . ' ' . $model->name
-                        : Html::tag('i', '', ['class' => 'fa-regular fa-circle-xmark', 'aria-hidden' => 'true', 'style' => 'color: #dc3545']) . ' ' . $model->name;
+                        ? Html::tag('i', '', ['class' => 'fa-regular fa-circle-xmark', 'aria-hidden' => 'true', 'style' => 'color: #dc3545']) . ' ' . $model->name
+                        : Html::tag('i', '', ['class' => 'fa-regular fa-circle-check', 'aria-hidden' => 'true', 'style' => 'color: #28a745']) . ' ' . $model->name;
                 },
             ],
             [
@@ -95,18 +95,18 @@ $this->params['breadcrumbs'][] = $this->title;
                     'delete' => function ($url, $model) {
                         if (Yii::$app->user->can('Admin')) {
                             if ($model->is_deleted == false) {
-                                return Html::a('<i class="fa fa-redo" aria-hidden="true"></i>', $url, [
-                                    'title' => 'Enable',
-                                    'data-method' => 'post',
-                                    'data-confirm' => 'Confirm Category Enablement?',
-                                    'style' => 'color: #ffcc00; text-decoration: none;',
-                                ]);
-                            } else {
                                 return Html::a('<i class="fa fa-trash" aria-hidden="true"></i>', $url, [
                                     'title' => 'Desable',
                                     'data-method' => 'post',
                                     'data-confirm' => 'Confirm Category Disablement?',
                                     'style' => 'color: #dc3545; text-decoration: none;',
+                                ]);
+                            } else {
+                                return Html::a('<i class="fa fa-redo" aria-hidden="true"></i>', $url, [
+                                    'title' => 'Enable',
+                                    'data-method' => 'post',
+                                    'data-confirm' => 'Confirm Category Enablement?',
+                                    'style' => 'color: #ffcc00; text-decoration: none;',
                                 ]);
                             }
                         }

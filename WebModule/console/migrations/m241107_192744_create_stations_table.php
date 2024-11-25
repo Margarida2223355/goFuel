@@ -16,6 +16,7 @@ class m241107_192744_create_stations_table extends Migration
             'postal_code' => $this->string(20)->notNull(),
             'manager_id' => $this->integer()->notNull(),
             'phone' => $this->string(45)->defaultValue(null),
+            'is_deleted' => $this->boolean()->defaultValue(false)->notNull(),
         ]);
 
         // Criação do índice para a coluna `manager_id`

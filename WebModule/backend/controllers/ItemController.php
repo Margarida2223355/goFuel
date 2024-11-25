@@ -79,15 +79,17 @@ class ItemController extends Controller
         if ($isAdmin) {
             // Se sim, busca os items
             $dataProvider = new \yii\data\ActiveDataProvider([
-                'query' => Item::find()->orderBy(['is_deleted' => SORT_DESC])
+                'query' => Item::find()->orderBy(['is_deleted' => SORT_ASC])
             ]);
             $model = new Item();
-            $subcategories = Subcategory::find()->orderBy(['is_deleted' => SORT_DESC]);
+            $subcategories = Subcategory::find()->where(['is_deleted' => false])->all();
+
+            $subcategoriesList =  \yii\helpers\ArrayHelper::map($subcategories, 'id', 'description');
 
             return $this->render('admin-index', [
                 'dataProvider' => $dataProvider,
                 'model' => $model,
-                'subcategories' => $subcategories,
+                'subcategories' => $subcategoriesList,
                 'isUpdate' => false,
             ]);
         }
@@ -159,11 +161,13 @@ class ItemController extends Controller
         $model = $this->findModel($id);
 
         $dataProvider = new \yii\data\ActiveDataProvider([
-            'query' => Item::find(),
+            'query' => Item::find()->orderBy(['is_deleted' => SORT_ASC]),
         ]);
         $stationId = Yii::$app->request->post('stationId') ?? Yii::$app->request->get('stationId');
 
-        $subcategories = Subcategory::find()->orderBy(['is_deleted' => SORT_DESC]);
+        $subcategories = Subcategory::find()->where(['is_deleted' => false])->all();
+
+        $subcategoriesList =  \yii\helpers\ArrayHelper::map($subcategories, 'id', 'description');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect('index');
@@ -172,7 +176,7 @@ class ItemController extends Controller
         return $this->render('admin-index', [
             'dataProvider' => $dataProvider,
             'model' => $model,
-            'subcategories' => $subcategories,
+            'subcategories' => $subcategoriesList,
             'isUpdate' => true,
         ]);
     }
@@ -181,11 +185,13 @@ class ItemController extends Controller
     {
         if ($id) {
             $model = $this->findModel($id);
-            if ($model) {
+            if ($model->is_deleted == true) {
                 $model->is_deleted = 0;
-                if ($model->save()) {
-                    Yii::$app->session->setFlash('success', 'Item successfully deleted.');
-                }
+            } else {
+                $model->is_deleted = 1;
+            }
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', 'Item successfully deleted.');
             }
         } else {
             Yii::$app->session->setFlash('error', 'An error occurred.');

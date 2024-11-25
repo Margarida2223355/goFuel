@@ -17,6 +17,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'isUpdate' => $isUpdate,
         'managersList' => $managersList,  // Passa a lista de managers para o formulário
     ]) ?>
 

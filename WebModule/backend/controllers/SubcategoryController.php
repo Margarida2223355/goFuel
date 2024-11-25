@@ -90,7 +90,6 @@ class SubcategoryController extends Controller
 
     public function actionDelete($id)
     {
-
         if ($id) {
             $model = $this->findModel($id);
             if ($model->is_deleted == true) {

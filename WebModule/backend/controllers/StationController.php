@@ -65,20 +65,37 @@ class StationController extends Controller
         $query = Station::find();
 
         if (isset($roles['Admin'])) {
+            $query->orderBy(['is_deleted' => SORT_ASC]);
         } elseif (isset($roles['Manager'])) {
             $query->where(['manager_id' => $currentUser->id]);
         } else {
             throw new \yii\web\ForbiddenHttpException('Você não tem permissão para acessar esta página.');
         }
+
+        $model = new Station();
+
+        $managers = User::find()
+            ->joinWith('authAssignments')
+            ->where(['auth_assignment.item_name' => 'Manager'])
+            ->all();
+
+        $managersList = \yii\helpers\ArrayHelper::map($managers, 'id', function ($model) {
+            return $model->userInfo ? $model->userInfo->name : 'N/A';
+        });
+
         $dataProvider = new \yii\data\ActiveDataProvider([
             'query' => $query,
             'pagination' => [
                 'pageSize' => 10,
             ],
         ]);
+        $isUpdate = false;
 
         return $this->render('index', [
+            'model' => $model,
+            'managersList' => $managersList,
             'dataProvider' => $dataProvider,
+            'isUpdate' => $isUpdate,
         ]);
     }
 
@@ -99,34 +116,13 @@ class StationController extends Controller
             ]);
         }
 
+
         return $this->render('view', [
             'station' => $station,
             'model' => $model,
             'id' => $id,
             'dataProvider' => $dataProvider,
         ]);
-    }
-
-    public function actionAddItem()
-    {
-        $stationId = Yii::$app->request->post('station_id');
-        $itemId = Yii::$app->request->post('item_id');
-        $price = Yii::$app->request->post('price');
-
-        if ($stationId && $itemId && $price) {
-            $stationItem = new StationItem();
-            $stationItem->station_id = $stationId;
-            $stationItem->item_id = $itemId;
-            $stationItem->price = $price;
-
-            if ($stationItem->save()) {
-                Yii::$app->session->setFlash('success', 'Item added successfully with price.');
-            } else {
-                Yii::$app->session->setFlash('error', 'Failed to add item.');
-            }
-        }
-
-        return $this->redirect(['station/view', 'id' => $stationId]);
     }
 
     public function actionCreate()
@@ -165,17 +161,25 @@ class StationController extends Controller
     {
         $model = $this->findModel($id);
 
-        $managers = UserInfo::find()
-            ->where(['role' => 'Manager'])
+        $managers = User::find()
+            ->joinWith('authAssignments')
+            ->where(['auth_assignment.item_name' => 'Manager'])
             ->all();
 
-        $managersList = \yii\helpers\ArrayHelper::map($managers, 'id', 'name');
+        $managersList = \yii\helpers\ArrayHelper::map($managers, 'id', 'userInfo.name');
+        $isUpdate = true;
+
+        $dataProvider = new \yii\data\ActiveDataProvider([
+            'query' => Station::find()->orderBy(['is_deleted' => SORT_ASC]),
+        ]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
 
-        return $this->render('update', [
+        return $this->render('index', [
+            'dataProvider' => $dataProvider,
+            'isUpdate' => $isUpdate,
             'model' => $model,
             'managersList' => $managersList,
         ]);
@@ -183,9 +187,43 @@ class StationController extends Controller
 
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if ($id) {
+            $model = $this->findModel($id);
+            if ($model->is_deleted == true) {
+                $model->is_deleted = 0;
+            } else {
+                $model->is_deleted = 1;
+            }
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', 'Item successfully deleted.');
+            }
+        } else {
+            Yii::$app->session->setFlash('error', 'An error occurred.');
+        }
 
         return $this->redirect(['index']);
+    }
+
+    public function actionAddItem()
+    {
+        $stationId = Yii::$app->request->post('station_id');
+        $itemId = Yii::$app->request->post('item_id');
+        $price = Yii::$app->request->post('price');
+
+        if ($stationId && $itemId && $price) {
+            $stationItem = new StationItem();
+            $stationItem->station_id = $stationId;
+            $stationItem->item_id = $itemId;
+            $stationItem->price = $price;
+
+            if ($stationItem->save()) {
+                Yii::$app->session->setFlash('success', 'Item added successfully with price.');
+            } else {
+                Yii::$app->session->setFlash('error', 'Failed to add item.');
+            }
+        }
+
+        return $this->redirect(['station/view', 'id' => $stationId]);
     }
 
     protected function findModel($id)

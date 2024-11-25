@@ -28,7 +28,7 @@ use yii\widgets\ActiveForm;
         </div>
         <div class="col-md-3">
             <?= $form->field($model, 'subcategory_id')->dropDownList(
-                \yii\helpers\ArrayHelper::map($subcategories, 'id', 'description'),
+                $subcategories,
                 ['prompt' => 'Select a Subcategory']
             )->label(false) ?>
         </div>
