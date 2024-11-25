@@ -16,6 +16,8 @@ import com.example.gofuel.repository.invoice.InvoiceRepository;
 import com.example.gofuel.repository.station.StationRepository;
 import com.example.gofuel.util.State;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainViewModel extends ViewModel {
@@ -32,47 +34,31 @@ public class MainViewModel extends ViewModel {
         return state;
     }
 
-    public void loadFavoriteStation() {
+    public void loadInfo() {
         state.setValue(new State.Loading());
 
         new Thread(() -> {
-            ResultWrapper<List<ClientStation>> result = clientStationRepository.getFavoriteStation();
+            ResultWrapper<List<ClientStation>> favoriteStation = clientStationRepository.getFavoriteStation();
+            ResultWrapper<List<PendingInvoice>> pendingInvoices = invoiceRepository.getPendingInvoices();
+            ResultWrapper<List<FinishedInvoice>> finishedInvoices = invoiceRepository.getFinishedInvoices();
 
-            if (result.getResult() != null) {
-                state.postValue(new State.FavoriteStation(result.getResult()));
-            } else {
-                Log.e("-->", "Error API: " + result.getError());
-                state.postValue(new State.FavoriteStation(null));
+            if ((favoriteStation.getError() == null) && (pendingInvoices.getError() == null) && (finishedInvoices.getError() == null)) {
+                Double total = 0.0;
+                HashMap<String, String> pendingValues = new HashMap<>();
+
+                for (PendingInvoice invoice : pendingInvoices.getResult()) {
+                    total += invoice.getTotal();
+                }
+
+                pendingValues.put("Nº Faturas", String.valueOf(pendingInvoices.getResult().size()));
+                pendingValues.put("Valor Faturas [€]", String.valueOf(total));
+
+                state.postValue(new State.MainResults(favoriteStation.getResult(), pendingValues, finishedInvoices.getResult()));
             }
-        }).start();
-    }
-
-    public void loadPendingInvoices() {
-        state.setValue(new State.Loading());
-
-        new Thread(() -> {
-            ResultWrapper<List<PendingInvoice>> result = invoiceRepository.getPendingInvoices();
-
-            if (result.getResult() != null) {
-                state.postValue(new State.PendingInvoiceList(result.getResult()));
-            } else {
-                Log.e("-->", "Error API: " + result.getError());
-                state.postValue(new State.PendingInvoiceList(null));
-            }
-        }).start();
-    }
-
-    public void loadFinishedInvoices() {
-        state.setValue(new State.Loading());
-
-        new Thread(() -> {
-            ResultWrapper<List<FinishedInvoice>> result = invoiceRepository.getFinishedInvoices();
-
-            if (result.getResult() != null) {
-                state.postValue(new State.FinishedInvoiceList(result.getResult()));
-            } else {
-                Log.e("-->", "Error API: " + result.getError());
-                state.postValue(new State.FinishedInvoiceList(null));
+            else {
+                Log.e("-->", "Error API: " + favoriteStation.getError());
+                Log.e("-->", "Error API: " + pendingInvoices.getError());
+                Log.e("-->", "Error API: " + finishedInvoices.getError());
             }
         }).start();
     }
