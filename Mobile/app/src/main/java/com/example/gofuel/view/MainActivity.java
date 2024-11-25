@@ -15,6 +15,7 @@ import com.example.gofuel.R;
 import com.example.gofuel.databinding.ActivityHomeBinding;
 import com.example.gofuel.model.user.User;
 import com.example.gofuel.view.fragments.InvoiceFragment;
+import com.example.gofuel.view.fragments.MainFragment;
 import com.example.gofuel.view.fragments.StationFragment;
 import com.example.gofuel.view.components.MenuButtons;
 
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         //region Setup Fragment
         fragmentManager = getSupportFragmentManager();
-        //changeFragment(binding.bottombar.appMenu.btnStation);
+        changeFragment(findViewById(R.id.homeButton));
         //endregion
 
         //region Setup Menu buttons
@@ -66,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
         }
         else if (view.getId() == R.id.btnInvoice) {
             fragment = new InvoiceFragment();
+        }
+        else if (view.getId() == R.id.homeButton) {
+            fragment = new MainFragment();
         }
 
         if (fragment != null) { fragmentManager.beginTransaction().replace(R.id.fragment, fragment).commit(); }
