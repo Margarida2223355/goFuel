@@ -36,6 +36,19 @@ main>.container {
     color: #000 !important;
 }
 
+.main-sidebar {
+    height: 100vh !important;
+    /* Garante que a sidebar ocupa a altura inteira do viewport */
+    position: fixed !important;
+    /* Fixa a sidebar na posição esquerda */
+    top: 0;
+    /* Define o topo da sidebar */
+    bottom: 0 !important;
+    /* Faz com que a sidebar alcance o rodapé */
+    overflow-y: auto !important;
+    /* Adiciona rolagem vertical, caso necessário */
+}
+
 .footer>.container {
     padding-right: 15px;
     padding-left: 15px;

@@ -26,11 +26,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="d-flex align-items-center mb-3">
         <h1><?= Html::encode($this->title) ?></h1>
-        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>', ['item/create'], [
-            'class' => 'btn',
-            'title' => 'Create Item',
-            'style' => 'color: green; text-decoration: none; margin-right: 10px; margin-left: 15px;',
-        ]) ?>
     </div>
 
     <?= $this->render('_form', [
@@ -43,15 +38,24 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'description',
+
+            [
+                'attribute' => 'description',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return $model->is_deleted
+                        ? Html::tag('i', '', ['class' => 'fa-regular fa-circle-check', 'aria-hidden' => 'true', 'style' => 'color: #28a745']) . ' ' . $model->description
+                        : Html::tag('i', '', ['class' => 'fa-regular fa-circle-xmark', 'aria-hidden' => 'true', 'style' => 'color: #dc3545']) . ' ' . $model->description;
+                },
+            ],
             [
                 'label' => 'Category - Subcategory',
                 'attribute' => 'category_subcategory',
                 'value' => function ($model) {
                     if ($model->subcategory->is_deleted == 1) {
-                        return 'Category/Subcategory deleted. Please change.';
-                    } else {
                         return $model->subcategory ? $model->subcategory->category->name . ' - ' . $model->subcategory->description : 'N/A';
+                    } else {
+                        return 'Category/Subcategory deleted. Please change.';
                     }
                 },
             ],

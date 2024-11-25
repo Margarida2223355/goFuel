@@ -3,7 +3,7 @@
 use yii\helpers\Url;
 
 ?>
-<aside class="main-sidebar sidebar-dark-primary elevation-4 position-fixed nav-legacy">
+<aside class="main-sidebar sidebar-dark-primary elevation-4 position-fixed">
     <!-- Sidebar -->
     <div class="sidebar d-flex flex-column justify-content-center">
         <!-- Sidebar Menu -->

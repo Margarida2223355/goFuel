@@ -12,7 +12,7 @@ class m241107_192742_create_categories_table extends Migration
         $this->createTable('categories', [
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
-            'is_deleted' => $this->boolean()->defaultValue(false)->notNull(),
+            'is_deleted' => $this->boolean()->defaultValue(true)->notNull(),
         ]);
 
         $this->batchInsert('{{%categories}}', ['id', 'name'], [

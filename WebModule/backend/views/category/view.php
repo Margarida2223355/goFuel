@@ -26,23 +26,43 @@ $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php $form = ActiveForm::begin(); ?>
 
     <?= $this->render('_form', [
         'model' => $model,
         'view' => $view
     ]) ?>
-
-    <?php ActiveForm::end(); ?>
-
-
     <h3>Subcategories</h3>
+    <div class="row">
+        <div class="col-6 float-left">
+            <h6>
+                <i class="fa-regular fa-circle-check" style="color: #28a745;"></i> - Enabled Subcategory &emsp;
+                <i class="fa-regular fa-circle-xmark" style="color: #dc3545;"></i> - Disabled Subcategory
+            </h6>
+        </div>
+        <div class="col-6 float-right">
+            <h6 class="float-right">
+                <i class="fa fa-pen" style="color: #28a745;"></i> - Edit Subcategory &emsp;
+                <i class="fa fa-redo" style="color: #ffcc00;"></i> - Enable Subcategory &emsp;
+                <i class="fa fa-trash" style="color: #dc3545;"></i> - Desable Subcategory
+            </h6>
+        </div>
+    </div>
+
+
 
     <?= GridView::widget([
         'dataProvider' => $subcategoriesDataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'description',
+            [
+                'attribute' => 'description',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return $model->is_deleted
+                        ? Html::tag('i', '', ['class' => 'fa-regular fa-circle-check', 'aria-hidden' => 'true', 'style' => 'color: #28a745']) . ' ' . $model->description
+                        : Html::tag('i', '', ['class' => 'fa-regular fa-circle-xmark', 'aria-hidden' => 'true', 'style' => 'color: #dc3545']) . ' ' . $model->description;
+                },
+            ],
             [
                 'class' => ActionColumn::class,
                 'template' => '{update} {delete}',
@@ -51,7 +71,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
                         if (Yii::$app->user->can('Admin')) {
                             return Html::a(
                                 '<i class="fa fa-pen" aria-hidden="true"></i>',
-                                ['category/view', 'id' => $model->category_id, 'subcategory_id' => $model->id], // Passa os IDs para category/view
+                                ['category/view', 'id' => $model->category_id, 'subcategory_id' => $model->id], // Passa os IDs para Subcategory/view
                                 [
                                     'title' => 'Update',
                                     'style' => 'color: #28a745; text-decoration: none;',
@@ -61,21 +81,35 @@ $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
                     },
                     'delete' => function ($url, $model) {
                         if (Yii::$app->user->can('Admin')) {
-                            return Html::a(
-                                '<i class="fa fa-trash" aria-hidden="true"></i>',
-                                ['subcategory/delete', 'id' => $model->id],
-                                [
-                                    'title' => 'Delete',
-                                    'data-method' => 'post',
-                                    'data-confirm' => 'Are you sure you want to delete this subcategory?',
-                                    'style' => 'color: #dc3545; text-decoration: none;',
-                                ]
-                            );
+                            if ($model->is_deleted == false) {
+                                return Html::a(
+                                    '<i class="fa fa-redo" aria-hidden="true"></i>',
+                                    ['subcategory/delete', 'id' => $model->id],
+                                    [
+                                        'title' => 'Enable',
+                                        'data-method' => 'post',
+                                        'data-confirm' => 'Confirm Subcategory Enablement?',
+                                        'style' => 'color: #ffcc00; text-decoration: none;',
+                                    ]
+                                );
+                            } else {
+                                return Html::a(
+                                    '<i class="fa fa-trash" aria-hidden="true"></i>',
+                                    ['subcategory/delete', 'id' => $model->id],
+                                    [
+                                        'title' => 'Desable',
+                                        'data-method' => 'post',
+                                        'data-confirm' => 'Confirm Subcategory Disablement?',
+                                        'style' => 'color: #dc3545; text-decoration: none;',
+                                    ]
+                                );
+                            }
                         }
                     },
                 ],
             ],
         ],
+        'summary' => false,
     ]); ?>
     <?php
     if (Yii::$app->user->can('Admin')) {

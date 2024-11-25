@@ -43,7 +43,6 @@ class InvoicelineController extends Controller
 
         $item = StationItem::findOne(['item_id' => $line->item_id, 'station_id' => $line->invoice->station_id]);
 
-
         if ($line && $quantity > 0) {
             if ($action === 'minus') {
                 if ($line->item->subcategory->category->id == 1 || $line->item->subcategory->category->id == 2) {

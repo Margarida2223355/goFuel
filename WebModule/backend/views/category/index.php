@@ -36,20 +36,44 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php endif; ?>
     </div>
 
-
     <?= $this->render('_form', [
         'model' => $model,
         'view' => $view
     ]) ?>
 
+    <div class="row">
+        <div class="col-6 float-left">
+            <h6>
+                <i class="fa-regular fa-circle-check" style="color: #28a745;"></i> - Enabled Category &emsp;
+                <i class="fa-regular fa-circle-xmark" style="color: #dc3545;"></i> - Disabled Category
+            </h6>
+        </div>
+        <div class="col-6 float-right">
+            <h6 class="float-right">
+                <i class="fa fa-eye" style="color: #007bff;"></i> - Master Detail &emsp;
+                <i class="fa fa-pen" style="color: #28a745;"></i> - Edit Category &emsp;
+                <i class="fa fa-redo" style="color: #ffcc00;"></i> - Enable Category &emsp;
+                <i class="fa fa-trash" style="color: #dc3545;"></i> - Desable Category
+            </h6>
+        </div>
+    </div>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
             'id',
-            'name',
+            [
+                'attribute' => 'name',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return $model->is_deleted
+                        ? Html::tag('i', '', ['class' => 'fa-regular fa-circle-check', 'aria-hidden' => 'true', 'style' => 'color: #28a745']) . ' ' . $model->name
+                        : Html::tag('i', '', ['class' => 'fa-regular fa-circle-xmark', 'aria-hidden' => 'true', 'style' => 'color: #dc3545']) . ' ' . $model->name;
+                },
+            ],
             [
                 'class' => ActionColumn::class,
+                'header' => 'Actions',
                 'template' => '{view} {update} {delete} {reset-password}',
                 'buttons' => [
                     'view' => function ($url, $model) {
@@ -67,14 +91,24 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
                         return '';
                     },
+
                     'delete' => function ($url, $model) {
                         if (Yii::$app->user->can('Admin')) {
-                            return Html::a('<i class="fa fa-trash" aria-hidden="true"></i>', $url, [
-                                'title' => 'Delete',
-                                'data-method' => 'post',
-                                'data-confirm' => 'Confirm Item Elimination?',
-                                'style' => 'color: #dc3545; text-decoration: none;',
-                            ]);
+                            if ($model->is_deleted == false) {
+                                return Html::a('<i class="fa fa-redo" aria-hidden="true"></i>', $url, [
+                                    'title' => 'Enable',
+                                    'data-method' => 'post',
+                                    'data-confirm' => 'Confirm Category Enablement?',
+                                    'style' => 'color: #ffcc00; text-decoration: none;',
+                                ]);
+                            } else {
+                                return Html::a('<i class="fa fa-trash" aria-hidden="true"></i>', $url, [
+                                    'title' => 'Desable',
+                                    'data-method' => 'post',
+                                    'data-confirm' => 'Confirm Category Disablement?',
+                                    'style' => 'color: #dc3545; text-decoration: none;',
+                                ]);
+                            }
                         }
                         return '';
                     },

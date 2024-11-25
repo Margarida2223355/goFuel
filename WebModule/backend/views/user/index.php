@@ -69,6 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'class' => ActionColumn::class,
+                'header' => 'Actions',
                 'template' => '{view} {update} {delete} {reset-password}',
                 'buttons' => [
                     'reset-password' => function ($url, $model) {

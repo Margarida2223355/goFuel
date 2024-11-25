@@ -79,10 +79,10 @@ class ItemController extends Controller
         if ($isAdmin) {
             // Se sim, busca os items
             $dataProvider = new \yii\data\ActiveDataProvider([
-                'query' => Item::find()->where(['is_deleted' => false]),
+                'query' => Item::find()->orderBy(['is_deleted' => SORT_DESC])
             ]);
             $model = new Item();
-            $subcategories = Subcategory::find()->where(['is_deleted' => false])->all();
+            $subcategories = Subcategory::find()->orderBy(['is_deleted' => SORT_DESC]);
 
             return $this->render('admin-index', [
                 'dataProvider' => $dataProvider,
@@ -119,7 +119,7 @@ class ItemController extends Controller
 
         if ($stationId) {
             $dataProvider = new \yii\data\ActiveDataProvider([
-                'query' => StationItem::find()->where(['station_id' => $stationId, 'is_deleted' => false])->with('item'),
+                'query' => StationItem::find()->where(['station_id' => $stationId])->with('item')->orderBy(['is_deleted' => SORT_DESC]),
             ]);
         } else {
             $dataProvider = new \yii\data\ArrayDataProvider([
@@ -163,7 +163,7 @@ class ItemController extends Controller
         ]);
         $stationId = Yii::$app->request->post('stationId') ?? Yii::$app->request->get('stationId');
 
-        $subcategories = Subcategory::find()->where(['is_deleted' => false])->all();
+        $subcategories = Subcategory::find()->orderBy(['is_deleted' => SORT_DESC]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect('index');
@@ -272,7 +272,7 @@ class ItemController extends Controller
         }
 
         $stationId = Yii::$app->user->identity->stationUsers->station_id;
-        $item = StationItem::findOne(['item_id' => $id, 'station_id' => $stationId]);
+        $item = StationItem::findOne(['item_id' => $id, 'station_id' => $stationId])->orderBy(['is_deleted' => SORT_DESC]);
 
         if ($item) {
             $item->stock += $item->restock_qty;

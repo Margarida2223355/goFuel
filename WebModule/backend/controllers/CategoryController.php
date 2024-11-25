@@ -5,6 +5,7 @@ namespace backend\controllers;
 use common\models\Category;
 use common\models\Subcategory;
 use Yii;
+use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -46,7 +47,7 @@ class CategoryController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Category::find()->where(['is_deleted' => false]),
+            'query' => Category::find()->orderBy(['is_deleted' => SORT_DESC]),
         ]);
         $model = new Category();
         $view = false;
@@ -70,7 +71,7 @@ class CategoryController extends Controller
         }
 
         $subcategoriesDataProvider = new \yii\data\ActiveDataProvider([
-            'query' => Subcategory::find()->where(['category_id' => $id, 'is_deleted' => false]),
+            'query' => Subcategory::find()->where(['category_id' => $id])->orderBy(['is_deleted' => SORT_DESC]),
         ]);
         $isUpdate = false;
 
@@ -120,7 +121,7 @@ class CategoryController extends Controller
         }
 
         $subcategoriesDataProvider = new \yii\data\ActiveDataProvider([
-            'query' => Subcategory::find()->where(['category_id' => $id, 'is_deleted' => false]),
+            'query' => Subcategory::find()->where(['category_id' => $id])->orderBy(['is_deleted' => SORT_DESC]),
         ]);
         $view = true;
         $isUpdate = false;
@@ -141,13 +142,26 @@ class CategoryController extends Controller
         if ($id) {
             $model = $this->findModel($id);
             if ($model) {
-                $model->is_deleted = 1;
-                if ($model->save()) {
-                    foreach ($model->subcategories as $subcategory) {
-                        $subcategory->is_deleted = 1;
-                        $subcategory->save();
+
+                if ($model->is_deleted == true) {
+                    $model->is_deleted = 0;
+                    if ($model->save()) {
+                        foreach ($model->subcategories as $subcategory) {
+                            $subcategory->is_deleted = 0;
+                            $subcategory->save();
+                        }
+                        Yii::$app->session->setFlash('success', 'Category successfully disabled.');
                     }
-                    Yii::$app->session->setFlash('success', 'Category successfully deleted.');
+                } else {
+                    $model->is_deleted = 1;
+
+                    if ($model->save()) {
+                        foreach ($model->subcategories as $subcategory) {
+                            $subcategory->is_deleted = 1;
+                            $subcategory->save();
+                        }
+                        Yii::$app->session->setFlash('success', 'Category successfully disabled.');
+                    }
                 }
             }
         } else {

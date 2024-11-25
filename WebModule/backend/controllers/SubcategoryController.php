@@ -93,17 +93,23 @@ class SubcategoryController extends Controller
 
         if ($id) {
             $model = $this->findModel($id);
-            $categoryId = $model->category_id;
-            if ($model) {
+            if ($model->is_deleted == true) {
+                $model->is_deleted = 0;
+                Yii::$app->session->setFlash('success', 'Subcategory successfully desabled.');
+            } else {
                 $model->is_deleted = 1;
-                if ($model->save()) {
-                    Yii::$app->session->setFlash('success', 'Category successfully deleted.');
+                $cat = $model->category;
+                if ($cat->is_deleted == 0) {
+                    $cat->is_deleted = 1;
+                    $cat->save();
                 }
+                Yii::$app->session->setFlash('success', 'Subcategory successfully enabled.');
             }
+            $model->save();
         } else {
             Yii::$app->session->setFlash('error', 'An error occurred.');
         }
-        return $this->redirect(['category/view', 'id' => $categoryId]);
+        return $this->redirect(['category/view', 'id' => $model->category_id]);
 
 
         // throw new NotFoundHttpException('The requested subcategory does not exist.');
