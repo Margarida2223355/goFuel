@@ -124,4 +124,19 @@ class UserInfo extends \yii\db\ActiveRecord
         $userInfo = self::findOne(['user_id' => $userId]);
         return $userInfo ? $userInfo->role : null;
     }
+
+    public function fields() {
+        $fields = parent::fields();
+
+        // Remove user_id field
+        unset($fields['user_id']);
+
+        // Add user field
+        $fields['user'] = function() {
+            $user = $this->getUser()->one();
+            return $user ? $user : null;
+        };
+
+        return $fields;
+    }
 }

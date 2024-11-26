@@ -70,4 +70,19 @@ class Subcategory extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Item::class, ['subcategory_id' => 'id']);
     }
+
+    public function fields() {
+        $fields = parent::fields();
+
+        // Remove category_id field
+        unset($fields['category_id']);
+
+        // Add station field
+        $fields['category'] = function() {
+            $category = $this->getCategory()->one();
+            return $category ? $category : null;
+        };
+
+        return $fields;
+    }
 }

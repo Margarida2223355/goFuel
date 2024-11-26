@@ -234,4 +234,19 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->hasOne(StationUser::class, ['user_id' => 'id']);
     }
+
+    public function fields() {
+        $fields = parent::fields();
+
+        // Remove user_id field
+        unset($fields['user_id']);
+
+        // Add userInfo field
+        $fields['userInfo'] = function() {
+            $userInfo = $this->getUserInfo()->one();
+            return $userInfo ? $userInfo : null;
+        };
+
+        return $fields;
+    }
 }

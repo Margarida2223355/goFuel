@@ -73,4 +73,22 @@ class InvoiceLine extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Item::class, ['id' => 'item_id']);
     }
+
+    public function fields() {
+        $fields = parent::fields();
+
+        unset($fields['item_id'], $fields['invoice_id']);
+
+        $fields['item'] = function() {
+            $item = $this->getItem()->one();
+            return $item ? $item : null;
+        };
+
+        $fields['invoice'] = function() {
+            $invoice = $this->getInvoice()->one();
+            return $invoice ? $invoice : null;
+        };
+
+        return $fields;
+    }
 }
