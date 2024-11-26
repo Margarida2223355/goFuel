@@ -1,5 +1,6 @@
 package com.example.gofuel.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -94,7 +95,15 @@ public class MainActivity extends AppCompatActivity {
 
         navbarMenu.setOnItemSelectedListener(item -> {
             View view = findViewById(item.getItemId());
-            if (view != null) { changeFragment(view); }
+            if (view != null) {
+                if (view == findViewById(R.id.logoutButton)) {
+                    startActivity(new Intent(getApplicationContext(), SplashActivity.class));
+                    finish();
+                }
+                else {
+                    changeFragment(view);
+                }
+            }
             return true;
         });
     }
