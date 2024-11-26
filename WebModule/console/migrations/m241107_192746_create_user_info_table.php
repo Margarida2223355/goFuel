@@ -35,7 +35,8 @@ class m241107_192746_create_user_info_table extends Migration
             [2, 2, 987654321, 'Manager', 'Rua Manager 2', '1000-002', '911234564'],
             [3, 3, 123789456, 'In Charge', 'Rua InCharge 3', '1000-003', '963963963'],
             [4, 4, 456123789, 'Employee', 'Rua Employee 4', '1000-004', '914914500'],
-            [5, 5, 456123784, 'Client', 'Rua Employee 4', '1000-004', '926926596'],
+            [5, 5, 456123784, 'Client', 'Rua Client 5', '1000-005', '926926596'],
+            [6, 6, 111223344, 'Cliente', 'Rua Cliente 6', '1000-006', '934567890'],
         ]);
     }
 
