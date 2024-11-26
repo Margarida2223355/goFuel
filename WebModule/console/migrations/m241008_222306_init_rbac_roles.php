@@ -108,6 +108,7 @@ class m241008_222306_init_rbac_roles extends Migration
             ],
             'Incharge' => [
                 'ItemRestock',
+                'StationIndex',
             ],
             'Manager' => [
                 'ItemAssociate',

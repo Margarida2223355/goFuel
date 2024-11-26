@@ -58,7 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div style="display: flex; align-items: center; ">
         <h1><?= Html::encode('Available items') ?></h1>
         <div>
-            <?php if (Yii::$app->user->can('Manager') || Yii::$app->user->can('Incharge')): ?>
+            <?php if (Yii::$app->user->can('ItemRestock')): ?>
                 <?= Html::a('<i class="fa fa-link" aria-hidden="true"></i>', ['item/index', 'stationId' => $id], [
                     'title' => 'Items page',
                     'style' => 'color: #007bff; text-decoration: none; margin-right: 10px; margin-left: 15px;',

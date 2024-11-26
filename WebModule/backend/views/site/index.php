@@ -39,30 +39,8 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
-        <?php if ($items): ?>
-            <div class="col-lg-6">
-                <?= GridView::widget([
-                    'dataProvider' => $items,
-                    'columns' => [
-                        ['class' => 'yii\grid\SerialColumn'],
-                        'id',
-                        'item.item.description',
-                        'price',
-                        // [
-                        //     'attribute' => 'stock',
-                        //     'label' => 'Current Stock',
-                        //     'value' => function ($model) use ($item->station_Id) {
-                        //         if ($stationId) {
-                        //             $item = \common\models\StationItem::findOne(['item_id' => $model->id, 'station_id' => $stationId]);
-                        //             return $item ? $item->stock : 'No Stock Available';
-                        //         }
-                        //         return 'Station Not Selected';
-                        //     },
-                        // ],
-                    ],
-                    'summary' => false,
-                ]); ?>
-            </div>
-        <?php endif; ?>
+        <div class="col-lg-6">
+            
+        </div>
     </div>
 </div>

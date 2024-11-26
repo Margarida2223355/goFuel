@@ -22,32 +22,17 @@ class StationController extends Controller
      */
     public function behaviors()
     {
-        return [
-            'access' => [
-                'class' => \yii\filters\AccessControl::class,
-                'only' => ['index', 'view', 'create', 'update', 'delete'],
-                'rules' => [
-                    [
-                        'actions' => ['index', 'view', 'find-model'],
-                        'allow' => true,
-                    ],
-                    [
-                        'actions' => ['create', 'update', 'delete'],
-                        'allow' => true,
-                        'roles' => ['Admin'],
-                    ],
-                    [
-                        'actions' => ['create', 'update', 'delete'],
-                        'allow' => false,
-                        'roles' => ['Manager', 'Incharge', 'Employee'],
+        return array_merge(
+            parent::behaviors(),
+            [
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
                     ],
                 ],
-                'denyCallback' => function ($rule, $action) {
-                    \Yii::$app->session->setFlash('error', 'Você não tem permissão para acessar esta página.');
-                    return \Yii::$app->getResponse()->redirect(\Yii::$app->request->referrer ?: \Yii::$app->homeUrl);
-                },
-            ],
-        ];
+            ]
+        );
     }
 
 
@@ -68,6 +53,8 @@ class StationController extends Controller
             $query->orderBy(['is_deleted' => SORT_ASC]);
         } elseif (isset($roles['Manager'])) {
             $query->where(['manager_id' => $currentUser->id]);
+        } elseif (isset($roles['Incharge'])) {
+            return $this->redirect(['view', 'id' => $currentUser->stationUsers->station_id]);
         } else {
             throw new \yii\web\ForbiddenHttpException('Você não tem permissão para acessar esta página.');
         }

@@ -21,52 +21,17 @@ class ItemController extends Controller
      */
     public function behaviors()
     {
-        return [
-            'access' => [
-                'class' => \yii\filters\AccessControl::class,
-                'only' => ['index', 'view', 'create', 'update', 'associate', 'delete-association', 'update-association', 'restock'],
-                'rules' => [
-                    [
-                        'actions' => ['index', 'view', 'find-model'],
-                        'allow' => true,
-                    ],
-                    [
-                        'actions' => ['create', 'update'],
-                        'allow' => true,
-                        'roles' => ['Admin'],
-                    ],
-                    [
-                        'actions' => ['create', 'update'],
-                        'allow' => false,
-                        'roles' => ['Manager', 'Incharge', 'Employee'],
-                    ],
-                    [
-                        'actions' => [
-                            'associate',
-                            'delete-association',
-                            'update-association',
-                            'restock'
-                        ],
-                        'allow' => true,
-                        'roles' => ['Manager', 'Incharge'],
-                    ],
-                    [
-                        'actions' => [
-                            'associate',
-                            'delete-association',
-                            'update-association',
-                            'restock'
-                        ],
-                        'allow' => false,
-                        'roles' => ['Admin', 'Employee'],
+        return array_merge(
+            parent::behaviors(),
+            [
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
                     ],
                 ],
-                'denyCallback' => function ($rule, $action) {
-                    \Yii::$app->session->setFlash('error', 'Você não tem permissão para acessar esta página.');
-                    return \Yii::$app->getResponse()->redirect(\Yii::$app->request->referrer ?: \Yii::$app->homeUrl);
-                },
-            ],
-        ];
+            ]
+        );
     }
 
 
@@ -75,6 +40,7 @@ class ItemController extends Controller
         $auth = Yii::$app->authManager;
 
         $isAdmin = $auth->checkAccess(Yii::$app->user->id, 'Admin');
+        $isManager = $auth->checkAccess(Yii::$app->user->id, 'Manager');
 
         if ($isAdmin) {
             // Se sim, busca os items
@@ -92,19 +58,9 @@ class ItemController extends Controller
                 'subcategories' => $subcategoriesList,
                 'isUpdate' => false,
             ]);
-        }
-
-        // Para "Manager", "In Charge" e "Employee"
-        // Verifica se o usuário é Manager
-        $isManager = $auth->checkAccess(Yii::$app->user->id, 'Manager');
-        $isInCharge = $auth->checkAccess(Yii::$app->user->id, 'In Charge');
-        $isEmployee = $auth->checkAccess(Yii::$app->user->id, 'Employee');
-
-        // Se for "Manager", recupera as estações gerenciadas por esse usuário
-        if ($isManager) {
+        } elseif ($isManager) {
             $stations = Station::find()->where(['manager_id' => Yii::$app->user->id])->all();
         } else {
-            // Para "In Charge" ou "Employee", pode usar a tabela intermediária que associa usuários à estação
             $stations = Station::find()
                 ->joinWith('stationUsers')
                 ->where(['station_users.user_id' => Yii::$app->user->id])

@@ -7,6 +7,7 @@ use Yii;
 use common\models\Item;
 use common\models\Station;
 use common\models\StationItem;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -15,28 +16,17 @@ class StationItemController extends Controller
 
     public function behaviors()
     {
-        return [
-            'access' => [
-                'class' => \yii\filters\AccessControl::class,
-                'only' => ['add-item-to-station', 'update-association', 'delete'],
-                'rules' => [
-                    [
-                        'actions' => ['add-item-to-station', 'update-association', 'delete'],
-                        'allow' => true,
-                        'roles' => ['Manager'],
-                    ],
-                    [
-                        'actions' => ['add-item-to-station', 'update-association', 'delete'],
-                        'allow' => false,
-                        'roles' => ['Admin', 'Incharge', 'Employee'],
+        return array_merge(
+            parent::behaviors(),
+            [
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
                     ],
                 ],
-                'denyCallback' => function ($rule, $action) {
-                    \Yii::$app->session->setFlash('error', 'Você não tem permissão para acessar esta página.');
-                    return \Yii::$app->getResponse()->redirect(\Yii::$app->request->referrer ?: \Yii::$app->homeUrl);
-                },
-            ],
-        ];
+            ]
+        );
     }
 
     public function actionAssociate()

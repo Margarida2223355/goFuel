@@ -20,18 +20,17 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
+                'only' => ['logout', 'signup'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => ['signup'],
                         'allow' => true,
+                        'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
-                        'matchCallback' => function ($rule, $action) {
-                            return !Yii::$app->user->can('Client');
-                        }
                     ],
                 ],
             ],
@@ -105,7 +104,6 @@ class SiteController extends Controller
                 break;
             case 'Incharge':
                 $role = 'In Charge';
-                $items = StationItem::find(['id_station' => $currentUser->stationUsers->station_id])->all();
                 $items = new \yii\data\ActiveDataProvider([
                     'query' => StationItem::find(['id_station' => $currentUser->stationUsers->station_id])->all()
                 ]);
@@ -122,6 +120,7 @@ class SiteController extends Controller
         return $this->render(
             'index',
             [
+                'items' => $items,
                 'role' => $role,
                 'userRoleCounts' => $userRoleCounts,
                 'stationUserCounts' => $stationUserCounts,
