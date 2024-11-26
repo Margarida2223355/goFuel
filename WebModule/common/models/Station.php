@@ -36,6 +36,9 @@ class Station extends \yii\db\ActiveRecord
     {
         return 'stations';
     }
+    public $pumps_count; // Adicione esta propriedade
+
+    // Se usar regras de validação, adicione:
 
     /**
      * {@inheritdoc}
@@ -49,6 +52,7 @@ class Station extends \yii\db\ActiveRecord
             [['postal_code'], 'string', 'max' => 20],
             [['phone'], 'string', 'max' => 45],
             [['manager_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['manager_id' => 'id']],
+
         ];
     }
 

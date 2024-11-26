@@ -20,22 +20,25 @@ use yii\widgets\ActiveForm;
     ]); ?>
 
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-4">
             <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'placeholder' => 'Name'])->label(false) ?>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-4">
             <?= $form->field($model, 'address')->textInput(['maxlength' => true, 'placeholder' => 'Address'])->label(false) ?>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-4">
             <?= $form->field($model, 'postal_code')->textInput(['maxlength' => true, 'placeholder' => 'Postal Code'])->label(false) ?>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
             <?= $form->field($model, 'phone')->textInput(['maxlength' => true, 'placeholder' => 'Phone'])->label(false) ?>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
+            <?= $form->field($model, 'pumps_count')->textInput(['type' => 'number', 'min' => 0, 'placeholder' => 'Number of Pumps'])->label(false) ?>
+        </div>
+        <div class="col-md-3">
             <?= $form->field($model, 'manager_id')->dropDownList($managersList, ['prompt' => 'Select a Manager'])->label(false) ?>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
             <div class="form-group">
                 <?= Html::submitButton(
                     $isUpdate

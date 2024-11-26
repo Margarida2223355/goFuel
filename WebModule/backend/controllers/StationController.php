@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use backend\models\ItemStationForm;
 use common\models\Item;
+use common\models\Pump;
 use common\models\Station;
 use common\models\StationItem;
 use common\models\StationUser;
@@ -133,6 +134,15 @@ class StationController extends Controller
                 $stationUser->station_id = $model->id;
                 $stationUser->save();
             }
+
+            $pumpsCount = Yii::$app->request->post('Station')['pumps_count'] ?? 0;
+
+            for ($i = 0; $i < $pumpsCount; $i++) {
+                $pump = new Pump();
+                $pump->station_id = $model->id;
+                $pump->save();
+            }
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

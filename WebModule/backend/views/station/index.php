@@ -17,25 +17,25 @@ $this->params['breadcrumbs'][] = $this->title;
         <h1><?= Html::encode($this->title) ?></h1>
     </div>
 
-    <?= $this->render('_form', [
+    <?php echo $this->render('_form', [
         'model' => $model,
         'managersList' => $managersList,
         'isUpdate' => $isUpdate,
-    ]) ?>
+    ]);  ?>
 
     <div class="row">
         <div class="col-6 float-left">
             <h6>
-                <i class="fa-regular fa-circle-check" style="color: #28a745;"></i> - Enabled Station &emsp;
-                <i class="fa-regular fa-circle-xmark" style="color: #dc3545;"></i> - Disabled Station
+                <i class="fa-regular fa-circle-check" style="color: #28a745;"></i> Enabled Station &emsp;
+                <i class="fa-regular fa-circle-xmark" style="color: #dc3545;"></i> Disabled Station
             </h6>
         </div>
         <div class="col-6 float-right">
             <h6 class="float-right">
-                <i class="fa fa-eye" style="color: #007bff;"></i> - Master Detail &emsp;
-                <i class="fa fa-pen" style="color: #28a745;"></i> - Edit Station &emsp;
-                <i class="fa fa-redo" style="color: #ffcc00;"></i> - Enable Station &emsp;
-                <i class="fa fa-trash" style="color: #dc3545;"></i> - Desable Station
+                <i class="fa fa-eye" style="color: #007bff;"></i> Master Detail &emsp;
+                <i class="fa fa-pen" style="color: #28a745;"></i> Edit Station &emsp;
+                <i class="fa fa-redo" style="color: #ffcc00;"></i> Enable Station &emsp;
+                <i class="fa fa-trash" style="color: #dc3545;"></i> Desable Station
             </h6>
         </div>
     </div>
@@ -64,6 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => ActionColumn::className(),
+                'header' => 'Actions',
                 'template' => '{view} {update} {delete}',
                 'visibleButtons' => [
                     // O botão delete só será exibido para os admins
