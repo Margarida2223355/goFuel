@@ -18,6 +18,6 @@ public class PendingItemViewModel {
 
     public void update(String name, String value) {
         binding.name.setText(name);
-        binding.value.setText(value + "€");
+        binding.value.setText(value);
     }
 }

@@ -51,7 +51,7 @@ public class MainViewModel extends ViewModel {
                 }
 
                 pendingValues.put("Nº Faturas", String.valueOf(pendingInvoices.getResult().size()));
-                pendingValues.put("Valor Faturas [€]", String.valueOf(total));
+                pendingValues.put("Valor Faturas [€]", total + "€");
 
                 state.postValue(new State.MainResults(favoriteStation.getResult(), pendingValues, finishedInvoices.getResult()));
             }
