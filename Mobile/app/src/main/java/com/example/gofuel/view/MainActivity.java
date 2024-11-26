@@ -1,14 +1,11 @@
 package com.example.gofuel.view;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -22,7 +19,6 @@ import com.example.gofuel.view.fragments.InvoiceFragment;
 import com.example.gofuel.view.fragments.MainFragment;
 import com.example.gofuel.view.fragments.StationFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
 
@@ -43,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         User user = MyApplication.getUser();
         Toast.makeText(this, "user: " + user.getName(), Toast.LENGTH_SHORT).show();
+
 
         navbarMenu = binding.bottombar.bottomNavBar;
 
@@ -97,15 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
         navbarMenu.setOnItemSelectedListener(item -> {
             View view = findViewById(item.getItemId());
-            if (view != null) {
-                if (view == findViewById(R.id.logoutButton)) {
-                    startActivity(new Intent(getApplicationContext(), SplashActivity.class));
-                    finish();
-                }
-                else {
-                    changeFragment(view);
-                }
-            }
+            if (view != null) { changeFragment(view); }
             return true;
         });
     }
