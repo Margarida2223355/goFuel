@@ -18,16 +18,18 @@ public class PendingInvoice implements Invoice {
     private User user;
     private Station station;
     private String invoice_date;
+    private String code;
     private double total;
     private InvoiceState invoiceState;
 
-    public PendingInvoice(int id, User user, Station station, String invoice_date, double total, InvoiceState invoiceState) {
+    public PendingInvoice(int id, String code, String invoice_date, InvoiceState invoiceState, Station station, double total, User user) {
         this.id = id;
-        this.user = user;
-        this.station = station;
+        this.code = code;
         this.invoice_date = invoice_date;
-        this.total = total;
         this.invoiceState = invoiceState;
+        this.station = station;
+        this.total = total;
+        this.user = user;
     }
 
     public int getId() {
@@ -36,6 +38,11 @@ public class PendingInvoice implements Invoice {
 
     public User getUser() {
         return user;
+    }
+
+    @Override
+    public String getCode() {
+        return code;
     }
 
     public Station getStation() {

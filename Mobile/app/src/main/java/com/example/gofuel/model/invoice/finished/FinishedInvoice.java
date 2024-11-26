@@ -18,15 +18,17 @@ public class FinishedInvoice implements Invoice {
     private User user;
     private Station station;
     private String invoice_date;
+    private String code;
     private double total;
     private InvoiceState invoiceState;
 
-    public FinishedInvoice(int id, User user, Station station, String invoice_date, double total, InvoiceState invoiceState) {
+    public FinishedInvoice(int id, String invoice_date, double total, String code, User user, Station station, InvoiceState invoiceState) {
         this.id = id;
-        this.user = user;
-        this.station = station;
         this.invoice_date = invoice_date;
         this.total = total;
+        this.code = code;
+        this.user = user;
+        this.station = station;
         this.invoiceState = invoiceState;
     }
 
@@ -36,6 +38,11 @@ public class FinishedInvoice implements Invoice {
 
     public User getUser() {
         return user;
+    }
+
+    @Override
+    public String getCode() {
+        return code;
     }
 
     public Station getStation() {
