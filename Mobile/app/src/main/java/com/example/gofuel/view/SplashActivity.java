@@ -79,6 +79,7 @@ public class SplashActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(User user) {
                                 MyApplication.setUser(user);
+                                MyApplication.resetMenuButtons();
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                 finish();
                             }

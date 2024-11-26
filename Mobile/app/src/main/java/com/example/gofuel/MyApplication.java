@@ -22,6 +22,10 @@ public class MyApplication extends Application {
         return menuButtons;
     }
 
+    public static void resetMenuButtons() {
+        menuButtons = null;
+    }
+
     public static void setUser(User user) {
         userlogged = user;
     }
