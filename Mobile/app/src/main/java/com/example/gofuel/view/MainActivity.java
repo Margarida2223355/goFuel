@@ -14,10 +14,11 @@ import com.example.gofuel.MyApplication;
 import com.example.gofuel.R;
 import com.example.gofuel.databinding.ActivityHomeBinding;
 import com.example.gofuel.model.user.User;
+import com.example.gofuel.view.components.MenuButtons;
 import com.example.gofuel.view.fragments.InvoiceFragment;
 import com.example.gofuel.view.fragments.MainFragment;
 import com.example.gofuel.view.fragments.StationFragment;
-import com.example.gofuel.view.components.MenuButtons;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityHomeBinding binding;
     private MenuButtons menuButtonsInstance;
+    private BottomNavigationView navbarMenu;
     private ArrayList<ImageButton> menuButtons;
     private FragmentManager fragmentManager;
 
@@ -37,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
         User user = MyApplication.getUser();
         Toast.makeText(this, "user: " + user.getName(), Toast.LENGTH_SHORT).show();
+
+
+        navbarMenu = binding.bottombar.bottomNavBar;
 
         //region Setup Fragment
         fragmentManager = getSupportFragmentManager();
@@ -76,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupFragment() {
-        for(ImageButton button: menuButtons) {
+        for (ImageButton button: menuButtons) {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -86,5 +91,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+
+        navbarMenu.setOnItemSelectedListener(item -> {
+            View view = findViewById(item.getItemId());
+            if (view != null) { changeFragment(view); }
+            return true;
+        });
     }
 }
