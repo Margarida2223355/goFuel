@@ -43,16 +43,12 @@ public class MainFragment extends Fragment {
 
         viewModel.getState().observe(getViewLifecycleOwner(), state -> {
             if (state instanceof State.Loading) {
-                binding.favoriteStation.setVisibility(View.GONE);
-                binding.pendingInvoices.setVisibility(View.GONE);
-                binding.finishedInvoices.setVisibility(View.GONE);
+                binding.info.setVisibility(View.GONE);
                 binding.loading.setVisibility(View.VISIBLE);
             }
             else if (state instanceof State.MainResults) {
                 binding.loading.setVisibility(View.GONE);
-                binding.favoriteStation.setVisibility(View.VISIBLE);
-                binding.pendingInvoices.setVisibility(View.VISIBLE);
-                binding.finishedInvoices.setVisibility(View.VISIBLE);
+                binding.info.setVisibility(View.VISIBLE);
 
                 ArrayList<ClientStation> favoriteStation = new ArrayList<>(((State.MainResults) state).getFavoriteStation());
                 HashMap<String, String> pendingInvoices = new HashMap<>(((State.MainResults) state).getPendingInvoices());

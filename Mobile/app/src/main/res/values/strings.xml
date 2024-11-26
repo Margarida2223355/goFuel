@@ -18,4 +18,6 @@
     <string name="loginBtn">Login</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
+    <string name="pendingTitle">Faturas Pendentes</string>
+    <string name="finishedTitle">Últimas faturas</string>
 </resources>
