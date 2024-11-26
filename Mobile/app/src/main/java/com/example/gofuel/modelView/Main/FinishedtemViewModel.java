@@ -2,6 +2,7 @@ package com.example.gofuel.modelView.Main;
 
 import com.example.gofuel.databinding.ItemFinishedBinding;
 import com.example.gofuel.model.invoice.finished.FinishedInvoice;
+import com.example.gofuel.util.Util;
 
 public class FinishedtemViewModel {
     private final ItemFinishedBinding binding;
@@ -15,7 +16,7 @@ public class FinishedtemViewModel {
     }
 
     public void update(FinishedInvoice invoice) {
-        binding.invoiceDate.setText(invoice.getInvoice_date());
+        binding.invoiceDate.setText(Util.convertToData(invoice.getInvoice_date()));
         binding.invoiceValue.setText(invoice.getTotal() + "€");
     }
 }
