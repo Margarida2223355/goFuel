@@ -8,6 +8,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import com.example.gofuel.model.category.CategoryConverter;
+import com.example.gofuel.model.client_station.ClientStation;
 import com.example.gofuel.model.invoice.common.DateConverter;
 import com.example.gofuel.model.invoice.common.InvoiceConverter;
 import com.example.gofuel.model.invoice.finished.FinishedInvoice;
@@ -25,6 +26,7 @@ import com.example.gofuel.model.station.StationConverter;
 import com.example.gofuel.model.subcategory.SubcategoryConverter;
 import com.example.gofuel.model.user.User;
 import com.example.gofuel.model.user.UserConverter;
+import com.example.gofuel.repository.client_station.local.ClientStationDB;
 import com.example.gofuel.repository.invoice.local.FinishedInvoiceDB;
 import com.example.gofuel.repository.invoice.local.PendingInvoiceDB;
 import com.example.gofuel.repository.invoiceLine.local.InvoiceLineDB;
@@ -34,7 +36,7 @@ import com.example.gofuel.repository.station.local.StationDB;
 import com.example.gofuel.repository.user.local.UserDB;
 
 @Database(
-        entities = {Station.class, Pump.class, Item.class, InvoiceLine.class, User.class, PendingInvoice.class, FinishedInvoice.class},
+        entities = {Station.class, Pump.class, Item.class, InvoiceLine.class, User.class, PendingInvoice.class, FinishedInvoice.class, ClientStation.class},
         version = 1
 )
 @TypeConverters({
@@ -60,6 +62,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract FinishedInvoiceDB finishedInvoiceDB();
     public abstract InvoiceLineDB invoiceLineDB();
     public abstract UserDB userDB();
+    public abstract ClientStationDB clientStationDB();
 
     public static AppDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {

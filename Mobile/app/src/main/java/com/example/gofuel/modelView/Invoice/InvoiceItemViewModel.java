@@ -2,6 +2,7 @@ package com.example.gofuel.modelView.Invoice;
 
 import com.example.gofuel.databinding.ItemInvoiceBinding;
 import com.example.gofuel.model.invoice.Invoice;
+import com.example.gofuel.util.Util;
 
 public class InvoiceItemViewModel {
     private final ItemInvoiceBinding binding;
@@ -15,8 +16,8 @@ public class InvoiceItemViewModel {
     }
 
     public void update(Invoice invoice) {
-        binding.invoiceNumber.setText(String.valueOf(invoice.getId()));
+        binding.invoiceNumber.setText(String.valueOf(invoice.getCode()));
         binding.invoiceStation.setText(invoice.getStation().getName());
-        binding.invoiceDate.setText(invoice.getInvoice_date());
+        binding.invoiceDate.setText(Util.convertToData(invoice.getInvoice_date()));
     }
 }
