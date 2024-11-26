@@ -103,6 +103,32 @@ class Invoice extends \yii\db\ActiveRecord
         return $this->hasOne(Station::class, ['id' => 'station_id']);
     }
 
+    public function fields()
+    {
+        $fields = parent::fields();
+
+        // Remove client_id, station_id and state_id fields
+        unset($fields['client_id'], $fields['station_id'], $fields['state_id']);
+
+        // Add client and station fields
+        $fields['client'] = function () {
+            $client = $this->getClient()->one();
+            return $client ? $client : null;
+        };
+
+        $fields['station'] = function () {
+            $station = $this->getStation()->one();
+            return $station ? $station : null;
+        };
+
+        $fields['state'] = function () {
+            $state = $this->getState()->one();
+            return $state ? $state : null;
+        };
+
+        return $fields;
+    }
+
     public function updateTotal()
     {
         $total = 0;
