@@ -19,6 +19,7 @@ public class HTTPClient<T> {
     //region Properties
     private String credentials = null;
     private String userID = null;
+    private String stationID = null;
     private T client;
     //endregion
 
@@ -34,6 +35,14 @@ public class HTTPClient<T> {
         setUserID(userID);
         initializeHTTPClient(serviceClass);
     }
+    //endregion
+
+    //region HTTP Client with STATION_ID as HEADER<
+
+    public HTTPClient(Class<T> serviceClass, String stationID) {
+        initializeHTTPClient(serviceClass);
+    }
+
     //endregion
 
     //region HTTP Client
@@ -54,6 +63,10 @@ public class HTTPClient<T> {
         this.userID = String.valueOf(userID);
     }
 
+    private void setStationID(int stationID) {
+        this.stationID = String.valueOf(stationID);
+    }
+
     private void initializeHTTPClient(Class<T> serviceClass) {
         // Configure OkHttpClient
         OkHttpClient.Builder httpClientBuider = new OkHttpClient.Builder();
@@ -68,6 +81,7 @@ public class HTTPClient<T> {
 
             if (credentials != null) { requestBuilder.header(Constants.HEADER_PARAMETER_AUTHORIZATION, "Basic " + credentials); }
             if (userID != null) { requestBuilder.header("X-USER-ID", userID); }
+            if (stationID != null) { requestBuilder.header("X-STATION-ID", stationID); }
 
             Request request = requestBuilder.build();
 
