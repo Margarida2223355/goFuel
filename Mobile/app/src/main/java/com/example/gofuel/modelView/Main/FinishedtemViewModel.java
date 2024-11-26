@@ -16,6 +16,7 @@ public class FinishedtemViewModel {
     }
 
     public void update(FinishedInvoice invoice) {
+        binding.invoiceNumber.setText(invoice.getCode());
         binding.invoiceDate.setText(Util.convertToData(invoice.getInvoice_date()));
         binding.invoiceValue.setText(invoice.getTotal() + "€");
     }
