@@ -28,9 +28,11 @@ $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
 
 
     <?= $this->render('_form', [
+        'isUpdate' => $isUpdate,
         'model' => $model,
         'view' => $view
     ]) ?>
+
     <h3>Subcategories</h3>
     <div class="row">
         <div class="col-6 float-left">

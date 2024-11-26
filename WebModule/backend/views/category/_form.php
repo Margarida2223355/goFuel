@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
@@ -11,7 +12,10 @@ use yii\widgets\ActiveForm;
 <div class="container-fluid">
 
     <?php $form = ActiveForm::begin([
-        'action'  => ['category/create'],
+        'action' => $view
+            ? Url::to(['update', 'id' => $model->id])
+            : Url::to(['create']),
+        'method' => 'post',
     ]); ?>
     <div class="row">
         <div class="col-md-7">
