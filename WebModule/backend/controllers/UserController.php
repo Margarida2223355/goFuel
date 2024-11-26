@@ -67,7 +67,7 @@ class UserController extends Controller
     public function actionView($id)
     {
 
-        $model = UserInfo::findOne(['user_id' => $this->findModel($id)]);
+        $model = User::findOne($id);
         $auth = Yii::$app->authManager;
         $roles = $auth->getRolesByUser($model->id);
         $role = !empty($roles) ? implode(', ', array_keys($roles)) : 'No Role';
@@ -131,8 +131,25 @@ class UserController extends Controller
         $userForm->loadUserInfo($userInfo);
 
         if ($userForm->load(Yii::$app->request->post()) && $userForm->validate()) {
-            $user->attributes = $userForm->attributes;
-            $userInfo->attributes = $userForm->attributes;
+            $user->attributes = $userForm->userAttributes();
+
+            $userInfo->attributes = $userForm->userInfoAttributes();
+            $userInfo->user_id = $user->id;
+
+            $user->username = $userForm->username;
+            $user->email = $userForm->email;
+
+            $userInfo->phone = $userForm->phone;
+            $userInfo->name = $userForm->name;
+            $userInfo->nif = $userForm->nif;
+            $userInfo->address = $userForm->address;
+            $userInfo->postal_code = $userForm->postal_code;
+
+            $userInfo->is_deleted = 0;
+            $userInfo->is_banned = 0;
+
+            $userInfo->save();
+            $user->save();
 
             $transaction = Yii::$app->db->beginTransaction();
             try {
@@ -158,8 +175,45 @@ class UserController extends Controller
 
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
 
+        if ($model) {
+            if ($model->userInfo->is_deleted == false) {
+                $model->userInfo->is_deleted = 1;
+                Yii::$app->session->setFlash('success', 'User succefully disabled');
+            } else {
+                $model->userInfo->is_deleted = 0;
+                Yii::$app->session->setFlash('success', 'User succefully enabled');
+            }
+
+            if (!$model->userInfo->save()) {
+                Yii::$app->session->setFlash('error', 'An error ocurred trying save user');
+            }
+        } else {
+            Yii::$app->session->setFlash('error', 'Ca\'nt find user');
+        }
+        return $this->redirect(['index']);
+    }
+
+    public function actionBan($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model) {
+            if ($model->userInfo->is_banned == false) {
+                $model->userInfo->is_banned = 1;
+                Yii::$app->session->setFlash('success', 'User succefully banned');
+            } else {
+                $model->userInfo->is_banned = 0;
+                Yii::$app->session->setFlash('success', 'User succefully banned');
+            }
+
+            if (!$model->userInfo->save()) {
+                Yii::$app->session->setFlash('error', 'An error ocurred trying save user');
+            }
+        } else {
+            Yii::$app->session->setFlash('error', 'Ca\'nt find user');
+        }
         return $this->redirect(['index']);
     }
 

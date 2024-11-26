@@ -103,18 +103,20 @@ class CategoryController extends Controller
     {
         $model = $this->findModel($id);
 
-        $subcategory = new Subcategory();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Category updated successfully!');
             return $this->redirect(['view', 'id' => $model->id]);
+        }else {
+
         }
 
+        $subcategory = new Subcategory();
         $subcategoriesDataProvider = new \yii\data\ActiveDataProvider([
             'query' => Subcategory::find()->where(['category_id' => $id])->orderBy(['is_deleted' => SORT_ASC]),
         ]);
         $view = true;
-        $isUpdate = false;
+        $isUpdate = true;
 
         return $this->render('view', [
             'model' => $model,

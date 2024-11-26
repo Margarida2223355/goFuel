@@ -17,6 +17,8 @@ class m241107_192746_create_user_info_table extends Migration
             'address' => $this->string(),
             'postal_code' => $this->string(),
             'phone' => $this->string(15),
+            'is_deleted' => $this->boolean()->defaultValue(false)->notNull(),
+            'is_banned' => $this->boolean()->defaultValue(false)->notNull(),
         ]);
 
         $this->addForeignKey(

@@ -17,8 +17,8 @@ class UserForm extends Model
     public $address = '';
     public $postal_code = '';
     public $role = '';
-    public $phone = 0;
-    public $id = 0;
+    public $phone = '';
+    public $id = '';
     public $station_id;
 
     private $_user;
@@ -95,6 +95,8 @@ class UserForm extends Model
         $this->_user = new User();
         $this->_userInfo = new UserInfo();
 
+
+        $this->_user->id = $this->id;
         $this->_user->username = $this->username;
         $this->_user->email = $this->email;
         $this->_user->auth_key = \Yii::$app->security->generateRandomString();
@@ -155,6 +157,10 @@ class UserForm extends Model
         $this->nif = $userInfo->nif;
         $this->address = $userInfo->address;
         $this->postal_code = $userInfo->postal_code;
+        $this->phone = $userInfo->phone;
+
+        // Atribuir o user_id explicitamente
+        $this->id = $userInfo->user_id;
     }
 
     public function userAttributes()
@@ -169,6 +175,7 @@ class UserForm extends Model
     public function userInfoAttributes()
     {
         return [
+            'user_id' => $this->id,
             'name' => $this->name,
             'nif' => $this->nif,
             'role' => $this->role,

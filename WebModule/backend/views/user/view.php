@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\User $model */
 
-$this->title = $model->name;
+$this->title = $model->userInfo->name;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -32,17 +32,17 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'name',
-            'nif',
-            'address',
-            'postal_code',
+            'userInfo.name',
+            'userInfo.nif',
+            'userInfo.address',
+            'userInfo.postal_code',
             [
                 'label' => 'Username', // Aqui usamos a relação com User
-                'value' => $model->user->username, // Acessando o username do User
+                'value' => $model->username, // Acessando o username do User
             ],
             [
                 'label' => 'Email',
-                'value' => $model->user->email, // Acessando o email do User
+                'value' => $model->email, // Acessando o email do User
             ],
             // Outras informações que você quiser mostrar do user_info
         ],
