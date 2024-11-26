@@ -23,6 +23,7 @@ import com.example.gofuel.model.pump.Pump;
 import com.example.gofuel.model.pump.PumpConverter;
 import com.example.gofuel.model.station.Station;
 import com.example.gofuel.model.station.StationConverter;
+import com.example.gofuel.model.station.StationItem;
 import com.example.gofuel.model.subcategory.SubcategoryConverter;
 import com.example.gofuel.model.user.User;
 import com.example.gofuel.model.user.UserConverter;
@@ -33,10 +34,11 @@ import com.example.gofuel.repository.invoiceLine.local.InvoiceLineDB;
 import com.example.gofuel.repository.item.local.ItemDB;
 import com.example.gofuel.repository.pump.local.PumpDB;
 import com.example.gofuel.repository.station.local.StationDB;
+import com.example.gofuel.repository.station_item.local.StationItemDB;
 import com.example.gofuel.repository.user.local.UserDB;
 
 @Database(
-        entities = {Station.class, Pump.class, Item.class, InvoiceLine.class, User.class, PendingInvoice.class, FinishedInvoice.class, ClientStation.class},
+        entities = {Station.class, Pump.class, Item.class, InvoiceLine.class, User.class, PendingInvoice.class, FinishedInvoice.class, ClientStation.class, StationItem.class},
         version = 1
 )
 @TypeConverters({
@@ -63,6 +65,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract InvoiceLineDB invoiceLineDB();
     public abstract UserDB userDB();
     public abstract ClientStationDB clientStationDB();
+    public abstract StationItemDB stationItemDB();
 
     public static AppDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
