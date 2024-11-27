@@ -8,7 +8,7 @@
     tools:context=".view.fragments.ItemFragment">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/list_item"
+        android:id="@+id/searchItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/searchBack"
