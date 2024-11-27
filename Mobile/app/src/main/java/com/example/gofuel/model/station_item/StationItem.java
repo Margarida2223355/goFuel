@@ -1,6 +1,5 @@
 package com.example.gofuel.model.station_item;
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -9,23 +8,32 @@ import com.example.gofuel.model.station.Station;
 
 @Entity(tableName = "station_items")
 public class StationItem {
-    @PrimaryKey @NonNull
-    private Double price;
+    @PrimaryKey(autoGenerate = true)
+    private int id;
     private Station station;
+    private Double price;
     private Item item;
 
-    public StationItem(@NonNull Double price, Station station, Item item) {
-        this.price = price;
+    public StationItem(int id, Station station, Item item, Double price) {
+        this.id = id;
         this.station = station;
+        this.item = item;
+        this.price = price;
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
         this.item = item;
     }
 
-    @NonNull
     public Double getPrice() {
         return price;
     }
 
-    public void setPrice(@NonNull Double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -37,11 +45,7 @@ public class StationItem {
         this.station = station;
     }
 
-    public Item getItem() {
-        return item;
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
+    public int getId() {
+        return id;
     }
 }
