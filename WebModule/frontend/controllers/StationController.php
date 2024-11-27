@@ -2,9 +2,11 @@
 
 namespace frontend\controllers;
 
+use common\models\Category;
 use common\models\ClientStation;
 use common\models\Item;
 use common\models\Station;
+use common\models\Subcategory;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -91,8 +93,12 @@ class StationController extends Controller
      */
     public function actionView($id)
     {
+        $categories = Category::find()->all();
+        $subcategories = Subcategory::find()->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'categories' => $categories,
+            'subcategories' => $subcategories,
         ]);
     }
 

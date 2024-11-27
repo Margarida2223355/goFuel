@@ -39,7 +39,7 @@ use yii\helpers\Url;
             <div class="col-md-10">
                 <h3><?= Html::a($model->name, ['station/view', 'id' => $model->id], ['style' => 'text-decoration: none; color: inherit;']) ?></h3>
                 <p><i class="fa fa-location-dot"></i>&nbsp;<?= Html::encode($model->address) . ', ' . Html::encode($model->postal_code) ?></p>
-                <p><i class="fa fa-user"></i>&nbsp;<?= Html::encode($model->manager->name) ?></p>
+                <p><i class="fa fa-user"></i>&nbsp;<?= Html::encode($model->manager->userInfo->name) ?></p>
             </div>
             <div class="col-md-2 d-flex align-items-center">
                 <?php

@@ -26,15 +26,74 @@ $this->params['breadcrumbs'][] = $model->name;
             'name',
             'address',
             'postal_code',
-            'manager.name',
+            'manager.userInfo.name',
         ],
-    ]) ?>
+    ]) ?><?php
+            // Recebendo as variáveis de filtro dos parâmetros GET
+            $filterCategory = Yii::$app->request->get('filterCategory', null);
+            $filterSubcategory = Yii::$app->request->get('filterSubcategory', null);
+
+            // Obtendo as categorias e subcategorias para as dropdowns
+            $categories = \common\models\Category::find()->all(); // Ajuste o namespace e o modelo conforme necessário
+            $subcategories = !empty($filterCategory)
+                ? \common\models\Subcategory::find()->where(['category_id' => $filterCategory])->all()
+                : \common\models\Subcategory::find()->all()
+            ?>
 
     <h3>Available Items</h3>
 
+    <!-- Dropdowns de filtro -->
+    <div class="row">
+        <div class="col-md-6">
+            <?= Html::beginForm(['station/view', 'id' => $model->id], 'get', ['class' => 'form-inline']) ?>
+
+            <div class="row">
+                <!-- Dropdown de Categorias -->
+                <div class="col-md-6">
+                    <?= Html::dropDownList(
+                        'filterCategory',
+                        $filterCategory,
+                        \yii\helpers\ArrayHelper::map($categories, 'id', 'name'),
+                        [
+                            'prompt' => 'All Categories',
+                            'class' => 'form-control',
+                            'onchange' => 'this.form.submit()' // Submete o formulário automaticamente ao mudar o valor
+                        ]
+                    ) ?>
+                </div>
+                <!-- Dropdown de Subcategorias -->
+                <div class="col-md-6">
+                    <?= Html::dropDownList(
+                        'filterSubcategory',
+                        $filterSubcategory,
+                        \yii\helpers\ArrayHelper::map($subcategories, 'id', 'description'),
+                        [
+                            'prompt' => 'All Subcategories',
+                            'class' => 'form-control',
+                            'onchange' => 'this.form.submit()' // Submete o formulário automaticamente ao mudar o valor
+                        ]
+                    ) ?>
+                </div>
+            </div>
+
+            <?= Html::endForm() ?>
+        </div>
+    </div>
+    <br>
+    <!-- GridView -->
     <?= GridView::widget([
         'dataProvider' => new ArrayDataProvider([
-            'allModels' => $model->stationItems,
+            'allModels' => array_filter($model->stationItems, function ($stationItem) use ($filterCategory, $filterSubcategory) {
+                // Filtrar por categoria, se selecionada
+                if (!empty($filterCategory) && $stationItem->item->subcategory->category_id != $filterCategory) {
+                    return false;
+                }
+                // Filtrar por subcategoria, se selecionada
+                if (!empty($filterSubcategory) && $stationItem->item->subcategory_id != $filterSubcategory) {
+                    return false;
+                }
+                return true;
+            }),
             'pagination' => [
                 'pageSize' => 10,
             ],
@@ -44,6 +103,18 @@ $this->params['breadcrumbs'][] = $model->name;
                 'label' => 'Item Name',
                 'value' => function ($stationItem) {
                     return $stationItem->item->description;
+                },
+            ],
+            [
+                'label' => 'Category',
+                'value' => function ($stationItem) {
+                    return $stationItem->item->subcategory->category->name;
+                },
+            ],
+            [
+                'label' => 'Subcategory',
+                'value' => function ($stationItem) {
+                    return $stationItem->item->subcategory->description;
                 },
             ],
             [
@@ -78,5 +149,8 @@ $this->params['breadcrumbs'][] = $model->name;
                 ],
             ],
         ],
+        'summary' => false,
     ]) ?>
+
+
 </div>

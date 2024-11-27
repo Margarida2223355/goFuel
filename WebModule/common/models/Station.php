@@ -82,8 +82,14 @@ class Station extends \yii\db\ActiveRecord
         return $this->hasMany(ClientStation::class, ['station_id' => 'id']);
     }
 
+    public function isFavoritedByUser($userId)
+    {
+        return $this->getClientStations()
+            ->where(['client_id' => $userId])
+            ->exists();
+    }
     /**
-     * Gets query for [[Clients]].
+     * Gets query for [[Clients]]. 
      *
      * @return \yii\db\ActiveQuery
      */

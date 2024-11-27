@@ -61,8 +61,8 @@ $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
                 'format' => 'raw',
                 'value' => function ($model) {
                     return $model->is_deleted
-                        ? Html::tag('i', '', ['class' => 'fa-regular fa-circle-check', 'aria-hidden' => 'true', 'style' => 'color: #28a745']) . ' ' . $model->description
-                        : Html::tag('i', '', ['class' => 'fa-regular fa-circle-xmark', 'aria-hidden' => 'true', 'style' => 'color: #dc3545']) . ' ' . $model->description;
+                        ? Html::tag('i', '', ['class' => 'fa-regular fa-circle-xmark', 'aria-hidden' => 'true', 'style' => 'color: #dc3545']) . ' ' . $model->description
+                        : Html::tag('i', '', ['class' => 'fa-regular fa-circle-check', 'aria-hidden' => 'true', 'style' => 'color: #28a745']) . ' ' . $model->description;
                 },
             ],
             [
@@ -85,17 +85,6 @@ $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
                         if (Yii::$app->user->can('Admin')) {
                             if ($model->is_deleted == false) {
                                 return Html::a(
-                                    '<i class="fa fa-redo" aria-hidden="true"></i>',
-                                    ['subcategory/delete', 'id' => $model->id],
-                                    [
-                                        'title' => 'Enable',
-                                        'data-method' => 'post',
-                                        'data-confirm' => 'Confirm Subcategory Enablement?',
-                                        'style' => 'color: #ffcc00; text-decoration: none;',
-                                    ]
-                                );
-                            } else {
-                                return Html::a(
                                     '<i class="fa fa-trash" aria-hidden="true"></i>',
                                     ['subcategory/delete', 'id' => $model->id],
                                     [
@@ -103,6 +92,17 @@ $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
                                         'data-method' => 'post',
                                         'data-confirm' => 'Confirm Subcategory Disablement?',
                                         'style' => 'color: #dc3545; text-decoration: none;',
+                                    ]
+                                );
+                            } else {
+                                return Html::a(
+                                    '<i class="fa fa-redo" aria-hidden="true"></i>',
+                                    ['subcategory/delete', 'id' => $model->id],
+                                    [
+                                        'title' => 'Enable',
+                                        'data-method' => 'post',
+                                        'data-confirm' => 'Confirm Subcategory Enablement?',
+                                        'style' => 'color: #ffcc00; text-decoration: none;',
                                     ]
                                 );
                             }
