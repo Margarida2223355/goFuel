@@ -10,20 +10,30 @@ import com.example.gofuel.model.station.Station;
 @Entity(tableName = "station_items")
 public class StationItem {
     @PrimaryKey @NonNull
+    private Double price;
     private Station station;
     private Item item;
 
-    public StationItem(@NonNull Station station, Item item) {
+    public StationItem(@NonNull Double price, Station station, Item item) {
+        this.price = price;
         this.station = station;
         this.item = item;
     }
 
     @NonNull
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(@NonNull Double price) {
+        this.price = price;
+    }
+
     public Station getStation() {
         return station;
     }
 
-    public void setStation(@NonNull Station station) {
+    public void setStation(Station station) {
         this.station = station;
     }
 
