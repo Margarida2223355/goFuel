@@ -6,7 +6,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.gofuel.MyApplication;
-import com.example.gofuel.model.station.StationItem;
+import com.example.gofuel.model.station.Station;
+import com.example.gofuel.model.station_item.StationItem;
 import com.example.gofuel.repository.common.ResultWrapper;
 import com.example.gofuel.repository.station_item.StationItemRepository;
 import com.example.gofuel.util.State;
@@ -25,11 +26,11 @@ public class ItemViewModel extends ViewModel {
         return state;
     }
 
-    public void loadItems() {
+    public void loadItems(Station station) {
         state.setValue(new State.Loading());
 
         new Thread(() -> {
-            ResultWrapper<List<StationItem>> result = stationItemRepository.getStationItems();
+            ResultWrapper<List<StationItem>> result = stationItemRepository.getStationItems(station);
 
             if (result.getResult() != null) {
                 state.postValue(new State.StationItemList(result.getResult()));

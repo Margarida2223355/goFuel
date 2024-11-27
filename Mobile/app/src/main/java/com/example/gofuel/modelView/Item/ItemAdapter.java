@@ -10,9 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.gofuel.databinding.ItemItemsBinding;
-import com.example.gofuel.databinding.ItemStationBinding;
-import com.example.gofuel.model.station.StationItem;
-import com.example.gofuel.modelView.Station.StationItemViewModel;
+import com.example.gofuel.model.station_item.StationItem;
 
 import java.util.ArrayList;
 

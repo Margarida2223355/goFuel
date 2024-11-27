@@ -4,7 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.example.gofuel.model.station.StationItem;
+import com.example.gofuel.model.station_item.StationItem;
 
 import java.util.List;
 

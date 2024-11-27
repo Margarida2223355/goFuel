@@ -1,18 +1,16 @@
 package com.example.gofuel.view.fragments;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.gofuel.R;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.gofuel.databinding.FragmentItemBinding;
 import com.example.gofuel.model.station.Station;
-import com.example.gofuel.model.station.StationItem;
+import com.example.gofuel.model.station_item.StationItem;
 import com.example.gofuel.modelView.Item.ItemAdapter;
 import com.example.gofuel.modelView.Item.ItemViewModel;
 import com.example.gofuel.util.State;
@@ -58,7 +56,7 @@ public class ItemFragment extends Fragment {
             }
         });
 
-        viewModel.loadItems();
+        viewModel.loadItems(station);
 
         return view;
     }

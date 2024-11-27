@@ -1,6 +1,7 @@
 package com.example.gofuel.repository.station_item.remote;
 
-import com.example.gofuel.model.station.StationItem;
+import com.example.gofuel.model.station.Station;
+import com.example.gofuel.model.station_item.StationItem;
 import com.example.gofuel.repository.common.HTTPClient;
 import com.example.gofuel.repository.common.ResultWrapper;
 import com.example.gofuel.repository.station_item.IStationItemDataSource;
@@ -12,8 +13,8 @@ import retrofit2.Call;
 public class StationItemRemoteDataSource implements IStationItemDataSource.Main {
     private final StationItemAPI stationItemAPI;
 
-    public StationItemRemoteDataSource() {
-        this.stationItemAPI = new HTTPClient<>(StationItemAPI.class).get();
+    public StationItemRemoteDataSource(Station station) {
+        this.stationItemAPI = new HTTPClient<>(StationItemAPI.class, String.valueOf(station.getId())).get();
     }
 
     @Override
@@ -25,5 +26,10 @@ public class StationItemRemoteDataSource implements IStationItemDataSource.Main 
     public ResultWrapper<List<StationItem>> getStationItems() {
         Call<List<StationItem>> call = stationItemAPI.getStationItems();
         return ResultWrapper.safeApiCall(call);
+    }
+
+    @Override
+    public ResultWrapper<List<StationItem>> getStationItems(Station station) {
+        return null;
     }
 }

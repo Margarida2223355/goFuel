@@ -2,7 +2,8 @@ package com.example.gofuel.repository.station_item;
 
 import android.content.Context;
 
-import com.example.gofuel.model.station.StationItem;
+import com.example.gofuel.model.station.Station;
+import com.example.gofuel.model.station_item.StationItem;
 import com.example.gofuel.repository.common.AppDatabase;
 import com.example.gofuel.repository.common.ResultWrapper;
 import com.example.gofuel.repository.station_item.local.StationItemDB;
@@ -34,7 +35,12 @@ public class StationItemRepository implements IStationItemDataSource.Main {
 
     @Override
     public ResultWrapper<List<StationItem>> getStationItems() {
-        ResultWrapper<List<StationItem>> result = new StationItemRemoteDataSource().getStationItems();
+        return null;
+    }
+
+    @Override
+    public ResultWrapper<List<StationItem>> getStationItems(Station station) {
+        ResultWrapper<List<StationItem>> result = new StationItemRemoteDataSource(station).getStationItems();
 
         if (result.getResult() != null) {
             stationItemDB.deleteAll();

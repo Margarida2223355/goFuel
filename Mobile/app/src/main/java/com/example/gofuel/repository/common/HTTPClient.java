@@ -40,6 +40,7 @@ public class HTTPClient<T> {
     //region HTTP Client with STATION_ID as HEADER<
 
     public HTTPClient(Class<T> serviceClass, String stationID) {
+        this.stationID = stationID;
         initializeHTTPClient(serviceClass);
     }
 

@@ -4,7 +4,7 @@ import com.example.gofuel.model.client_station.ClientStation;
 import com.example.gofuel.model.invoice.finished.FinishedInvoice;
 import com.example.gofuel.model.invoice.pending.PendingInvoice;
 import com.example.gofuel.model.station.Station;
-import com.example.gofuel.model.station.StationItem;
+import com.example.gofuel.model.station_item.StationItem;
 
 import java.util.HashMap;
 import java.util.List;
