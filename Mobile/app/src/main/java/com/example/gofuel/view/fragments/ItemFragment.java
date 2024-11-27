@@ -10,9 +10,11 @@ import android.view.ViewGroup;
 
 import com.example.gofuel.R;
 import com.example.gofuel.databinding.FragmentItemBinding;
+import com.example.gofuel.model.station.Station;
 
 public class ItemFragment extends Fragment {
     private FragmentItemBinding binding;
+    private Station station;
 
     public ItemFragment() {
         // Required empty public constructor
@@ -23,8 +25,11 @@ public class ItemFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentItemBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-
         
         return view;
+    }
+
+    public void setStation(Station station) {
+        this.station = station;
     }
 }
