@@ -4,6 +4,7 @@ import com.example.gofuel.model.client_station.ClientStation;
 import com.example.gofuel.model.invoice.finished.FinishedInvoice;
 import com.example.gofuel.model.invoice.pending.PendingInvoice;
 import com.example.gofuel.model.station.Station;
+import com.example.gofuel.model.station.StationItem;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,17 @@ public class State {
 
         public List<Station> getStations() {
             return stations;
+        }
+    }
+    public static class StationItemList extends State {
+        private final List<StationItem> stationItems;
+
+        public StationItemList(List<StationItem> stationItems) {
+            this.stationItems = stationItems;
+        }
+
+        public List<StationItem> getStationItems() {
+            return stationItems;
         }
     }
     public static class PendingInvoiceList extends State {
