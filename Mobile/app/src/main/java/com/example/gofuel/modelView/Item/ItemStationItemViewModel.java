@@ -8,7 +8,7 @@ public class ItemStationItemViewModel {
 
     public ItemStationItemViewModel(ItemItemsBinding binding) {
         this.binding = binding;
-        binding.itemQty.setText("1");
+        //binding.itemQty.setText("0"); //If we need to set default value
     }
 
     public ItemItemsBinding getItem() {
