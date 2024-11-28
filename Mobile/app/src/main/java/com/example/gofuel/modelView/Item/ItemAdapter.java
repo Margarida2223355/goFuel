@@ -62,6 +62,7 @@ public class ItemAdapter extends BaseAdapter {
 
         viewModel.update(stationItems.get(position));
 
+        //region Item Qty Change
         binding.itemQty.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -78,10 +79,36 @@ public class ItemAdapter extends BaseAdapter {
                 if (!(editable.toString().isEmpty()) && !(editable.toString().equalsIgnoreCase("0"))) {
                     binding.itemQty.clearFocus();
                     ((InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(binding.itemQty.getWindowToken(), 0);
-                    onItemQtyChange.onQtyChanged();
+                    onItemQtyChange.onQtyChanged(true);
+                }
+                else {
+                    onItemQtyChange.onQtyChanged(false);
                 }
             }
         });
+        //endregion
+
+        //region Add Qty
+        binding.addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int qty = Integer.parseInt(binding.itemQty.getText().toString());
+                qty++;
+                binding.itemQty.setText(String.valueOf(qty));
+            }
+        });
+        //endregion
+
+        //region Remove Qty
+        binding.removeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int qty = Integer.parseInt(binding.itemQty.getText().toString());
+                qty--;
+                binding.itemQty.setText(String.valueOf(qty));
+            }
+        });
+        //endregion
 
         return convertView;
     }
