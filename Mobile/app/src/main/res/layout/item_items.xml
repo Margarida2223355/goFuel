@@ -81,7 +81,7 @@
                     app:tint="@color/white"
                     tools:ignore="TouchTargetSizeCheck" />
 
-                <TextView
+                <EditText
                     android:id="@+id/itemQty"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
@@ -89,7 +89,9 @@
                     android:textAlignment="center"
                     android:text="0"
                     android:gravity="center"
-                    style="@style/RegularTextStyle"/>
+                    style="@style/RegularTextStyle"
+                    android:background="@android:color/transparent"
+                    android:inputType="number"/>
 
                 <ImageView
                     android:layout_width="match_parent"
