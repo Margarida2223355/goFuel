@@ -1,5 +1,5 @@
 package com.example.gofuel.util.callback;
 
 public interface OnItemQtyChange {
-    void onQtyChanged();
+    void onQtyChanged(Boolean show);
 }
