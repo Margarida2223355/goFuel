@@ -1,9 +1,12 @@
 package com.example.gofuel.modelView.Item;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 
 import androidx.annotation.NonNull;
@@ -11,16 +14,19 @@ import androidx.annotation.Nullable;
 
 import com.example.gofuel.databinding.ItemItemsBinding;
 import com.example.gofuel.model.station_item.StationItem;
+import com.example.gofuel.util.callback.OnItemQtyChange;
 
 import java.util.ArrayList;
 
 public class ItemAdapter extends BaseAdapter {
     private ArrayList<StationItem> stationItems;
     private final Context context;
+    private final OnItemQtyChange onItemQtyChange;
 
-    public ItemAdapter(Context context, ArrayList<StationItem> stationItems) {
+    public ItemAdapter(Context context, ArrayList<StationItem> stationItems, OnItemQtyChange onItemQtyChange) {
         this.context = context;
         this.stationItems = stationItems;
+        this.onItemQtyChange = onItemQtyChange;
     }
 
     @Override
@@ -55,6 +61,27 @@ public class ItemAdapter extends BaseAdapter {
         }
 
         viewModel.update(stationItems.get(position));
+
+        binding.itemQty.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!(editable.toString().isEmpty()) && !(editable.toString().equalsIgnoreCase("0"))) {
+                    binding.itemQty.clearFocus();
+                    ((InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(binding.itemQty.getWindowToken(), 0);
+                    onItemQtyChange.onQtyChanged();
+                }
+            }
+        });
 
         return convertView;
     }
