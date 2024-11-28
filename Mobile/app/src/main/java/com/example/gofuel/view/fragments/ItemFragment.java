@@ -46,8 +46,9 @@ public class ItemFragment extends Fragment {
                 binding.emptyState.setVisibility(View.GONE);
                 binding.itemList.setVisibility(View.VISIBLE);
                 ArrayList<StationItem> stationItems = new ArrayList<>(((State.StationItemList) state).getStationItems());
-                binding.itemList.setAdapter(new ItemAdapter(getContext(), stationItems, () -> {
-                    binding.cardButton.setVisibility(View.VISIBLE);
+                binding.itemList.setAdapter(new ItemAdapter(getContext(), stationItems, (show) -> {
+                    if (show) { binding.cardButton.setVisibility(View.VISIBLE); }
+                    else { binding.cardButton.setVisibility(View.GONE); }
                 }));
             }
 
