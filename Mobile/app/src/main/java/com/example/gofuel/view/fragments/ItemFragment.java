@@ -1,21 +1,27 @@
 package com.example.gofuel.view.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.gofuel.databinding.FragmentItemBinding;
+import com.example.gofuel.databinding.ItemItemsBinding;
 import com.example.gofuel.model.station.Station;
 import com.example.gofuel.model.station_item.StationItem;
 import com.example.gofuel.modelView.Item.ItemAdapter;
+import com.example.gofuel.modelView.Item.ItemStationItemViewModel;
 import com.example.gofuel.modelView.Item.ItemViewModel;
 import com.example.gofuel.util.State;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ItemFragment extends Fragment {
     private FragmentItemBinding binding;
@@ -60,6 +66,23 @@ public class ItemFragment extends Fragment {
         });
 
         viewModel.loadItems(station);
+
+        binding.cardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HashMap<StationItem, Integer> cardItems = new HashMap<>();
+
+                for (int i=0; i<binding.itemList.getCount(); i++) {
+                    ItemStationItemViewModel itemViewModel = (ItemStationItemViewModel) binding.itemList.getChildAt(i).getTag();
+                    cardItems.put(itemViewModel.getStationItem(), Integer.valueOf(itemViewModel.getItem().itemQty.getText().toString()));
+                }
+
+                /* TESTE - Margarida
+                for (Map.Entry<StationItem, Integer> entry : cardItems.entrySet()) {
+                    Log.i("-->", "StationItem: " + entry.getKey().getItem().getDescription() + " -- Quantity: " + entry.getValue());
+                }*/
+            }
+        });
 
         return view;
     }

@@ -5,6 +5,7 @@ import com.example.gofuel.model.station_item.StationItem;
 
 public class ItemStationItemViewModel {
     private final ItemItemsBinding binding;
+    private StationItem stationItem;
 
     public ItemStationItemViewModel(ItemItemsBinding binding) {
         this.binding = binding;
@@ -15,7 +16,12 @@ public class ItemStationItemViewModel {
         return binding;
     }
 
+    public StationItem getStationItem() {
+        return stationItem;
+    }
+
     public void update(StationItem item) {
+        this.stationItem = item;
         binding.itemName.setText(item.getItem().getDescription());
         binding.itemCategory.setText(item.getItem().getSubcategory().getCategory().getName());
         binding.itemUnitPrice.setText(item.getPrice() + "€");
