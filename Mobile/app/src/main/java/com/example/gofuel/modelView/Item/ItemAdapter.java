@@ -76,13 +76,13 @@ public class ItemAdapter extends BaseAdapter {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (!(editable.toString().isEmpty()) && !(editable.toString().equalsIgnoreCase("0"))) {
+                if (!(editable.toString().isEmpty()) && (Integer.parseInt(editable.toString()) > 0)) {
                     binding.itemQty.clearFocus();
                     ((InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(binding.itemQty.getWindowToken(), 0);
                     onItemQtyChange.onQtyChanged(true);
                 }
                 else {
-                    onItemQtyChange.onQtyChanged(false);
+                    onItemQtyChange.onQtyChanged(notEmptyQty(parent));
                 }
             }
         });
@@ -111,5 +111,16 @@ public class ItemAdapter extends BaseAdapter {
         //endregion
 
         return convertView;
+    }
+
+    private boolean notEmptyQty(ViewGroup parent) {
+        for (int i=0; i<getCount(); i++) {
+            ItemItemsBinding binding = ((ItemStationItemViewModel) parent.getChildAt(i).getTag()).getItem();
+
+            if (Integer.parseInt(binding.itemQty.getText().toString()) > 0) {
+                return true;
+            }
+        }
+        return false;
     }
 }
