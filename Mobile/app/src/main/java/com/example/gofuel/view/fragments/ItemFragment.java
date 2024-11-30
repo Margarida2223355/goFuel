@@ -106,6 +106,17 @@ public class ItemFragment extends Fragment {
             }
         });
         //endregion
+
+        //region Clear search text
+        binding.clearIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.searchText.clearFocus();
+                binding.searchText.setText("");
+            }
+        });
+        //endregion
+
         return view;
     }
 

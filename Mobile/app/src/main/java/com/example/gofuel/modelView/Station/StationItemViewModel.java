@@ -3,7 +3,6 @@ package com.example.gofuel.modelView.Station;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 import com.example.gofuel.R;
 import com.example.gofuel.databinding.ItemStationBinding;

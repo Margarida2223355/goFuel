@@ -76,13 +76,14 @@ public class ItemAdapter extends BaseAdapter {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (!(editable.toString().isEmpty()) && (Integer.parseInt(editable.toString()) > 0)) {
-                    binding.itemQty.clearFocus();
-                    ((InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(binding.itemQty.getWindowToken(), 0);
-                    onItemQtyChange.onQtyChanged(true);
-                }
-                else {
-                    onItemQtyChange.onQtyChanged(notEmptyQty(parent));
+                if (!editable.toString().isEmpty()) {
+                    if ((Integer.parseInt(editable.toString()) > 0)) {
+                        binding.itemQty.clearFocus();
+                        ((InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(binding.itemQty.getWindowToken(), 0);
+                        onItemQtyChange.onQtyChanged(true);
+                    } else {
+                        onItemQtyChange.onQtyChanged(notEmptyQty(parent));
+                    }
                 }
             }
         });
@@ -114,7 +115,7 @@ public class ItemAdapter extends BaseAdapter {
     }
 
     private boolean notEmptyQty(ViewGroup parent) {
-        for (int i=0; i<getCount(); i++) {
+        for (int i = 0; i < getCount(); i++) {
             ItemItemsBinding binding = ((ItemStationItemViewModel) parent.getChildAt(i).getTag()).getItem();
 
             if (Integer.parseInt(binding.itemQty.getText().toString()) > 0) {

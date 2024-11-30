@@ -38,7 +38,9 @@
                 android:hint="@string/searchHint"
                 android:inputType="text"
                 android:textColorHint="@color/searchIcon"
-                tools:ignore="TouchTargetSizeCheck" />
+                android:textColor="@color/black"
+                tools:ignore="TouchTargetSizeCheck"
+                android:imeOptions="actionDone"/>
 
             <ImageView
                 android:id="@+id/clearIcon"
@@ -46,7 +48,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_clear"
-                app:tint="@color/searchIcon" />
+                app:tint="@color/searchIcon"/>
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
