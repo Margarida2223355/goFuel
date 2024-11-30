@@ -12,11 +12,14 @@ import com.example.gofuel.repository.common.ResultWrapper;
 import com.example.gofuel.repository.station_item.StationItemRepository;
 import com.example.gofuel.util.State;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ItemViewModel extends ViewModel {
     private final StationItemRepository stationItemRepository;
     private final MutableLiveData<State> state = new MutableLiveData<>();
+    private ArrayList<StationItem> items;
 
     public ItemViewModel() {
         stationItemRepository = StationItemRepository.getInstance(MyApplication.getAppContext());
@@ -34,11 +37,27 @@ public class ItemViewModel extends ViewModel {
 
             if (result.getResult() != null) {
                 state.postValue(new State.StationItemList(result.getResult()));
+                items = new ArrayList<>(result.getResult());
             }
             else {
                 Log.e("-->", "Error API: " + result.getError());
                 state.postValue(new State.EmptyState());
             }
         }).start();
+    }
+
+    public void getItemsByCategoryDescription(String text) {
+        state.setValue(new State.Loading());
+
+        List<StationItem> itemsCategory = items.stream()
+                .filter( item -> {
+                    String categoryName = item.getItem().getSubcategory().getCategory().getName().toLowerCase();
+                    String description = item.getItem().getDescription().toLowerCase();
+                    return
+                            categoryName.contains(text.toLowerCase()) || description.contains(text.toLowerCase());
+                })
+                .collect(Collectors.toList());
+
+        state.setValue(new State.StationItemList(itemsCategory));
     }
 }

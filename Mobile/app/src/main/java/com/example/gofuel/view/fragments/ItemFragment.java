@@ -1,6 +1,8 @@
 package com.example.gofuel.view.fragments;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,6 +69,7 @@ public class ItemFragment extends Fragment {
 
         viewModel.loadItems(station);
 
+        //region On card button click
         binding.cardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,7 +86,26 @@ public class ItemFragment extends Fragment {
                 }*/
             }
         });
+        //endregion
 
+        //region Search for Category/Description
+        binding.searchText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                viewModel.getItemsByCategoryDescription(editable.toString());
+            }
+        });
+        //endregion
         return view;
     }
 
