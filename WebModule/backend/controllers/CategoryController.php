@@ -56,7 +56,11 @@ class CategoryController extends Controller
         $subcategory = new Subcategory();
         $view = true;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Category updated successfully!');
+            Yii::$app->session->set('alert', [
+                'type' => 'success',
+                'title' => 'Success!',
+                'message' => 'Category successfully updated!.',
+            ]);
             return $this->refresh();
         }
 
@@ -105,10 +109,13 @@ class CategoryController extends Controller
 
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Category updated successfully!');
+            Yii::$app->session->set('alert', [
+                'type' => 'success',
+                'title' => 'Success!',
+                'message' => 'Category successfully updated!.',
+            ]);
             return $this->redirect(['view', 'id' => $model->id]);
-        }else {
-
+        } else {
         }
 
         $subcategory = new Subcategory();
@@ -142,22 +149,33 @@ class CategoryController extends Controller
                             $subcategory->is_deleted = 0;
                             $subcategory->save();
                         }
-                        Yii::$app->session->setFlash('success', 'Category successfully disabled.');
+                        Yii::$app->session->set('alert', [
+                            'type' => 'success',
+                            'title' => 'Success!',
+                            'message' => 'Category successfully enabled.',
+                        ]);
                     }
                 } else {
                     $model->is_deleted = 1;
-
                     if ($model->save()) {
                         foreach ($model->subcategories as $subcategory) {
                             $subcategory->is_deleted = 1;
                             $subcategory->save();
                         }
-                        Yii::$app->session->setFlash('success', 'Category successfully disabled.');
+                        Yii::$app->session->set('alert', [
+                            'type' => 'success',
+                            'title' => 'Success!',
+                            'message' => 'Category successfully disabled.',
+                        ]);
                     }
                 }
             }
         } else {
-            Yii::$app->session->setFlash('error', 'An error occurred.');
+            Yii::$app->session->set('alert', [
+                'type' => 'danger',
+                'title' => 'Error!',
+                'message' => 'An error occurred.',
+            ]);
         }
 
         return $this->redirect(['index']);

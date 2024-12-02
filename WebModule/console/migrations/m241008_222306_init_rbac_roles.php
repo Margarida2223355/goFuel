@@ -35,133 +35,79 @@ class m241008_222306_init_rbac_roles extends Migration
 
         #endregion
 
-        #region Permissions (Create and Add)
-
-        //Category permission
-        $auth->add($auth->createPermission('CategoryIndex'));
-        $auth->add($auth->createPermission('CategoryView'));
-        $auth->add($auth->createPermission('CategoryCreate'));
-        $auth->add($auth->createPermission('CategoryUpdate'));
-        $auth->add($auth->createPermission('CategoryDelete'));
-
-        //Invoice permission
-        $auth->add($auth->createPermission('InvoiceIndex'));
-        $auth->add($auth->createPermission('InvoiceView'));
-        $auth->add($auth->createPermission('InvoiceFinish'));
-
-        //Item permission
-        $auth->add($auth->createPermission('ItemIndex'));
-        $auth->add($auth->createPermission('ItemCreate'));
-        $auth->add($auth->createPermission('ItemUpdate'));
-        $auth->add($auth->createPermission('ItemAssociate'));
-        $auth->add($auth->createPermission('ItemDeleteAssociation'));
-        $auth->add($auth->createPermission('ItemUpdateAssociation'));
-        $auth->add($auth->createPermission('ItemRestock'));
-
-        //Station permission
-        $auth->add($auth->createPermission('StationIndex'));
-        $auth->add($auth->createPermission('StationView'));
-        $auth->add($auth->createPermission('StationCreate'));
-        $auth->add($auth->createPermission('StationUpdate'));
-        $auth->add($auth->createPermission('StationDelete'));
-        //StationItem permission
-        $auth->add($auth->createPermission('StationItemAssociate'));
-        $auth->add($auth->createPermission('StationItemDeleteAssociation'));
-        $auth->add($auth->createPermission('StationItemUpdateAssociation'));
-
-        //Subcategory permission
-        $auth->add($auth->createPermission('SubcategoryCreate'));
-        $auth->add($auth->createPermission('SubcategoryUpdate'));
-        $auth->add($auth->createPermission('SubcategoryDelete'));
-
-        //User permission
-        $auth->add($auth->createPermission('UserIndex'));
-        $auth->add($auth->createPermission('UserView'));
-        $auth->add($auth->createPermission('UserChangerole'));
-        $auth->add($auth->createPermission('UserUnblock'));
-        $auth->add($auth->createPermission('UserBlock'));
-        $auth->add($auth->createPermission('UserCreate'));
-        $auth->add($auth->createPermission('UserUpdate'));
-        $auth->add($auth->createPermission('UserDelete'));
-        $auth->add($auth->createPermission('UserResetPassword'));
-
-        //Userinfo permission
-        /* $auth->add($auth->createPermission('UserinfoIndex'));
-        $auth->add($auth->createPermission('UserinfoView'));
-        $auth->add($auth->createPermission('UserinfoCreate'));
-        $auth->add($auth->createPermission('UserinfoUpdate'));
-        $auth->add($auth->createPermission('UserinfoDelete'));*/
-
-        #endregion
-
         $permissions = [
-            'Employee' => [
-                'CategoryIndex',
-                'CategoryView',
-                'InvoiceIndex',
-                'InvoiceView',
-                'InvoiceFinish',
-                'ItemIndex',
-                'StationIndex',
-                'StationView',
-                'UserUpdate',
+            'CategoryController' => [
+                'CategoryIndexPermission',
+                'CategoryViewPermission',
+                'CategoryCreatePermission',
+                'CategoryUpdatePermission',
+                'CategoryDeletePermission',
             ],
-            'Incharge' => [
-                'ItemRestock',
-                'StationIndex',
+            'InvoiceController' => [
+                'InvoiceIndexPermission',
+                'InvoiceViewPermission',
+                'InvoiceFinishPermission',
+                'InvoiceDeletePermission',
             ],
-            'Manager' => [
-                'ItemAssociate',
-                'StationItemAssociate',
-                'StationItemDeleteAssociation',
-                'StationItemUpdateAssociation',
-                'StationUpdate',
-                'UserIndex',
-                'UserView',
-                'UserCreate',
-                'UserResetPassword',
-                'ItemDeleteAssociation',
-                'ItemUpdateAssociation',
-                'UserUnblock',
-                'UserBlock',
+            'ItemController' => [
+                'ItemIndexPermission',
+                'ItemViewPermission',
+                'ItemCreatePermission',
+                'ItemUpdatePermission',
+                'ItemDeletePermission',
+                'ItemAssociatePermission',
+                'ItemDeleteAssociationPermission',
+                'ItemUpdateAssociationPermission',
+                'ItemRestockPermission',
             ],
-            'Admin' => [
-                'CategoryCreate',
-                'CategoryUpdate',
-                'CategoryDelete',
-                'ItemCreate',
-                'ItemUpdate',
-                'StationCreate',
-                'StationDelete',
-                'SubcategoryCreate',
-                'SubcategoryUpdate',
-                'SubcategoryDelete',
-                'UserChangerole',
-                'UserDelete',
+            'SiteController' => [
+                'SiteActionsPermission',
+                'SiteIndexPermission',
+                'SiteLoginPermission',
+                'SiteLogoutPermission',
+            ],
+            'StationController' => [
+                'StationIndexPermission',
+                'StationViewPermission',
+                'StationCreatePermission',
+                'StationUpdatePermission',
+                'StationDeletePermission',
+                'StationAddItemPermission',
+            ],
+            'StationItemController' => [
+                'StationItemAssociatePermission',
+                'StationItemDeleteAssociationPermission',
+                'StationItemUpdateAssociationPermission',
+            ],
+            'SubcategoryController' => [
+                'SubcategoryCreatePermission',
+                'SubcategoryUpdatePermission',
+                'SubcategoryDeletePermission',
+            ],
+            'UserController' => [
+                'UserIndexPermission',
+                'UserViewPermission',
+                'UserChangerolePermission',
+                'UserCreatePermission',
+                'UserUpdatePermission',
+                'UserDeletePermission',
+                'UserBanPermission',
+                'UserResetPasswordPermission',
             ],
         ];
 
-        // Assign permissiton to each role
-        foreach ($permissions as $roleName => $permissionList) {
-            $role = $auth->getRole($roleName);
-            foreach ($permissionList as $permissionName) {
-                $permission = $auth->getPermission($permissionName);
-                if ($permission !== null && $role !== null) {
-                    $auth->addChild($role, $permission);
-                }
+        foreach ($permissions as $controller => $actions) {
+            foreach ($actions as $action) {
+                $permission = $auth->createPermission($action);
+                $permission->description = "Permission for {$action}";
+                $auth->add($permission);
             }
         }
 
-        #region Roles and Permissions assignment
-
-
-        #endregion
-
-
-        //Child assignment
-        $auth->addChild($inCharge, $employee);
-        $auth->addChild($manager, $inCharge);
-        $auth->addChild($admin, $manager);
+        // Child assignment
+        // $auth->addChild($inCharge, $employee);
+        // $auth->addChild($manager, $inCharge);
+        // $auth->addChild($admin, $manager);
     }
 
     public function safeDown()
@@ -185,61 +131,72 @@ class m241008_222306_init_rbac_roles extends Migration
             $auth->removeChild($incharge, $employee);
         }
 
-        // Permissões associadas a cada role
         $permissions = [
-            'Employee' => [
-                'CategoryIndex',
-                'CategoryView',
-                'InvoiceIndex',
-                'InvoiceView',
-                'InvoiceFinish',
-                'ItemIndex',
-                'ItemView',
-                'StationIndex',
-                'StationView',
-                'UserUpdate',
+            'CategoryController' => [
+                'CategoryIndexPermission',
+                'CategoryViewPermission',
+                'CategoryCreatePermission',
+                'CategoryUpdatePermission',
+                'CategoryDeletePermission',
             ],
-            'Incharge' => [
-                'ItemRestock',
+            'InvoiceController' => [
+                'InvoiceIndexPermission',
+                'InvoiceViewPermission',
+                'InvoiceFinishPermission',
+                'InvoiceDeletePermission',
             ],
-            'Manager' => [
-                'ItemAssociate',
-                'StationItemAssociate',
-                'StationItemDeleteAssociation',
-                'StationItemUpdateAssociation',
-                'StationUpdate',
-                'UserIndex',
-                'UserView',
-                'UserCreate',
-                'UserResetPassword',
-                'ItemDeleteAssociation',
-                'ItemUpdateAssociation',
-                'UserUnblock',
-                'UserBlock',
+            'ItemController' => [
+                'ItemIndexPermission',
+                'ItemViewPermission',
+                'ItemCreatePermission',
+                'ItemUpdatePermission',
+                'ItemDeletePermission',
+                'ItemAssociatePermission',
+                'ItemDeleteAssociationPermission',
+                'ItemUpdateAssociationPermission',
+                'ItemRestockPermission',
             ],
-            'Admin' => [
-                'CategoryCreate',
-                'CategoryUpdate',
-                'CategoryDelete',
-                'ItemCreate',
-                'ItemUpdate',
-                'StationCreate',
-                'StationDelete',
-                'SubcategoryCreate',
-                'SubcategoryUpdate',
-                'SubcategoryDelete',
-                'UserChangerole',
-                'UserDelete',
+            'SiteController' => [
+                'SiteActionsPermission',
+                'SiteIndexPermission',
+                'SiteLoginPermission',
+                'SiteLogoutPermission',
+            ],
+            'StationController' => [
+                'StationIndexPermission',
+                'StationViewPermission',
+                'StationCreatePermission',
+                'StationUpdatePermission',
+                'StationDeletePermission',
+                'StationAddItemPermission',
+            ],
+            'StationItemController' => [
+                'StationItemAssociatePermission',
+                'StationItemDeleteAssociationPermission',
+                'StationItemUpdateAssociationPermission',
+            ],
+            'SubcategoryController' => [
+                'SubcategoryCreatePermission',
+                'SubcategoryUpdatePermission',
+                'SubcategoryDeletePermission',
+            ],
+            'UserController' => [
+                'UserIndexPermission',
+                'UserViewPermission',
+                'UserChangerolePermission',
+                'UserCreatePermission',
+                'UserUpdatePermission',
+                'UserDeletePermission',
+                'UserBanPermission',
+                'UserResetPasswordPermission',
             ],
         ];
 
-        // Remove permissões de cada role
-        foreach ($permissions as $roleName => $permissionList) {
-            $role = $auth->getRole($roleName);
-            foreach ($permissionList as $permissionName) {
-                $permission = $auth->getPermission($permissionName);
-                if ($permission !== null && $role !== null) {
-                    $auth->removeChild($role, $permission);
+        foreach ($permissions as $actions) {
+            foreach ($actions as $action) {
+                $permission = $auth->getPermission($action);
+                if ($permission) {
+                    $auth->remove($permission);
                 }
             }
         }

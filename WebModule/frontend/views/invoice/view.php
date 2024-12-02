@@ -1,5 +1,6 @@
 <?php
 
+use common\models\StationItem;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
@@ -63,22 +64,35 @@ $this->params['breadcrumbs'][] = $this->title;
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($model->invoiceLines as $line): ?>
+                                    <?php foreach ($model->invoiceLines as $line):
+                                        $stationItem = StationItem::findOne(['item_id' => $line->item_id, 'station_id' => $model->station_id]); ?>
                                         <tr>
                                             <td><?= Html::encode($line->item->description) ?></td>
-                                            <td><?= Html::encode($line->total / $line->qty) ?></td>
+                                            <td><?= Html::encode($stationItem->price) ?></td>
                                             <td><?= Html::encode($line->qty) ?></td>
                                             <td><?= Html::encode($line->total) ?></td>
                                             <?php if ($model->state_id == 1): ?>
                                                 <td>
                                                     <?= Html::beginForm(['invoiceline/update-quantity', 'id' => $line->id], 'post') ?>
                                                     <div class="input-group">
-                                                        <?= Html::input('number', 'quantity', 1, [
-                                                            'class' => 'form-control',
-                                                            'min' => 1,
-                                                            'style' => 'width: 60px;',
-                                                            'title' => 'Enter quantity'
-                                                        ]) ?>
+                                                        <?php
+                                                        if ($line->item->subcategory->category->id == 1 || $line->item->subcategory->category->id == 2) :
+                                                            echo Html::input('number', 'quantity', 1, [
+                                                                'class' => 'form-control',
+                                                                'style' => 'width: 100px; margin-right: 5px;',
+                                                                'min' => 0.1,
+                                                                'step' => 0.1,
+                                                                'title' => 'Quantidade',
+                                                            ]);
+                                                        else :
+                                                            echo Html::input('number', 'quantity', 1, [
+                                                                'class' => 'form-control',
+                                                                'style' => 'width: 100px; margin-right: 5px;',
+                                                                'min' => 1,
+                                                                'title' => 'Quantidade',
+                                                            ]);
+                                                        endif;
+                                                        ?>
                                                         <div class="input-group-append">
                                                             <?= Html::submitButton(
                                                                 '<i class="fas fa-minus"></i>',

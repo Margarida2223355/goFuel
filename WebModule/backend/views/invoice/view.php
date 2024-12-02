@@ -1,5 +1,6 @@
 <?php
 
+use common\models\StationItem;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\DetailView;
@@ -51,10 +52,12 @@ $this->params['breadcrumbs'][] = 'Check Invoice';
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($model->invoiceLines as $line): ?>
+                <?php foreach ($model->invoiceLines as $line):
+                    $stationItem = StationItem::findOne(['item_id' => $line->item_id, 'station_id' => $model->station_id]);
+                    dd($stationItem); ?>
                     <tr>
                         <td><?= Html::encode($line->item->description) ?></td>
-                        <td><?= Html::encode($line->total / $line->qty) ?></td>
+                        <td><?= Html::encode($stationItem->price) ?></td>
                         <td><?= Html::encode($line->qty) ?></td>
                         <td><?= Html::encode($line->total) ?></td>
                     </tr>

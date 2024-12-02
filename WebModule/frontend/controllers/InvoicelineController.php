@@ -47,19 +47,19 @@ class InvoicelineController extends Controller
             if ($action === 'minus') {
                 if ($line->item->subcategory->category->id == 1 || $line->item->subcategory->category->id == 2) {
                     $litersToRemove = $quantity / $item->price;
-                    $line->qty = max(0, $line->qty - $litersToRemove);
+                    $line->qty = round(max(0, $line->qty - $litersToRemove), 2);
                 } else {
-                    $line->qty = max(0, $line->qty - $quantity);
+                    $line->qty = round(max(0, $line->qty - $quantity), 2);
                 }
             } elseif ($action === 'plus') {
                 if ($line->item->subcategory->category->id == 1 || $line->item->subcategory->category->id == 2) {
                     $litersToAdd = $quantity / $item->price;
-                    $line->qty += $litersToAdd;
+                    $line->qty = round($line->qty += $litersToAdd, 2);
                 } else {
-                    $line->qty += $quantity;
+                    $line->qty = round($line->qty += $quantity, 2);
                 }
             }
-            $line->total = $line->qty * $item->price;
+            $line->total = round($line->qty * $item->price, 2);
             $line->save();
             $invoice->updateTotal();
         }

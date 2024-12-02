@@ -10,6 +10,7 @@ use common\models\StationItem;
 use common\models\StationUser;
 use common\models\User;
 use common\models\UserInfo;
+use hail812\adminlte\widgets\Alert;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -104,7 +105,6 @@ class StationController extends Controller
             ]);
         }
 
-
         return $this->render('view', [
             'station' => $station,
             'model' => $model,
@@ -192,7 +192,12 @@ class StationController extends Controller
                 $model->is_deleted = 1;
             }
             if ($model->save()) {
-                Yii::$app->session->setFlash('success', 'Item successfully deleted.');
+
+                Yii::$app->session->set('alert', [
+                    'type' => 'success',
+                    'title' => 'Success!',
+                    'message' => 'Item successfully deleted.',
+                ]);
             }
         } else {
             Yii::$app->session->setFlash('error', 'An error occurred.');
@@ -214,9 +219,19 @@ class StationController extends Controller
             $stationItem->price = $price;
 
             if ($stationItem->save()) {
-                Yii::$app->session->setFlash('success', 'Item added successfully with price.');
+                Yii::$app->session->set('alert', [
+                    'type' => 'success',
+                    'title' => 'Success!',
+                    'message' => 'Item added successfully with price.',
+                ]);
+                Yii::$app->session->setFlash('success', '.');
             } else {
-                Yii::$app->session->setFlash('error', 'Failed to add item.');
+                Yii::$app->session->set('alert', [
+                    'type' => 'error',
+                    'title' => 'Error!',
+                    'message' => 'Failed to add item.',
+                ]);
+                Yii::$app->session->setFlash('error', '.');
             }
         }
 

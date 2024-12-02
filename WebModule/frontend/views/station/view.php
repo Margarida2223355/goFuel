@@ -132,12 +132,22 @@ $this->params['breadcrumbs'][] = $model->name;
                         return Html::beginForm(['invoice/addtocart', 'item_id' => $stationItem->item_id, 'station_id' => $stationItem->station_id], 'post', [
                             'style' => 'display: inline-flex; align-items: center;'
                         ]) .
-                            Html::input('number', 'quantity', 1, [
-                                'class' => 'form-control',
-                                'style' => 'width: 100px; margin-right: 5px;',
-                                'min' => 1,
-                                'title' => 'Quantidade'
-                            ]) .
+                            ($stationItem->item->subcategory->category->id == 1 || $stationItem->item->subcategory->category->id == 2
+                                ? Html::input('number', 'quantity', 1, [
+                                    'class' => 'form-control',
+                                    'style' => 'width: 100px; margin-right: 5px;',
+                                    'min' => 0.1,
+                                    'step' => 0.1,
+                                    'title' => 'Quantidade (decimais permitidos)',
+                                ])
+                                : Html::input('number', 'quantity', 1, [
+                                    'class' => 'form-control',
+                                    'style' => 'width: 100px; margin-right: 5px;',
+                                    'min' => 1,
+                                    'step' => 1,
+                                    'title' => 'Quantidade (apenas inteiros)',
+                                ])
+                            ) .
                             Html::submitButton('<i class="fa fa-shopping-cart"></i>', [
                                 'class' => 'btn btn-sm',
                                 'style' => 'color: #FFD100; text-decoration: none;',
