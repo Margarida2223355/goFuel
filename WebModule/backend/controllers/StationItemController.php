@@ -71,13 +71,32 @@ class StationItemController extends Controller
             $model = $this->findModel($station_id, $item_id);
             $stationId = $model->station_id;
             if ($model) {
-                $model->is_deleted = 0;
-                if ($model->save()) {
-                    Yii::$app->session->setFlash('success', 'Item successfully deleted.');
+                if ($model->is_deleted == true) {
+                    $model->is_deleted = 0;
+                    if ($model->save()) {
+                        Yii::$app->session->set('alert', [
+                            'type' => 'success',
+                            'title' => 'Success!',
+                            'message' => 'Category successfully enabled.',
+                        ]);
+                    }
+                } else {
+                    $model->is_deleted = 1;
+                    if ($model->save()) {
+                        Yii::$app->session->set('alert', [
+                            'type' => 'success',
+                            'title' => 'Success!',
+                            'message' => 'Category successfully desabled.',
+                        ]);
+                    }
                 }
             }
         } else {
-            Yii::$app->session->setFlash('error', 'An error occurred.');
+            Yii::$app->session->set('alert', [
+                'type' => 'danger',
+                'title' => 'Error!',
+                'message' => 'An error occurred.',
+            ]);
         }
 
         return $this->redirect(['item/index', 'stationId' => $stationId]);

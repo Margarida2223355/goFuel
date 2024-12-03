@@ -77,7 +77,7 @@ class ItemController extends Controller
 
         if ($stationId) {
             $dataProvider = new \yii\data\ActiveDataProvider([
-                'query' => StationItem::find()->where(['station_id' => $stationId])->with('item')->orderBy(['is_deleted' => SORT_DESC]),
+                'query' => StationItem::find()->where(['station_id' => $stationId])->with('item')->orderBy(['is_deleted' => SORT_ASC]),
             ]);
         } else {
             $dataProvider = new \yii\data\ArrayDataProvider([
