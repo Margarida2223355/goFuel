@@ -9,6 +9,7 @@ use common\models\Station;
 use common\models\Subcategory;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -93,14 +94,39 @@ class StationController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
         $categories = Category::find()->all();
         $subcategories = Subcategory::find()->all();
+
+        $filterCategory = Yii::$app->request->get('filterCategory');
+        $filterSubcategory = Yii::$app->request->get('filterSubcategory');
+
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => array_filter($model->stationItems, function ($stationItem) use ($filterCategory, $filterSubcategory) {
+                if ($stationItem->is_deleted != 0) {
+                    return false;
+                }
+                if (!empty($filterCategory) && $stationItem->item->subcategory->category_id != $filterCategory) {
+                    return false;
+                }
+                if (!empty($filterSubcategory) && $stationItem->item->subcategory_id != $filterSubcategory) {
+                    return false;
+                }
+                return true;
+            }),
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
             'categories' => $categories,
             'subcategories' => $subcategories,
+            'dataProvider' => $dataProvider,
         ]);
     }
+
 
     /**
      * Finds the Station model based on its primary key value.

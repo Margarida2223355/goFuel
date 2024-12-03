@@ -82,22 +82,7 @@ $this->params['breadcrumbs'][] = $model->name;
     <br>
     <!-- GridView -->
     <?= GridView::widget([
-        'dataProvider' => new ArrayDataProvider([
-            'allModels' => array_filter($model->stationItems, function ($stationItem) use ($filterCategory, $filterSubcategory) {
-                // Filtrar por categoria, se selecionada
-                if (!empty($filterCategory) && $stationItem->item->subcategory->category_id != $filterCategory) {
-                    return false;
-                }
-                // Filtrar por subcategoria, se selecionada
-                if (!empty($filterSubcategory) && $stationItem->item->subcategory_id != $filterSubcategory) {
-                    return false;
-                }
-                return true;
-            }),
-            'pagination' => [
-                'pageSize' => 10,
-            ],
-        ]),
+        'dataProvider' => $dataProvider,
         'columns' => [
             [
                 'label' => 'Item Name',
@@ -161,6 +146,7 @@ $this->params['breadcrumbs'][] = $model->name;
         ],
         'summary' => false,
     ]) ?>
+
 
 
 </div>

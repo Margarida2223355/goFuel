@@ -91,6 +91,16 @@ $this->params['breadcrumbs'][] = $this->title; ?>
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'item.description',
+            [
+                'attribute' => 'item.description',
+
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return $model->is_deleted
+                        ? Html::tag('i', '', ['class' => 'fa-regular fa-circle-xmark', 'aria-hidden' => 'true', 'style' => 'color: #dc3545']) . ' ' . $model->item->description
+                        : Html::tag('i', '', ['class' => 'fa-regular fa-circle-check', 'aria-hidden' => 'true', 'style' => 'color: #28a745']) . ' ' . $model->item->description;
+                },
+            ],
             'price',
             [
                 'attribute' => 'stock',

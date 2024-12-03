@@ -3,6 +3,7 @@
 
     use common\models\StationItem;
     use yii\rest\ActiveController;
+use yii\web\UnauthorizedHttpException;
 
     class StationItemController extends ActiveController {
         public $modelClass = StationItem::class;
