@@ -187,12 +187,12 @@ class SiteController extends Controller
     public function actionProfile($id)
     {
         $user = User::findOne($id);
-        if ($user === null) {
+        if ($user == null) {
             throw new NotFoundHttpException('Usuário não encontrado.');
         }
 
         $userInfo = UserInfo::findOne(['user_id' => $user->id]);
-        if ($userInfo === null) {
+        if ($userInfo == null) {
             throw new NotFoundHttpException('Informações do usuário não encontradas.');
         }
 
@@ -205,25 +205,29 @@ class SiteController extends Controller
         $model->postal_code = $userInfo->postal_code;
         $model->phone = $userInfo->phone;
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $user->username = $model->username;
-            $user->email = $model->email;
-            if (!$user->save()) {
-                Yii::$app->session->setFlash('error', 'Falha ao atualizar o usuário: ' . json_encode($user->getErrors()));
-                return $this->refresh();
-            }
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->validate()) {
+                $user->username = $model->username;
+                $user->email = $model->email;
+                if (!$user->save()) {
+                    Yii::$app->session->setFlash('error', 'Faild updating user: ' . json_encode($user->getErrors()));
+                    return $this->refresh();
+                }
 
-            $userInfo->nif = $model->nif;
-            $userInfo->name = $model->name;
-            $userInfo->address = $model->address;
-            $userInfo->postal_code = $model->postal_code;
-            $userInfo->phone = $model->phone;
+                $userInfo->nif = $model->nif;
+                $userInfo->name = $model->name;
+                $userInfo->address = $model->address;
+                $userInfo->postal_code = $model->postal_code;
+                $userInfo->phone = $model->phone;
 
-            if ($userInfo->save()) {
-                Yii::$app->session->setFlash('success', 'Dados atualizados com sucesso.');
-                return $this->redirect(['profile', 'id' => $user->id]);
-            } else {
-                Yii::$app->session->setFlash('error', 'Falha ao atualizar as informações do usuário: ' . json_encode($userInfo->getErrors()));
+                if ($userInfo->save()) {
+                    Yii::$app->session->setFlash('success', 'Dados atualizados com sucesso.');
+                    return $this->redirect(['profile', 'id' => $user->id]);
+                } else {
+                    Yii::$app->session->setFlash('error', 'Faild updating user Info: ' . json_encode($userInfo->getErrors()));
+                }
+            }else{
+                dd('dwasa');
             }
         }
         return $this->render('profile', [

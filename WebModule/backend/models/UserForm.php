@@ -101,6 +101,7 @@ class UserForm extends Model
         $this->_user->email = $this->email;
         $this->_user->auth_key = \Yii::$app->security->generateRandomString();
         $this->_user->setPassword('password');
+        $this->_user->generateEmailVerificationToken();
         $this->_user->status = 10;
         $this->_user->created_at = time();
         $this->_user->updated_at = time();
