@@ -25,6 +25,7 @@
 
             $lines = Invoiceline::find()
                 -> where(['invoice_id' => $invoiceID])
+                -> with(['item', 'invoice'])
                 -> asArray()
                 -> all();
 
