@@ -23,9 +23,19 @@
                 throw new UnauthorizedHttpException('No station ID provided');
             }
 
-            return Invoiceline::find()
-                ->where(['invoice_id' => $invoiceID])
-                ->all();
+            $lines = Invoiceline::find()
+                -> where(['invoice_id' => $invoiceID])
+                -> asArray()
+                -> all();
+
+            return
+                array_map(function ($line) {
+                    $line['item'] = $line['item_id'];
+                    $line['invoice'] = $line['invoice_id'];
+
+                    unset($line['item_id'], $line['invoice_id']);
+                    return $line;
+                }, $lines);
         }
 
         public function actionCreate() {
