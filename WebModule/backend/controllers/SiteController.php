@@ -57,6 +57,10 @@ class SiteController extends Controller
         $auth = Yii::$app->authManager;
         $currentUser = Yii::$app->user->identity;
 
+        if ($currentUser === null) {
+            return $this->redirect(['site/login']);
+        }
+
         $roles = $auth->getRolesByUser($currentUser->id);
 
         $userRoleCounts = [];
