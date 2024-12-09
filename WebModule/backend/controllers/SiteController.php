@@ -112,12 +112,11 @@ class SiteController extends Controller
                     'query' => StationItem::find(['id_station' => $currentUser->stationUsers->station_id])->all()
                 ]);
                 break;
-            case 'Emploee':
-                $role = 'In Charge';
+            case 'Employee':
+                $role = 'Employee';
                 break;
             case 'Client':
-
-                Yii::$app->user->logout();
+                $role = 'Client';
                 break;
         }
 

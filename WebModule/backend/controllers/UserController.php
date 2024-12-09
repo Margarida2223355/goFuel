@@ -56,7 +56,7 @@ class UserController extends Controller
                 ])
                 ->addParams([':managerId' => $currentUser->id]);
         } else {
-            $query->where('0=1');
+            $query->where(['user.id' => $currentUser->id]);
         }
 
         $dataProvider = new ActiveDataProvider([

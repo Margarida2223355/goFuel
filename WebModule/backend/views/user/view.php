@@ -16,16 +16,20 @@ $this->params['breadcrumbs'][] = $this->title;
     <div style="display: flex; align-items: center; ">
         <h1><?= Html::encode($this->title) ?></h1>
         <div>
-            <?= Html::a('<i class="fa fa-pen" aria-hidden="true"></i>', ['update', 'id' => $model->id], [
-                'title' => 'Atualizar',
-                'style' => 'color: #28a745; text-decoration: none; margin-right: 10px; margin-left: 15px;',
-            ]) ?>
-            <?= Html::a('<i class="fa fa-trash" aria-hidden="true"></i>', ['delete', 'id' => $model->id], [
-                'title' => 'Deletar',
-                'data-method' => 'post',
-                'data-confirm' => 'Tem certeza que deseja deletar este usuário?',
-                'style' => 'color: #dc3545; text-decoration: none;',
-            ]) ?>
+            <?php
+            if ($model->id === Yii::$app->user->identity->id) {
+                echo Html::a('<i class="fa fa-pen" aria-hidden="true"></i>', ['update', 'id' => $model->id], [
+                    'title' => 'Atualizar',
+                    'style' => 'color: #28a745; text-decoration: none; margin-right: 10px; margin-left: 15px;',
+                ]);
+            } else {
+                echo Html::a('<i class="fa fa-trash" aria-hidden="true"></i>', ['delete', 'id' => $model->id], [
+                    'title' => 'Deletar',
+                    'data-method' => 'post',
+                    'data-confirm' => 'Tem certeza que deseja deletar este usuário?',
+                    'style' => 'color: #dc3545; text-decoration: none; margin-right: 10px; margin-left: 15px;',
+                ]);
+            } ?>
         </div>
     </div>
 
@@ -34,8 +38,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'userInfo.name',
             'userInfo.nif',
+            'userInfo.phone',
             'userInfo.address',
             'userInfo.postal_code',
+            [
+                'label' => 'Station Name',
+                'value' => function ($model) {
+                    return $model->stationUsers ? $model->stationUsers->station->name : 'N/A'; // Nome da estação
+                },
+            ],
             [
                 'label' => 'Username', // Aqui usamos a relação com User
                 'value' => $model->username, // Acessando o username do User
