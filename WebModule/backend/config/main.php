@@ -20,6 +20,9 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ],
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -101,6 +104,7 @@ return [
                         'GET userinvoices' => 'get-user-invoices',
                         'GET paidinvoices' => 'get-paid-invoices',
                         'GET pendentinvoices' => 'get-pendent-invoices',
+                        'PUT, PATCH updateinvoice/{id}' => 'updateinvoice',
                     ],
                     'tokens' => []
                 ],
@@ -109,7 +113,10 @@ return [
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/invoiceline',
-                    'extraPatterns' => [],
+                    'extraPatterns' => [
+                        'PUT, PATCH updateline/{id}' => 'updateline',
+                        'DELETE removeline/{id}' => 'removeline',
+                    ],
                     'tokens' => []
                 ],
 

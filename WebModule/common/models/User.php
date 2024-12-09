@@ -214,7 +214,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function getUserInfo()
     {
-        return $this->hasOne(UserInfo::class, ['user_id' => 'id']);
+        return $this->hasOne(Userinfo::class, ['user_id' => 'id']);
     }
 
 
