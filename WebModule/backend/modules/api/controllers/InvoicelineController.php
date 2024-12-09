@@ -30,37 +30,45 @@
                 -> asArray()
                 -> all();
 
-            return
-                array_map(function ($line) {
-                    $line['item'] = $line['item'];
-		    $line['invoice'] = $line['invoice'];
-
-		    if (isset($line['invoice']['station'])) {
-			    $line['invoice']['station'] = $line['invoice']['station'];
-			    unset($line['invoice']['station_id']);
-		    }
-
-		    if (isset($line['invoice']['client'])) {
-			    $line['invoice']['client'] =  $line['invoice']['client'];
-			    unset($line['invoice']['client_id']);
-		}
-
-                    unset($line['item_id'], $line['invoice_id']);
-                    return $line;
-                }, $lines);
+            return self::formatLineFields($lines);
         }
 
         public function actionCreate() {
-            $request = \Yii::$app -> request -> post();
+            $request = \Yii::$app -> request -> bodyParams;
             $model = new Invoiceline();
 
             \Yii::info('Request Data: ' . json_encode($request), __METHOD__);
 
             if ($model->load($request, '') && $model->save()) {
-                return $model;
+                return
+                [
+                    'message' => 'Success: New invoice line created!',
+                ];
             }
 
             throw new BadRequestHttpException('Failed to create invoice line: ' . json_encode($model->errors));
+        }
+
+        private static function formatLineFields($data): array {
+            return
+                array_map(function ($line) {
+                    $line = is_array($line) ? $line : $line->toArray();
+
+                    $line['item'] = $line['item'];
+                    $line['invoice'] = $line['invoice'];
+
+                    if (isset($line['invoice']['station'])) {
+                        $line['invoice']['station'] = $line['invoice']['station'];
+                        unset($line['invoice']['station_id']);
+                    }
+
+                    if (isset($line['invoice']['client'])) {
+                        $line['invoice']['client'] =  $line['invoice']['client'];
+                        unset($line['invoice']['client_id']);
+                    }
+                    unset($line['item_id'], $line['invoice_id']);
+                    return $line;
+                }, $data);
         }
     }
 ?>
