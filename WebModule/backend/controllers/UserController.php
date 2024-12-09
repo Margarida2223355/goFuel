@@ -43,11 +43,18 @@ class UserController extends Controller
         $roles = $auth->getRolesByUser($currentUser->id);
 
         $roleNames = array_keys($roles);
+
         if (in_array('Admin', $roleNames)) {
             $query->all();
         } elseif (in_array('Manager', $roleNames)) {
-            $query->innerJoin('auth_assignment', 'auth_assignment.user_id = user.id')
-                ->where(['auth_assignment.item_name' => ['In Charge', 'Employee']]);
+            $query->leftJoin('stations', 'stations.manager_id = :managerId')
+                ->leftJoin('station_users', 'station_users.station_id = stations.id')
+                ->where([
+                    'or',
+                    ['user.id' => $currentUser->id],
+                    ['user.id' => new \yii\db\Expression('station_users.user_id')]
+                ])
+                ->addParams([':managerId' => $currentUser->id]);
         } else {
             $query->where('0=1');
         }
@@ -63,6 +70,7 @@ class UserController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+
 
     public function actionView($id)
     {

@@ -21,9 +21,8 @@ class m241107_192757_create_station_users_table extends Migration
 
         $this->execute('SET FOREIGN_KEY_CHECKS=0;');
         $this->batchInsert('{{%station_users}}', ['station_id', 'user_id'], [
-            [2, 1],
-            [3, 2],
-            [4, 2],
+            [2, 3],
+            [2, 4],
         ]);
         $this->execute('SET FOREIGN_KEY_CHECKS=1;');
     }

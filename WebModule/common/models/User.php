@@ -223,16 +223,14 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasMany(AuthAssignment::class, ['user_id' => 'id']);
     }
 
-
-    public function getStations()
-    {
-        return $this->hasMany(Station::class, ['id' => 'station_id'])
-            ->viaTable('station_user', ['user_id' => 'id'], ['station_id' => 'id']);
-    }
-
     public function getStationUsers()
     {
         return $this->hasOne(StationUser::class, ['user_id' => 'id']);
+    }
+
+    public function getStations()
+    {
+        return $this->hasMany(Station::class, ['manager_id' => 'id']);
     }
 
     public function fields()

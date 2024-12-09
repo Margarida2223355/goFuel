@@ -45,7 +45,17 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Nome',
                 'value' => function ($model) {
-                    return $model->userInfo ? $model->userInfo->name : 'N/A';
+                    $userName = $model->userInfo ? $model->userInfo->name : 'N/A';
+                    $stationName = null;
+
+                    if ($model->stationUsers) {
+                        $station = $model->stationUsers->station;
+                        $stationName = $station ? $station->name : null;
+                    } elseif ($model->stations) {
+                        $stationNames = array_map(fn($station) => $station->name, $model->stations);
+                        $stationName = implode(', ', $stationNames);
+                    }
+                    return $stationName ? "{$userName} ({$stationName})" : $userName;
                 },
             ],
             'email',
@@ -57,6 +67,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     $roles = $authManager->getRoles();
                     $userRole = $authManager->getRolesByUser($model->id);
                     $currentRole = reset($userRole);
+                    if ($model->id == Yii::$app->user->id || $model->userInfo->is_deleted ==1 || $model->userInfo->is_banned == 1) {
+                        return $currentRole ? $currentRole->name : 'N/A';
+                    }
                     $dropdown = Html::dropDownList(
                         "role_{$model->id}",
                         $currentRole ? $currentRole->name : null,
