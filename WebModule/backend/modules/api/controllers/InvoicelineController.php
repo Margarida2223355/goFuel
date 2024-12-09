@@ -4,6 +4,7 @@
     use common\models\Invoiceline;
     use yii\rest\ActiveController;
     use yii\web\UnauthorizedHttpException;
+    use yii\web\BadRequestHttpException;
 
     class InvoicelineController extends ActiveController {
         public $modelClass = Invoiceline::class;
