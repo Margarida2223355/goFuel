@@ -46,6 +46,9 @@ public class InvoiceFragment extends Fragment {
                 binding.invoiceList.setVisibility(View.VISIBLE);
                 ArrayList<PendingInvoice> invoices = new ArrayList<>(((State.PendingInvoiceList) state).getInvoices());
                 binding.invoiceList.setAdapter(new InvoiceAdapter(getContext(), invoices));
+
+                //Disable list clicks
+                binding.invoiceList.setEnabled(false);
             }
 
             else if (state instanceof State.EmptyState){

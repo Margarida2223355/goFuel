@@ -58,6 +58,9 @@ public class ItemFragment extends Fragment {
                     if (show) { binding.cardButton.setVisibility(View.VISIBLE); }
                     else { binding.cardButton.setVisibility(View.GONE); }
                 }));
+
+                //Disable list clicks
+                binding.itemList.setEnabled(false);
             }
 
             else if (state instanceof State.EmptyState){
