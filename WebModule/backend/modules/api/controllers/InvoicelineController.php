@@ -9,7 +9,7 @@
     class InvoicelineController extends ActiveController {
         public $modelClass = Invoiceline::class;
 
-        // Disable default action "index"
+        // Disable default action "index", "create"
         public function actions()
         {
             $actions = parent::actions();
@@ -37,8 +37,6 @@
             $request = \Yii::$app -> request -> bodyParams;
             $model = new Invoiceline();
 
-            \Yii::info('Request Data: ' . json_encode($request), __METHOD__);
-
             if ($model->load($request, '') && $model->save()) {
                 return
                 [
@@ -47,6 +45,25 @@
             }
 
             throw new BadRequestHttpException('Failed to create invoice line: ' . json_encode($model->errors));
+        }
+
+        public function actionUpdateline($id) {
+            $model = Invoiceline::findOne($id);
+
+            if (!$model) {
+                throw new NotFoundHttpException('No invoice line found!');
+            }
+
+            $request = \Yii::$app -> request -> bodyParams;
+
+            if ($model->load($request, '') && $model->save()) {
+                return
+                [
+                    'message' => 'Success: Invoice line updated!',
+                ];
+            }
+
+            throw new BadRequestHttpException('Failed to update invoice line: ' . json_encode($model->errors));
         }
 
         private static function formatLineFields($data): array {

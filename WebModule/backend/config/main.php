@@ -112,8 +112,9 @@ return [
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/invoiceline',
-                    'extraPatterns' => [],
-                    'tokens' => []
+                    'extraPatterns' => [
+                        'PUT, PATCH updateline/{id}' => 'updateline',
+                    ],
                 ],
 
                 // Invoice States
