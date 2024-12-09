@@ -114,6 +114,7 @@ return [
                     'controller' => 'api/invoiceline',
                     'extraPatterns' => [
                         'PUT, PATCH updateline/{id}' => 'updateline',
+                        'DELETE removeline/{id}' => 'removeline',
                     ],
                 ],
 

@@ -58,12 +58,29 @@
 
             if ($model->load($request, '') && $model->save()) {
                 return
-                [
-                    'message' => 'Success: Invoice line updated!',
-                ];
+                    [
+                        'message' => 'Success: Invoice line updated!',
+                    ];
             }
 
             throw new BadRequestHttpException('Failed to update invoice line: ' . json_encode($model->errors));
+        }
+
+        public function actionRemoveline($id) {
+            $model = Invoiceline::findOne($id);
+
+            if (!$model) {
+                throw new NotFoundHttpException('No invoice line found!');
+            }
+
+            if($model->delete()) {
+                return
+                    [
+                        'message' => 'Success: Invoice line removed!',
+                    ];
+            }
+
+            throw new BadRequestHttpException('Failed to remove invoice line: ' . json_encode($model->errors));
         }
 
         private static function formatLineFields($data): array {
