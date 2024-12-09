@@ -25,14 +25,24 @@
 
             $lines = Invoiceline::find()
                 -> where(['invoice_id' => $invoiceID])
-                -> with(['item', 'invoice'])
+                -> with(['item', 'invoice.station', 'invoice.client'])
                 -> asArray()
                 -> all();
 
             return
                 array_map(function ($line) {
-                    $line['item'] = $line['item_id'];
-                    $line['invoice'] = $line['invoice_id'];
+                    $line['item'] = $line['item'];
+		    $line['invoice'] = $line['invoice'];
+
+		    if (isset($line['invoice']['station'])) {
+			    $line['invoice']['station'] = $line['invoice']['station'];
+			    unset($line['invoice']['station_id']);
+		    }
+
+		    if (isset($line['invoice']['client'])) {
+			    $line['invoice']['client'] =  $line['invoice']['client'];
+			    unset($line['invoice']['client_id']);
+		}
 
                     unset($line['item_id'], $line['invoice_id']);
                     return $line;
