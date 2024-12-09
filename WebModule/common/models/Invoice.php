@@ -128,6 +128,7 @@ class Invoice extends \yii\db\ActiveRecord
 
         return $fields;
     }
+    }   
 
     public function updateTotal()
     {

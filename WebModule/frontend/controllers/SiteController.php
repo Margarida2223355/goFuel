@@ -176,6 +176,7 @@ class SiteController extends Controller
         $model->load(Yii::$app->request->post());
         if (/*$model->load(Yii::$app->request->post()) &&*/$model->signup()) {
             Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+            $model->generateEmailVerificationToken();
             return $this->redirect(['about']);
         }
 
@@ -226,8 +227,6 @@ class SiteController extends Controller
                 } else {
                     Yii::$app->session->setFlash('error', 'Faild updating user Info: ' . json_encode($userInfo->getErrors()));
                 }
-            }else{
-                dd('dwasa');
             }
         }
         return $this->render('profile', [

@@ -141,6 +141,12 @@ class SiteController extends Controller
 
         $this->layout = 'blank';
 
+        Yii::$app->view->registerLinkTag([
+            'rel' => 'icon',
+            'type' => 'image/x-icon',
+            'href' => Yii::getAlias('@web/img/logo_mini.png'), // Ícone específico para login
+        ]);
+
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             if (Yii::$app->user->can('Client')) {
