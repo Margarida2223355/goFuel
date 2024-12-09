@@ -139,4 +139,19 @@ class Invoice extends \yii\db\ActiveRecord
         $this->total = $total;
         $this->update();
     }
+
+
+    public function generateRandomCode()
+    {
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; // Letras maiúsculas e dígitos
+        $randomCode = '';
+
+        for ($i = 0; $i < 6; $i++) {
+            $index = rand(0, strlen($characters) - 1); // Gera um índice aleatório
+            $randomCode .= $characters[$index];
+        }
+
+        $this -> code = $randomCode;
+        $this -> update();
+    }
 }

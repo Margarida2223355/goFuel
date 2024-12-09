@@ -5,6 +5,7 @@
     use yii\rest\ActiveController;
     use yii\web\UnauthorizedHttpException;
     use yii\web\BadRequestHttpException;
+    use yii\web\NotFoundHttpException;
 
     class InvoicelineController extends ActiveController {
         public $modelClass = Invoiceline::class;
@@ -21,7 +22,7 @@
             $invoiceID = \Yii::$app -> request -> getHeaders() -> get('X-INVOICE-ID');
 
             if (!$invoiceID) {
-                throw new UnauthorizedHttpException('No station ID provided');
+                throw new NotFoundHttpException('No station ID provided');
             }
 
             $lines = Invoiceline::find()

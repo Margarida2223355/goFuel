@@ -104,6 +104,7 @@ return [
                         'GET userinvoices' => 'get-user-invoices',
                         'GET paidinvoices' => 'get-paid-invoices',
                         'GET pendentinvoices' => 'get-pendent-invoices',
+                        'PUT, PATCH updateinvoice/{id}' => 'updateinvoice',
                     ],
                     'tokens' => []
                 ],
@@ -116,6 +117,7 @@ return [
                         'PUT, PATCH updateline/{id}' => 'updateline',
                         'DELETE removeline/{id}' => 'removeline',
                     ],
+                    'tokens' => []
                 ],
 
                 // Invoice States
