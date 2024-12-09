@@ -54,6 +54,8 @@
             $request = \Yii::$app -> request -> post();
             $model = new Invoiceline();
 
+            \Yii::info('Request Data: ' . json_encode($request), __METHOD__);
+
             if ($model->load($request, '') && $model->save()) {
                 return $model;
             }
