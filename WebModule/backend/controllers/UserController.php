@@ -78,28 +78,6 @@ class UserController extends Controller
         ]);
     }
 
-    public function actionChangerole()
-    {
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $userId = Yii::$app->request->post('user_id');
-        $newRole = Yii::$app->request->post('role');
-
-        $auth = Yii::$app->authManager;
-
-        if ($userId && $newRole) {
-            $user = User::findOne($userId);
-            $auth->revokeAll($userId);
-            $role = $auth->getRole($newRole);
-            if ($role) {
-                $auth->assign($role, $userId);
-                Yii::$app->session->setFlash('success', $user->userInfo->name . '\'s role has been changed');
-            }
-            Yii::$app->session->setFlash('error', 'Invalid Role');
-        }
-        Yii::$app->session->setFlash('error', 'Invalid Parameters');
-    }
-
-
     public function actionCreate()
     {
         $model = new UserForm();
@@ -130,7 +108,10 @@ class UserController extends Controller
         $userForm->loadUser($user);
         $userForm->loadUserInfo($userInfo);
 
-        if ($userForm->load(Yii::$app->request->post()) && $userForm->validate()) {
+        if ($userForm->load(Yii::$app->request->post())/*  && $userForm->validate()*/) {
+
+            $userForm->save();
+
             $user->attributes = $userForm->userAttributes();
 
             $userInfo->attributes = $userForm->userInfoAttributes();
@@ -153,11 +134,12 @@ class UserController extends Controller
 
             $transaction = Yii::$app->db->beginTransaction();
             try {
-                if ($user->save(false) && $userInfo->save(false)) {
+                if ($user->save() && $userInfo->save()) {
                     $auth = Yii::$app->authManager;
+                    $roles = $auth->getRolesByUser($user->id);
                     $auth->revokeAll($user->id);
-                    $role = $auth->getRole($userForm->role);
-                    if ($role) {
+                    if (!empty($roles)) {
+                        $role = reset($roles);
                         $auth->assign($role, $user->id);
                     }
                     $transaction->commit();
@@ -215,6 +197,34 @@ class UserController extends Controller
             Yii::$app->session->setFlash('error', 'Ca\'nt find user');
         }
         return $this->redirect(['index']);
+    }
+
+    public function actionChangerole()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $userId = Yii::$app->request->post('user_id');
+        $newRole = Yii::$app->request->post('role');
+
+        $auth = Yii::$app->authManager;
+
+        if ($userId && $newRole) {
+            $user = User::findOne($userId);
+            $auth->revokeAll($userId);
+            $role = $auth->getRole($newRole);
+            if ($role) {
+                Yii::$app->session->set('alert', [
+                    'type' => 'danger',
+                    'title' => 'Error!',
+                    'message' => 'Invalid Role.',
+                ]);
+            }
+            $auth->assign($role, $userId);
+            Yii::$app->session->set('alert', [
+                'type' => 'success',
+                'title' => 'Success!',
+                'message' => $user->userInfo->name . '\'s role has been changed',
+            ]);
+        }
     }
 
     public function actionResetPassword($id)

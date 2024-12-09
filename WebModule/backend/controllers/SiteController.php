@@ -142,7 +142,11 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             if (Yii::$app->user->can('Client')) {
                 Yii::$app->user->logout();
-                Yii::$app->session->setFlash('error', 'You don\'t have access to this website. Please, contact support.');
+                Yii::$app->session->set('alert', [
+                    'type' => 'danger',
+                    'title' => 'Error!',
+                    'message' => 'You don\'t have access to this website. Please, contact support.',
+                ]);
                 return $this->redirect(['site/login']);
             }
             return $this->goBack();

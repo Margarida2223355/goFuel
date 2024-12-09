@@ -1,6 +1,7 @@
 <?php
 
 use common\models\User;
+use hail812\adminlte\widgets\Alert;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -14,15 +15,17 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="container-fluid ml-1">
-    <?php if (Yii::$app->session->hasFlash('success')): ?>
-        <div class="alert alert-success">
-            <?= Yii::$app->session->getFlash('success') ?>
-        </div>
-    <?php elseif (Yii::$app->session->hasFlash('error')): ?>
-        <div class="alert alert-danger">
-            <?= Yii::$app->session->getFlash('error') ?>
-        </div>
-    <?php endif; ?>
+    <?php
+    $alert = Yii::$app->session->get('alert');
+    if ($alert) {
+        echo Alert::widget([
+            'type' => $alert['type'],
+            'body' => "<strong>{$alert['title']}</strong><br> {$alert['message']}",
+        ]);
+
+        Yii::$app->session->remove('alert');
+    }
+    ?>
 
     <div class="d-flex align-items-center mb-3">
         <h1><?= Html::encode($this->title) ?></h1>

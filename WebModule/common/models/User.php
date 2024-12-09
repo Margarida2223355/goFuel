@@ -235,18 +235,23 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasOne(StationUser::class, ['user_id' => 'id']);
     }
 
-    public function fields() {
+    public function fields()
+    {
         $fields = parent::fields();
 
-        // Remove user_id field
         unset($fields['user_id']);
 
-        // Add userInfo field
-        $fields['userInfo'] = function() {
+        $fields['userInfo'] = function () {
             $userInfo = $this->getUserInfo()->one();
             return $userInfo ? $userInfo : null;
         };
 
         return $fields;
+    }
+
+    public function getRoleName()
+    {
+        $roles = Yii::$app->authManager->getRolesByUser($this->id);
+        return !empty($roles) ? array_keys($roles)[0] : null;
     }
 }

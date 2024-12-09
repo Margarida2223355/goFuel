@@ -32,6 +32,7 @@ class m241008_222306_init_rbac_roles extends Migration
         $auth->assign($inCharge, 3);
         $auth->assign($employee, 4);
         $auth->assign($client, 5);
+        $auth->assign($client, 6);
 
         #endregion
 

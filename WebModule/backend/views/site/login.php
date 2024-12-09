@@ -4,6 +4,7 @@
 /** @var yii\bootstrap5\ActiveForm $form */
 /** @var \common\models\LoginForm $model */
 
+use hail812\adminlte\widgets\Alert;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\ActiveForm;
 
@@ -11,12 +12,17 @@ $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="align-items-center justify-content-center py-5">
-    <?php if (Yii::$app->session->hasFlash('error')): ?>
-        <div class="alert alert-danger">
-            <?= Yii::$app->session->getFlash('error') ?>
-        </div>
+    <?php
+    $alert = Yii::$app->session->get('alert');
+    if ($alert) {
+        echo Alert::widget([
+            'options' => ['class' => 'alert-danger'],
+            'body' => "<strong>{$alert['title']}</strong> {$alert['message']}",
+        ]);
+        Yii::$app->session->remove('alert');
+    }
+    ?>
 </div>
-<?php endif; ?>
 <div class="site-login d-flex align-items-center justify-content-center" style="min-height: 50vh;">
 
 

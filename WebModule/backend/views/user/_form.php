@@ -3,6 +3,7 @@
 use common\models\Station;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -13,7 +14,14 @@ use yii\widgets\ActiveForm;
 
 <div class="container-fluid ml-1">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php
+    $actionUrl = $model->isNewRecord ? ['create'] : ['update', 'id' => $model->id];
+
+    $form = ActiveForm::begin([
+        'action' => Url::to($actionUrl),
+        'method' => 'post',
+    ]);
+    ?>
 
     <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
@@ -36,9 +44,20 @@ use yii\widgets\ActiveForm;
         ['prompt' => 'Select a Station']
     ) ?>
 
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Criar' : 'Atualizar', ['class' => 'btn btn-success']) ?>
-    </div>
+    <?= Html::submitButton(
+        $model->isNewRecord
+            ? '<i class="fa fa-plus" aria-hidden="true"></i>'
+            : '<i class="fa fa-save" aria-hidden="true"></i>',
+        [
+            'class' => 'btn',
+            'style' => $model->isNewRecord
+                ? 'color: green; border-color: black; height: calc(1.5em + .75rem + 2px) float: right;'
+                : 'color: green; border-color: black; height: calc(1.5em + .75rem + 2px) float: right;',
+            'title' => $model->isNewRecord
+                ? 'Add User'
+                : 'Update My Info'
+        ]
+    ) ?>
 
     <?php ActiveForm::end(); ?>
 
