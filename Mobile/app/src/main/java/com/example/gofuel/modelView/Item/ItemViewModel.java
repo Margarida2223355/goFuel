@@ -13,13 +13,17 @@ import com.example.gofuel.repository.station_item.StationItemRepository;
 import com.example.gofuel.util.State;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ItemViewModel extends ViewModel {
     private final StationItemRepository stationItemRepository;
     private final MutableLiveData<State> state = new MutableLiveData<>();
-    private ArrayList<StationItem> items;
+    private HashMap<StationItem, Integer> items = new HashMap<>();
+    private HashMap<StationItem, Integer> filteresItems = new HashMap<>();
+    private Boolean categorySearch = false;
 
     public ItemViewModel() {
         stationItemRepository = StationItemRepository.getInstance(MyApplication.getAppContext());
@@ -36,8 +40,11 @@ public class ItemViewModel extends ViewModel {
             ResultWrapper<List<StationItem>> result = stationItemRepository.getStationItems(station);
 
             if (result.getResult() != null) {
-                state.postValue(new State.StationItemList(result.getResult()));
-                items = new ArrayList<>(result.getResult());
+                for (StationItem item : result.getResult()) {
+                    items.put(item, 0);
+                }
+
+                state.postValue(new State.StationItemList(items));
             }
             else {
                 Log.e("-->", "Error API: " + result.getError());
@@ -47,17 +54,37 @@ public class ItemViewModel extends ViewModel {
     }
 
     public void getItemsByCategoryDescription(String text) {
+        if (text == "") { categorySearch = false; }
+        else { categorySearch = true; }
+
         state.setValue(new State.Loading());
 
-        List<StationItem> itemsCategory = items.stream()
+        filteresItems = items.entrySet().stream()
                 .filter( item -> {
-                    String categoryName = item.getItem().getSubcategory().getCategory().getName().toLowerCase();
-                    String description = item.getItem().getDescription().toLowerCase();
+                    String categoryName = item.getKey().getItem().getSubcategory().getCategory().getName().toLowerCase();
+                    String description = item.getKey().getItem().getDescription().toLowerCase();
                     return
                             categoryName.contains(text.toLowerCase()) || description.contains(text.toLowerCase());
                 })
-                .collect(Collectors.toList());
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (a, b) -> a,
+                        HashMap::new
+                ));
 
-        state.setValue(new State.StationItemList(itemsCategory));
+        state.setValue(new State.StationItemList(filteresItems));
+    }
+
+    public void updateItemsQty(StationItem item, int qty) {
+        items.put(item, qty);
+
+        if (categorySearch) {
+            filteresItems.put(item, qty);
+            state.setValue(new State.StationItemList(filteresItems));
+        }
+        else {
+            state.setValue(new State.StationItemList(items));
+        }
     }
 }

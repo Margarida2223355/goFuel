@@ -24,13 +24,13 @@ public class State {
         }
     }
     public static class StationItemList extends State {
-        private final List<StationItem> stationItems;
+        private final HashMap<StationItem, Integer> stationItems;
 
-        public StationItemList(List<StationItem> stationItems) {
+        public StationItemList(HashMap<StationItem, Integer> stationItems) {
             this.stationItems = stationItems;
         }
 
-        public List<StationItem> getStationItems() {
+        public HashMap<StationItem, Integer> getStationItems() {
             return stationItems;
         }
     }

@@ -20,13 +20,14 @@ public class ItemStationItemViewModel {
         return stationItem;
     }
 
-    public void update(StationItem item) {
+    public void update(StationItem item, int qty) {
         this.stationItem = item;
         binding.itemName.setText(item.getItem().getDescription());
         binding.itemCategory.setText(item.getItem().getSubcategory().getCategory().getName());
         binding.itemUnitPrice.setText(item.getPrice() + "€");
+        binding.itemQty.setText(String.valueOf(qty));
 
-        Double finalValue = (Integer.parseInt(binding.itemQty.getText().toString())) * (item.getPrice());
+        Double finalValue = qty * (item.getPrice());
         binding.itemTotal.setText(finalValue + "€");
     }
 }
