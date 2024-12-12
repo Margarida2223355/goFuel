@@ -43,10 +43,12 @@ public class ItemFragment extends Fragment {
             if (state instanceof State.Loading) {
                 binding.itemList.setVisibility(View.GONE);
                 binding.emptyState.setVisibility(View.GONE);
+                binding.noInternet.setVisibility(View.GONE);
                 binding.loading.setVisibility(View.VISIBLE);
             } else if (state instanceof State.StationItemList) {
                 binding.loading.setVisibility(View.GONE);
                 binding.emptyState.setVisibility(View.GONE);
+                binding.noInternet.setVisibility(View.GONE);
                 binding.itemList.setVisibility(View.VISIBLE);
                 HashMap<StationItem, Integer> stationItems = new HashMap<>(((State.StationItemList) state).getStationItems());
 
@@ -71,7 +73,13 @@ public class ItemFragment extends Fragment {
             } else if (state instanceof State.EmptyState) {
                 binding.itemList.setVisibility(View.GONE);
                 binding.loading.setVisibility(View.GONE);
+                binding.noInternet.setVisibility(View.GONE);
                 binding.emptyState.setVisibility(View.VISIBLE);
+            } else if (state instanceof State.NoInternet) {
+                binding.itemList.setVisibility(View.GONE);
+                binding.loading.setVisibility(View.GONE);
+                binding.emptyState.setVisibility(View.GONE);
+                binding.noInternet.setVisibility(View.VISIBLE);
             }
         });
 

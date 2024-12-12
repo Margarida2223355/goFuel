@@ -46,9 +46,12 @@ public class ItemViewModel extends ViewModel {
 
                 state.postValue(new State.StationItemList(items));
             }
+            else if (result.getError() != null) {
+                state.postValue(new State.EmptyState());
+            }
             else {
                 Log.e("-->", "Error API: " + result.getError());
-                state.postValue(new State.EmptyState());
+                state.postValue(new State.NoInternet());
             }
         }).start();
     }

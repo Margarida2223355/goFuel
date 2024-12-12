@@ -33,9 +33,13 @@ public class StationViewModel extends ViewModel {
 
             if (result.getResult() != null) {
                 state.postValue(new State.StationList(result.getResult()));
-            } else {
-                Log.e("-->", "Error API: " + result.getError());
+            }
+            else if (result.getError() != null) {
                 state.postValue(new State.EmptyState());
+            }
+            else {
+                Log.e("-->", "Error API: " + result.getError());
+                state.postValue(new State.NoInternet());
             }
         }).start();
     }

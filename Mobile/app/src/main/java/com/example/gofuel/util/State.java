@@ -12,6 +12,7 @@ import java.util.List;
 public class State {
     public static class Loading extends State {}
     public static class EmptyState extends State {}
+    public static class NoInternet extends State {}
     public static class StationList extends State {
         private final List<Station> stations;
 

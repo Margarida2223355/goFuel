@@ -38,6 +38,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:src="@drawable/empty_state"/>
+
+        <ImageView
+            android:id="@+id/noInternet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/no_internet"/>
     </FrameLayout>
 
 </LinearLayout>
