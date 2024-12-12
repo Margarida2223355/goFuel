@@ -54,8 +54,7 @@ public class ItemViewModel extends ViewModel {
     }
 
     public void getItemsByCategoryDescription(String text) {
-        if (text == "") { categorySearch = false; }
-        else { categorySearch = true; }
+        categorySearch = !text.isEmpty();
 
         state.setValue(new State.Loading());
 
