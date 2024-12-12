@@ -12,6 +12,7 @@ import java.util.List;
 public class State {
     public static class Loading extends State {}
     public static class EmptyState extends State {}
+    public static class NoInternet extends State {}
     public static class StationList extends State {
         private final List<Station> stations;
 
@@ -24,13 +25,13 @@ public class State {
         }
     }
     public static class StationItemList extends State {
-        private final List<StationItem> stationItems;
+        private final HashMap<StationItem, Integer> stationItems;
 
-        public StationItemList(List<StationItem> stationItems) {
+        public StationItemList(HashMap<StationItem, Integer> stationItems) {
             this.stationItems = stationItems;
         }
 
-        public List<StationItem> getStationItems() {
+        public HashMap<StationItem, Integer> getStationItems() {
             return stationItems;
         }
     }

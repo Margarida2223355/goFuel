@@ -57,6 +57,11 @@ public class MainFragment extends Fragment {
                 binding.favoriteStation.setAdapter(new ClientStationAdapter(getContext(), favoriteStation));
                 binding.pendingInvoices.setAdapter(new PendingInvoiceAdapter(getContext(), pendingInvoices));
                 binding.finishedInvoices.setAdapter(new FinishedInvoiceAdapter(getContext(), finishedInvoices));
+
+                //Disable list clicks
+                binding.favoriteStation.setEnabled(false);
+                binding.pendingInvoices.setEnabled(false);
+                binding.finishedInvoices.setEnabled(false);
             }
         });
 

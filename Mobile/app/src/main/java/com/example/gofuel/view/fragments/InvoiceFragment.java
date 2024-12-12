@@ -38,20 +38,33 @@ public class InvoiceFragment extends Fragment {
             if (state instanceof State.Loading) {
                 binding.invoiceList.setVisibility(View.GONE);
                 binding.emptyState.setVisibility(View.GONE);
+                binding.noInternet.setVisibility(View.GONE);
                 binding.loading.setVisibility(View.VISIBLE);
             }
             else if (state instanceof State.PendingInvoiceList) {
                 binding.loading.setVisibility(View.GONE);
                 binding.emptyState.setVisibility(View.GONE);
+                binding.noInternet.setVisibility(View.GONE);
                 binding.invoiceList.setVisibility(View.VISIBLE);
                 ArrayList<PendingInvoice> invoices = new ArrayList<>(((State.PendingInvoiceList) state).getInvoices());
                 binding.invoiceList.setAdapter(new InvoiceAdapter(getContext(), invoices));
+
+                //Disable list clicks
+                binding.invoiceList.setEnabled(false);
             }
 
             else if (state instanceof State.EmptyState){
                 binding.invoiceList.setVisibility(View.GONE);
                 binding.loading.setVisibility(View.GONE);
+                binding.noInternet.setVisibility(View.GONE);
                 binding.emptyState.setVisibility(View.VISIBLE);
+            }
+
+            else if (state instanceof State.NoInternet) {
+                binding.invoiceList.setVisibility(View.GONE);
+                binding.loading.setVisibility(View.GONE);
+                binding.emptyState.setVisibility(View.GONE);
+                binding.noInternet.setVisibility(View.VISIBLE);
             }
         });
 

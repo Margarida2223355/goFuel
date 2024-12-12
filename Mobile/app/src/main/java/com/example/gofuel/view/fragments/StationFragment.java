@@ -37,19 +37,28 @@ public class StationFragment extends Fragment {
             if (state instanceof State.Loading) {
                 binding.stationList.setVisibility(View.GONE);
                 binding.emptyState.setVisibility(View.GONE);
+                binding.noInternet.setVisibility(View.GONE);
                 binding.loading.setVisibility(View.VISIBLE);
             }
             else if (state instanceof State.StationList) {
                 binding.loading.setVisibility(View.GONE);
                 binding.emptyState.setVisibility(View.GONE);
+                binding.noInternet.setVisibility(View.GONE);
                 binding.stationList.setVisibility(View.VISIBLE);
                 ArrayList<Station> stations = new ArrayList<>(((State.StationList) state).getStations());
                 binding.stationList.setAdapter(new StationAdapter(getContext(), stations));
             }
             else if (state instanceof State.EmptyState) {
-                binding.stationList.setVisibility(View.GONE);
                 binding.loading.setVisibility(View.GONE);
+                binding.stationList.setVisibility(View.GONE);
+                binding.noInternet.setVisibility(View.GONE);
                 binding.emptyState.setVisibility(View.VISIBLE);
+            }
+            else if (state instanceof State.NoInternet) {
+                binding.loading.setVisibility(View.GONE);
+                binding.stationList.setVisibility(View.GONE);
+                binding.emptyState.setVisibility(View.GONE);
+                binding.noInternet.setVisibility(View.VISIBLE);
             }
         });
 

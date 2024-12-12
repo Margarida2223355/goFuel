@@ -3,27 +3,24 @@ package com.example.gofuel.view.fragments;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.gofuel.databinding.FragmentItemBinding;
-import com.example.gofuel.databinding.ItemItemsBinding;
 import com.example.gofuel.model.station.Station;
 import com.example.gofuel.model.station_item.StationItem;
 import com.example.gofuel.modelView.Item.ItemAdapter;
 import com.example.gofuel.modelView.Item.ItemStationItemViewModel;
 import com.example.gofuel.modelView.Item.ItemViewModel;
 import com.example.gofuel.util.State;
+import com.example.gofuel.util.callback.OnItemQtyChange;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class ItemFragment extends Fragment {
     private FragmentItemBinding binding;
@@ -46,24 +43,43 @@ public class ItemFragment extends Fragment {
             if (state instanceof State.Loading) {
                 binding.itemList.setVisibility(View.GONE);
                 binding.emptyState.setVisibility(View.GONE);
+                binding.noInternet.setVisibility(View.GONE);
                 binding.loading.setVisibility(View.VISIBLE);
-            }
-
-            else if (state instanceof State.StationItemList) {
+            } else if (state instanceof State.StationItemList) {
                 binding.loading.setVisibility(View.GONE);
                 binding.emptyState.setVisibility(View.GONE);
+                binding.noInternet.setVisibility(View.GONE);
                 binding.itemList.setVisibility(View.VISIBLE);
-                ArrayList<StationItem> stationItems = new ArrayList<>(((State.StationItemList) state).getStationItems());
-                binding.itemList.setAdapter(new ItemAdapter(getContext(), stationItems, (show) -> {
-                    if (show) { binding.cardButton.setVisibility(View.VISIBLE); }
-                    else { binding.cardButton.setVisibility(View.GONE); }
-                }));
-            }
+                HashMap<StationItem, Integer> stationItems = new HashMap<>(((State.StationItemList) state).getStationItems());
 
-            else if (state instanceof State.EmptyState){
+                binding.itemList.setAdapter(new ItemAdapter(getContext(), stationItems, new OnItemQtyChange() {
+                    @Override
+                    public void onQtyChanged(Boolean show) {
+                        if (show) {
+                            binding.cardButton.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.cardButton.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void changeQty(StationItem item, int qty) {
+                        viewModel.updateItemsQty(item, qty);
+                    }
+                }));
+
+                //Disable list clicks
+                binding.itemList.setEnabled(false);
+            } else if (state instanceof State.EmptyState) {
                 binding.itemList.setVisibility(View.GONE);
                 binding.loading.setVisibility(View.GONE);
+                binding.noInternet.setVisibility(View.GONE);
                 binding.emptyState.setVisibility(View.VISIBLE);
+            } else if (state instanceof State.NoInternet) {
+                binding.itemList.setVisibility(View.GONE);
+                binding.loading.setVisibility(View.GONE);
+                binding.emptyState.setVisibility(View.GONE);
+                binding.noInternet.setVisibility(View.VISIBLE);
             }
         });
 
@@ -75,7 +91,7 @@ public class ItemFragment extends Fragment {
             public void onClick(View view) {
                 HashMap<StationItem, Integer> cardItems = new HashMap<>();
 
-                for (int i=0; i<binding.itemList.getCount(); i++) {
+                for (int i = 0; i < binding.itemList.getCount(); i++) {
                     ItemStationItemViewModel itemViewModel = (ItemStationItemViewModel) binding.itemList.getChildAt(i).getTag();
                     cardItems.put(itemViewModel.getStationItem(), Integer.valueOf(itemViewModel.getItem().itemQty.getText().toString()));
                 }

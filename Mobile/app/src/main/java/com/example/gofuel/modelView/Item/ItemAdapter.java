@@ -17,16 +17,20 @@ import com.example.gofuel.model.station_item.StationItem;
 import com.example.gofuel.util.callback.OnItemQtyChange;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ItemAdapter extends BaseAdapter {
-    private ArrayList<StationItem> stationItems;
     private final Context context;
     private final OnItemQtyChange onItemQtyChange;
+    private final HashMap<StationItem, Integer> stationItems;
+    private ArrayList<StationItem> list;
 
-    public ItemAdapter(Context context, ArrayList<StationItem> stationItems, OnItemQtyChange onItemQtyChange) {
+    public ItemAdapter(Context context, HashMap<StationItem, Integer> stationItems, OnItemQtyChange onItemQtyChange) {
         this.context = context;
-        this.stationItems = stationItems;
         this.onItemQtyChange = onItemQtyChange;
+        this.stationItems = stationItems;
+
+        list = new ArrayList<>(stationItems.keySet());
     }
 
     @Override
@@ -36,12 +40,12 @@ public class ItemAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return stationItems.get(i);
+        return list.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return stationItems.get(i).getId();
+        return list.get(i).getId();
     }
 
     @Override
@@ -60,7 +64,8 @@ public class ItemAdapter extends BaseAdapter {
             binding = viewModel.getItem();
         }
 
-        viewModel.update(stationItems.get(position));
+        StationItem currentItem = list.get(position);
+        viewModel.update(currentItem, stationItems.get(currentItem));
 
         //region Item Qty Change
         binding.itemQty.addTextChangedListener(new TextWatcher() {
@@ -82,7 +87,7 @@ public class ItemAdapter extends BaseAdapter {
                         ((InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(binding.itemQty.getWindowToken(), 0);
                         onItemQtyChange.onQtyChanged(true);
                     } else {
-                        onItemQtyChange.onQtyChanged(notEmptyQty(parent));
+                        onItemQtyChange.onQtyChanged(notEmptyQty());
                     }
                 }
             }
@@ -93,9 +98,9 @@ public class ItemAdapter extends BaseAdapter {
         binding.addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int qty = Integer.parseInt(binding.itemQty.getText().toString());
-                qty++;
-                binding.itemQty.setText(String.valueOf(qty));
+                int qty = stationItems.get(currentItem);
+                qty += 1;
+                onItemQtyChange.changeQty(currentItem, qty);
             }
         });
         //endregion
@@ -104,9 +109,9 @@ public class ItemAdapter extends BaseAdapter {
         binding.removeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int qty = Integer.parseInt(binding.itemQty.getText().toString());
-                qty--;
-                binding.itemQty.setText(String.valueOf(qty));
+                int qty = stationItems.get(currentItem);
+                qty -= 1;
+                onItemQtyChange.changeQty(currentItem, qty);
             }
         });
         //endregion
@@ -114,14 +119,13 @@ public class ItemAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private boolean notEmptyQty(ViewGroup parent) {
-        for (int i = 0; i < getCount(); i++) {
-            ItemItemsBinding binding = ((ItemStationItemViewModel) parent.getChildAt(i).getTag()).getItem();
-
-            if (Integer.parseInt(binding.itemQty.getText().toString()) > 0) {
+    private boolean notEmptyQty() {
+        for (StationItem item : list) {
+            if (stationItems.get(item) > 0) {
                 return true;
             }
         }
+
         return false;
     }
 }
