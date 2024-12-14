@@ -160,8 +160,6 @@ class UserForm extends Model
                 $stationUser->save();
                 break;
             default:
-                echo "fail";
-                die;
                 break;
         }
     }

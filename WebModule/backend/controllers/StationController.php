@@ -143,7 +143,7 @@ class StationController extends Controller
                 $pump->save();
             }
 
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [

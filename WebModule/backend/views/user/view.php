@@ -1,5 +1,6 @@
 <?php
 
+use common\models\Station;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -33,6 +34,8 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 
+
+
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -44,7 +47,19 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Station Name',
                 'value' => function ($model) {
-                    return $model->stationUsers ? $model->stationUsers->station->name : 'N/A'; // Nome da estação
+                    $userRole = Yii::$app->authManager->getRolesByUser($model->id);
+
+                    if (isset($userRole['Admin'])) {
+                        return null;
+                    } elseif (isset($userRole['Manager'])) {
+                        $stations = Station::find()
+                            ->where(['manager_id' => $model->id])
+                            ->all();
+
+                        return $stations ? implode(' | ', array_column($stations, 'name')) : 'N/A';
+                    } else {
+                        return $model->stationUsers ? $model->stationUsers->station->name : 'N/A';
+                    }
                 },
             ],
             [
