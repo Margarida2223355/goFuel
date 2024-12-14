@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class MenuButtons {
     private ArrayList<ImageButton> menuButtons;
-    private boolean menuOpen;
+    private boolean menuOpen, animationFinished;
 
     public MenuButtons(Context context) {
         menuButtons = new ArrayList<>();
@@ -33,7 +33,9 @@ public class MenuButtons {
     }
 
     public void animateButtons(View view) {
-        // Get menu button position Y
+
+        // Get menu button position
+        float x = view.getX();
         float y = view.getY();
 
         // Circle radius for buttons
@@ -45,6 +47,9 @@ public class MenuButtons {
             for(ImageButton button: menuButtons) {
                 float angle = (float) ((PI / (menuButtons.size() * 2)) + (i * (PI / menuButtons.size())));
 
+                button.setX((float) (x - r * cos(angle)));
+                button.setY((float) (y - r * sin(angle)));
+
                 button.animate()
                         .xBy((float) (r * cos(angle)))
                         .yBy((float) (r * sin(angle)))
@@ -52,7 +57,7 @@ public class MenuButtons {
                         .withEndAction(new Runnable() {
                             @Override
                             public void run() {
-                                button.setVisibility(View.INVISIBLE);
+                                button.setVisibility(View.GONE);
                             }
                         })
                         .start();
@@ -65,6 +70,7 @@ public class MenuButtons {
             for(ImageButton button: menuButtons) {
                 float angle = (float) ((PI / (menuButtons.size() * 2)) + (i * (PI / menuButtons.size())));
 
+                button.setX(x);
                 button.setY(y);
                 button.setVisibility(View.VISIBLE);
 

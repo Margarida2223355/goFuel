@@ -25,11 +25,12 @@
             android:layout_height="match_parent"
             android:layout_marginHorizontal="40dp"
             android:layout_marginTop="50dp"
-            android:layout_marginBottom="180dp"/>
+            android:layout_marginBottom="100dp"
+            android:layout_gravity="top"/>
     </LinearLayout>
 
     <include
         android:id="@+id/bottombar"
-        layout="@layout/bottombar" />
+        layout="@layout/bottombar"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>
