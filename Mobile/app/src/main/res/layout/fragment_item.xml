@@ -73,9 +73,19 @@
             <ListView
                 android:id="@+id/itemList"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:divider="@android:color/transparent" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/cardButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:contentDescription="@string/btnMenu"
+                android:src="@drawable/card_icon"
+                android:visibility="invisible"
+                app:backgroundTint="@color/primary" />
         </LinearLayout>
 
         <ImageView
@@ -91,17 +101,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:src="@drawable/no_internet" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/cardButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="16dp"
-            android:contentDescription="@string/btnMenu"
-            android:src="@drawable/card_icon"
-            android:visibility="visible"
-            app:backgroundTint="@color/primary" />
 
     </FrameLayout>
 
