@@ -39,7 +39,7 @@ class m241107_192744_create_stations_table extends Migration
         $this->batchInsert('{{%stations}}', ['id', 'name', 'address', 'postal_code', 'manager_id', 'phone'], [
             [1, 'Station 1', '123 Main St', '1000-001', 2, '914241533'],
             [2, 'Station 2', '456 Side St', '1000-002', 2, '236598556'],
-            [4, 'Station Sei lá', 'Rua de Test', '2365-875', 3, '221896745'],
+            [3, 'Station 3', '789 Side Nd', '1000-003', 2, '221896745'],
         ]);
     }
 

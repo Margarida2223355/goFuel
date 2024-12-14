@@ -22,43 +22,60 @@ use yii\widgets\ActiveForm;
         'method' => 'post',
     ]);
     ?>
-
-    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'nif')->textInput() ?>
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'postal_code')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
-
-    <?php
-    if ($model->id == null) :
-        echo $form->field($model, 'role')->dropDownList(
-            $model->getAvailableRoles(),
-            ['prompt' => 'Select a Role']
-        );
-    endif; ?>
-
-    <?= $form->field($model, 'station_id')->dropDownList(
-        ArrayHelper::map(Station::find()->all(), 'id', 'name'),
-        ['prompt' => 'Select a Station']
-    ) ?>
-
-    <?= Html::submitButton(
-        $model->isNewRecord
-            ? '<i class="fa fa-plus" aria-hidden="true"></i>'
-            : '<i class="fa fa-save" aria-hidden="true"></i>',
-        [
-            'class' => 'btn',
-            'style' => $model->isNewRecord
-                ? 'color: green; border-color: black; height: calc(1.5em + .75rem + 2px) float: right;'
-                : 'color: green; border-color: black; height: calc(1.5em + .75rem + 2px) float: right;',
-            'title' => $model->isNewRecord
-                ? 'Add User'
-                : 'Update My Info'
-        ]
-    ) ?>
-
+    <div class="row">
+        <div class="col-md-6">
+            <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-6">
+            <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-6">
+            <?= $form->field($model, 'nif')->textInput() ?>
+        </div>
+        <div class="col-md-6">
+            <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-6">
+            <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-6">
+            <?= $form->field($model, 'postal_code')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-6">
+            <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-6">
+            <?php
+            if ($model->id == null) :
+                echo $form->field($model, 'role')->dropDownList(
+                    $model->getAvailableRoles(),
+                    ['prompt' => 'Select a Role']
+                );
+            endif; ?>
+        </div>
+        <div class="col-md-12" style="display: flex; align-items: center; gap: 10px;">
+            <div style="flex: 1;">
+                <?= $form->field($model, 'station_id')->dropDownList(
+                    ArrayHelper::map(Station::find()->all(), 'id', 'name'),
+                    ['prompt' => 'Select a Station']
+                )->hint('If you selected Admin or Manager, you do not need to select a station.') ?>
+            </div>
+            <div>
+                <div class="form-group">
+                    <?= Html::submitButton(
+                        $model->isNewRecord
+                            ? '<i class="fa fa-plus" aria-hidden="true"></i>'
+                            : '<i class="fa fa-save" aria-hidden="true"></i>',
+                        [
+                            'class' => 'btn',
+                            'style' => 'color: green; border-color: black;',
+                            'title' => $model->isNewRecord ? 'Add User' : 'Update My Info'
+                        ]
+                    ) ?>
+                </div>
+            </div>
+        </div>
+    </div>
     <?php ActiveForm::end(); ?>
 
 </div>

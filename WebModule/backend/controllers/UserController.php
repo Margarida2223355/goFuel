@@ -90,6 +90,7 @@ class UserController extends Controller
     {
         $model = new UserForm();
         $model->load(Yii::$app->request->post());
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Usuário criado com sucesso.');
             return $this->redirect(['view', 'id' => $model->id]);

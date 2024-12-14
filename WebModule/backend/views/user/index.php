@@ -35,7 +35,23 @@ $this->params['breadcrumbs'][] = $this->title;
             'style' => 'color: green; text-decoration: none; margin-right: 10px; margin-left: 15px;',
         ]) ?>
     </div>
-
+    <div class="row">
+        <div class="col-6 float-left">
+            <h6 class="float-left">
+                <p class="float-left"><i class="fa-regular fa-circle-xmark" style="color: #dc3545;"></i> - Disabled User </p><br>
+                <p class="float-left"><i class="fa-regular fa-circle-check" style="color: #28a745;"></i> - Enabled User </p>
+            </h6>
+        </div>
+        <div class="col-6 float-right">
+            <h6 class="float-right">
+                <p class="float-right"><i class="fa fa-pen " style="color: #28a745;"></i> - Edit User &emsp;</p>
+                <p class="float-right"><i class="fa fa-eye " style="color: #007bff;"></i> - Master Detail &emsp;&emsp;</p><br>
+                <p class="float-right"><i class="fa fa-ban" style="color: #000000;"></i> - Ban/Unban User &emsp;</p>
+                <p class="float-right"><i class="fa fa-redo" style="color: #ffcc00;"></i> - Enable User &emsp;</p>
+                <p class="float-right"><i class="fa fa-trash" style="color: #dc3545;"></i> - Desable User &emsp;</p>
+            </h6>
+        </div>
+    </div>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
@@ -43,7 +59,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'username',
             [
-                'label' => 'Nome',
+                'attribute' => 'name',
+                'format' => 'raw',
                 'value' => function ($model) {
                     $userName = $model->userInfo ? $model->userInfo->name : 'N/A';
                     $stationName = null;
@@ -55,7 +72,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         $stationNames = array_map(fn($station) => $station->name, $model->stations);
                         $stationName = implode(', ', $stationNames);
                     }
-                    return $stationName ? "{$userName} ({$stationName})" : $userName;
+
+                    $stationDisplay = $stationName ? " ({$stationName})" : '';
+                    $icon = $model->userInfo->is_deleted
+                        ? Html::tag('i', '', ['class' => 'fa-regular fa-circle-xmark', 'aria-hidden' => 'true', 'style' => 'color: #dc3545'])
+                        : Html::tag('i', '', ['class' => 'fa-regular fa-circle-check', 'aria-hidden' => 'true', 'style' => 'color: #28a745']);
+
+                    return "{$icon} {$userName}{$stationDisplay}";
                 },
             ],
             'email',
@@ -67,7 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     $roles = $authManager->getRoles();
                     $userRole = $authManager->getRolesByUser($model->id);
                     $currentRole = reset($userRole);
-                    if ($model->id == Yii::$app->user->id || $model->userInfo->is_deleted ==1 || $model->userInfo->is_banned == 1) {
+                    if ($model->id == Yii::$app->user->id || $model->userInfo->is_deleted == 1 || $model->userInfo->is_banned == 1) {
                         return $currentRole ? $currentRole->name : 'N/A';
                     }
                     $dropdown = Html::dropDownList(
@@ -166,6 +189,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
         ],
+        'summary' => false,
     ]); ?>
 </div>
 

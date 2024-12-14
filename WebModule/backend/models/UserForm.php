@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use common\models\Station;
 use common\models\StationUser;
 use common\models\User;
 use common\models\UserInfo;
@@ -19,7 +20,7 @@ class UserForm extends Model
     public $role = '';
     public $phone = '';
     public $id = '';
-    public $station_id;
+    public $station_id = '';
 
     private $_user;
     private $_userInfo;
@@ -54,22 +55,28 @@ class UserForm extends Model
         return [
             [['username', 'email', 'nif', 'name', 'address', 'postal_code', 'role', 'phone'], 'required'],
             ['email', 'email'],
-            [['nif'], 'integer', 'min' => 9],
+            [['nif', 'station_id'], 'integer'], // Adicione station_id como integer
             [['username', 'email', 'name', 'address'], 'string', 'max' => 255],
             [['postal_code'], 'string', 'max' => 20],
             [['role'], 'in', 'range' => ['Admin', 'Manager', 'In Charge', 'Employee']],
             [['phone'], 'string', 'max' => 13],
             ['role', 'in', 'range' => $this->getAvailableRoles(), 'message' => 'Você não tem permissão para atribuir esta role.'],
-
         ];
     }
+
     public function getAvailableRoles()
     {
-        $roles = [];
+        $allRoles = [
+            'Admin' => 'Admin',
+            'Manager' => 'Manager',
+            'In Charge' => 'In Charge',
+            'Employee' => 'Employee',
+        ];
+
         if (Yii::$app->user->can('Admin')) {
-            $roles = ['Admin' => 'Admin', 'Manager' => 'Manager'];
+            $roles = $allRoles;
         } elseif (Yii::$app->user->can('Manager')) {
-            $roles = ['In Charge' => 'In Charge', 'Employee' => 'Employee'];
+            $roles = array_filter($allRoles, fn($role) => in_array($role, ['In Charge', 'Employee']));
         }
         return $roles;
     }
@@ -86,15 +93,8 @@ class UserForm extends Model
             return false;
         }
 
-        // Verifica se a role é permitida
-        /*if (!in_array($this->role, array_keys($this->getAvailableRoles()))) {
-            $this->addError('role', 'Você não tem permissão para atribuir esta role.');
-            return false;
-        }*/
-
         $this->_user = new User();
         $this->_userInfo = new UserInfo();
-
 
         $this->_user->id = $this->id;
         $this->_user->username = $this->username;
@@ -132,6 +132,10 @@ class UserForm extends Model
                 }
 
                 $this->id = $this->_userInfo->id;
+
+                if ($this->role !== 'Admin' || $this->role !== 'Manager') {
+                    $this->stationConnection();
+                }
                 return true;
             } else {
                 Yii::error('Falha ao salvar UserInfo: ' . json_encode($this->_userInfo->getErrors()), __METHOD__);
@@ -143,8 +147,24 @@ class UserForm extends Model
         return false;
     }
 
+    public function stationConnection()
+    {
+        switch ($this->role) {
+            case 'In Charge':
+            case 'Employee':
+                $stationUser = new StationUser();
 
+                $stationUser->station_id = $this->station_id;
+                $stationUser->user_id = $this->id;
 
+                $stationUser->save();
+                break;
+            default:
+                echo "fail";
+                die;
+                break;
+        }
+    }
 
     public function loadUser($user)
     {
