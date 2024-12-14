@@ -2,6 +2,7 @@
 
 use common\models\StationItem;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\widgets\DetailView;
 
@@ -37,6 +38,20 @@ $this->params['breadcrumbs'][] = 'Check Invoice';
             <p><b>Total Price: </b> <?= Html::encode($model->total . ' €') ?></p>
 
         </div>
+        <div class="col-md-12">
+            <?php if ($model->state_id == 1): ?>
+                <?= Html::a(
+                    'Pay Invoice',
+                    Url::to(['invoice/pay', 'id' => $model->id]),
+                    ['class' => 'btn btn-warning me-2']
+                ) ?>
+                <?= Html::a(
+                    'Cancel Invoice',
+                    Url::to(['invoice/cancel', 'id' => $model->id]),
+                    ['class' => 'btn btn-warning me-2']
+                ) ?>
+            <?php endif; ?>
+        </div>
     </div>
 
     <h1>Items</h1>
@@ -54,7 +69,7 @@ $this->params['breadcrumbs'][] = 'Check Invoice';
             <tbody>
                 <?php foreach ($model->invoiceLines as $line):
                     $stationItem = StationItem::findOne(['item_id' => $line->item_id, 'station_id' => $model->station_id]);
-                    dd($stationItem); ?>
+                ?>
                     <tr>
                         <td><?= Html::encode($line->item->description) ?></td>
                         <td><?= Html::encode($stationItem->price) ?></td>

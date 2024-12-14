@@ -64,16 +64,6 @@ class Item extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[ItemStocks]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getItemStocks()
-    {
-        return $this->hasMany(ItemStock::class, ['item_id' => 'id']);
-    }
-
-    /**
      * Gets query for [[StationItems]].
      *
      * @return \yii\db\ActiveQuery

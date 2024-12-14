@@ -128,7 +128,6 @@ class Invoice extends \yii\db\ActiveRecord
 
         return $fields;
     }
-    }   
 
     public function updateTotal()
     {
@@ -152,7 +151,7 @@ class Invoice extends \yii\db\ActiveRecord
             $randomCode .= $characters[$index];
         }
 
-        $this -> code = $randomCode;
-        $this -> update();
+        $this->code = $randomCode;
+        $this->update();
     }
 }

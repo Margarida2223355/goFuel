@@ -41,7 +41,7 @@ class InvoiceController extends Controller
         $query = Invoice::find();
 
         if (Yii::$app->user->can('Admin')) {
-            $query->all();
+            $query->orderBy(['state_id' => SORT_ASC])->all();
         } elseif (Yii::$app->user->can('Manager')) {
             $stations = Station::find()->where(['manager_id' => $currentUser->id])->all();
 
@@ -62,11 +62,7 @@ class InvoiceController extends Controller
         }
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' => [
-                'defaultOrder' => [
-                    'state_id' => SORT_DESC,
-                ]
-            ],
+            
         ]);
         return $this->render('index', [
             'dataProvider' => $dataProvider,

@@ -141,7 +141,6 @@ class CategoryController extends Controller
         if ($id) {
             $model = $this->findModel($id);
             if ($model) {
-
                 if ($model->is_deleted == true) {
                     $model->is_deleted = 0;
                     if ($model->save()) {

@@ -87,8 +87,8 @@ class SubcategoryController extends Controller
             } else {
                 $model->is_deleted = 1;
                 $cat = $model->category;
-                if ($cat->is_deleted == 0) {
-                    $cat->is_deleted = 1;
+                if ($cat->is_deleted == 1) {
+                    $cat->is_deleted = 0;
                     $cat->save();
                 }
                 Yii::$app->session->setFlash('success', 'Subcategory successfully enabled.');
