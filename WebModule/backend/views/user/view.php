@@ -34,8 +34,6 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 
-
-
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -63,14 +61,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
             [
-                'label' => 'Username', // Aqui usamos a relação com User
-                'value' => $model->username, // Acessando o username do User
+                'label' => 'Username',
+                'value' => $model->username,
             ],
             [
                 'label' => 'Email',
-                'value' => $model->email, // Acessando o email do User
+                'value' => $model->email,
             ],
-            // Outras informações que você quiser mostrar do user_info
         ],
     ]) ?>
 
