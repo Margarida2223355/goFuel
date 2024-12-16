@@ -92,7 +92,11 @@ class UserController extends Controller
         $model->load(Yii::$app->request->post());
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Usuário criado com sucesso.');
+            Yii::$app->session->set('alert', [
+                'type' => 'success',
+                'title' => 'Success!',
+                'message' => 'User successfully created.',
+            ]);
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -171,17 +175,35 @@ class UserController extends Controller
         if ($model) {
             if ($model->userInfo->is_deleted == false) {
                 $model->userInfo->is_deleted = 1;
-                Yii::$app->session->setFlash('success', 'User succefully disabled');
+                $model->status = User::STATUS_ACTIVE;
+                Yii::$app->session->set('alert', [
+                    'type' => 'success',
+                    'title' => 'Success!',
+                    'message' => 'User succefully disabled.',
+                ]);
             } else {
                 $model->userInfo->is_deleted = 0;
-                Yii::$app->session->setFlash('success', 'User succefully enabled');
+                $model->status = User::STATUS_ACTIVE;
+                Yii::$app->session->set('alert', [
+                    'type' => 'success',
+                    'title' => 'Success!',
+                    'message' => 'User succefully enabled.',
+                ]);
             }
 
             if (!$model->userInfo->save()) {
-                Yii::$app->session->setFlash('error', 'An error ocurred trying save user');
+                Yii::$app->session->set('alert', [
+                    'type' => 'error',
+                    'title' => 'Error!',
+                    'message' => 'An error ocurred trying save user.',
+                ]);
             }
         } else {
-            Yii::$app->session->setFlash('error', 'Ca\'nt find user');
+            Yii::$app->session->set('alert', [
+                'type' => 'error',
+                'title' => 'Error!',
+                'message' => 'Ca\'nt find user.',
+            ]);
         }
         return $this->redirect(['index']);
     }
@@ -193,17 +215,33 @@ class UserController extends Controller
         if ($model) {
             if ($model->userInfo->is_banned == false) {
                 $model->userInfo->is_banned = 1;
-                Yii::$app->session->setFlash('success', 'User succefully banned');
+                Yii::$app->session->set('alert', [
+                    'type' => 'success',
+                    'title' => 'Success!',
+                    'message' => 'User succefully banned.',
+                ]);
             } else {
                 $model->userInfo->is_banned = 0;
-                Yii::$app->session->setFlash('success', 'User succefully banned');
+                Yii::$app->session->set('alert', [
+                    'type' => 'success',
+                    'title' => 'Success!',
+                    'message' => 'User succefully unbanned.',
+                ]);
             }
 
             if (!$model->userInfo->save()) {
-                Yii::$app->session->setFlash('error', 'An error ocurred trying save user');
+                Yii::$app->session->set('alert', [
+                    'type' => 'error',
+                    'title' => 'Error!',
+                    'message' => 'An error ocurred trying save user.',
+                ]);
             }
         } else {
-            Yii::$app->session->setFlash('error', 'Ca\'nt find user');
+            Yii::$app->session->set('alert', [
+                'type' => 'error',
+                'title' => 'Error!',
+                'message' => 'Ca\'nt find user.',
+            ]);
         }
         return $this->redirect(['index']);
     }
@@ -248,9 +286,17 @@ class UserController extends Controller
         $user->setPassword($defaultPassword);
 
         if ($user->save(false)) {
-            Yii::$app->session->setFlash('success', 'A senha foi redefinida com sucesso.');
+            Yii::$app->session->set('alert', [
+                'type' => 'success',
+                'title' => 'Success!',
+                'message' => 'Password reset successfully.',
+            ]);
         } else {
-            Yii::$app->session->setFlash('error', 'Erro ao redefinir a senha.');
+            Yii::$app->session->set('alert', [
+                'type' => 'error',
+                'title' => 'Error!',
+                'message' => 'Error resetting password.',
+            ]);
         }
 
         return $this->redirect(['index']);

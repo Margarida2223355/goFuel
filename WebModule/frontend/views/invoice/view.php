@@ -27,6 +27,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="col-md-6 px-5">
                     <p><b>Date: </b> <?= Html::encode($model->invoice_date) ?></p>
                     <p><b>Total Price: </b> <?= Html::encode($model->total . ' €') ?></p>
+                    <?php if ($model->state_id == 2): ?>
+                        <p><b>Code: </b>
+                            <?= Html::encode($model->code) ?>
+                        </p><?php endif; ?>
                     <?php if ($model->state_id == 1): ?>
                         <?= Html::a(
                             'Pay Invoice',

@@ -12,18 +12,18 @@ use yii\grid\GridView;
 $this->title = 'Stations';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="container-fluid ml-1">
-    <?php
-    $alert = Yii::$app->session->get('alert');
-    if ($alert) {
-        echo Alert::widget([
-            'type' => $alert['type'],
-            'body' => "<strong>{$alert['title']}</strong><br> {$alert['message']}",
-        ]);
+<?php
+$alert = Yii::$app->session->get('alert');
+if ($alert) {
+    echo Alert::widget([
+        'type' => $alert['type'],
+        'body' => "<strong>{$alert['title']}</strong><br> {$alert['message']}",
+    ]);
 
-        Yii::$app->session->remove('alert');
-    }
-    ?>
+    Yii::$app->session->remove('alert');
+}
+?>
+<div class="container-fluid ml-1">
     <div class="d-flex align-items-center mb-3">
         <h1><?= Html::encode($this->title) ?></h1>
     </div>

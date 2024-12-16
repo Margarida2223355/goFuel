@@ -83,7 +83,11 @@ class SubcategoryController extends Controller
             $model = $this->findModel($id);
             if ($model->is_deleted == true) {
                 $model->is_deleted = 0;
-                Yii::$app->session->setFlash('success', 'Subcategory successfully desabled.');
+                Yii::$app->session->set('alert', [
+                    'type' => 'success',
+                    'title' => 'Success!',
+                    'message' => 'Subcategory successfully desabled.',
+                ]);
             } else {
                 $model->is_deleted = 1;
                 $cat = $model->category;
@@ -91,11 +95,19 @@ class SubcategoryController extends Controller
                     $cat->is_deleted = 0;
                     $cat->save();
                 }
-                Yii::$app->session->setFlash('success', 'Subcategory successfully enabled.');
+                Yii::$app->session->set('alert', [
+                    'type' => 'success',
+                    'title' => 'Success!',
+                    'message' => 'Subcategory successfully enabled.',
+                ]);
             }
             $model->save();
         } else {
-            Yii::$app->session->setFlash('error', 'An error occurred.');
+            Yii::$app->session->set('alert', [
+                'type' => 'error',
+                'title' => 'Error!',
+                'message' => 'An error occurred.',
+            ]);
         }
         return $this->redirect(['category/view', 'id' => $model->category_id]);
 

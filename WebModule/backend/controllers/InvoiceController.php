@@ -62,7 +62,7 @@ class InvoiceController extends Controller
         }
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            
+
         ]);
         return $this->render('index', [
             'dataProvider' => $dataProvider,
@@ -86,11 +86,19 @@ class InvoiceController extends Controller
                 $model->state_id = 4;
 
                 if ($model->save()) {
-                    Yii::$app->session->setFlash('success', 'Fatura finalizada com sucesso.');
+                    Yii::$app->session->set('alert', [
+                        'type' => 'success',
+                        'title' => 'Success!',
+                        'message' => 'Invoice succefully verified.',
+                    ]);
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
             } else {
-                Yii::$app->session->setFlash('error', 'Código incorreto. Por favor, tente novamente.');
+                Yii::$app->session->set('alert', [
+                    'type' => 'danger',
+                    'title' => 'Error!',
+                    'message' => 'The code displayed does not match the invoice verification code.',
+                ]);
             }
         }
         $model->code = null;

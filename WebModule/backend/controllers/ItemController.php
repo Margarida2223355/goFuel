@@ -147,10 +147,18 @@ class ItemController extends Controller
                 $model->is_deleted = 1;
             }
             if ($model->save()) {
-                Yii::$app->session->setFlash('success', 'Item successfully deleted.');
+                Yii::$app->session->set('alert', [
+                    'type' => 'success',
+                    'title' => 'Success!',
+                    'message' => 'Item successfully desabled.',
+                ]);
             }
         } else {
-            Yii::$app->session->setFlash('error', 'An error occurred.');
+            Yii::$app->session->set('alert', [
+                'type' => 'error',
+                'title' => 'Error!',
+                'message' => 'An error occurred.',
+            ]);
         }
         return $this->redirect(['index']);
     }
@@ -174,12 +182,24 @@ class ItemController extends Controller
                 $stationItem->stock = $item->restock_qty;
 
                 if ($stationItem->save()) {
-                    Yii::$app->session->setFlash('success', 'Item associated successfully.');
+                    Yii::$app->session->set('alert', [
+                        'type' => 'success',
+                        'title' => 'Success!',
+                        'message' => 'Item successfully associated.',
+                    ]);
                 } else {
-                    Yii::$app->session->setFlash('error', 'Failed to associate item: ' . json_encode($stationItem->getErrors()));
+                    Yii::$app->session->set('alert', [
+                        'type' => 'error',
+                        'title' => 'Error!',
+                        'message' => 'Failed to associate item.',
+                    ]);
                 }
             } else {
-                Yii::$app->session->setFlash('error', 'Validation failed: ' . json_encode($model->getErrors()));
+                Yii::$app->session->set('alert', [
+                    'type' => 'error',
+                    'title' => 'Error!',
+                    'message' => 'Validation failed: ' . json_encode($model->getErrors()),
+                ]);
             }
 
             return $this->redirect(['index', 'stationId' => $stationId]);
@@ -196,9 +216,17 @@ class ItemController extends Controller
 
         if ($model !== null) {
             $model->delete();
-            Yii::$app->session->setFlash('success', 'A associação foi deletada com sucesso.');
+            Yii::$app->session->set('alert', [
+                'type' => 'success',
+                'title' => 'Success!',
+                'message' => 'Item successfully disassociated.',
+            ]);
         } else {
-            Yii::$app->session->setFlash('error', 'A associação não foi encontrada.');
+            Yii::$app->session->set('alert', [
+                'type' => 'error',
+                'title' => 'Error!',
+                'message' => 'Association not founded.',
+            ]);
         }
 
         return $this->redirect(['index', 'stationId' => $stationId]);
@@ -239,9 +267,17 @@ class ItemController extends Controller
         if ($item) {
             $item->stock += $item->restock_qty;
             if ($item->save()) {
-                Yii::$app->session->setFlash('success', 'Item restocked successfully.');
+                Yii::$app->session->set('alert', [
+                    'type' => 'success',
+                    'title' => 'Success!',
+                    'message' => 'Item restocked successfully.',
+                ]);
             } else {
-                Yii::$app->session->setFlash('error', 'Failed to restock item.');
+                Yii::$app->session->set('alert', [
+                    'type' => 'error',
+                    'title' => 'Error!',
+                    'message' => 'Failed to restock item.',
+                ]);
             }
         }
 

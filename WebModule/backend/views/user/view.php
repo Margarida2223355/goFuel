@@ -1,6 +1,7 @@
 <?php
 
 use common\models\Station;
+use hail812\adminlte\widgets\Alert;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -11,6 +12,16 @@ $this->title = $model->userInfo->name;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+?>
+<?php
+$alert = Yii::$app->session->get('alert');
+if ($alert != null) {
+    echo Alert::widget([
+        'type' => $alert['type'],
+        'body' => "<strong>{$alert['title']}</strong><br> {$alert['message']}",
+    ]);
+}
+Yii::$app->session->remove('alert');
 ?>
 <div class="container-fluid ml-1">
 

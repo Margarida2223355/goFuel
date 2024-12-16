@@ -1,5 +1,6 @@
 <?php
 
+use hail812\adminlte\widgets\Alert;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -10,8 +11,16 @@ use yii\widgets\DetailView;
 
 $this->title = $station->name;
 $this->params['breadcrumbs'][] = ['label' => 'Stations', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
-
+$this->params['breadcrumbs'][] = $this->title; ?>
+<?php
+$alert = Yii::$app->session->get('alert');
+if ($alert != null) {
+    echo Alert::widget([
+        'type' => $alert['type'],
+        'body' => "<strong>{$alert['title']}</strong><br> {$alert['message']}",
+    ]);
+}
+Yii::$app->session->remove('alert');
 ?>
 
 <div class="container-fluid ml-1">

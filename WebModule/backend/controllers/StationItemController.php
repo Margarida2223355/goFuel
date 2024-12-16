@@ -49,12 +49,24 @@ class StationItemController extends Controller
                 $stationItem->stock = $item->restock_qty;
 
                 if ($stationItem->save()) {
-                    Yii::$app->session->setFlash('success', 'Item associated successfully.');
+                    Yii::$app->session->set('alert', [
+                        'type' => 'success',
+                        'title' => 'Success!',
+                        'message' => 'Item associated successfully.',
+                    ]);
                 } else {
-                    Yii::$app->session->setFlash('error', 'Failed to associate item: ' . json_encode($stationItem->getErrors()));
+                    Yii::$app->session->set('alert', [
+                        'type' => 'error',
+                        'title' => 'Error!',
+                        'message' => 'Failed to associate item: ' . json_encode($stationItem->getErrors()),
+                    ]);
                 }
             } else {
-                Yii::$app->session->setFlash('error', 'Validation failed: ' . json_encode($model->getErrors()));
+                Yii::$app->session->set('alert', [
+                    'type' => 'error',
+                    'title' => 'Error!',
+                    'message' => 'Validation failed: ' . json_encode($model->getErrors()),
+                ]);
             }
 
             return $this->redirect(['item/index', 'stationId' => $stationId]);
@@ -110,7 +122,11 @@ class StationItemController extends Controller
             throw new NotFoundHttpException('A associação não foi encontrada.');
         }
         if ($stationItem->load(Yii::$app->request->post()) && $stationItem->save()) {
-            Yii::$app->session->setFlash('success', 'Associação atualizada com sucesso.');
+            Yii::$app->session->set('alert', [
+                'type' => 'success',
+                'title' => 'Success!',
+                'message' => 'Association successfully updated.',
+            ]);
             return $this->redirect(['item/index', 'stationId' => $stationItem->station_id]);
         }
 

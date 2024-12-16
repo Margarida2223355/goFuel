@@ -200,7 +200,11 @@ class StationController extends Controller
                 ]);
             }
         } else {
-            Yii::$app->session->setFlash('error', 'An error occurred.');
+            Yii::$app->session->set('alert', [
+                'type' => 'error',
+                'title' => 'Error!',
+                'message' => 'An error occurred.',
+            ]);
         }
 
         return $this->redirect(['index']);
@@ -224,14 +228,12 @@ class StationController extends Controller
                     'title' => 'Success!',
                     'message' => 'Item added successfully with price.',
                 ]);
-                Yii::$app->session->setFlash('success', '.');
             } else {
                 Yii::$app->session->set('alert', [
                     'type' => 'error',
                     'title' => 'Error!',
                     'message' => 'Failed to add item.',
                 ]);
-                Yii::$app->session->setFlash('error', '.');
             }
         }
 

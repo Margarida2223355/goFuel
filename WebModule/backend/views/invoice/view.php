@@ -1,6 +1,7 @@
 <?php
 
 use common\models\StationItem;
+use hail812\adminlte\widgets\Alert;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -9,24 +10,24 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\Invoice $model */
 
-$this->title = Yii::$app->name . ' | Check Invoice';
+$this->title = 'Invoice ' . $model->id . ' | Master Detail';
 $this->params['breadcrumbs'][] = ['label' => 'Invoices', 'url' => ['index']];
-$this->params['breadcrumbs'][] = 'Check Invoice';
+$this->params['breadcrumbs'][] = 'Master Detail';
 \yii\web\YiiAsset::register($this);
+?>
+<?php
+$alert = Yii::$app->session->get('alert');
+if ($alert != null) {
+    echo Alert::widget([
+        'type' => $alert['type'],
+        'body' => "<strong>{$alert['title']}</strong><br> {$alert['message']}",
+    ]);
+}
+Yii::$app->session->remove('alert');
 ?>
 <div class="container-fluid ml-1">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
-    <?php if (Yii::$app->session->hasFlash('success')): ?>
-        <div class="alert alert-success">
-            <?= Yii::$app->session->getFlash('success') ?>
-        </div>
-    <?php elseif (Yii::$app->session->hasFlash('error')): ?>
-        <div class="alert alert-danger">
-            <?= Yii::$app->session->getFlash('error') ?>
-        </div>
-    <?php endif; ?>
 
     <div class="row justify-content-center px-5">
         <div class="col-md-6">
