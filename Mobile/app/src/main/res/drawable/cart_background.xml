@@ -1,0 +1,57 @@
+<!-- res/drawable/inner_shadow.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Base color layer -->
+    <item>
+        <shape>
+            <solid android:color="@color/cardBackCart"/>
+        </shape>
+    </item>
+
+    <!-- Top shadow -->
+    <item>
+        <shape>
+            <gradient
+                android:startColor="@android:color/transparent"
+                android:centerColor="@android:color/transparent"
+                android:endColor="@color/black"
+                android:centerY="0.8"
+                android:angle="90"/>
+        </shape>
+    </item>
+
+    <!-- Bottom shadow -->
+    <item>
+        <shape>
+            <gradient
+                android:startColor="@android:color/transparent"
+                android:centerColor="@android:color/transparent"
+                android:endColor="@color/black"
+                android:centerY="0.8"
+                android:angle="270"/>
+        </shape>
+    </item>
+
+    <!-- Left shadow -->
+    <item>
+        <shape>
+            <gradient
+                android:startColor="@android:color/transparent"
+                android:centerColor="@android:color/transparent"
+                android:endColor="@color/black"
+                android:centerY="0.95"
+                android:angle="0"/>
+        </shape>
+    </item>
+
+    <!-- Right shadow -->
+    <item>
+        <shape>
+            <gradient
+                android:startColor="@android:color/transparent"
+                android:centerColor="@android:color/transparent"
+                android:endColor="@color/black"
+                android:centerY="0.95"
+                android:angle="180"/>
+        </shape>
+    </item>
+</layer-list>
