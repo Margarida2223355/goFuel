@@ -3,7 +3,7 @@
 namespace app\modules\api\controllers;
 
 use common\models\User;
-use common\models\UserInfo;
+use common\models\Userinfo;
 use yii\rest\ActiveController;
 use yii\web\ForbiddenHttpException;
 use yii\filters\auth\HttpBasicAuth;
@@ -36,7 +36,7 @@ class UserController extends ActiveController
 
     public function actionLogin()
     {
-        return UserInfo::findOne([
+        return Userinfo::findOne([
             'id' => $this->user->id
         ]);
     }
