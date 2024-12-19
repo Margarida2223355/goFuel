@@ -12,7 +12,10 @@ use yii\widgets\ActiveForm;
 
 <div class="user-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'enableClientValidation' => false,
+        'validateOnSubmit' => true,
+    ]); ?>
 
     <h3>User</h3>
     <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>

@@ -65,7 +65,6 @@ class SignupForm extends Model
         $this->_user->generateEmailVerificationToken();
         $this->_user->created_at = time();
         $this->_user->updated_at = time();
-
         if ($this->_user->save()) {
             $this->_userInfo->user_id = $this->_user->id;
             $this->_userInfo->nif = $this->nif;
