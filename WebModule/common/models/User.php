@@ -217,7 +217,6 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasOne(Userinfo::class, ['user_id' => 'id']);
     }
 
-
     public function getAuthAssignments()
     {
         return $this->hasMany(AuthAssignment::class, ['user_id' => 'id']);
@@ -231,20 +230,6 @@ class User extends ActiveRecord implements IdentityInterface
     public function getStations()
     {
         return $this->hasMany(Station::class, ['manager_id' => 'id']);
-    }
-
-    public function fields()
-    {
-        $fields = parent::fields();
-
-        unset($fields['user_id']);
-
-        $fields['userInfo'] = function () {
-            $userInfo = $this->getUserInfo()->one();
-            return $userInfo ? $userInfo : null;
-        };
-
-        return $fields;
     }
 
     public function getRoleName()
