@@ -1,7 +1,5 @@
 package com.example.gofuel.repository.common;
 
-import android.content.Context;
-
 import com.example.gofuel.util.Constants;
 
 import java.nio.charset.StandardCharsets;
@@ -18,9 +16,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class HTTPClient<T> {
     //region Properties
     private String credentials = null;
-    private String userID = null;
-    private String stationID = null;
     private T client;
+    private String headerKey, headerValue;
     //endregion
 
     //region HTTP Client for Login
@@ -30,20 +27,12 @@ public class HTTPClient<T> {
     }
     //endregion
 
-    //region HTTP Client with USER_ID as HEADER
-    public HTTPClient(Class<T> serviceClass, int userID) {
-        setUserID(userID);
+    //region HTTP Client with ID as HEADER
+    public HTTPClient(Class<T> serviceClass, HeaderID headerID, String id) {
+        headerKey = headerID.getHeaderName();
+        headerValue = id;
         initializeHTTPClient(serviceClass);
     }
-    //endregion
-
-    //region HTTP Client with STATION_ID as HEADER<
-
-    public HTTPClient(Class<T> serviceClass, String stationID) {
-        this.stationID = stationID;
-        initializeHTTPClient(serviceClass);
-    }
-
     //endregion
 
     //region HTTP Client
@@ -60,14 +49,6 @@ public class HTTPClient<T> {
         credentials = Base64.getEncoder().encodeToString((username + ":" + password).getBytes(StandardCharsets.UTF_8));
     }
 
-    private void setUserID(int userID) {
-        this.userID = String.valueOf(userID);
-    }
-
-    private void setStationID(int stationID) {
-        this.stationID = String.valueOf(stationID);
-    }
-
     private void initializeHTTPClient(Class<T> serviceClass) {
         // Configure OkHttpClient
         OkHttpClient.Builder httpClientBuider = new OkHttpClient.Builder();
@@ -78,11 +59,12 @@ public class HTTPClient<T> {
             Request.Builder requestBuilder = original.newBuilder()
                     .header(Constants.HEADER_PARAMETER_ACCEPT, "application/json")
                     .header(Constants.HEADER_PARAMETER_LANG, Locale.getDefault().toString())
-                    .header(Constants.HEADER_PARAMETER_CLIENT,"Mobile");
+                    .header(Constants.HEADER_PARAMETER_CLIENT, "Mobile");
 
-            if (credentials != null) { requestBuilder.header(Constants.HEADER_PARAMETER_AUTHORIZATION, "Basic " + credentials); }
-            if (userID != null) { requestBuilder.header("X-USER-ID", userID); }
-            if (stationID != null) { requestBuilder.header("X-STATION-ID", stationID); }
+            if (credentials != null) {
+                requestBuilder.header(Constants.HEADER_PARAMETER_AUTHORIZATION, "Basic " + credentials);
+            }
+            requestBuilder.header(headerKey, headerValue);
 
             Request request = requestBuilder.build();
 

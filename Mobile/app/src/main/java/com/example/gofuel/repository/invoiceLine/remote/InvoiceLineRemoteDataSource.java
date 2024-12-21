@@ -1,7 +1,9 @@
 package com.example.gofuel.repository.invoiceLine.remote;
 
+import com.example.gofuel.model.invoice.Invoice;
 import com.example.gofuel.model.invoice.InvoiceLine;
 import com.example.gofuel.repository.common.HTTPClient;
+import com.example.gofuel.repository.common.HeaderID;
 import com.example.gofuel.repository.common.ResultWrapper;
 import com.example.gofuel.repository.invoiceLine.IInvoiceLineDataSource;
 
@@ -12,8 +14,8 @@ import retrofit2.Call;
 public class InvoiceLineRemoteDataSource implements IInvoiceLineDataSource.Main {
     private final InvoiceLineAPI invoiceLineAPI;
 
-    public InvoiceLineRemoteDataSource() {
-        this.invoiceLineAPI = new HTTPClient<>(InvoiceLineAPI.class).get();
+    public InvoiceLineRemoteDataSource(Invoice invoice) {
+        this.invoiceLineAPI = new HTTPClient<>(InvoiceLineAPI.class, HeaderID.INVOICE_ID, String.valueOf(invoice.getId())).get();
     }
 
     // Method for local DB
@@ -26,5 +28,10 @@ public class InvoiceLineRemoteDataSource implements IInvoiceLineDataSource.Main 
     public ResultWrapper<List<InvoiceLine>> getInvoiceLines() {
         Call<List<InvoiceLine>> call = invoiceLineAPI.getInvoiceLines();
         return ResultWrapper.safeApiCall(call);
+    }
+
+    @Override
+    public ResultWrapper<List<InvoiceLine>> getInvoiceLines(Invoice invoice) {
+        return null;
     }
 }
