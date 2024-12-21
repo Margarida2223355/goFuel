@@ -1,6 +1,7 @@
 package com.example.gofuel.util;
 
 import com.example.gofuel.model.client_station.ClientStation;
+import com.example.gofuel.model.invoice.InvoiceLine;
 import com.example.gofuel.model.invoice.finished.FinishedInvoice;
 import com.example.gofuel.model.invoice.pending.PendingInvoice;
 import com.example.gofuel.model.station.Station;
@@ -78,6 +79,23 @@ public class State {
 
         public HashMap<String, String> getPendingInvoices() {
             return pendingInvoices;
+        }
+    }
+    public static class InvoiceLines extends State {
+        private final List<InvoiceLine> invoiceLines;
+        private final Double totalValue;
+
+        public InvoiceLines(List<InvoiceLine> invoiceLines, Double totalValue) {
+            this.invoiceLines = invoiceLines;
+            this.totalValue = totalValue;
+        }
+
+        public List<InvoiceLine> getInvoiceLines() {
+            return invoiceLines;
+        }
+
+        public Double getTotalValue() {
+            return totalValue;
         }
     }
 }

@@ -18,7 +18,7 @@
         android:orientation="vertical">
 
         <ListView
-            android:id="@+id/itemList"
+            android:id="@+id/linesList"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="top"
@@ -27,6 +27,7 @@
             android:divider="@android:color/transparent" />
 
         <FrameLayout
+            android:id="@+id/totalCard"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center"

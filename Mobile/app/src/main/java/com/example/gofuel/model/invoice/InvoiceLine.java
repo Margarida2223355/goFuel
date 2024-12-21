@@ -11,15 +11,13 @@ public class InvoiceLine {
     @PrimaryKey
     private final int id;
     private Item item;
-    private Pump pump;
     private int qty;
     private double total;
     private Invoice invoice;
 
-    public InvoiceLine(int id, Item item, Pump pump, int qty, double total, Invoice invoice) {
+    public InvoiceLine(int id, Item item, int qty, double total, Invoice invoice) {
         this.id = id;
         this.item = item;
-        this.pump = pump;
         this.qty = qty;
         this.total = total;
         this.invoice = invoice;
@@ -31,10 +29,6 @@ public class InvoiceLine {
 
     public Item getItem() {
         return item;
-    }
-
-    public Pump getPump() {
-        return pump;
     }
 
     public int getQty() {
@@ -51,10 +45,6 @@ public class InvoiceLine {
 
     public void setItem(Item item) {
         this.item = item;
-    }
-
-    public void setPump(Pump pump) {
-        this.pump = pump;
     }
 
     public void setQty(int qty) {
