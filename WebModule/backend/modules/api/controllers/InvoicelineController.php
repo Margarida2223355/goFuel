@@ -91,6 +91,12 @@
 
                     $line['item'] = $line['item'];
                     $line['invoice'] = $line['invoice'];
+                    unset($line['item_id'], $line['invoice_id']);
+
+                    if (isset($line['item']['subcategory'])) {
+                        $line['item']['subcategory'] = $line['item']['subcategory'];
+                        unset ($line['item']['subcategory_id']);
+                    }
 
                     if (isset($line['invoice']['station'])) {
                         $line['invoice']['station'] = $line['invoice']['station'];
@@ -101,7 +107,12 @@
                         $line['invoice']['client'] =  $line['invoice']['client'];
                         unset($line['invoice']['client_id']);
                     }
-                    unset($line['item_id'], $line['invoice_id']);
+
+                    if (isset($line['invoice']['state'])) {
+                        $line['invoice']['state'] =  $line['invoice']['state'];
+                        unset($line['invoice']['state_id']);
+                    }
+
                     return $line;
                 }, $data);
         }
