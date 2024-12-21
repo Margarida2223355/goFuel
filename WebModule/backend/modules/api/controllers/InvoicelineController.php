@@ -101,7 +101,7 @@
                     if (isset($line['item']['subcategory'])) {
                         $line['item']['subcategory'] = $line['item']['subcategory'];
                         $line['item']['subcategory']['category'] = $line['item']['subcategory']['category'];
-                        unset($line['item']['subcategory_id'],$line['item']['subcategory']['category'] );
+                        unset($line['item']['subcategory_id'],$line['item']['subcategory']['category_id'] );
                     }
 
                     if (isset($line['invoice']['station'])) {
