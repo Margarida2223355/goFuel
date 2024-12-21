@@ -10,9 +10,11 @@ import android.view.ViewGroup;
 
 import com.example.gofuel.R;
 import com.example.gofuel.databinding.FragmentCartBinding;
+import com.example.gofuel.model.invoice.Invoice;
 
 public class CartFragment extends Fragment {
     private FragmentCartBinding binding;
+    private Invoice invoice;
 
     public CartFragment() {
         // Required empty public constructor
@@ -25,5 +27,9 @@ public class CartFragment extends Fragment {
         View view = binding.getRoot();
 
         return view;
+    }
+
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
     }
 }
