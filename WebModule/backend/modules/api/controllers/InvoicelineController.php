@@ -27,7 +27,13 @@
 
             $lines = Invoiceline::find()
                 -> where(['invoice_id' => $invoiceID])
-                -> with(['item', 'invoice.station', 'invoice.client'])
+                -> with([
+                    'item.subcategory',
+                    'item.subcategory.category',
+                    'invoice.station',
+                    'invoice.client',
+                    'invoice.state',
+                    ])
                 -> asArray()
                 -> all();
 
@@ -95,7 +101,12 @@
 
                     if (isset($line['item']['subcategory'])) {
                         $line['item']['subcategory'] = $line['item']['subcategory'];
-                        unset ($line['item']['subcategory_id']);
+                        unset($line['item']['subcategory_id']);
+                    }
+
+                    if (isset($line['item']['subcategory']['category'])) {
+                        $line['item']['subcategory']['category'] = $line['item']['subcategory']['category'];
+                        unset($line['item']['subcategory']['category']);
                     }
 
                     if (isset($line['invoice']['station'])) {
