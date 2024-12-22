@@ -48,7 +48,7 @@
                 foreach ($request as $lineData) {
                     $model = new Invoiceline();
 
-                    if ($model->load($request, '') && $model->save()) {
+                    if ($model->load($lineData, '') && $model->save()) {
                         $createdLines[] = $model -> id;
 
                         $lines = Invoiceline::find()
