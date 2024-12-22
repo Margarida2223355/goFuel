@@ -65,7 +65,7 @@ public class HTTPClient<T> {
             if (credentials != null) {
                 requestBuilder.header(Constants.HEADER_PARAMETER_AUTHORIZATION, "Basic " + credentials);
             }
-            else { requestBuilder.header(headerKey, headerValue); }
+            else if (headerKey != null) { requestBuilder.header(headerKey, headerValue); }
 
             Request request = requestBuilder.build();
 
