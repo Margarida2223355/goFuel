@@ -41,26 +41,37 @@
 
         public function actionCreate() {
             $request = \Yii::$app -> request -> bodyParams;
-            $model = new Invoiceline();
+            $createdLines = [];
+            $transaction = \Yii::$app -> db -> beginTransaction();
 
-            if ($model->load($request, '') && $model->save()) {
-                $invoiceID = $model->invoice_id;
+            try {
+                foreach ($request as $lineData) {
+                    $model = new Invoiceline();
 
-                $lines = Invoiceline::find()
-                    -> where(['invoice_id' => $invoiceID])
-                    -> with([
-                        'item.subcategory.category',
-                        'invoice.station',
-                        'invoice.client',
-                        'invoice.state',
-                        ])
-                    -> asArray()
-                    -> all();
+                    if ($model->load($request, '') && $model->save()) {
+                        $createdLines[] = $model -> id;
 
-                return self::formatLineFields($lines);
+                        $lines = Invoiceline::find()
+                            -> where(['id' => $createdLines])
+                            -> with([
+                                'item.subcategory.category',
+                                'invoice.station',
+                                'invoice.client',
+                                'invoice.state',
+                                ])
+                            -> asArray()
+                            -> all();
+
+                        return self::formatLineFields($lines);
+                    }
+
+                    throw new BadRequestHttpException('Failed to create invoice line: ' . json_encode($model->errors));
+                }
             }
-
-            throw new BadRequestHttpException('Failed to create invoice line: ' . json_encode($model->errors));
+            catch (\Exception $e) {
+                $transaction->rollBack();
+                throw new BadRequestHttpException('Failed to create invoice line: ' . json_encode($model->errors));
+            }
         }
 
         public function actionUpdateline($id) {
