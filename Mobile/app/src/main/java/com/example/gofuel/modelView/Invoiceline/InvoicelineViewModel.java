@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.gofuel.MyApplication;
 import com.example.gofuel.model.invoice.Invoice;
-import com.example.gofuel.model.invoice.InvoiceLine;
+import com.example.gofuel.model.invoice.invoiceline.InvoiceLine;
 import com.example.gofuel.repository.common.ResultWrapper;
 import com.example.gofuel.repository.invoiceLine.InvoiceLineRepository;
 import com.example.gofuel.util.State;

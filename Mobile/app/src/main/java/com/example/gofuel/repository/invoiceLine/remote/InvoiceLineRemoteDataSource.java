@@ -1,7 +1,7 @@
 package com.example.gofuel.repository.invoiceLine.remote;
 
 import com.example.gofuel.model.invoice.Invoice;
-import com.example.gofuel.model.invoice.InvoiceLine;
+import com.example.gofuel.model.invoice.invoiceline.InvoiceLine;
 import com.example.gofuel.repository.common.HTTPClient;
 import com.example.gofuel.util.HeaderID;
 import com.example.gofuel.repository.common.ResultWrapper;

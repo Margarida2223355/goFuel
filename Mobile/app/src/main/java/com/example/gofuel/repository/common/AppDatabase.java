@@ -10,7 +10,7 @@ import androidx.room.TypeConverters;
 
 import com.example.gofuel.model.category.CategoryConverter;
 import com.example.gofuel.model.client_station.ClientStation;
-import com.example.gofuel.model.invoice.InvoiceLine;
+import com.example.gofuel.model.invoice.invoiceline.InvoiceLine;
 import com.example.gofuel.model.invoice.common.DateConverter;
 import com.example.gofuel.model.invoice.common.InvoiceConverter;
 import com.example.gofuel.model.invoice.common.InvoicestateConverter;

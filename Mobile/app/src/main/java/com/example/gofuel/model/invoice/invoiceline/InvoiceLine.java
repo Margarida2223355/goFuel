@@ -1,11 +1,10 @@
-package com.example.gofuel.model.invoice;
+package com.example.gofuel.model.invoice.invoiceline;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.example.gofuel.model.invoice.pending.PendingInvoice;
 import com.example.gofuel.model.item.Item;
-import com.example.gofuel.model.pump.Pump;
 
 @Entity(tableName = "invoicelines")
 public class InvoiceLine {

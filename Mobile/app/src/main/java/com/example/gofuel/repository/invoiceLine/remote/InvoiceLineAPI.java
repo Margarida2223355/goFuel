@@ -1,6 +1,6 @@
 package com.example.gofuel.repository.invoiceLine.remote;
 
-import com.example.gofuel.model.invoice.InvoiceLine;
+import com.example.gofuel.model.invoice.invoiceline.InvoiceLine;
 
 import java.util.List;
 

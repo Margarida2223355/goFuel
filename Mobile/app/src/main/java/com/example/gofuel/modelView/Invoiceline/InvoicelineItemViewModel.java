@@ -1,7 +1,7 @@
 package com.example.gofuel.modelView.Invoiceline;
 
 import com.example.gofuel.databinding.ItemItemsBinding;
-import com.example.gofuel.model.invoice.InvoiceLine;
+import com.example.gofuel.model.invoice.invoiceline.InvoiceLine;
 
 public class InvoicelineItemViewModel {
     private final ItemItemsBinding binding;

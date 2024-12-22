@@ -9,15 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.gofuel.R;
 import com.example.gofuel.databinding.FragmentCartBinding;
 import com.example.gofuel.model.invoice.Invoice;
-import com.example.gofuel.model.invoice.InvoiceLine;
-import com.example.gofuel.model.station.Station;
-import com.example.gofuel.modelView.Invoice.InvoiceViewModel;
+import com.example.gofuel.model.invoice.invoiceline.InvoiceLine;
 import com.example.gofuel.modelView.Invoiceline.InvoicelineAdapter;
 import com.example.gofuel.modelView.Invoiceline.InvoicelineViewModel;
-import com.example.gofuel.modelView.Station.StationAdapter;
 import com.example.gofuel.util.State;
 
 import java.util.ArrayList;

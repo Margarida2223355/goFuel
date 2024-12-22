@@ -3,7 +3,7 @@ package com.example.gofuel.repository.invoiceLine;
 import android.content.Context;
 
 import com.example.gofuel.model.invoice.Invoice;
-import com.example.gofuel.model.invoice.InvoiceLine;
+import com.example.gofuel.model.invoice.invoiceline.InvoiceLine;
 import com.example.gofuel.repository.common.AppDatabase;
 import com.example.gofuel.repository.common.ResultWrapper;
 import com.example.gofuel.repository.invoiceLine.local.InvoiceLineDB;
