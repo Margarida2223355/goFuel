@@ -44,10 +44,20 @@
             $model = new Invoiceline();
 
             if ($model->load($request, '') && $model->save()) {
-                return
-                [
-                    'message' => 'Success: New invoice line created!',
-                ];
+                $invoiceID = $model->invoice_id;
+
+                $lines = Invoiceline::find()
+                    -> where(['invoice_id' => $invoiceID])
+                    -> with([
+                        'item.subcategory.category',
+                        'invoice.station',
+                        'invoice.client',
+                        'invoice.state',
+                        ])
+                    -> asArray()
+                    -> all();
+
+                return self::formatLineFields($lines);
             }
 
             throw new BadRequestHttpException('Failed to create invoice line: ' . json_encode($model->errors));
@@ -63,10 +73,20 @@
             $request = \Yii::$app -> request -> bodyParams;
 
             if ($model->load($request, '') && $model->save()) {
-                return
-                    [
-                        'message' => 'Success: Invoice line updated!',
-                    ];
+                $invoiceID = $model->invoice_id;
+
+                $lines = Invoiceline::find()
+                    -> where(['invoice_id' => $invoiceID])
+                    -> with([
+                        'item.subcategory.category',
+                        'invoice.station',
+                        'invoice.client',
+                        'invoice.state',
+                        ])
+                    -> asArray()
+                    -> all();
+
+                return self::formatLineFields($lines);
             }
 
             throw new BadRequestHttpException('Failed to update invoice line: ' . json_encode($model->errors));
@@ -80,10 +100,20 @@
             }
 
             if($model->delete()) {
-                return
-                    [
-                        'message' => 'Success: Invoice line removed!',
-                    ];
+                $invoiceID = $model->invoice_id;
+
+                $lines = Invoiceline::find()
+                    -> where(['invoice_id' => $invoiceID])
+                    -> with([
+                        'item.subcategory.category',
+                        'invoice.station',
+                        'invoice.client',
+                        'invoice.state',
+                        ])
+                    -> asArray()
+                    -> all();
+
+                return self::formatLineFields($lines);
             }
 
             throw new BadRequestHttpException('Failed to remove invoice line: ' . json_encode($model->errors));
