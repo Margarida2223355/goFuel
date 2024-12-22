@@ -46,6 +46,7 @@ public class CartFragment extends Fragment {
                 binding.loading.setVisibility(View.VISIBLE);
             }
             else if (state instanceof State.InvoiceLines) {
+                binding.loading.setVisibility(View.GONE);
                 binding.linesList.setVisibility(View.VISIBLE);
                 binding.totalCard.setVisibility(View.VISIBLE);
                 ArrayList<InvoiceLine> lines = new ArrayList<>(((State.InvoiceLines) state).getInvoiceLines());
