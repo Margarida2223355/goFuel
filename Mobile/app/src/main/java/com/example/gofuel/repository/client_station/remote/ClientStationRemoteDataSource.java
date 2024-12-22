@@ -4,7 +4,7 @@ import com.example.gofuel.MyApplication;
 import com.example.gofuel.model.client_station.ClientStation;
 import com.example.gofuel.repository.client_station.IClientStationDataSource;
 import com.example.gofuel.repository.common.HTTPClient;
-import com.example.gofuel.repository.common.HeaderID;
+import com.example.gofuel.util.HeaderID;
 import com.example.gofuel.repository.common.ResultWrapper;
 
 import java.util.List;

@@ -3,6 +3,7 @@ package com.example.gofuel.model.invoice;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.example.gofuel.model.invoice.pending.PendingInvoice;
 import com.example.gofuel.model.item.Item;
 import com.example.gofuel.model.pump.Pump;
 
@@ -13,9 +14,9 @@ public class InvoiceLine {
     private Item item;
     private int qty;
     private double total;
-    private Invoice invoice;
+    private PendingInvoice invoice;
 
-    public InvoiceLine(int id, Item item, int qty, double total, Invoice invoice) {
+    public InvoiceLine(int id, Item item, int qty, double total, PendingInvoice invoice) {
         this.id = id;
         this.item = item;
         this.qty = qty;
@@ -39,7 +40,7 @@ public class InvoiceLine {
         return total;
     }
 
-    public Invoice getInvoice() {
+    public PendingInvoice getInvoice() {
         return invoice;
     }
 
@@ -55,7 +56,7 @@ public class InvoiceLine {
         this.total = total;
     }
 
-    public void setInvoice(Invoice invoice) {
+    public void setInvoice(PendingInvoice invoice) {
         this.invoice = invoice;
     }
 }

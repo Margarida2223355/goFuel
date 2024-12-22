@@ -1,4 +1,4 @@
-package com.example.gofuel.repository.common;
+package com.example.gofuel.util;
 
 public enum HeaderID {
     USER_ID("X-USER-ID"),
