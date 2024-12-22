@@ -2,6 +2,8 @@ package com.example.gofuel.repository.invoiceLine.remote;
 
 import com.example.gofuel.model.invoice.Invoice;
 import com.example.gofuel.model.invoice.invoiceline.InvoiceLine;
+import com.example.gofuel.model.invoice.invoiceline.InvoicelinePost;
+import com.example.gofuel.model.invoice.pending.PendingInvoice;
 import com.example.gofuel.repository.common.HTTPClient;
 import com.example.gofuel.util.HeaderID;
 import com.example.gofuel.repository.common.ResultWrapper;
@@ -33,5 +35,16 @@ public class InvoiceLineRemoteDataSource implements IInvoiceLineDataSource.Main 
     @Override
     public ResultWrapper<List<InvoiceLine>> getInvoiceLines(Invoice invoice) {
         return null;
+    }
+
+    @Override
+    public ResultWrapper<List<InvoiceLine>> addInvoiceLines(PendingInvoice invoice, List<InvoicelinePost> lines) {
+        return null;
+    }
+
+    @Override
+    public ResultWrapper<List<InvoiceLine>> addInvoiceLines(List<InvoicelinePost> lines) {
+        Call<List<InvoiceLine>> call = invoiceLineAPI.addInvoiceLines(lines);
+        return ResultWrapper.safeApiCall(call);
     }
 }
