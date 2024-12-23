@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -177,7 +178,18 @@ public class ItemFragment extends Fragment {
                 ));
 
                 popup.invoiceList.setOnItemClickListener((parent, view, position, id) -> {
+                    CartFragment cartFragment = new CartFragment();
+                    cartFragment.setInvoice(invoices.get(position));
+
                     addItemsToInvoice(invoices.get(position));
+                    dialog.dismiss();
+
+                    AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                    activity.getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment, cartFragment)
+                            .addToBackStack(null)
+                            .commit();
                 });
 
                 dialog.show();
