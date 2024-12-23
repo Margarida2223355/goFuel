@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ItemFragment extends Fragment {
     private FragmentItemBinding binding;
@@ -172,31 +173,34 @@ public class ItemFragment extends Fragment {
                 popup.invoiceList.setAdapter(new ArrayAdapter<>(
                         getContext(),
                         R.layout.simple_item,
-                        (List) invoices.stream().map(PendingInvoice::getCode)
+                        invoices.stream().map(PendingInvoice::getCode).collect(Collectors.toList())
                 ));
 
                 popup.invoiceList.setOnItemClickListener((parent, view, position, id) -> {
                     addItemsToInvoice(invoices.get(position));
                 });
+
+                dialog.show();
             }
         });
 
         invoiceViewModel.loadPendingInvoices();
-        dialog.show();
     }
 
     private void addItemsToInvoice(PendingInvoice invoice) {
         List<InvoicelinePost> invoices = new ArrayList<>();
 
         for (Map.Entry<StationItem, Integer> item : cardItems.entrySet()) {
-            invoices.add(
+            if (item.getValue() != 0) {
+                invoices.add(
                     new InvoicelinePost(
                         item.getKey().getItem().getId(),
                         item.getValue(),
                         (float) (item.getValue() * item.getKey().getPrice()),
                         invoice.getId()
                     )
-            );
+                );
+            }
         }
 
         invoicelineViewModel.addLines(invoices, invoice);
