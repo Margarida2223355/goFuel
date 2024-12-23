@@ -50,8 +50,15 @@
 
                     if ($model->load($lineData, '') && $model->save()) {
                         $createdLines[] = $model -> id;
+                    }
+                    else {
+                        throw new BadRequestHttpException('Failed to create invoice line: ' . json_encode($model->errors));
+                    }
+                }
 
-                        $lines = Invoiceline::find()
+                $transaction -> commit();
+
+                $lines = Invoiceline::find()
                             -> where(['id' => $createdLines])
                             -> with([
                                 'item.subcategory.category',
@@ -62,11 +69,7 @@
                             -> asArray()
                             -> all();
 
-                        return self::formatLineFields($lines);
-                    }
-
-                    throw new BadRequestHttpException('Failed to create invoice line: ' . json_encode($model->errors));
-                }
+                return self::formatLineFields($lines);
             }
             catch (\Exception $e) {
                 $transaction->rollBack();
