@@ -105,6 +105,7 @@ return [
                         'GET paidinvoices' => 'get-paid-invoices',
                         'GET pendentinvoices' => 'get-pendent-invoices',
                         'PUT, PATCH updateinvoice/{id}' => 'updateinvoice',
+                        'POST createinvoice' => 'createinvoice',
                     ],
                     'tokens' => []
                 ],

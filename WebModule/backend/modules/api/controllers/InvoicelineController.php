@@ -134,6 +134,9 @@
         }
 
         private static function formatLineFields($data): array {
+            if ($data instanceof Invoiceline) {
+                $data = $data -> toArray();
+            }
             return
                 array_map(function ($line) {
                     $line = is_array($line) ? $line : $line->toArray();

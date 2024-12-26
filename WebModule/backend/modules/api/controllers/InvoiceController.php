@@ -10,6 +10,18 @@
     class InvoiceController extends ActiveController {
         public $modelClass = Invoice::class;
 
+        public function actionCreateinvoice() {
+            $model = new Invoice();
+            $request = \Yii::$app -> request -> bodyParams;
+
+            if ($model -> load($request, '') && $model -> save()) {
+                $model->generateRandomCode();
+                return self::formatInvoiceFields([$model]);
+            }
+
+            throw new BadRequestHttpException('Failed to create invoice: ' . json_encode($model->errors));
+        }
+
         public function actionGetUserInvoices() {
             $userID = \Yii::$app -> request -> getHeaders() -> get('X-USER-ID');
 
@@ -74,6 +86,9 @@
         }
 
         private static function formatInvoiceFields($data): array {
+            if ($data instanceof Invoice) {
+                $data = $data -> toArray();
+            }
             return
                 array_map(function ($invoice) {
                     $invoice = is_array($invoice) ? $invoice : $invoice->toArray();
