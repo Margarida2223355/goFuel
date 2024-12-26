@@ -3,7 +3,7 @@ package com.example.gofuel.repository.station_item.remote;
 import com.example.gofuel.model.station.Station;
 import com.example.gofuel.model.station_item.StationItem;
 import com.example.gofuel.repository.common.HTTPClient;
-import com.example.gofuel.util.HeaderID;
+import com.example.gofuel.util.enums.HeaderID;
 import com.example.gofuel.repository.common.ResultWrapper;
 import com.example.gofuel.repository.station_item.IStationItemDataSource;
 

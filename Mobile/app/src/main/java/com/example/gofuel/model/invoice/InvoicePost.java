@@ -4,10 +4,10 @@ public class InvoicePost {
     private int client_id, station_id;
     private float total;
 
-    public InvoicePost(int client_id, int station_id, float total) {
+    public InvoicePost(int client_id, int station_id) {
         this.client_id = client_id;
         this.station_id = station_id;
-        this.total = total;
+        total = 0.0F;
     }
 
     public int getClient_id() {

@@ -5,7 +5,7 @@ import com.example.gofuel.model.invoice.invoiceline.InvoiceLine;
 import com.example.gofuel.model.invoice.invoiceline.InvoicelinePost;
 import com.example.gofuel.model.invoice.pending.PendingInvoice;
 import com.example.gofuel.repository.common.HTTPClient;
-import com.example.gofuel.util.HeaderID;
+import com.example.gofuel.util.enums.HeaderID;
 import com.example.gofuel.repository.common.ResultWrapper;
 import com.example.gofuel.repository.invoiceLine.IInvoiceLineDataSource;
 

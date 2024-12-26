@@ -98,4 +98,15 @@ public class State {
             return totalValue;
         }
     }
+    public static class PendingInvoiceItem extends State {
+        private final PendingInvoice pendingInvoice;
+
+        public PendingInvoiceItem(PendingInvoice pendingInvoice) {
+            this.pendingInvoice = pendingInvoice;
+        }
+
+        public PendingInvoice getPendingInvoice() {
+            return pendingInvoice;
+        }
+    }
 }

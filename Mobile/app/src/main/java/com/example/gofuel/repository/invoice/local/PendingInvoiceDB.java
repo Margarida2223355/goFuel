@@ -18,4 +18,7 @@ public interface PendingInvoiceDB {
 
     @Query("DELETE FROM pending_invoices")
     void deleteAll();
+
+    @Insert
+    void addInvoice(PendingInvoice invoice);
 }

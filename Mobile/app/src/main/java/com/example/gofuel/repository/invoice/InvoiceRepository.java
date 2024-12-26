@@ -3,6 +3,7 @@ package com.example.gofuel.repository.invoice;
 import android.content.Context;
 
 import com.example.gofuel.model.invoice.Invoice;
+import com.example.gofuel.model.invoice.InvoicePost;
 import com.example.gofuel.model.invoice.finished.FinishedInvoice;
 import com.example.gofuel.model.invoice.pending.PendingInvoice;
 import com.example.gofuel.repository.common.AppDatabase;
@@ -78,6 +79,17 @@ public class InvoiceRepository implements IInvoiceDataSource.Main {
             else {
                 result = new ResultWrapper<>(null, "No data on local DB");
             }
+        }
+
+        return result;
+    }
+
+    @Override
+    public ResultWrapper<PendingInvoice> addInvoice(InvoicePost invoicePost) {
+        ResultWrapper<PendingInvoice> result = new InvoiceRemoteDataSource().addInvoice(invoicePost);
+
+        if (result.getResult() != null) {
+            pendingInvoiceDB.addInvoice(result.getResult());
         }
 
         return result;

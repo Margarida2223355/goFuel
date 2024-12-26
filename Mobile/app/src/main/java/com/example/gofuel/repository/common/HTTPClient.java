@@ -1,7 +1,7 @@
 package com.example.gofuel.repository.common;
 
 import com.example.gofuel.util.Constants;
-import com.example.gofuel.util.HeaderID;
+import com.example.gofuel.util.enums.HeaderID;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;

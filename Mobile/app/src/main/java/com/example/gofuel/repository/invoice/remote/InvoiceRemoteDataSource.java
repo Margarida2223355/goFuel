@@ -2,10 +2,11 @@ package com.example.gofuel.repository.invoice.remote;
 
 import com.example.gofuel.MyApplication;
 import com.example.gofuel.model.invoice.Invoice;
+import com.example.gofuel.model.invoice.InvoicePost;
 import com.example.gofuel.model.invoice.finished.FinishedInvoice;
 import com.example.gofuel.model.invoice.pending.PendingInvoice;
 import com.example.gofuel.repository.common.HTTPClient;
-import com.example.gofuel.util.HeaderID;
+import com.example.gofuel.util.enums.HeaderID;
 import com.example.gofuel.repository.common.ResultWrapper;
 import com.example.gofuel.repository.invoice.IInvoiceDataSource;
 
@@ -35,6 +36,12 @@ public class InvoiceRemoteDataSource implements IInvoiceDataSource.Main {
     @Override
     public ResultWrapper<List<FinishedInvoice>> getFinishedInvoices() {
         Call<List<FinishedInvoice>> call = invoiceAPI.getFinishedInvoices();
+        return ResultWrapper.safeApiCall(call);
+    }
+
+    @Override
+    public ResultWrapper<PendingInvoice> addInvoice(InvoicePost invoicePost) {
+        Call<PendingInvoice> call = invoiceAPI.createInvoice(invoicePost);
         return ResultWrapper.safeApiCall(call);
     }
 }

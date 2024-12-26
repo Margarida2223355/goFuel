@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +14,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.gofuel.MyApplication;
 import com.example.gofuel.R;
 import com.example.gofuel.databinding.FragmentItemBinding;
 import com.example.gofuel.databinding.InvoicesPopupBinding;
 import com.example.gofuel.model.invoice.Invoice;
+import com.example.gofuel.model.invoice.InvoicePost;
 import com.example.gofuel.model.invoice.invoiceline.InvoicelinePost;
 import com.example.gofuel.model.invoice.pending.PendingInvoice;
 import com.example.gofuel.model.station.Station;
@@ -27,6 +30,7 @@ import com.example.gofuel.modelView.Item.ItemAdapter;
 import com.example.gofuel.modelView.Item.ItemStationItemViewModel;
 import com.example.gofuel.modelView.Item.ItemViewModel;
 import com.example.gofuel.util.State;
+import com.example.gofuel.util.callback.InvoiceCreate;
 import com.example.gofuel.util.callback.OnItemQtyChange;
 
 import java.util.ArrayList;
@@ -43,7 +47,7 @@ public class ItemFragment extends Fragment {
     private InvoiceViewModel invoiceViewModel;
     private InvoicelineViewModel invoicelineViewModel;
     private HashMap<StationItem, Integer> cardItems;
-
+    private PendingInvoice pendingInvoice;
 
     public ItemFragment() {
         // Required empty public constructor
@@ -181,17 +185,43 @@ public class ItemFragment extends Fragment {
 
                 popup.invoiceList.setOnItemClickListener((parent, view, position, id) -> {
                     CartFragment cartFragment = new CartFragment();
-                    cartFragment.setInvoice(invoices.get(position));
 
-                    addItemsToInvoice(invoices.get(position));
-                    dialog.dismiss();
+                    if (position == (codes.size() - 1)) {
+                        invoiceViewModel.createInvoice(new InvoicePost(MyApplication.getUser().getId(), station.getId()), new InvoiceCreate() {
+                            @Override
+                            public void onSuccess(PendingInvoice pendingInvoice) {
+                                cartFragment.setInvoice(pendingInvoice);
+                                addItemsToInvoice(pendingInvoice);
 
-                    AppCompatActivity activity = (AppCompatActivity) view.getContext();
-                    activity.getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragment, cartFragment)
-                            .addToBackStack(null)
-                            .commit();
+                                dialog.dismiss();
+
+                                AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                                activity.getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.fragment, cartFragment)
+                                        .addToBackStack(null)
+                                        .commit();
+                            }
+
+                            @Override
+                            public void onError(String error) {
+                                Log.e("-->", "Error: " + error);
+                            }
+                        });
+                    }
+                    else {
+                        cartFragment.setInvoice(invoices.get(position));
+                        addItemsToInvoice(invoices.get(position));
+
+                        dialog.dismiss();
+
+                        AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                        activity.getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment, cartFragment)
+                                .addToBackStack(null)
+                                .commit();
+                    }
                 });
 
                 dialog.show();
