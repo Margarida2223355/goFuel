@@ -8,18 +8,19 @@ use Yii;
  * This is the model class for table "user_info".
  *
  * @property int $id
+ * @property int $user_id
  * @property int $nif
  * @property string $name
  * @property string $address
  * @property string $postal_code
  * @property string $phone
+ * @property bool $is_deleted
+ * @property bool $is_banned
  *
- * @property User $id0
  * @property Invoice[] $invoices
  * @property ManagerStation[] $managerStations
  * @property StationUser[] $stationUsers
  * @property Station[] $stations
- * @property Station[] $stations0
  * @property User $user
  */
 class UserInfo extends \yii\db\ActiveRecord
@@ -43,8 +44,9 @@ class UserInfo extends \yii\db\ActiveRecord
             [['name', 'address'], 'string', 'max' => 255],
             [['postal_code'], 'string', 'max' => 20],
             [['phone'], 'string', 'max' => 13],
+            [['is_deleted', 'is_banned'], 'boolean'],
             [['nif'], 'unique'],
-            [['id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -55,11 +57,14 @@ class UserInfo extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'user_id' => 'User ID',
             'nif' => 'Nif',
             'name' => 'Name',
             'address' => 'Address',
             'postal_code' => 'Postal Code',
             'phone' => 'Phone',
+            'is_deleted' => 'Is Deleted',
+            'is_banned' => 'Is Banned',
         ];
     }
 
@@ -115,7 +120,7 @@ class UserInfo extends \yii\db\ActiveRecord
 
     public function getUser()
     {
-        return $this->hasOne(User::class, ['id' => 'id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
     public static function getLoggedInUserRole()
