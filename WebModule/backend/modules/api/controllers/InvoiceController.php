@@ -16,7 +16,7 @@
 
             if ($model -> load($request, '') && $model -> save()) {
                 $model->generateRandomCode();
-                return self::formatInvoiceFields([$model]);
+                return self::formatInvoiceFields($model);
             }
 
             throw new BadRequestHttpException('Failed to create invoice: ' . json_encode($model->errors));
@@ -86,20 +86,26 @@
         }
 
         private static function formatInvoiceFields($data): array {
-            if ($data instanceof Invoice) {
-                $data = $data -> toArray();
+            if (is_array($data)) {
+                return
+                    array_map(function ($invoice) {
+                        $invoice['client'] = $invoice['client'];
+                        $invoice['station'] = $invoice['station'];
+                        $invoice['state'] = $invoice['state'];
+
+                        unset($invoice['item_id'], $invoice['invoice_id'], $invoice['state_id']);
+                        return $invoice;
+                    }, $data);
             }
-            return
-                array_map(function ($invoice) {
-                    $invoice = is_array($invoice) ? $invoice : $invoice->toArray();
+            elseif ($data instanceof Invoice) {
+                $invoice = $data -> toArray();
+                $invoice['client'] = $invoice['client'];
+                $invoice['station'] = $invoice['station'];
+                $invoice['state'] = $invoice['state'];
 
-                    $invoice['client'] = $invoice['client'];
-                    $invoice['station'] = $invoice['station'];
-                    $invoice['state'] = $invoice['state'];
-
-                    unset($invoice['item_id'], $invoice['invoice_id'], $invoice['state_id']);
-                    return $invoice;
-                }, $data);
+                unset($invoice['item_id'], $invoice['invoice_id'], $invoice['state_id']);
+                return $invoice;
+            }
         }
     }
 ?>
