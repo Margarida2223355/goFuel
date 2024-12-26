@@ -15,9 +15,10 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'enableClientValidation' => false,
         'validateOnSubmit' => true,
+        'id' => 'signup-form'
     ]); ?>
 
-    <h3>User</h3>
+    <h3>Sign Up</h3>
     <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'password')->passwordInput() ?>
