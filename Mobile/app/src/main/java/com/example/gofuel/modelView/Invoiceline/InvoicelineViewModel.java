@@ -67,4 +67,21 @@ public class InvoicelineViewModel extends ViewModel {
 
         }).start();
     }
+
+    public void removeLines(List<InvoiceLine> lines) {
+        new Thread(() -> {
+            ResultWrapper<List<InvoiceLine>> result = invoiceLineRepository.removeInvoiceLines(lines);
+
+            if (result.getResult() != null) {
+                double total = 0.0;
+                for (InvoiceLine line : result.getResult()) {
+                    total += line.getTotal();
+                }
+                state.postValue(new State.InvoiceLines(result.getResult(), total));
+            }
+            else if (result.getError() != null) {
+                Log.e("-->", "Error API: " + result.getError());
+            }
+        }).start();
+    }
 }

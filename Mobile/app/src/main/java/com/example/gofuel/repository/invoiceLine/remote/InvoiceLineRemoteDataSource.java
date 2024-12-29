@@ -9,7 +9,10 @@ import com.example.gofuel.util.enums.HeaderID;
 import com.example.gofuel.repository.common.ResultWrapper;
 import com.example.gofuel.repository.invoiceLine.IInvoiceLineDataSource;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 
@@ -18,6 +21,10 @@ public class InvoiceLineRemoteDataSource implements IInvoiceLineDataSource.Main 
 
     public InvoiceLineRemoteDataSource(Invoice invoice) {
         this.invoiceLineAPI = new HTTPClient<>(InvoiceLineAPI.class, HeaderID.INVOICE_ID, String.valueOf(invoice.getId())).get();
+    }
+
+    public InvoiceLineRemoteDataSource() {
+        this.invoiceLineAPI = new HTTPClient<>(InvoiceLineAPI.class).get();
     }
 
     // Method for local DB
@@ -49,13 +56,10 @@ public class InvoiceLineRemoteDataSource implements IInvoiceLineDataSource.Main 
     }
 
     @Override
-    public ResultWrapper<List<InvoiceLine>> removeInvoiceLines(PendingInvoice invoice, List<InvoicelinePost> lines) {
-        return null;
-    }
-
-    @Override
-    public ResultWrapper<List<InvoiceLine>> removeInvoiceLines(List<InvoicelinePost> lines) {
-        Call<List<InvoiceLine>> call = invoiceLineAPI.removeInvoiceLines(lines);
+    public ResultWrapper<List<InvoiceLine>> removeInvoiceLines(List<InvoiceLine> lines) {
+        Map<String, List<Integer>> requestBody = new HashMap<>();
+        requestBody.put("ids", lines.stream().map(InvoiceLine::getId).collect(Collectors.toList()));
+        Call<List<InvoiceLine>> call = invoiceLineAPI.removeInvoiceLines(requestBody);
         return ResultWrapper.safeApiCall(call);
     }
 }

@@ -84,8 +84,8 @@ public class InvoiceLineRepository implements IInvoiceLineDataSource.Main {
     }
 
     @Override
-    public ResultWrapper<List<InvoiceLine>> removeInvoiceLines(PendingInvoice invoice, List<InvoicelinePost> lines) {
-        ResultWrapper<List<InvoiceLine>> result = new InvoiceLineRemoteDataSource(invoice).removeInvoiceLines(lines);
+    public ResultWrapper<List<InvoiceLine>> removeInvoiceLines(List<InvoiceLine> lines) {
+        ResultWrapper<List<InvoiceLine>> result = new InvoiceLineRemoteDataSource().removeInvoiceLines(lines);
 
         if (result.getResult() != null) {
             invoiceLineDB.deleteAll();
@@ -100,10 +100,5 @@ public class InvoiceLineRepository implements IInvoiceLineDataSource.Main {
         }
 
         return result;
-    }
-
-    @Override
-    public ResultWrapper<List<InvoiceLine>> removeInvoiceLines(List<InvoicelinePost> lines) {
-        return null;
     }
 }
