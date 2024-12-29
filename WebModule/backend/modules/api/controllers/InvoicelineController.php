@@ -10,11 +10,11 @@
     class InvoicelineController extends ActiveController {
         public $modelClass = Invoiceline::class;
 
-        // Disable default action "index", "create"
+        // Disable default action "index", "create", "delete"
         public function actions()
         {
             $actions = parent::actions();
-            unset($actions['index'], $actions['create']);
+            unset($actions['index'], $actions['create'], $actions['delete']);
             return $actions;
         }
 
@@ -74,6 +74,47 @@
             catch (\Exception $e) {
                 $transaction->rollBack();
                 throw new BadRequestHttpException('Failed to create invoice line: ' . json_encode($model->errors));
+            }
+        }
+
+        public function actionDelete() {
+            $request = \Yii::$app -> request -> bodyParams;
+            $deletedLines = [];
+            $transaction = \Yii::$app -> db -> beginTransaction();
+
+            try {
+                $invoiceId = null;
+
+                foreach ($request['ids'] as $lineId) {
+                    $model = Invoiceline::findOne($lineId);
+
+                    if ($model != null && $model->delete()) {
+                        $invoiceId = $model->invoice_id;
+                        $deletedLines[] = $lineId;
+                    }
+                    else {
+                        throw new BadRequestHttpException('Failed to remove invoice line: ' . json_encode($model->errors));
+                    }
+                }
+
+                $transaction -> commit();
+
+                $lines = Invoiceline::find()
+                            -> where(['invoice_id' => $invoiceId])
+                            -> with([
+                                'item.subcategory.category',
+                                'invoice.station',
+                                'invoice.client',
+                                'invoice.state',
+                                ])
+                            -> asArray()
+                            -> all();
+
+                return self::formatLineFields($lines);
+            }
+            catch (\Exception $e) {
+                $transaction->rollBack();
+                throw new BadRequestHttpException('Failed to remove invoice line: ' . json_encode($model->errors));
             }
         }
 
