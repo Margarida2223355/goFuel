@@ -17,10 +17,13 @@ public class InvoicelineItemViewModel {
     }
 
     public void update(InvoiceLine item) {
+        binding.checkBox.setVisibility(View.VISIBLE);
+        binding.addBtn.setVisibility(View.GONE);
+        binding.removeBtn.setVisibility(View.GONE);
+
         binding.itemName.setText(item.getItem().getDescription());
         binding.itemCategory.setText(item.getItem().getSubcategory().getCategory().getName());
         binding.itemTotal.setText(item.getTotal() + "€");
         binding.itemQty.setText(String.valueOf(item.getQty()));
-        binding.checkBox.setVisibility(View.VISIBLE);
     }
 }
