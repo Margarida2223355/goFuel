@@ -2,6 +2,7 @@ package com.example.gofuel.view.fragments;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -11,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.gofuel.MyApplication;
+import com.example.gofuel.R;
 import com.example.gofuel.databinding.FragmentCartBinding;
 import com.example.gofuel.model.invoice.Invoice;
 import com.example.gofuel.model.invoice.invoiceline.InvoiceLine;
@@ -89,11 +92,20 @@ public class CartFragment extends Fragment {
                 invoiceViewModel.closeInvoice(invoice, new InvoiceClose() {
                     @Override
                     public void onSuccess() {
+                        AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                                activity.getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.fragment, new InvoiceFragment())
+                                        .addToBackStack(null)
+                                        .commit();
                         Log.i("-->", "Success");
                     }
 
                     @Override
                     public void onError(String error) {
+                        getActivity().runOnUiThread(() -> {
+                            Toast.makeText(getActivity(), "Sem conexão com a internet. Verifique sua rede e tente novamente!", Toast.LENGTH_SHORT).show();
+                        });
                         Log.i("-->", "Error: " + error);
                     }
                 });
