@@ -48,7 +48,7 @@ public class InvoiceRemoteDataSource implements IInvoiceDataSource.Main {
 
     @Override
     public ResultWrapper<String> closeInvoice(Invoice invoice) {
-        Call<String> call = invoiceAPI.closeInvoice(invoice);
+        Call<String> call = invoiceAPI.closeInvoice(invoice.getId());
         return ResultWrapper.safeApiCall(call);
     }
 }
