@@ -46,7 +46,12 @@ public class CartFragment extends Fragment {
                 binding.linesList.setVisibility(View.VISIBLE);
                 binding.totalCard.setVisibility(View.VISIBLE);
                 ArrayList<InvoiceLine> lines = new ArrayList<>(((State.InvoiceLines) state).getInvoiceLines());
+                Double total = lines
+                        .stream()
+                        .mapToDouble(InvoiceLine::getTotal)
+                        .sum();
                 binding.linesList.setAdapter(new InvoicelineAdapter(getContext(), lines));
+                binding.totalValue.setText(total + "€");
             }
         });
 
