@@ -75,15 +75,10 @@
 
             if ($model->save()) {
 
-                return
-                    [
-                        'Success' => 'Success: Invoice closed!',
-                    ];
+                return 'Success: Invoice closed!';
             }
 
-            return [
-                'Error' => 'Failed to remove invoice line: ' . json_encode($model->errors)
-            ];
+            return 'Failed to remove invoice line: ' . json_encode($model->errors);
 
         }
 
