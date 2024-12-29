@@ -72,17 +72,20 @@
             }
 
             $request = \Yii::$app -> request -> bodyParams;
+            $model->state_id = 4; // Finished
 
             if ($model->load($request, '') && ($model->save())) {
-                $model->generateRandomCode();
 
                 return
                     [
-                        'message' => 'Success: Invoice closed!',
+                        'Success' => 'Success: Invoice closed!',
                     ];
             }
 
-            throw new BadRequestHttpException('Failed to remove invoice line: ' . json_encode($model->errors));
+            return [
+                'Error' => 'Failed to remove invoice line: ' . json_encode($model->errors)
+            ];
+
         }
 
         private static function formatInvoiceFields($data): array {
