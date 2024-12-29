@@ -86,6 +86,7 @@
                 </FrameLayout>
 
                 <TextView
+                    android:id="@+id/payButton"
                     style="@style/TitleTextStyle"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"

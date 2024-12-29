@@ -13,9 +13,11 @@ import android.widget.Toast;
 import com.example.gofuel.databinding.FragmentCartBinding;
 import com.example.gofuel.model.invoice.Invoice;
 import com.example.gofuel.model.invoice.invoiceline.InvoiceLine;
+import com.example.gofuel.modelView.Invoice.InvoiceViewModel;
 import com.example.gofuel.modelView.Invoiceline.InvoicelineAdapter;
 import com.example.gofuel.modelView.Invoiceline.InvoicelineViewModel;
 import com.example.gofuel.util.State;
+import com.example.gofuel.util.callback.InvoiceClose;
 import com.example.gofuel.util.callback.OnCheckedBox;
 
 import java.text.DecimalFormat;
@@ -25,6 +27,7 @@ public class CartFragment extends Fragment {
     private FragmentCartBinding binding;
     private Invoice invoice;
     private InvoicelineViewModel viewModel;
+    private InvoiceViewModel invoiceViewModel;
     private ArrayList<InvoiceLine> linesToChange;
 
     public CartFragment() {
@@ -38,6 +41,7 @@ public class CartFragment extends Fragment {
         View view = binding.getRoot();
 
         viewModel = new ViewModelProvider(this).get(InvoicelineViewModel.class);
+        invoiceViewModel = new ViewModelProvider(this).get(InvoiceViewModel.class);
         linesToChange = new ArrayList<>();
 
         viewModel.getState().observe(getViewLifecycleOwner(), state -> {
@@ -74,7 +78,25 @@ public class CartFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 viewModel.removeLines(linesToChange);
-                Toast.makeText(getContext(), linesToChange.size() + " lines removed", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), linesToChange.size() + " lines removed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        binding.payButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                invoiceViewModel.closeInvoice(invoice, new InvoiceClose() {
+                    @Override
+                    public void onSuccess() {
+                        Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
+                    }
+                });
+                //Toast.makeText(getContext(), "Pay", Toast.LENGTH_SHORT).show();
             }
         });
 
