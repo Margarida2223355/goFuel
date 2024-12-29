@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,12 +89,12 @@ public class CartFragment extends Fragment {
                 invoiceViewModel.closeInvoice(invoice, new InvoiceClose() {
                     @Override
                     public void onSuccess() {
-                        Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
+                        Log.i("-->", "Success");
                     }
 
                     @Override
                     public void onError(String error) {
-                        Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
+                        Log.i("-->", "Error: " + error);
                     }
                 });
                 //Toast.makeText(getContext(), "Pay", Toast.LENGTH_SHORT).show();

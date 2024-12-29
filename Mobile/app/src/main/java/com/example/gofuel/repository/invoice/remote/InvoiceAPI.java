@@ -14,6 +14,8 @@ import retrofit2.http.GET;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface InvoiceAPI {
     @GET("invoices/pendentinvoices")
@@ -25,6 +27,6 @@ public interface InvoiceAPI {
     @POST("invoices/createinvoice")
     Call<PendingInvoice> createInvoice(@Body InvoicePost invoicePost);
 
-    @PATCH("invoices/update")
-    Call<String> closeInvoice(@Body Invoice invoice);
+    @PUT("invoice/updateinvoice")
+    Call<String> closeInvoice(@Query("id") int id);
 }
