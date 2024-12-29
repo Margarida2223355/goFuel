@@ -71,10 +71,9 @@
                 throw new NotFoundHttpException('Invoice not found');
             }
 
-            $request = \Yii::$app -> request -> bodyParams;
             $model->state_id = 4; // Finished
 
-            if ($model->load($request, '') && ($model->save())) {
+            if ($model->save()) {
 
                 return
                     [
