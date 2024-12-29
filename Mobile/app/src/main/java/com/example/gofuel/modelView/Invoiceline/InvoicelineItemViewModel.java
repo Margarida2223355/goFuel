@@ -1,5 +1,7 @@
 package com.example.gofuel.modelView.Invoiceline;
 
+import android.view.View;
+
 import com.example.gofuel.databinding.ItemItemsBinding;
 import com.example.gofuel.model.invoice.invoiceline.InvoiceLine;
 
@@ -19,5 +21,6 @@ public class InvoicelineItemViewModel {
         binding.itemCategory.setText(item.getItem().getSubcategory().getCategory().getName());
         binding.itemTotal.setText(item.getTotal() + "€");
         binding.itemQty.setText(String.valueOf(item.getQty()));
+        binding.checkBox.setVisibility(View.VISIBLE);
     }
 }
