@@ -94,4 +94,9 @@ public class InvoiceRepository implements IInvoiceDataSource.Main {
 
         return result;
     }
+
+    @Override
+    public ResultWrapper<String> closeInvoice(Invoice invoice) {
+        return new InvoiceRemoteDataSource().closeInvoice(invoice);
+    }
 }

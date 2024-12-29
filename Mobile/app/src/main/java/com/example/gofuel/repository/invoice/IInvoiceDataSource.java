@@ -17,6 +17,7 @@ public interface IInvoiceDataSource {
         ResultWrapper<List<PendingInvoice>> getPendingInvoices();
         ResultWrapper<List<FinishedInvoice>> getFinishedInvoices();
         ResultWrapper<PendingInvoice> addInvoice(InvoicePost invoicePost);
+        ResultWrapper<String> closeInvoice(Invoice invoice);
     }
 
     // Local data source

@@ -11,6 +11,7 @@ import com.example.gofuel.repository.common.ResultWrapper;
 import com.example.gofuel.repository.invoice.IInvoiceDataSource;
 
 import java.util.List;
+import java.util.stream.LongStream;
 
 import retrofit2.Call;
 
@@ -42,6 +43,12 @@ public class InvoiceRemoteDataSource implements IInvoiceDataSource.Main {
     @Override
     public ResultWrapper<PendingInvoice> addInvoice(InvoicePost invoicePost) {
         Call<PendingInvoice> call = invoiceAPI.createInvoice(invoicePost);
+        return ResultWrapper.safeApiCall(call);
+    }
+
+    @Override
+    public ResultWrapper<String> closeInvoice(Invoice invoice) {
+        Call<String> call = invoiceAPI.closeInvoice(invoice);
         return ResultWrapper.safeApiCall(call);
     }
 }
