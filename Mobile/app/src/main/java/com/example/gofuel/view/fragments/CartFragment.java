@@ -18,6 +18,7 @@ import com.example.gofuel.modelView.Invoiceline.InvoicelineViewModel;
 import com.example.gofuel.util.State;
 import com.example.gofuel.util.callback.OnCheckedBox;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class CartFragment extends Fragment {
@@ -65,7 +66,7 @@ public class CartFragment extends Fragment {
                         linesToChange.remove(line);
                     }
                 }));
-                binding.totalValue.setText(total + "€");
+                binding.totalValue.setText(String.format("%.2f", total) + "€");
             }
         });
 
