@@ -82,4 +82,28 @@ public class InvoiceLineRepository implements IInvoiceLineDataSource.Main {
     public ResultWrapper<List<InvoiceLine>> addInvoiceLines(List<InvoicelinePost> lines) {
         return null;
     }
+
+    @Override
+    public ResultWrapper<List<InvoiceLine>> removeInvoiceLines(PendingInvoice invoice, List<InvoicelinePost> lines) {
+        ResultWrapper<List<InvoiceLine>> result = new InvoiceLineRemoteDataSource(invoice).removeInvoiceLines(lines);
+
+        if (result.getResult() != null) {
+            invoiceLineDB.deleteAll();
+            invoiceLineDB.addAll(result.getResult());
+        }
+        else {
+            // If there's data on local DB, return it
+            if(!invoiceLineDB.getAllInvoiceLines().isEmpty()) { result = new ResultWrapper <>(invoiceLineDB.getAllInvoiceLines(), null); }
+
+            // If there's no data on local DB, return an Error
+            else { result = new ResultWrapper<>(null, "No data on local DB"); }
+        }
+
+        return result;
+    }
+
+    @Override
+    public ResultWrapper<List<InvoiceLine>> removeInvoiceLines(List<InvoicelinePost> lines) {
+        return null;
+    }
 }

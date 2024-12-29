@@ -47,4 +47,15 @@ public class InvoiceLineRemoteDataSource implements IInvoiceLineDataSource.Main 
         Call<List<InvoiceLine>> call = invoiceLineAPI.addInvoiceLines(lines);
         return ResultWrapper.safeApiCall(call);
     }
+
+    @Override
+    public ResultWrapper<List<InvoiceLine>> removeInvoiceLines(PendingInvoice invoice, List<InvoicelinePost> lines) {
+        return null;
+    }
+
+    @Override
+    public ResultWrapper<List<InvoiceLine>> removeInvoiceLines(List<InvoicelinePost> lines) {
+        Call<List<InvoiceLine>> call = invoiceLineAPI.removeInvoiceLines(lines);
+        return ResultWrapper.safeApiCall(call);
+    }
 }

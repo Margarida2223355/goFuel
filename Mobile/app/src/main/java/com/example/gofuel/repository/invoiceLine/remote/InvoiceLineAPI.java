@@ -7,6 +7,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 
@@ -16,4 +17,7 @@ public interface InvoiceLineAPI {
 
     @POST("invoiceline/create")
     Call<List<InvoiceLine>> addInvoiceLines(@Body List<InvoicelinePost> lines);
+
+    @DELETE("invoiceline/remove")
+    Call<List<InvoiceLine>> removeInvoiceLines(@Body List<InvoicelinePost> lines);
 }
