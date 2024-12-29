@@ -5,6 +5,7 @@ import com.example.gofuel.model.invoice.Invoice;
 import com.example.gofuel.model.invoice.InvoicePost;
 import com.example.gofuel.model.invoice.finished.FinishedInvoice;
 import com.example.gofuel.model.invoice.pending.PendingInvoice;
+import com.example.gofuel.model.user.User;
 import com.example.gofuel.repository.common.HTTPClient;
 import com.example.gofuel.util.enums.HeaderID;
 import com.example.gofuel.repository.common.ResultWrapper;
@@ -18,8 +19,12 @@ import retrofit2.Call;
 public class InvoiceRemoteDataSource implements IInvoiceDataSource.Main {
     private final InvoiceAPI invoiceAPI;
 
+    public InvoiceRemoteDataSource(User user) {
+        this.invoiceAPI = new HTTPClient<>(InvoiceAPI.class, HeaderID.USER_ID, String.valueOf(user.getId())).get();
+    }
+
     public InvoiceRemoteDataSource() {
-        this.invoiceAPI = new HTTPClient<>(InvoiceAPI.class, HeaderID.USER_ID, String.valueOf(MyApplication.getUser().getId())).get();
+        this.invoiceAPI = new HTTPClient<>(InvoiceAPI.class).get();
     }
 
     // Method for local DB
