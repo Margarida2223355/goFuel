@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.gofuel.databinding.FragmentCartBinding;
 import com.example.gofuel.model.invoice.Invoice;
@@ -15,6 +16,7 @@ import com.example.gofuel.model.invoice.invoiceline.InvoiceLine;
 import com.example.gofuel.modelView.Invoiceline.InvoicelineAdapter;
 import com.example.gofuel.modelView.Invoiceline.InvoicelineViewModel;
 import com.example.gofuel.util.State;
+import com.example.gofuel.util.callback.OnCheckedBox;
 
 import java.util.ArrayList;
 
@@ -22,6 +24,7 @@ public class CartFragment extends Fragment {
     private FragmentCartBinding binding;
     private Invoice invoice;
     private InvoicelineViewModel viewModel;
+    private ArrayList<InvoiceLine> linesToChange;
 
     public CartFragment() {
         // Required empty public constructor
@@ -34,6 +37,7 @@ public class CartFragment extends Fragment {
         View view = binding.getRoot();
 
         viewModel = new ViewModelProvider(this).get(InvoicelineViewModel.class);
+        linesToChange = new ArrayList<>();
 
         viewModel.getState().observe(getViewLifecycleOwner(), state -> {
             if (state instanceof State.Loading) {
@@ -50,8 +54,26 @@ public class CartFragment extends Fragment {
                         .stream()
                         .mapToDouble(InvoiceLine::getTotal)
                         .sum();
-                binding.linesList.setAdapter(new InvoicelineAdapter(getContext(), lines));
+                binding.linesList.setAdapter(new InvoicelineAdapter(getContext(), lines, new OnCheckedBox() {
+                    @Override
+                    public void onChecked(InvoiceLine line) {
+                        linesToChange.add(line);
+                    }
+
+                    @Override
+                    public void onUnchecked(InvoiceLine line) {
+                        linesToChange.remove(line);
+                    }
+                }));
                 binding.totalValue.setText(total + "€");
+            }
+        });
+
+        binding.removeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewModel.removeLines(linesToChange);
+                Toast.makeText(getContext(), linesToChange.size() + " lines removed", Toast.LENGTH_SHORT).show();
             }
         });
 
