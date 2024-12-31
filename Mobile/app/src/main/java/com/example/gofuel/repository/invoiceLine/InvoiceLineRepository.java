@@ -2,7 +2,10 @@ package com.example.gofuel.repository.invoiceLine;
 
 import android.content.Context;
 
-import com.example.gofuel.model.invoice.InvoiceLine;
+import com.example.gofuel.model.invoice.Invoice;
+import com.example.gofuel.model.invoice.invoiceline.InvoiceLine;
+import com.example.gofuel.model.invoice.invoiceline.InvoicelinePost;
+import com.example.gofuel.model.invoice.pending.PendingInvoice;
 import com.example.gofuel.repository.common.AppDatabase;
 import com.example.gofuel.repository.common.ResultWrapper;
 import com.example.gofuel.repository.invoiceLine.local.InvoiceLineDB;
@@ -34,7 +37,55 @@ public class InvoiceLineRepository implements IInvoiceLineDataSource.Main {
 
     @Override
     public ResultWrapper<List<InvoiceLine>> getInvoiceLines() {
-        ResultWrapper<List<InvoiceLine>> result = new InvoiceLineRemoteDataSource().getInvoiceLines();
+        return null;
+    }
+
+    @Override
+    public ResultWrapper<List<InvoiceLine>> getInvoiceLines(Invoice invoice) {
+        ResultWrapper<List<InvoiceLine>> result = new InvoiceLineRemoteDataSource(invoice).getInvoiceLines();
+
+        if (result.getResult() != null) {
+            invoiceLineDB.deleteAll();
+            invoiceLineDB.addAll(result.getResult());
+        }
+        else {
+            // If there's data on local DB, return it
+            if(!invoiceLineDB.getAllInvoiceLines().isEmpty()) { result = new ResultWrapper <>(invoiceLineDB.getAllInvoiceLines(), null); }
+
+            // If there's no data on local DB, return an Error
+            else { result = new ResultWrapper<>(null, "No data on local DB"); }
+        }
+
+        return result;
+    }
+
+    @Override
+    public ResultWrapper<List<InvoiceLine>> addInvoiceLines(PendingInvoice invoice, List<InvoicelinePost> lines) {
+        ResultWrapper<List<InvoiceLine>> result = new InvoiceLineRemoteDataSource(invoice).addInvoiceLines(lines);
+
+        if (result.getResult() != null) {
+            invoiceLineDB.deleteAll();
+            invoiceLineDB.addAll(result.getResult());
+        }
+        else {
+            // If there's data on local DB, return it
+            if(!invoiceLineDB.getAllInvoiceLines().isEmpty()) { result = new ResultWrapper <>(invoiceLineDB.getAllInvoiceLines(), null); }
+
+            // If there's no data on local DB, return an Error
+            else { result = new ResultWrapper<>(null, "No data on local DB"); }
+        }
+
+        return result;
+    }
+
+    @Override
+    public ResultWrapper<List<InvoiceLine>> addInvoiceLines(List<InvoicelinePost> lines) {
+        return null;
+    }
+
+    @Override
+    public ResultWrapper<List<InvoiceLine>> removeInvoiceLines(List<InvoiceLine> lines) {
+        ResultWrapper<List<InvoiceLine>> result = new InvoiceLineRemoteDataSource().removeInvoiceLines(lines);
 
         if (result.getResult() != null) {
             invoiceLineDB.deleteAll();

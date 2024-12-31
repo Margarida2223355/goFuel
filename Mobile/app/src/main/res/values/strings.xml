@@ -22,4 +22,8 @@
     <string name="finishedTitle">Últimas faturas</string>
     <string name="searchHint">Nome Artigo/Categoria</string>
     <string name="cardBtn">Botão Carrinho</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="totalCart">Total:</string>
+    <string name="closeCart">Pagar</string>
 </resources>
