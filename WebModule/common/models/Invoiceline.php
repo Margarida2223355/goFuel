@@ -74,6 +74,23 @@ class InvoiceLine extends \yii\db\ActiveRecord
         return $this->hasOne(Item::class, ['id' => 'item_id']);
     }
 
+    public function afterSave($insert, $changedAttributes) {
+        parent::afterSave($insert, $changedAttributes);
+
+        if ($this -> invoice) {
+            $this -> invoice -> updateTotal();
+        }
+    }
+
+    public function afterDelete()
+    {
+        parent::afterDelete();
+
+        if ($this->invoice) {
+            $this->invoice->updateTotal();
+        }
+    }
+
     public function fields() {
         $fields = parent::fields();
 
