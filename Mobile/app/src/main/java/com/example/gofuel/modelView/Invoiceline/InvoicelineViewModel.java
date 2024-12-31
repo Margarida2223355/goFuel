@@ -33,15 +33,15 @@ public class InvoicelineViewModel extends ViewModel {
         new Thread(() -> {
             ResultWrapper<List<InvoiceLine>> result = invoiceLineRepository.getInvoiceLines(invoice);
 
-            if (result.getResult() != null) {
+            if (result.getResult().isEmpty()) {
+                state.postValue(new State.EmptyState());
+            }
+            else if (result.getResult() != null) {
                 double total = 0.0;
                 for (InvoiceLine line : result.getResult()) {
                     total += line.getTotal();
                 }
                 state.postValue(new State.InvoiceLines(result.getResult(), total));
-            }
-            else if (result.getError() != null) {
-                state.postValue(new State.EmptyState());
             }
             else {
                 Log.e("-->", "Error API: " + result.getError());
@@ -72,7 +72,10 @@ public class InvoicelineViewModel extends ViewModel {
         new Thread(() -> {
             ResultWrapper<List<InvoiceLine>> result = invoiceLineRepository.removeInvoiceLines(lines);
 
-            if (result.getResult() != null) {
+            if (result.getResult().isEmpty()) {
+                state.postValue(new State.EmptyState());
+            }
+            else if (result.getResult() != null) {
                 double total = 0.0;
                 for (InvoiceLine line : result.getResult()) {
                     total += line.getTotal();
