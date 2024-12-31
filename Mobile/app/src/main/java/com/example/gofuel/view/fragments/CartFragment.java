@@ -81,7 +81,7 @@ public class CartFragment extends Fragment {
         binding.removeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewModel.removeLines(linesToChange);
+                if (!linesToChange.isEmpty()) { viewModel.removeLines(linesToChange); }
                 //Toast.makeText(getContext(), linesToChange.size() + " lines removed", Toast.LENGTH_SHORT).show();
             }
         });
