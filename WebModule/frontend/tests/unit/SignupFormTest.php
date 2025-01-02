@@ -19,7 +19,7 @@ class SignupFormTest extends \Codeception\Test\Unit
     protected function _before()
     {
         parent::_before();
-        Yii::$app->db->createCommand()->checkIntegrity(false)->execute();
+        Yii::$app->db->createCommand()->checkIntegrity(true)->execute();
         User::deleteAll();
         UserInfo::deleteAll();
         Yii::$app->db->createCommand()->checkIntegrity(true)->execute();
@@ -59,8 +59,6 @@ class SignupFormTest extends \Codeception\Test\Unit
         $user = User::findOne(['email' => 'test@example.com']);
         assertNotNull($user);
         assertEquals('123456789', $user->userInfo->nif);
-
-        
     }
 
     public function testSignupWithInvalidData()
