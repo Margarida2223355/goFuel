@@ -3,6 +3,7 @@ package com.example.gofuel.repository.station_item.remote;
 import com.example.gofuel.model.station.Station;
 import com.example.gofuel.model.station_item.StationItem;
 import com.example.gofuel.repository.common.HTTPClient;
+import com.example.gofuel.util.enums.HeaderID;
 import com.example.gofuel.repository.common.ResultWrapper;
 import com.example.gofuel.repository.station_item.IStationItemDataSource;
 
@@ -14,7 +15,7 @@ public class StationItemRemoteDataSource implements IStationItemDataSource.Main 
     private final StationItemAPI stationItemAPI;
 
     public StationItemRemoteDataSource(Station station) {
-        this.stationItemAPI = new HTTPClient<>(StationItemAPI.class, String.valueOf(station.getId())).get();
+        this.stationItemAPI = new HTTPClient<>(StationItemAPI.class, HeaderID.STATION_ID ,String.valueOf(station.getId())).get();
     }
 
     @Override

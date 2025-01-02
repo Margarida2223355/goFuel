@@ -4,5 +4,6 @@
         <!--<domain includeSubdomains="true">10.0.2.2</domain>  - Android Studio -->
         <!--<domain includeSubdomains="true">192.168.1.87</domain>  - Home -->
         <domain includeSubdomains="true">54.242.246.148</domain>
+        <domain includeSubdomains="true">34.238.118.153</domain>
     </domain-config>
 </network-security-config>

@@ -2,7 +2,9 @@ package com.example.gofuel.repository.invoice;
 
 import android.content.Context;
 
+import com.example.gofuel.MyApplication;
 import com.example.gofuel.model.invoice.Invoice;
+import com.example.gofuel.model.invoice.InvoicePost;
 import com.example.gofuel.model.invoice.finished.FinishedInvoice;
 import com.example.gofuel.model.invoice.pending.PendingInvoice;
 import com.example.gofuel.repository.common.AppDatabase;
@@ -39,7 +41,7 @@ public class InvoiceRepository implements IInvoiceDataSource.Main {
 
     @Override
     public ResultWrapper<List<PendingInvoice>> getPendingInvoices() {
-        ResultWrapper<List<PendingInvoice>> result = new InvoiceRemoteDataSource().getPendingInvoices();
+        ResultWrapper<List<PendingInvoice>> result = new InvoiceRemoteDataSource(MyApplication.getUser()).getPendingInvoices();
 
         if (result.getResult() != null) {
             pendingInvoiceDB.deleteAll();
@@ -62,7 +64,7 @@ public class InvoiceRepository implements IInvoiceDataSource.Main {
 
     @Override
     public ResultWrapper<List<FinishedInvoice>> getFinishedInvoices() {
-        ResultWrapper<List<FinishedInvoice>> result = new InvoiceRemoteDataSource().getFinishedInvoices();
+        ResultWrapper<List<FinishedInvoice>> result = new InvoiceRemoteDataSource(MyApplication.getUser()).getFinishedInvoices();
 
         if (result.getResult() != null) {
             finishedInvoiceDB.deleteAll();
@@ -81,5 +83,21 @@ public class InvoiceRepository implements IInvoiceDataSource.Main {
         }
 
         return result;
+    }
+
+    @Override
+    public ResultWrapper<PendingInvoice> addInvoice(InvoicePost invoicePost) {
+        ResultWrapper<PendingInvoice> result = new InvoiceRemoteDataSource(MyApplication.getUser()).addInvoice(invoicePost);
+
+        if (result.getResult() != null) {
+            pendingInvoiceDB.addInvoice(result.getResult());
+        }
+
+        return result;
+    }
+
+    @Override
+    public ResultWrapper<String> closeInvoice(Invoice invoice) {
+        return new InvoiceRemoteDataSource().closeInvoice(invoice);
     }
 }

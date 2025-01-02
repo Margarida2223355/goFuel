@@ -7,4 +7,5 @@
     <color name="blackButton">#4D000000</color>
     <color name="searchIcon">#993C3C43</color>
     <color name="searchBack">#EDFAFAFA</color>
+    <color name="cardBackCart">#80000000</color>
 </resources>
