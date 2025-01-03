@@ -9,9 +9,26 @@ class SignupCest
 {
     protected $formId = '#form-signup';
 
+    public function _fixtures()
+    {
+        return [
+            'auth_assignment' => [
+                'class' => \common\fixtures\AuthassignmentFixture::class,
+                'tableName' => 'auth_assignment',
+                'dataFile' => codecept_data_dir() . 'authassignment.php',
+            ],
+            'auth_item' => [
+                'class' => \common\fixtures\AuthitemFixture::class,
+                'tableName' => 'auth_item',
+                'dataFile' => codecept_data_dir() . 'authitem.php',
+            ],
+        ];
+    }
+
 
     public function _before(FunctionalTester $I)
     {
+
         $I->amOnRoute('site/signup');
     }
 

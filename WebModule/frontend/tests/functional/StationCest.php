@@ -5,6 +5,7 @@ namespace frontent\tests\functional;
 use common\models\ClientStation;
 use common\models\Station;
 use frontend\tests\FunctionalTester;
+use Yii;
 
 use function PHPUnit\Framework\assertNotEquals;
 
@@ -47,11 +48,35 @@ class StationCest
     public function _before(FunctionalTester $I)
     {
         $I->amOnRoute('site/login');
+        $auth = Yii::$app->authManager;
+
+        #region Roles(Create, Add and Assignment)
+        //Create roles
+        $admin = $auth->createRole('Admin');
+        $manager = $auth->createRole('Manager');
+        $inCharge = $auth->createRole('Incharge');
+        $employee = $auth->createRole('Employee');
+        $client = $auth->createRole('Client');
+
+        //Add roles
+        $auth->add($admin);
+        $auth->add($manager);
+        $auth->add($inCharge);
+        $auth->add($employee);
+        $auth->add($client);
+
+        //Assign roles to created users
+        $auth->assign($admin, 1);
+        $auth->assign($manager, 2);
+        $auth->assign($inCharge, 3);
+        $auth->assign($employee, 4);
+        $auth->assign($client, 5);
+        $auth->assign($client, 6);
     }
 
     public function checkStationDetailsAndItems(FunctionalTester $I)
     {
-        $this->login($I);
+        $this->login($I, 'client', 'password');
         $I->see('HomePage');
         $I->seeLink('Service Areas');
         $I->click('Service Areas');
@@ -79,6 +104,7 @@ class StationCest
 
     protected function login(FunctionalTester $I)
     {
+        //User logged aqui é o user de id 5
         $I->submitForm('#login-form', $this->formParams('client', 'password'));
         $I->see('HomePage');
         $I->see('Your favourite station');

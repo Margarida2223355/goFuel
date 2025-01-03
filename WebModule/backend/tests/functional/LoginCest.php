@@ -4,41 +4,61 @@ namespace backend\tests\functional;
 
 use backend\tests\FunctionalTester;
 use common\fixtures\UserFixture;
+use common\models\User;
+use Yii;
 
 /**
  * Class LoginCest
  */
 class LoginCest
 {
-    /**
-     * Load fixtures before db transaction begin
-     * Called in _before()
-     * @see \Codeception\Module\Yii2::_before()
-     * @see \Codeception\Module\Yii2::loadFixtures()
-     * @return array
-     */
     public function _fixtures()
     {
         return [
             'user' => [
-                'class' => UserFixture::class,
-                'dataFile' => codecept_data_dir() . 'login_data.php'
-            ]
+                'class' => \common\fixtures\UserFixture::class,
+                'dataFile' => codecept_data_dir() . 'user.php',
+            ],
+            'userInfo' => [
+                'class' => \common\fixtures\UserInfoFixture::class,
+                'dataFile' => codecept_data_dir() . 'userinfo.php',
+            ],
+            'auth_assignment' => [
+                'class' => \common\fixtures\AuthassignmentFixture::class,
+                'tableName' => 'auth_assignment',
+                'dataFile' => codecept_data_dir() . 'authassignment.php',
+            ],
+            'auth_item' => [
+                'class' => \common\fixtures\AuthitemFixture::class,
+                'tableName' => 'auth_item',
+                'dataFile' => codecept_data_dir() . 'authitem.php',
+            ],
         ];
     }
-    
+
+    public function _before() {}
+
     /**
      * @param FunctionalTester $I
      */
     public function loginUser(FunctionalTester $I)
     {
-        $I->amOnRoute('/site/login');
-        $I->fillField('Username', 'erau');
-        $I->fillField('Password', 'password_0');
-        $I->click('login-button');
+        $I->amOnPage('/site/login');
+        $I->see('Login');
 
-        $I->see('Logout (erau)', 'form button[type=submit]');
-        $I->dontSeeLink('Login');
-        $I->dontSeeLink('Signup');
+        $I->fillField('LoginForm[username]', 'admin');
+        $I->fillField('LoginForm[password]', 'password');
+        $I->click('Login');
+
+        $I->see('HomePage');
+        $I->see('Profile (Admin)');
+    }
+
+    public function loginWithEmptyFields(FunctionalTester $I)
+    {
+        $I->amOnPage('/site/login');
+        $I->click('Login');
+        $I->see('Username cannot be blank.');
+        $I->see('Password cannot be blank.');
     }
 }

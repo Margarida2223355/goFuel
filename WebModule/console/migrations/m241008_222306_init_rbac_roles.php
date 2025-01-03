@@ -36,7 +36,7 @@ class m241008_222306_init_rbac_roles extends Migration
 
         #endregion
 
-        $permissions = [
+        /*$permissions = [
             'CategoryController' => [
                 'CategoryIndexPermission',
                 'CategoryViewPermission',
@@ -103,7 +103,7 @@ class m241008_222306_init_rbac_roles extends Migration
                 $permission->description = "Permission for {$action}";
                 $auth->add($permission);
             }
-        }
+        }*/
 
         // Child assignment
         // $auth->addChild($inCharge, $employee);
