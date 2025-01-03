@@ -52,10 +52,12 @@ public class CartFragment extends Fragment {
             if (state instanceof State.Loading) {
                 binding.linesList.setVisibility(View.GONE);
                 binding.totalCard.setVisibility(View.GONE);
+                binding.emptyState.setVisibility(View.GONE);
                 binding.loading.setVisibility(View.VISIBLE);
             }
             else if (state instanceof State.InvoiceLines) {
                 binding.loading.setVisibility(View.GONE);
+                binding.emptyState.setVisibility(View.GONE);
                 binding.linesList.setVisibility(View.VISIBLE);
                 binding.totalCard.setVisibility(View.VISIBLE);
                 ArrayList<InvoiceLine> lines = new ArrayList<>(((State.InvoiceLines) state).getInvoiceLines());
@@ -76,12 +78,18 @@ public class CartFragment extends Fragment {
                 }));
                 binding.totalValue.setText(String.format("%.2f", total) + "€");
             }
+            else if (state instanceof State.EmptyState) {
+                binding.loading.setVisibility(View.GONE);
+                binding.linesList.setVisibility(View.GONE);
+                binding.totalCard.setVisibility(View.GONE);
+                binding.emptyState.setVisibility(View.VISIBLE);
+            }
         });
 
         binding.removeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewModel.removeLines(linesToChange);
+                if (!linesToChange.isEmpty()) { viewModel.removeLines(linesToChange); }
                 //Toast.makeText(getContext(), linesToChange.size() + " lines removed", Toast.LENGTH_SHORT).show();
             }
         });

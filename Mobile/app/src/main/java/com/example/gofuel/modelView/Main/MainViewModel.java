@@ -19,6 +19,7 @@ import com.example.gofuel.util.State;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MainViewModel extends ViewModel {
     private final ClientStationRepository clientStationRepository;
@@ -43,12 +44,8 @@ public class MainViewModel extends ViewModel {
             ResultWrapper<List<FinishedInvoice>> finishedInvoices = invoiceRepository.getFinishedInvoices();
 
             if ((favoriteStation.getError() == null) && (pendingInvoices.getError() == null) && (finishedInvoices.getError() == null)) {
-                Double total = 0.0;
+                Double total = pendingInvoices.getResult().stream().mapToDouble(PendingInvoice::getTotal).sum();
                 HashMap<String, String> pendingValues = new HashMap<>();
-
-                for (PendingInvoice invoice : pendingInvoices.getResult()) {
-                    total += invoice.getTotal();
-                }
 
                 pendingValues.put("Nº Faturas", String.valueOf(pendingInvoices.getResult().size()));
                 pendingValues.put("Valor Faturas [€]", total + "€");

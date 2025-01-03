@@ -24,10 +24,10 @@ public class ItemStationItemViewModel {
         this.stationItem = item;
         binding.itemName.setText(item.getItem().getDescription());
         binding.itemCategory.setText(item.getItem().getSubcategory().getCategory().getName());
-        binding.itemUnitPrice.setText(item.getPrice() + "€");
+        binding.itemUnitPrice.setText(String.format("%.2f", item.getPrice()) + "€");
         binding.itemQty.setText(String.valueOf(qty));
 
         Double finalValue = qty * (item.getPrice());
-        binding.itemTotal.setText(finalValue + "€");
+        binding.itemTotal.setText(String.format("%.2f", finalValue) + "€");
     }
 }
