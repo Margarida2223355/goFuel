@@ -226,6 +226,46 @@ public class ItemFragment extends Fragment {
 
                 dialog.show();
             }
+            else if (state instanceof State.EmptyState) {
+                List<String> codes = new ArrayList<>();
+                codes.add("Nova Fatura");
+
+                popup.invoiceList.setAdapter(new ArrayAdapter<>(
+                        getContext(),
+                        R.layout.simple_item,
+                        codes
+                ));
+
+                popup.invoiceList.setOnItemClickListener((parent, view, position, id) -> {
+                    CartFragment cartFragment = new CartFragment();
+
+                    if (position == (codes.size() - 1)) {
+                        invoiceViewModel.createInvoice(new InvoicePost(MyApplication.getUser().getId(), station.getId()), new InvoiceCreate() {
+                            @Override
+                            public void onSuccess(PendingInvoice pendingInvoice) {
+                                cartFragment.setInvoice(pendingInvoice);
+                                addItemsToInvoice(pendingInvoice);
+
+                                dialog.dismiss();
+
+                                AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                                activity.getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.fragment, cartFragment)
+                                        .addToBackStack(null)
+                                        .commit();
+                            }
+
+                            @Override
+                            public void onError(String error) {
+                                Log.e("-->", "Error: " + error);
+                            }
+                        });
+                    }
+                });
+
+                dialog.show();
+            }
         });
 
         invoiceViewModel.loadPendingInvoices();
