@@ -31,11 +31,11 @@ public class StationViewModel extends ViewModel {
         new Thread(() -> {
             ResultWrapper<List<Station>> result = stationRepository.getStations();
 
-            if (result.getResult() != null) {
-                state.postValue(new State.StationList(result.getResult()));
-            }
-            else if (result.getError() != null) {
+            if (result.getResult().isEmpty()) {
                 state.postValue(new State.EmptyState());
+            }
+            else if (result.getResult() != null) {
+                state.postValue(new State.StationList(result.getResult()));
             }
             else {
                 Log.e("-->", "Error API: " + result.getError());

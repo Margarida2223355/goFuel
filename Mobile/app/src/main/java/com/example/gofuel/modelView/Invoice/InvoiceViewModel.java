@@ -35,12 +35,12 @@ public class InvoiceViewModel extends ViewModel {
         new Thread(() -> {
             ResultWrapper<List<PendingInvoice>> result = invoiceRepository.getPendingInvoices();
 
-            if (result.getResult() != null) {
-                state.postValue(new State.PendingInvoiceList(result.getResult()));
-            }
-            else if (result.getError() != null) {
+            if (result.getResult().isEmpty()) {
                 state.postValue(new State.EmptyState());
-            } else {
+            }
+            else if (result.getResult() != null) {
+                state.postValue(new State.PendingInvoiceList(result.getResult()));
+            }else if (result.getError() != null) {
                 Log.e("-->", "Error API: " + result.getError());
                 state.postValue(new State.NoInternet());
             }

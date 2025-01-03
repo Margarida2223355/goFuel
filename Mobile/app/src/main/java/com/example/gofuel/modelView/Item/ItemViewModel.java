@@ -39,15 +39,15 @@ public class ItemViewModel extends ViewModel {
         new Thread(() -> {
             ResultWrapper<List<StationItem>> result = stationItemRepository.getStationItems(station);
 
-            if (result.getResult() != null) {
+            if (result.getResult().isEmpty()) {
+                state.postValue(new State.EmptyState());
+            }
+            else if (result.getResult() != null) {
                 for (StationItem item : result.getResult()) {
                     items.put(item, 0);
                 }
 
                 state.postValue(new State.StationItemList(items));
-            }
-            else if (result.getError() != null) {
-                state.postValue(new State.EmptyState());
             }
             else {
                 Log.e("-->", "Error API: " + result.getError());
@@ -75,7 +75,12 @@ public class ItemViewModel extends ViewModel {
                         HashMap::new
                 ));
 
-        state.setValue(new State.StationItemList(filteresItems));
+        if (filteresItems.isEmpty()) {
+            state.setValue(new State.EmptyState());
+        }
+        else {
+            state.setValue(new State.StationItemList(filteresItems));
+        }
     }
 
     public void updateItemsQty(StationItem item, int qty) {

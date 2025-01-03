@@ -61,7 +61,8 @@ public class MainFragment extends Fragment {
                 //Disable list clicks
                 binding.favoriteStation.setEnabled(false);
                 binding.pendingInvoices.setEnabled(false);
-                binding.finishedInvoices.setEnabled(false);
+                binding.finishedInvoices.setClickable(false);
+                binding.finishedInvoices.setSelector(android.R.color.transparent);
             }
         });
 
