@@ -85,6 +85,7 @@ class StationController extends Controller
             'managersList' => $managersList,
             'dataProvider' => $dataProvider,
             'isUpdate' => $isUpdate,
+            'currentPumpsCount' => 0,
         ]);
     }
 
@@ -109,7 +110,7 @@ class StationController extends Controller
             'station' => $station,
             'model' => $model,
             'id' => $id,
-            'dataProvider' => $dataProvider,
+            'dataProvider' => $dataProvider
         ]);
     }
 
@@ -127,13 +128,13 @@ class StationController extends Controller
         });
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $managerId = Yii::$app->request->post('Station')['manager_id'];
+            /*$managerId = Yii::$app->request->post('Station')['manager_id'];
             if ($managerId) {
                 $stationUser = new StationUser();
                 $stationUser->user_id = $managerId;
                 $stationUser->station_id = $model->id;
                 $stationUser->save();
-            }
+            }*/
 
             $pumpsCount = Yii::$app->request->post('Station')['pumps_count'] ?? 0;
 
@@ -152,8 +153,6 @@ class StationController extends Controller
         ]);
     }
 
-
-
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -163,22 +162,37 @@ class StationController extends Controller
             ->where(['auth_assignment.item_name' => 'Manager'])
             ->all();
 
-        $managersList = \yii\helpers\ArrayHelper::map($managers, 'id', 'userInfo.name');
-        $isUpdate = true;
+        $managersList = \yii\helpers\ArrayHelper::map($managers, 'id', function ($model) {
+            return $model->userInfo ? $model->userInfo->name : 'N/A';
+        });
 
+        $isUpdate = true;
         $dataProvider = new \yii\data\ActiveDataProvider([
             'query' => Station::find()->orderBy(['is_deleted' => SORT_ASC]),
         ]);
 
+        $currentPumpsCount = Pump::find()->where(['station_id' => $id])->count();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $pumpsCount = Yii::$app->request->post('Station')['pumps_count'] ?? 0;
+
+            Pump::deleteAll(['station_id' => $model->id]);
+
+            for ($i = 0; $i < $pumpsCount; $i++) {
+                $pump = new Pump();
+                $pump->station_id = $model->id;
+                $pump->save();
+            }
+
             return $this->redirect(['index']);
         }
 
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'isUpdate' => $isUpdate,
             'model' => $model,
             'managersList' => $managersList,
+            'dataProvider' => $dataProvider,
+            'isUpdate' => $isUpdate,
+            'currentPumpsCount' => $currentPumpsCount,
         ]);
     }
 

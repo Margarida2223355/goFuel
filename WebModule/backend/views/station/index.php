@@ -32,6 +32,7 @@ if ($alert) {
         'model' => $model,
         'managersList' => $managersList,
         'isUpdate' => $isUpdate,
+        'currentPumpsCount' => $currentPumpsCount,
     ]);  ?>
 
     <div class="row">

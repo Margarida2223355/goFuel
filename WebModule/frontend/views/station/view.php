@@ -16,8 +16,6 @@ $this->params['breadcrumbs'][] = $model->name;
 
 <div class="station-view">
 
-
-
     <h1><?= Html::encode($model->name) ?></h1>
 
     <?= DetailView::widget([

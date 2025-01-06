@@ -167,7 +167,7 @@ class InvoiceController extends Controller
             if ($item->stock >= $line->qty) {
                 $item->stock -= $line->qty;
                 $invoice->state_id = 2;
-                $invoice->code = $this->generateRandomCode();
+                $invoice->generateRandomCode();
                 $invoice->save();
                 $item->save();
             } else {

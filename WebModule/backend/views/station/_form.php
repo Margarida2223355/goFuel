@@ -33,7 +33,7 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'phone')->textInput(['maxlength' => true, 'placeholder' => 'Phone'])->label(false) ?>
         </div>
         <div class="col-md-3">
-            <?= $form->field($model, 'pumps_count')->textInput(['type' => 'number', 'min' => 0, 'placeholder' => 'Number of Pumps'])->label(false) ?>
+            <?= $form->field($model, 'pumps_count')->textInput(['type' => 'number', 'value' => $isUpdate ? $currentPumpsCount : 0, 'min' => 0])->label(false) ?>
         </div>
         <div class="col-md-3">
             <?= $form->field($model, 'manager_id')->dropDownList($managersList, ['prompt' => 'Select a Manager'])->label(false) ?>

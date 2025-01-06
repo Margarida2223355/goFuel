@@ -84,6 +84,11 @@ class Station extends \yii\db\ActiveRecord
 
     public function isFavoritedByUser($userId)
     {
+        if ($this->getClientStations()->where(['client_id' => $userId])->exists()) {
+            return true;
+        } else {
+            return false;
+        }
         return $this->getClientStations()
             ->where(['client_id' => $userId])
             ->exists();
