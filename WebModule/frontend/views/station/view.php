@@ -15,7 +15,6 @@ $this->params['breadcrumbs'][] = $model->name;
 ?>
 
 <div class="station-view">
-
     <h1><?= Html::encode($model->name) ?></h1>
 
     <?= DetailView::widget([
@@ -134,7 +133,7 @@ $this->params['breadcrumbs'][] = $model->name;
                             Html::submitButton('<i class="fa fa-shopping-cart"></i>', [
                                 'class' => 'btn btn-sm',
                                 'style' => 'color: #FFD100; text-decoration: none;',
-                                'data-confirm' => 'Do you want to add this item to your cart?',
+                                //'data-confirm' => 'Do you want to add this item to your cart?',
                                 'title' => 'Add to Cart',
                             ]) .
                             Html::endForm();

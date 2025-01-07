@@ -254,36 +254,6 @@ class ItemController extends Controller
         ]);
     }
 
-    public function actionRestock($id)
-    {
-        $item = Item::findOne($id);
-        if (!$item) {
-            throw new NotFoundHttpException('Item not found.');
-        }
-
-        $stationId = Yii::$app->user->identity->stationUsers->station_id;
-        $item = StationItem::findOne(['item_id' => $id, 'station_id' => $stationId])->orderBy(['is_deleted' => SORT_DESC]);
-
-        if ($item) {
-            $item->stock += $item->restock_qty;
-            if ($item->save()) {
-                Yii::$app->session->set('alert', [
-                    'type' => 'success',
-                    'title' => 'Success!',
-                    'message' => 'Item restocked successfully.',
-                ]);
-            } else {
-                Yii::$app->session->set('alert', [
-                    'type' => 'error',
-                    'title' => 'Error!',
-                    'message' => 'Failed to restock item.',
-                ]);
-            }
-        }
-
-        return $this->redirect(['index']);
-    }
-
     protected function findModel($id)
     {
         if (($model = Item::findOne(['id' => $id])) !== null) {

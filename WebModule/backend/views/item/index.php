@@ -154,7 +154,7 @@ if ($alert) {
                     'restock' => function ($url, $model) {
                         return Html::a(
                             '<i class="fa fa-box-open"></i>',
-                            ['item/restock', 'id' => $model->item_id],
+                            ['station-item/restock', 'item_id' => $model->item_id, 'station_id' => $model->station_id],
                             [
                                 'title' => 'Restock Item',
                                 'data-confirm' => 'Do you want to restock this item?',

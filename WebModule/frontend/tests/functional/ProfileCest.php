@@ -3,12 +3,13 @@
 namespace frontent\tests\functional;
 
 use common\models\StationItem;
+use common\models\User;
 use frontend\tests\FunctionalTester;
 use Yii;
 
 use function PHPUnit\Framework\assertNotEquals;
 
-class InvoiceCest
+class ProfileCest
 {
     public function _fixtures()
     {
@@ -53,49 +54,26 @@ class InvoiceCest
         $I->amOnRoute('site/login');
         $this->login($I);
 
-        $I->click('Service Areas');
-        $I->see('Stations');
+        $I->click('Profile');
+        $I->see('Update Profile');
     }
 
-    public function checkAddToCart(FunctionalTester $I)
+    public function checkChangeProfileInfo(FunctionalTester $I)
     {
-        $I->click('Station 1');
-        $I->see('Available Items');
+        $I->submitForm('form', [
+            'SignupForm[username]' => 'username',
+            'SignupForm[email]' => 'newemail@example.com',
+            'SignupForm[nif]' => '463469465',
+            'SignupForm[name]' => 'New Name',
+            'SignupForm[address]' => '123 New Street',
+            'SignupForm[postal_code]' => '1365-563',
+            'SignupForm[phone]' => '463469465',
+        ]);
 
-        $I->fillField('input[name="quantity"]', '20');
-        $I->click('button.btn-sm[title="Add to Cart"]');
+        $user = User::findOne(['id' => 5]);
 
-        $sItem = StationItem::findOne(['item_id' => 2, 'station_id' => 1]);
-        $total  = $sItem->price * 20;
-
-        $I->click('Cart');
-        $I->see('No results found.');
-
-        /*$stationItem = \common\models\StationItem::findOne(['item_id' => 2, 'station_id' => 1]);
-
-        $invoice = \common\models\Invoice::findOne(['station_id' => 1]);
-        dd($invoice);
-        if ($invoice) {
-            echo ('Invoice Found: ' . $invoice->id);
-        } else {
-            echo ('Invoice Not Found!');
-        }
-
-        // Abrir a fatura específica
-        $invoice = \common\models\Invoice::find()->where([
-            'station_id' => $sItem->station_id,
-            'client_id' => Yii::$app->user->id, // Substituir pelo ID do cliente autenticado
-        ])->orderBy(['id' => SORT_DESC])->one();
-
-        $I->amOnPage(['/invoice/view', 'id' => $invoice->id]);
-        $I->see('Invoice ' . $invoice->id . ' | Details', 'h1');
-        $I->see($total);
-
-        // Verificar a presença do item e os valores da linha de fatura
-        $I->see($sItem->item->description, 'table');
-        $I->see(Yii::$app->formatter->asCurrency($sItem->price, 'EUR'), 'table');
-        $I->see('20', 'table');
-        $I->see(Yii::$app->formatter->asCurrency($total, 'EUR'), 'table');*/
+        $I->assertNotEquals('client@example.com', $user->email);
+        $I->assertEquals('newemail@example.com', $user->email);
     }
 
     protected function login(FunctionalTester $I)

@@ -73,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <tr>
                                             <td><?= Html::encode($line->item->description) ?></td>
                                             <td><?= Html::encode($stationItem->price) ?></td>
-                                            <td><?= Html::encode($line->qty) ?></td>
+                                            <td><?= Html::encode(round($line->qty,2)) ?></td>
                                             <td><?= Html::encode($line->total) ?></td>
                                             <?php if ($model->state_id == 1): ?>
                                                 <td>

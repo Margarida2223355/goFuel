@@ -83,9 +83,9 @@ class InvoiceController extends Controller
             } else {
                 $invoiceLine = new InvoiceLine();
                 $invoiceLine->item_id = $stationItem->item_id;
-                $invoiceLine->qty = round($quantityToAdd, 2);
+                $invoiceLine->qty = $quantityToAdd;
                 $invoiceLine->invoice_id = $existInvoice->id;
-                $invoiceLine->total = round($stationItem->price * $quantityToAdd, 2);
+                $invoiceLine->total = $stationItem->price * $quantityToAdd;
                 if (!$invoiceLine->save()) {
                     throw new \yii\web\ServerErrorHttpException("Failed to save the new invoicssse line.");
                 }
@@ -105,7 +105,7 @@ class InvoiceController extends Controller
 
             $invoiceLine = new InvoiceLine();
             $invoiceLine->item_id = $stationItem->item_id;
-            $invoiceLine->qty = round($quantityToAdd, 2);
+            $invoiceLine->qty = $quantityToAdd;
             $invoiceLine->invoice_id = $invoice->id;
             $invoiceLine->total = $stationItem->price * $quantityToAdd;
 
@@ -120,9 +120,6 @@ class InvoiceController extends Controller
 
         return $this->redirect(['station/view', 'id' => $stationItem->station_id]);
     }
-
-
-
 
     public function actionIndex()
     {

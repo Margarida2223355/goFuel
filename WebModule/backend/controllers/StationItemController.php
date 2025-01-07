@@ -142,6 +142,35 @@ class StationItemController extends Controller
         ]);
     }
 
+    public function actionRestock($item_id, $station_id)
+    {
+        $item = Item::findOne($item_id);
+        if (!$item) {
+            throw new NotFoundHttpException('Item not found.');
+        }
+
+        $sitem = StationItem::findOne(['item_id' => $item_id, 'station_id' => $station_id]);
+
+        if ($sitem) {
+            $sitem->stock += $item->restock_qty;
+            if ($sitem->save()) {
+                Yii::$app->session->set('alert', [
+                    'type' => 'success',
+                    'title' => 'Success!',
+                    'message' => 'Item restocked successfully.',
+                ]);
+            } else {
+                Yii::$app->session->set('alert', [
+                    'type' => 'error',
+                    'title' => 'Error!',
+                    'message' => 'Failed to restock item.',
+                ]);
+            }
+        }
+
+        return $this->redirect(['item/index']);
+    }
+
     protected function findModel($station_id, $item_id)
     {
         if (($model = StationItem::findOne(['station_id' => $station_id, 'item_id' => $item_id])) !== null) {

@@ -221,7 +221,7 @@ class SiteController extends Controller
                 $userInfo->phone = $model->phone;
 
                 if ($userInfo->save()) {
-                    Yii::$app->session->setFlash('success', 'Dados atualizados com sucesso.');
+                    Yii::$app->session->setFlash('success', 'Data succefully updates.');
                     return $this->redirect(['profile', 'id' => $user->id]);
                 } else {
                     Yii::$app->session->setFlash('error', 'Faild updating user Info: ' . json_encode($userInfo->getErrors()));
