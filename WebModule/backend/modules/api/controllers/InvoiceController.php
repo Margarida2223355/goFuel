@@ -84,7 +84,7 @@
 
         private static function formatInvoiceFields($data): array {
             if ($data instanceof Invoice) {
-                $data = $data -> toArray();
+                $data = [$data -> toArray()];
             }
             return
                 array_map(function ($invoice) {
