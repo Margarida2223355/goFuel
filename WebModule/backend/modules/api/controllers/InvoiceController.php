@@ -83,26 +83,19 @@
         }
 
         private static function formatInvoiceFields($data): array {
-            if (is_array($data)) {
-                return
-                    array_map(function ($invoice) {
-                        unset($invoice['client_id'], $invoice['station_id'], $invoice['state_id']);
-                        
-                        $invoice['client'] = $invoice['client'];
-                        $invoice['station'] = $invoice['station'];
-                        $invoice['state'] = $invoice['state'];
-                        return $invoice;
-                    }, $data);
+            if ($data instanceof Invoice) {
+                $data = $data -> toArray();
             }
-            elseif ($data instanceof Invoice) {
-                $invoice = $data -> toArray();
-                unset($invoice['client_id'], $invoice['station_id'], $invoice['state_id']);
+            return
+                array_map(function ($invoice) {
 
-                $invoice['client'] = $invoice['client'];
-                $invoice['station'] = $invoice['station'];
-                $invoice['state'] = $invoice['state'];
-                return $invoice;
-            }
+                    $invoice['client'] = $invoice['client'];
+                    $invoice['station'] = $invoice['station'];
+                    $invoice['state'] = $invoice['state'];
+
+                    unset($invoice['client_id'], $invoice['station_id'], $invoice['state_id']);
+                    return $invoice;
+                }, $data);
         }
     }
 ?>
