@@ -90,7 +90,7 @@
                         $invoice['station'] = $invoice['station'];
                         $invoice['state'] = $invoice['state'];
 
-                        unset($invoice['item_id'], $invoice['invoice_id'], $invoice['state_id']);
+                        unset($invoice['client_id'], $invoice['station_id'], $invoice['state_id']);
                         return $invoice;
                     }, $data);
             }
@@ -100,7 +100,7 @@
                 $invoice['station'] = $invoice['station'];
                 $invoice['state'] = $invoice['state'];
 
-                unset($invoice['item_id'], $invoice['invoice_id'], $invoice['state_id']);
+                unset($invoice['client_id'], $invoice['station_id'], $invoice['state_id']);
                 return $invoice;
             }
         }
