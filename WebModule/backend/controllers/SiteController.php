@@ -20,24 +20,27 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout', 'signup'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['actions'],
                         'allow' => true,
-                        'roles' => ['?'],
+                        'roles' => ['SiteActionsPermission'],
+                    ],
+                    [
+                        'actions' => ['index'],
+                        'allow' => true,
+                        'roles' => ['SiteIndexPermission'],
+                    ],
+                    [
+                        'actions' => ['login'],
+                        'allow' => true,
+                        'roles' => ['SiteLoginPermission'],
                     ],
                     [
                         'actions' => ['logout'],
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => ['SiteLogoutPermission'],
                     ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::class,
-                'actions' => [
-                    'logout' => ['post'],
                 ],
             ],
         ];

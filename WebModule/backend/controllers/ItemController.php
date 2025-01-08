@@ -9,6 +9,7 @@ use common\models\StationItem;
 use common\models\Subcategory;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -21,19 +22,44 @@ class ItemController extends Controller
      */
     public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => ['index'],
+                        'allow' => true,
+                        'roles' => ['ItemIndexPermission'],
+                    ],
+                    [
+                        'actions' => ['view'],
+                        'allow' => true,
+                        'roles' => ['ItemViewPermission'],
+                    ],
+                    [
+                        'actions' => ['create'],
+                        'allow' => true,
+                        'roles' => ['ItemCreatePermission'],
+                    ],
+                    [
+                        'actions' => ['update'],
+                        'allow' => true,
+                        'roles' => ['ItemUpdatePermission'],
+                    ],
+                    [
+                        'actions' => ['associate'],
+                        'allow' => true,
+                        'roles' => ['ItemAssociatePermission'],
+                    ],
+                    [
+                        'actions' => ['restock'],
+                        'allow' => true,
+                        'roles' => ['ItemRestockPermission'],
                     ],
                 ],
-            ]
-        );
+            ],
+        ];
     }
-
 
     public function actionIndex()
     {
@@ -93,8 +119,6 @@ class ItemController extends Controller
             'isUpdate' => false,
         ]);
     }
-
-
 
     public function actionView($id)
     {
@@ -206,30 +230,6 @@ class ItemController extends Controller
         }
 
         return $this->redirect(['index']);
-    }
-
-    public function actionDeleteAssociation($id)
-    {
-        $model = StationItem::findOne($id);
-
-        $stationId = $model->station_id;
-
-        if ($model !== null) {
-            $model->delete();
-            Yii::$app->session->set('alert', [
-                'type' => 'success',
-                'title' => 'Success!',
-                'message' => 'Item successfully disassociated.',
-            ]);
-        } else {
-            Yii::$app->session->set('alert', [
-                'type' => 'error',
-                'title' => 'Error!',
-                'message' => 'Association not founded.',
-            ]);
-        }
-
-        return $this->redirect(['index', 'stationId' => $stationId]);
     }
 
     public function actionUpdateAssociation($station_id, $item_id)

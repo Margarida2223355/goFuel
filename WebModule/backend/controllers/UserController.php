@@ -8,6 +8,7 @@ use common\models\User;
 use common\models\UserInfo;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -16,17 +17,48 @@ class UserController extends Controller
 {
     public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => ['index'],
+                        'allow' => true,
+                        'roles' => ['UserIndexPermission'],
+                    ],
+                    [
+                        'actions' => ['view'],
+                        'allow' => true,
+                        'roles' => ['UserViewPermission'],
+                    ],
+                    [
+                        'actions' => ['changerole'],
+                        'allow' => true,
+                        'roles' => ['UserChangerolePermission'],
+                    ],
+                    [
+                        'actions' => ['create'],
+                        'allow' => true,
+                        'roles' => ['UserCreatePermission'],
+                    ],
+                    [
+                        'actions' => ['update'],
+                        'allow' => true,
+                        'roles' => ['UserUpdatePermission'],
+                    ],
+                    [
+                        'actions' => ['delete'],
+                        'allow' => true,
+                        'roles' => ['UserDeletePermission'],
+                    ],
+                    [
+                        'actions' => ['reset-password'],
+                        'allow' => true,
+                        'roles' => ['UserResetPasswordPermission'],
                     ],
                 ],
-            ]
-        );
+            ],
+        ];
     }
 
     public function actionIndex()
@@ -70,7 +102,6 @@ class UserController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-
 
     public function actionView($id)
     {

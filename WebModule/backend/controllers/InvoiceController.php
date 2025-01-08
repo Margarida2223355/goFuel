@@ -7,6 +7,7 @@ use common\models\Station;
 use common\models\StationUser;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -21,17 +22,28 @@ class InvoiceController extends Controller
      */
     public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => ['index'],
+                        'allow' => true,
+                        'roles' => ['InvoiceIndexPermission'],
+                    ],
+                    [
+                        'actions' => ['view'],
+                        'allow' => true,
+                        'roles' => ['InvoiceViewPermission'],
+                    ],
+                    [
+                        'actions' => ['finish'],
+                        'allow' => true,
+                        'roles' => ['InvoiceFinishPermission'],
                     ],
                 ],
-            ]
-        );
+            ],
+        ];
     }
 
     public function actionIndex()

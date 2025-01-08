@@ -49,9 +49,9 @@ class m241107_192750_create_invoice_lines_table extends Migration
 
         $this->batchInsert('{{%invoice_lines}}', ['id', 'item_id', 'qty', 'total', 'invoice_id'], [
             [10, 5, 2, 2.0, 8],
-            [11, 2, 1, 1.5, 10],
+            [11, 2, 1, 1.6, 10],
             [12, 1, 10, 13.0, 11],
-            [17, 2, 1, 1.5, 12],
+            [17, 2, 1, 1.6, 12],
         ]);
     }
 

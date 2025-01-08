@@ -7,6 +7,7 @@ use Yii;
 use common\models\Item;
 use common\models\Station;
 use common\models\StationItem;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -16,18 +17,31 @@ class StationItemController extends Controller
 
     public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => ['associate'],
+                        'allow' => true,
+                        'roles' => ['StationItemAssociatePermission'],
+                    ],
+                    [
+                        'actions' => ['delete-association'],
+                        'allow' => true,
+                        'roles' => ['StationItemDeleteAssociationPermission'],
+                    ],
+                    [
+                        'actions' => ['update-association'],
+                        'allow' => true,
+                        'roles' => ['StationItemUpdateAssociationPermission'],
                     ],
                 ],
-            ]
-        );
+            ],
+        ];
     }
+
+
 
     public function actionAssociate()
     {
@@ -74,7 +88,6 @@ class StationItemController extends Controller
 
         return $this->redirect(['item/index']);
     }
-
 
     public function actionDeleteAssociation($station_id, $item_id)
     {

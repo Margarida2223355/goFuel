@@ -13,82 +13,48 @@ use common\models\UserInfo;
 use hail812\adminlte\widgets\Alert;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 class StationController extends Controller
 {
-    /**
-     * @inheritDoc
-     */
     public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => ['index'],
+                        'allow' => true,
+                        'roles' => ['StationIndexPermission'],
+                    ],
+                    [
+                        'actions' => ['view'],
+                        'allow' => true,
+                        'roles' => ['StationViewPermission'],
+                    ],
+                    [
+                        'actions' => ['create'],
+                        'allow' => true,
+                        'roles' => ['StationCreatePermission'],
+                    ],
+                    [
+                        'actions' => ['update'],
+                        'allow' => true,
+                        'roles' => ['StationUpdatePermission'],
+                    ],
+                    [
+                        'actions' => ['delete'],
+                        'allow' => true,
+                        'roles' => ['StationDeletePermission'],
                     ],
                 ],
-            ]
-        );
-    }
-
-
-    public function actionIndex()
-    {
-        $currentUser = Yii::$app->user->identity;
-
-        if (!$currentUser) {
-            throw new \yii\web\ForbiddenHttpException('O usuário logado não possui permissão para visualizar esta página.');
-        }
-
-        $auth = Yii::$app->authManager;
-        $roles = $auth->getRolesByUser($currentUser->id);
-
-        $query = Station::find();
-
-        if (isset($roles['Admin'])) {
-            $query->orderBy(['is_deleted' => SORT_ASC]);
-        } elseif (isset($roles['Manager'])) {
-            $query->where(['manager_id' => $currentUser->id]);
-        } elseif (isset($roles['Incharge'])) {
-            return $this->redirect(['view', 'id' => $currentUser->stationUsers->station_id]);
-        } else {
-            throw new \yii\web\ForbiddenHttpException('Você não tem permissão para acessar esta página.');
-        }
-
-        $model = new Station();
-
-        $managers = User::find()
-            ->joinWith('authAssignments')
-            ->where(['auth_assignment.item_name' => 'Manager'])
-            ->all();
-
-        $managersList = \yii\helpers\ArrayHelper::map($managers, 'id', function ($model) {
-            return $model->userInfo ? $model->userInfo->name : 'N/A';
-        });
-
-        $dataProvider = new \yii\data\ActiveDataProvider([
-            'query' => $query,
-            'pagination' => [
-                'pageSize' => 10,
             ],
-        ]);
-        $isUpdate = false;
-
-        return $this->render('index', [
-            'model' => $model,
-            'managersList' => $managersList,
-            'dataProvider' => $dataProvider,
-            'isUpdate' => $isUpdate,
-            'currentPumpsCount' => 0,
-        ]);
+        ];
     }
-
 
     public function actionView($id)
     {

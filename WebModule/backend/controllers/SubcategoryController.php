@@ -6,6 +6,7 @@ use common\models\Category;
 use Yii;
 use common\models\Subcategory;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -15,18 +16,30 @@ class SubcategoryController extends Controller
 
     public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => ['create'],
+                        'allow' => true,
+                        'roles' => ['SubcategoryCreatePermission'],
+                    ],
+                    [
+                        'actions' => ['update'],
+                        'allow' => true,
+                        'roles' => ['SubcategoryUpdatePermission'],
+                    ],
+                    [
+                        'actions' => ['delete'],
+                        'allow' => true,
+                        'roles' => ['SubcategoryDeletePermission'],
                     ],
                 ],
-            ]
-        );
+            ],
+        ];
     }
+
 
     public function actionCreate()
     {
@@ -48,7 +61,6 @@ class SubcategoryController extends Controller
 
         return $this->redirect(['category/view', 'id' => $model->category_id]);
     }
-
 
     public function actionUpdate($id, $subcategory_id = null)
     {
