@@ -1,0 +1,12 @@
+suite_namespace: frontend\tests\acceptance
+actor: AcceptanceTester
+modules:
+   enabled:
+      - WebDriver:
+         browser: firefox
+         url: 'http://classfront.co/'
+         path: ''
+         capabilities:
+             acceptInsecureCerts: true # allow self-signed certificates
+             moz:firefoxOptions:
+                 args: [  ] # Run Firefox in headless mode

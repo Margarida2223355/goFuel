@@ -29,7 +29,7 @@ class StationController extends Controller
                     [
                         'actions' => ['index'],
                         'allow' => true,
-                        'roles' => ['StationIndexPermission'],
+                        'roles' => ['StationIndexPermission', 'manager'],
                     ],
                     [
                         'actions' => ['view'],
