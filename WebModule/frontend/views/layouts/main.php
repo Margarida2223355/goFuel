@@ -59,7 +59,7 @@ AppAsset::register($this);
             ['label' => 'Cart', 'url' => ['/invoice/index-cart']],
             ['label' => 'All Invoices', 'url' => ['/invoice/index']],
             ['label' => 'Profile', 'url' => ['/site/profile', 'id' => Yii::$app->user->identity->id]],
-            ['label' => 'GII', 'url' => ['/gii'], 'target' => '_blank'],
+            ['label' => 'Tarefas', 'url' => ['/tarefa/index']],
         ];
 
         // Right items
