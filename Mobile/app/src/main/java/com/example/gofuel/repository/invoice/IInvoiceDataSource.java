@@ -16,7 +16,7 @@ public interface IInvoiceDataSource {
     interface Remote {
         ResultWrapper<List<PendingInvoice>> getPendingInvoices();
         ResultWrapper<List<FinishedInvoice>> getFinishedInvoices();
-        ResultWrapper<PendingInvoice> addInvoice(InvoicePost invoicePost);
+        ResultWrapper<List<PendingInvoice>> addInvoice(InvoicePost invoicePost);
         ResultWrapper<String> closeInvoice(Invoice invoice);
     }
 

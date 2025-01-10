@@ -25,7 +25,7 @@ public interface InvoiceAPI {
     Call<List<FinishedInvoice>> getFinishedInvoices();
 
     @POST("invoices/createinvoice")
-    Call<PendingInvoice> createInvoice(@Body InvoicePost invoicePost);
+    Call<List<PendingInvoice>> createInvoice(@Body InvoicePost invoicePost);
 
     @PUT("invoice/updateinvoice")
     Call<String> closeInvoice(@Query("id") int id);

@@ -46,8 +46,8 @@ public class InvoiceRemoteDataSource implements IInvoiceDataSource.Main {
     }
 
     @Override
-    public ResultWrapper<PendingInvoice> addInvoice(InvoicePost invoicePost) {
-        Call<PendingInvoice> call = invoiceAPI.createInvoice(invoicePost);
+    public ResultWrapper<List<PendingInvoice>> addInvoice(InvoicePost invoicePost) {
+        Call<List<PendingInvoice>> call = invoiceAPI.createInvoice(invoicePost);
         return ResultWrapper.safeApiCall(call);
     }
 

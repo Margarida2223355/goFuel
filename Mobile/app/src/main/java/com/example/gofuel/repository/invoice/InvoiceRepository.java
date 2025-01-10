@@ -86,11 +86,11 @@ public class InvoiceRepository implements IInvoiceDataSource.Main {
     }
 
     @Override
-    public ResultWrapper<PendingInvoice> addInvoice(InvoicePost invoicePost) {
-        ResultWrapper<PendingInvoice> result = new InvoiceRemoteDataSource(MyApplication.getUser()).addInvoice(invoicePost);
+    public ResultWrapper<List<PendingInvoice>> addInvoice(InvoicePost invoicePost) {
+        ResultWrapper<List<PendingInvoice>> result = new InvoiceRemoteDataSource(MyApplication.getUser()).addInvoice(invoicePost);
 
         if (result.getResult() != null) {
-            pendingInvoiceDB.addInvoice(result.getResult());
+            pendingInvoiceDB.addInvoice(result.getResult().get(0));
         }
 
         return result;

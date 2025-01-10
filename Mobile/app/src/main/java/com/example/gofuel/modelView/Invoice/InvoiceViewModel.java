@@ -49,10 +49,10 @@ public class InvoiceViewModel extends ViewModel {
 
     public void createInvoice(InvoicePost invoicePost, InvoiceCreate callback) {
         new Thread(() -> {
-            ResultWrapper<PendingInvoice> result = invoiceRepository.addInvoice(invoicePost);
+            ResultWrapper<List<PendingInvoice>> result = invoiceRepository.addInvoice(invoicePost);
 
             if (result.getResult() != null) {
-                callback.onSuccess(result.getResult());
+                callback.onSuccess(result.getResult().get(0));
             }
             else if (result.getError() != null) {
                 callback.onError(result.getError());
