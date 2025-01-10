@@ -7,6 +7,7 @@ use Yii;
 use common\models\Item;
 use common\models\Station;
 use common\models\StationItem;
+use common\models\User;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -40,8 +41,6 @@ class StationItemController extends Controller
             ],
         ];
     }
-
-
 
     public function actionAssociate()
     {

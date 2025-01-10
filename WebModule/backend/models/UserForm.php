@@ -77,6 +77,8 @@ class UserForm extends Model
             $roles = $allRoles;
         } elseif (Yii::$app->user->can('Manager')) {
             $roles = array_filter($allRoles, fn($role) => in_array($role, ['In Charge', 'Employee']));
+        } else {
+            $roles = [];
         }
         return $roles;
     }
