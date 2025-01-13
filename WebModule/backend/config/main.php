@@ -104,6 +104,7 @@ return [
                         'GET userinvoices' => 'get-user-invoices',
                         'GET paidinvoices' => 'get-paid-invoices',
                         'GET pendentinvoices' => 'get-pendent-invoices',
+                        'GET pendentstationinvoices' => 'get-pendent-station-invoices',
                         'PUT, PATCH updateinvoice/{id}' => 'updateinvoice',
                         'POST createinvoice' => 'createinvoice',
                     ],
