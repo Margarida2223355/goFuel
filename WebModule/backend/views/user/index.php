@@ -109,7 +109,7 @@ if ($alert) {
             [
                 'class' => ActionColumn::class,
                 'header' => 'Actions',
-                'template' => '{view} {update} {reset-password} {delete} {ban} {task}',
+                'template' => '{view} {update} {reset-password} {delete} {ban}',
                 'buttons' => [
                     'reset-password' => function ($url, $model) {
                         if ($model->id != Yii::$app->user->id) {
@@ -184,22 +184,6 @@ if ($alert) {
                             }
                         }
                     },
-                    //Defesa prática
-                    'task' => function ($url, $model) {
-                        $authManager = Yii::$app->authManager;
-                        $logg = $authManager->getRolesByUser($model->id);
-                        $roleNames = array_keys($logg);
-                        if (in_array('Client', $roleNames)) {
-                            return Html::a(
-                                'Tarefas',
-                                ['tarefa/index', 'user_id' => $model->id],
-                                [
-                                    'title' => 'View Tasks',
-                                    'style' => 'color: #000000; text-decoration: none;',
-                                ]
-                            );
-                        }
-                    }
                 ],
             ],
 
