@@ -52,15 +52,24 @@
         }
 
         public function actionGetPendentInvoices() {
-            $userID = \Yii::$app -> request -> getHeaders() -> get('X-USER-ID');
+            $userID = \Yii::$app->request->getBodyParam('userID');
+            $stationID = \Yii::$app->request->getBodyParam('stationID');
 
             if (!$userID) {
                 throw new UnauthorizedHttpException('No user ID provided');
             }
 
+            if (!$stationID) {
+                throw new UnauthorizedHttpException('No station ID provided');
+            }
+
             return Invoice::find()
                 ->joinWith('state')
-                ->where(['client_id' => $userID, 'invoice_states.description' => 'Pending'])
+                ->where([
+                    'client_id' => $userID,
+                    'station_id' => $stationID,
+                    'invoice_states.description' => 'Pending'
+                    ])
                 ->all();
         }
 
