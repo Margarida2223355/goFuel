@@ -39,11 +39,15 @@
         }
 
         public function actionGetPaidInvoices() {
-            $userID = \Yii::$app -> request -> getHeaders() -> get('X-USER-ID');
-            $stationID = \Yii::$app -> request -> getHeaders() -> get('X-STATION-ID');
+            $userID = \Yii::$app->request->getBodyParam('userID');
+            $stationID = \Yii::$app->request->getBodyParam('stationID');
 
             if (!$userID) {
                 throw new UnauthorizedHttpException('No user ID provided');
+            }
+
+            if (!$stationID) {
+                throw new UnauthorizedHttpException('No station ID provided');
             }
 
             return Invoice::find()
