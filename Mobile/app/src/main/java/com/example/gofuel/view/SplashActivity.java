@@ -29,6 +29,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private ActivitySplashBinding binding;
     private UserViewModel viewModel;
+    private boolean animationFinished = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +105,8 @@ public class SplashActivity extends AppCompatActivity {
     // Use this method to get Y position of iplLogo. This method make sure the layout is all set
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        binding.iplLogo.animate()
+        if (!animationFinished) {
+            binding.iplLogo.animate()
                 .translationY(-binding.iplLogo.getY())
                 .setStartDelay(500)
                 .setDuration(1000)
@@ -113,9 +115,11 @@ public class SplashActivity extends AppCompatActivity {
                     public void onAnimationEnd(Animator animation) {
                         Log.i("-->", "Animation finished!");
                         binding.loginFrame.setVisibility(View.VISIBLE); // Show login button after animation
+                        animationFinished = true;
                     }
                 })
                 .start();
+        }
     }
 
     //region Private Funcs
