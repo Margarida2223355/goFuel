@@ -40,6 +40,7 @@
 
         public function actionGetPaidInvoices() {
             $userID = \Yii::$app -> request -> getHeaders() -> get('X-USER-ID');
+            $stationID = \Yii::$app -> request -> getHeaders() -> get('X-STATION-ID');
 
             if (!$userID) {
                 throw new UnauthorizedHttpException('No user ID provided');
@@ -47,7 +48,7 @@
 
             return Invoice::find()
                 ->joinWith('state')
-                ->where(['client_id' => $userID, 'invoice_states.description' => 'Finished'])
+                ->where(['client_id' => $userID, 'station_id' => $stationID, 'invoice_states.description' => 'Finished'])
                 ->all();
         }
 
