@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.gofuel.MyApplication;
 import com.example.gofuel.model.invoice.Invoice;
 import com.example.gofuel.model.invoice.InvoicePost;
+import com.example.gofuel.model.invoice.InvoiceStationPost;
 import com.example.gofuel.model.invoice.finished.FinishedInvoice;
 import com.example.gofuel.model.invoice.pending.PendingInvoice;
 import com.example.gofuel.repository.common.AppDatabase;
@@ -59,6 +60,16 @@ public class InvoiceRepository implements IInvoiceDataSource.Main {
             }
         }
 
+        return result;
+    }
+
+    @Override
+    public ResultWrapper<List<PendingInvoice>> getPendingStationInvoices(InvoiceStationPost invoiceStationPost) {
+        ResultWrapper<List<PendingInvoice>> result = new InvoiceRemoteDataSource().getPendingStationInvoices(invoiceStationPost);
+
+        if (result.getError() != null) {
+            return new ResultWrapper<>(null, "No network. Error: " + result.getError());
+        }
         return result;
     }
 

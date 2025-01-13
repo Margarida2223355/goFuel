@@ -3,6 +3,7 @@ package com.example.gofuel.repository.invoice.remote;
 import com.example.gofuel.MyApplication;
 import com.example.gofuel.model.invoice.Invoice;
 import com.example.gofuel.model.invoice.InvoicePost;
+import com.example.gofuel.model.invoice.InvoiceStationPost;
 import com.example.gofuel.model.invoice.finished.FinishedInvoice;
 import com.example.gofuel.model.invoice.pending.PendingInvoice;
 import com.example.gofuel.model.user.User;
@@ -36,6 +37,12 @@ public class InvoiceRemoteDataSource implements IInvoiceDataSource.Main {
     @Override
     public ResultWrapper<List<PendingInvoice>> getPendingInvoices() {
         Call<List<PendingInvoice>> call = invoiceAPI.getPendingInvoices();
+        return ResultWrapper.safeApiCall(call);
+    }
+
+    @Override
+    public ResultWrapper<List<PendingInvoice>> getPendingStationInvoices(InvoiceStationPost invoiceStationPost) {
+        Call<List<PendingInvoice>> call = invoiceAPI.getPendingStationInvoices(invoiceStationPost);
         return ResultWrapper.safeApiCall(call);
     }
 

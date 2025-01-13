@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.gofuel.MyApplication;
 import com.example.gofuel.model.invoice.Invoice;
 import com.example.gofuel.model.invoice.InvoicePost;
+import com.example.gofuel.model.invoice.InvoiceStationPost;
 import com.example.gofuel.model.invoice.pending.PendingInvoice;
 import com.example.gofuel.repository.common.ResultWrapper;
 import com.example.gofuel.repository.invoice.InvoiceRepository;
@@ -34,6 +35,24 @@ public class InvoiceViewModel extends ViewModel {
 
         new Thread(() -> {
             ResultWrapper<List<PendingInvoice>> result = invoiceRepository.getPendingInvoices();
+
+            if (result.getResult().isEmpty()) {
+                state.postValue(new State.EmptyState());
+            }
+            else if (result.getResult() != null) {
+                state.postValue(new State.PendingInvoiceList(result.getResult()));
+            }else if (result.getError() != null) {
+                Log.e("-->", "Error API: " + result.getError());
+                state.postValue(new State.NoInternet());
+            }
+        }).start();
+    }
+
+    public void loadPendingStationInvoices(InvoiceStationPost invoiceStationPost) {
+        state.setValue(new State.Loading());
+
+        new Thread(() -> {
+            ResultWrapper<List<PendingInvoice>> result = invoiceRepository.getPendingStationInvoices(invoiceStationPost);
 
             if (result.getResult().isEmpty()) {
                 state.postValue(new State.EmptyState());

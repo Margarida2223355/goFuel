@@ -20,6 +20,7 @@ import com.example.gofuel.databinding.FragmentItemBinding;
 import com.example.gofuel.databinding.InvoicesPopupBinding;
 import com.example.gofuel.model.invoice.Invoice;
 import com.example.gofuel.model.invoice.InvoicePost;
+import com.example.gofuel.model.invoice.InvoiceStationPost;
 import com.example.gofuel.model.invoice.invoiceline.InvoicelinePost;
 import com.example.gofuel.model.invoice.pending.PendingInvoice;
 import com.example.gofuel.model.station.Station;
@@ -268,7 +269,7 @@ public class ItemFragment extends Fragment {
             }
         });
 
-        invoiceViewModel.loadPendingInvoices();
+        invoiceViewModel.loadPendingStationInvoices(new InvoiceStationPost(MyApplication.getUser().getId(), station.getId()));
     }
 
     private void addItemsToInvoice(PendingInvoice invoice) {
