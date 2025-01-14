@@ -30,28 +30,21 @@ Yii::$app->session->remove('alert');
     <h1><?= Html::encode($this->title) ?></h1>
 
     <div class="row justify-content-center px-5">
-        <div class="col-md-6">
+        <div class="col-md-5">
             <p><b>Station: </b> <?= Html::encode($model->station->name) ?></p>
             <p><b>Client: </b> <?= Html::encode($model->client->userInfo->name) ?></p>
         </div>
-        <div class="col-md-6 px-5">
+        <div class="col-md-5 px-5">
             <p><b>Date: </b> <?= Html::encode($model->invoice_date) ?></p>
             <p><b>Total Price: </b> <?= Html::encode($model->total . ' €') ?></p>
 
         </div>
-        <div class="col-md-12">
-            <?php if ($model->state_id == 1): ?>
-                <?= Html::a(
-                    'Pay Invoice',
-                    Url::to(['invoice/pay', 'id' => $model->id]),
-                    ['class' => 'btn btn-warning me-2']
-                ) ?>
-                <?= Html::a(
-                    'Cancel Invoice',
-                    Url::to(['invoice/cancel', 'id' => $model->id]),
-                    ['class' => 'btn btn-warning me-2']
-                ) ?>
-            <?php endif; ?>
+        <div class="col-md-2 px-5">
+            <?= Html::a(
+                'Check',
+                Url::to(['invoice/finish', 'id' => $model->id]),
+                ['class' => 'btn btn-success me-2']
+            ) ?>
         </div>
     </div>
 

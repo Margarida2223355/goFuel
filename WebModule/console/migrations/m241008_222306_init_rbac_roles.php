@@ -118,8 +118,9 @@ class m241008_222306_init_rbac_roles extends Migration
                 'UserDeletePermission',
             ],
             'Manager' => [
-                'ItemAssociatePermission',
-                'StationUpdatePermission',
+                'StationItemAssociatePermission',
+                'StationItemDeleteAssociationPermission',
+                'StationItemUpdateAssociationPermission',
                 'UserChangerolePermission',
                 'UserCreatePermission',
                 'UserResetPasswordPermission',

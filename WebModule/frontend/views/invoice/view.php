@@ -27,20 +27,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="col-md-6 px-5">
                     <p><b>Date: </b> <?= Html::encode($model->invoice_date) ?></p>
                     <p><b>Total Price: </b> <?= Html::encode($model->total . ' €') ?></p>
-                    <?php if ($model->state_id == 2): ?>
-                        <p><b>Code: </b>
-                            <?= Html::encode($model->code) ?>
-                        </p><?php endif; ?>
                     <?php if ($model->state_id == 1): ?>
                         <?= Html::a(
-                            'Pay Invoice',
+                            'Pay',
                             Url::to(['invoice/pay', 'id' => $model->id]),
                             ['class' => 'btn btn-warning me-2']
                         ) ?>
                         <?= Html::a(
-                            'Cancel Invoice',
+                            'Cancel',
                             Url::to(['invoice/cancel', 'id' => $model->id]),
-                            ['class' => 'btn btn-warning me-2']
+                            ['class' => 'btn btn-danger me-2']
                         ) ?>
                     <?php endif; ?>
                 </div>
@@ -73,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <tr>
                                             <td><?= Html::encode($line->item->description) ?></td>
                                             <td><?= Html::encode($stationItem->price) ?></td>
-                                            <td><?= Html::encode(round($line->qty,2)) ?></td>
+                                            <td><?= Html::encode(round($line->qty, 2)) ?></td>
                                             <td><?= Html::encode($line->total) ?></td>
                                             <?php if ($model->state_id == 1): ?>
                                                 <td>

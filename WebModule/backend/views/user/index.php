@@ -90,21 +90,38 @@ if ($alert) {
                     $roles = $authManager->getRoles();
                     $userRole = $authManager->getRolesByUser($model->id);
                     $currentRole = reset($userRole);
+
+                    $currentUserRoles = $authManager->getRolesByUser(Yii::$app->user->id);
+                    $currentUserRole = reset($currentUserRoles);
+
+                    if ($currentUserRole && $currentUserRole->name === 'Manager') {
+                        $roles = array_filter($roles, function ($role) {
+                            return in_array($role->name, ['Incharge', 'Employee']);
+                        });
+                    } elseif ($currentUserRole && $currentUserRole->name === 'Incharge') {
+                        $roles = array_filter($roles, function ($role) {
+                            return $role->name === 'Employee';
+                        });
+                    }
+
                     if ($model->id == Yii::$app->user->id || $model->userInfo->is_deleted == 1 || $model->userInfo->is_banned == 1) {
                         return $currentRole ? $currentRole->name : 'N/A';
                     }
+
                     $dropdown = Html::dropDownList(
                         "role_{$model->id}",
                         $currentRole ? $currentRole->name : null,
-                        array_map(fn($role) => $role->name, $roles),
+                        \yii\helpers\ArrayHelper::map($roles, 'name', 'name'),
                         [
                             'class' => 'form-control role-selector',
                             'data-id' => $model->id,
                         ]
                     );
+
                     return $dropdown;
                 },
             ],
+
 
             [
                 'class' => ActionColumn::class,

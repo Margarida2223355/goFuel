@@ -167,6 +167,7 @@ class InvoiceController extends Controller
                 $invoice->generateRandomCode();
                 $invoice->save();
                 $item->save();
+                return $this->render('view', ['model' => $invoice,]);
             } else {
                 Yii::$app->session->setFlash('error', 'Quantity is not available. We\'re sorry.');
                 return $this->redirect(['view', 'id' => $id]);

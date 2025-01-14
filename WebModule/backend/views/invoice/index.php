@@ -33,7 +33,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         if ($model->state_id == 2) {
                             return Html::a('<i class="fas fa-clipboard-check"></i>', ['invoice/finish', 'id' => $model->id], [
                                 'title' => 'Finish',
-                                'class' => 'action-icon'
+                                'class' => 'action-icon',
+                                'style' => 'color: #28a745; text-decoration: none;'
                             ]);
                         }
                         return '';
