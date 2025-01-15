@@ -2,11 +2,14 @@
 
 namespace backend\controllers;
 
+use common\models\Invoice;
 use common\models\LoginForm;
 use common\models\Station;
 use common\models\StationItem;
 use common\models\StationUser;
+use common\models\User;
 use Yii;
+use yii\db\Query;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -70,11 +73,14 @@ class SiteController extends Controller
         $stationUserCounts = [];
         $userRoleCounts = [];
         $items = 0;
+        $invoiceCount = 0;
+        $usersCount = 0;
 
         switch (reset($roles)->name) {
             case 'Admin';
                 $role = 'Admin';
                 $allRoles = $auth->getRoles();
+                $usersCount = User::find()->count();
 
                 foreach ($allRoles as $roleName => $roleObj) {
                     $userCount = (new \yii\db\Query())
@@ -86,26 +92,62 @@ class SiteController extends Controller
                 }
 
                 $stations = Station::find()->all();
-                $stationCount = Station::find()->where(['manager_id' => $currentUser->id])->count();
-                $stationUserCounts = [];
-
-                foreach ($stations as $station) {
-                    $userCount = StationUser::find()->where(['station_id' => $station->id])->count();
-
-                    $stationUserCounts[$station->name] = $userCount;
+                $stationCount = Station::find()->count();
+                $invoiceCount = Invoice::find()->count();
+                $invoiceCounts = Invoice::find()
+                    ->select(['station_id', 'count' => 'COUNT(*)'])
+                    ->groupBy('station_id')
+                    ->asArray()
+                    ->all();
+                $invoiceByStation = [];
+                foreach ($invoiceCounts as $count) {
+                    $invoiceByStation[$count['station_id']] = $count['count'];
                 }
                 break;
             case 'Manager':
-                $stations = Station::find()->where(['manager_id' => $currentUser->id])->all();
                 $role = 'Manager';
+                $stations = Station::find()->where(['manager_id' => $currentUser->id])->all();
 
                 $stationCount = Station::find()->where(['manager_id' => $currentUser->id])->count();
                 $stationUserCounts = [];
 
-                foreach ($stations as $station) {
-                    $userCount = StationUser::find()->where(['station_id' => $station->id])->count();
+                $stationUserCounts = [];
+                $invoiceByStation = [];
 
-                    $stationUserCounts[$station->name] = $userCount;
+                foreach ($stations as $station) {
+                    $userIds = (new \yii\db\Query())
+                        ->select('user_id')
+                        ->from('station_users')
+                        ->where(['station_id' => $station->id])
+                        ->all();
+
+                    if (!empty($userIds)) {
+                        $inchargeCount = (new Query())
+                            ->from('auth_assignment')
+                            ->where(['item_name' => 'Incharge'])
+                            ->andWhere(['user_id' => $userIds])
+                            ->count();
+
+                        $employeeCount = (new Query())
+                            ->from('auth_assignment')
+                            ->where(['item_name' => 'Employee'])
+                            ->andWhere(['user_id' => $userIds])
+                            ->count();
+                    } else {
+                        $inchargeCount = 0;
+                        $employeeCount = 0;
+                    }
+
+                    $invoiceCount = Invoice::find()
+                        ->where(['station_id' => $station->id])
+                        ->count();
+
+                    $stationUserCounts[$station->name] = [
+                        'incharges' => $inchargeCount,
+                        'employees' => $employeeCount,
+                    ];
+
+                    $invoiceByStation[$station->name] = $invoiceCount;
                 }
                 break;
             case 'Incharge':
@@ -128,8 +170,12 @@ class SiteController extends Controller
                 'items' => $items,
                 'role' => $role,
                 'userRoleCounts' => $userRoleCounts,
+                'usersCount' => $usersCount,
+                'stations' => $stations,
                 'stationUserCounts' => $stationUserCounts,
                 'stationCount' => $stationCount,
+                'invoiceCount' => $invoiceCount,
+                'invoiceByStation' => $invoiceByStation,
                 'items' => $items,
             ]
         );
