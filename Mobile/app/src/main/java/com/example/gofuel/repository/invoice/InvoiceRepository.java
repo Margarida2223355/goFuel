@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.gofuel.MyApplication;
 import com.example.gofuel.model.invoice.Invoice;
 import com.example.gofuel.model.invoice.InvoicePost;
+import com.example.gofuel.model.invoice.InvoiceStationPost;
 import com.example.gofuel.model.invoice.finished.FinishedInvoice;
 import com.example.gofuel.model.invoice.pending.PendingInvoice;
 import com.example.gofuel.repository.common.AppDatabase;
@@ -63,6 +64,16 @@ public class InvoiceRepository implements IInvoiceDataSource.Main {
     }
 
     @Override
+    public ResultWrapper<List<PendingInvoice>> getPendingStationInvoices(InvoiceStationPost invoiceStationPost) {
+        ResultWrapper<List<PendingInvoice>> result = new InvoiceRemoteDataSource().getPendingStationInvoices(invoiceStationPost);
+
+        if (result.getError() != null) {
+            return new ResultWrapper<>(null, "No network. Error: " + result.getError());
+        }
+        return result;
+    }
+
+    @Override
     public ResultWrapper<List<FinishedInvoice>> getFinishedInvoices() {
         ResultWrapper<List<FinishedInvoice>> result = new InvoiceRemoteDataSource(MyApplication.getUser()).getFinishedInvoices();
 
@@ -86,11 +97,11 @@ public class InvoiceRepository implements IInvoiceDataSource.Main {
     }
 
     @Override
-    public ResultWrapper<PendingInvoice> addInvoice(InvoicePost invoicePost) {
-        ResultWrapper<PendingInvoice> result = new InvoiceRemoteDataSource(MyApplication.getUser()).addInvoice(invoicePost);
+    public ResultWrapper<List<PendingInvoice>> addInvoice(InvoicePost invoicePost) {
+        ResultWrapper<List<PendingInvoice>> result = new InvoiceRemoteDataSource(MyApplication.getUser()).addInvoice(invoicePost);
 
         if (result.getResult() != null) {
-            pendingInvoiceDB.addInvoice(result.getResult());
+            pendingInvoiceDB.addInvoice(result.getResult().get(0));
         }
 
         return result;

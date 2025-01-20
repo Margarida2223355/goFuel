@@ -3,6 +3,7 @@ package com.example.gofuel.repository.invoice.remote;
 
 import com.example.gofuel.model.invoice.Invoice;
 import com.example.gofuel.model.invoice.InvoicePost;
+import com.example.gofuel.model.invoice.InvoiceStationPost;
 import com.example.gofuel.model.invoice.finished.FinishedInvoice;
 import com.example.gofuel.model.invoice.pending.PendingInvoice;
 
@@ -21,11 +22,14 @@ public interface InvoiceAPI {
     @GET("invoices/pendentinvoices")
     Call<List<PendingInvoice>> getPendingInvoices();
 
-     @GET("invoices/paidinvoices")
+    @POST("invoices/pendentstationinvoices")
+    Call<List<PendingInvoice>> getPendingStationInvoices(@Body InvoiceStationPost invoiceStationPost);
+
+    @GET("invoices/paidinvoices")
     Call<List<FinishedInvoice>> getFinishedInvoices();
 
     @POST("invoices/createinvoice")
-    Call<PendingInvoice> createInvoice(@Body InvoicePost invoicePost);
+    Call<List<PendingInvoice>> createInvoice(@Body InvoicePost invoicePost);
 
     @PUT("invoice/updateinvoice")
     Call<String> closeInvoice(@Query("id") int id);
