@@ -96,7 +96,7 @@ AppAsset::register($this);
 
     <footer class="footer mt-auto py-3 text-muted">
         <div class="container">
-            <p class="float-center">&copy; <?= Html::encode(Yii::$app->name) ?> | David Domingues <?= date('Y') ?></p>
+            <p class="float-center">&copy; <?= Html::encode(Yii::$app->name) ?> | David Domingues & Margarida Camacho <?= date('Y') ?></p>
         </div>
     </footer>
 

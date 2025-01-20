@@ -98,22 +98,64 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
                 break;
             case 'Manager':
             ?>
-                <?php
-                foreach ($stations as $station) {
-                    $inchargeCount = $stationUserCounts[$station->name]['incharges'] ?? 0;
-                    $employeeCount = $stationUserCounts[$station->name]['employees'] ?? 0;
-                    $invoiceCount = $stationInvoiceCounts[$station->name] ?? 0;
-                ?>
-                    <div class="col-3">
-                        <?= \hail812\adminlte\widgets\Callout::widget([
-                            'type' => 'info',
-                            'head' => $station->name,
-                            'body' => "Incharges: $inchargeCount<br>Employees: $employeeCount<br>Invoices: $invoiceCount",
-                        ]) ?>
+                <div class="col-12">
+                    <?= Html::beginForm(['site/index'], 'post', ['id' => 'station-form', 'class' => 'w-100']) ?>
+                    <div class="form-group w-100">
+                        <?= Html::dropDownList(
+                            'stationId',
+                            $stationId,
+                            \yii\helpers\ArrayHelper::map($stations, 'id', 'name'),
+                            [
+                                'prompt' => 'Select a Station',
+                                'id' => 'station-dropdown',
+                                'class' => 'form-control w-100',
+                                'onchange' => 'this.form.submit();'
+                            ]
+                        ) ?>
                     </div>
-                <?php
-                }
-                ?>
+                </div>
+                <div class="col-12">
+                    <h3>Users Info</h3>
+
+                </div>
+                <div class="col-6">
+                    <?= \hail812\adminlte\widgets\Callout::widget([
+                        'type' => 'success',
+                        'head' => 'Number of InCharges',
+                        'body' => $inchargeCount,
+                    ]) ?>
+                </div>
+                <div class="col-6">
+                    <?= \hail812\adminlte\widgets\Callout::widget([
+                        'type' => 'success',
+                        'head' => 'Number of Employees',
+                        'body' => $employeeCount,
+                    ]) ?>
+                </div>
+                <div class="col-12">
+                    <h3>Invoices Information</h3>
+                </div>
+                <div class="col-4">
+                    <?= \hail812\adminlte\widgets\Callout::widget([
+                        'type' => 'warning',
+                        'head' => 'Pendent',
+                        'body' => $invoiceByState[2],
+                    ]) ?>
+                    </div>
+                <div class="col-4">
+                    <?= \hail812\adminlte\widgets\Callout::widget([
+                        'type' => 'success',
+                        'head' => 'Finished',
+                        'body' => $invoiceByState[3],
+                    ]) ?>
+                </div>
+                <div class="col-4">
+                    <?= \hail812\adminlte\widgets\Callout::widget([
+                        'type' => 'danger',
+                        'head' => 'Cancelded',
+                        'body' => $invoiceByState[4],
+                    ]) ?>
+                </div>
                 <?php
                 break;
                 ?>
@@ -122,3 +164,10 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
         <?php } ?>
     </div>
 </div>
+
+
+<script>
+    document.getElementById('station-dropdown').addEventListener('change', function() {
+        this.form.submit();
+    });
+</script>

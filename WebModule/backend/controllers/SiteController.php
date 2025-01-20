@@ -70,11 +70,20 @@ class SiteController extends Controller
 
         $userRoleCounts = [];
         $stationCount = [];
+        $inchargeCount = 0;
+        $employeeCount = 0;
+        $invoiceByState = [
+            2 => 0,
+            3 => 0,
+            4 => 0,
+        ];
         $stationUserCounts = [];
         $userRoleCounts = [];
+        $invoiceByStation = [];
         $items = 0;
         $invoiceCount = 0;
         $usersCount = 0;
+        $stationId = Yii::$app->request->post('stationId') ?? Yii::$app->request->get('stationId');
 
         switch (reset($roles)->name) {
             case 'Admin';
@@ -99,7 +108,6 @@ class SiteController extends Controller
                     ->groupBy('station_id')
                     ->asArray()
                     ->all();
-                $invoiceByStation = [];
                 foreach ($invoiceCounts as $count) {
                     $invoiceByStation[$count['station_id']] = $count['count'];
                 }
@@ -108,27 +116,21 @@ class SiteController extends Controller
                 $role = 'Manager';
                 $stations = Station::find()->where(['manager_id' => $currentUser->id])->all();
 
-                $stationCount = Station::find()->where(['manager_id' => $currentUser->id])->count();
-                $stationUserCounts = [];
-
-                $stationUserCounts = [];
-                $invoiceByStation = [];
-
-                foreach ($stations as $station) {
+                if ($stationId) {
                     $userIds = (new \yii\db\Query())
                         ->select('user_id')
                         ->from('station_users')
-                        ->where(['station_id' => $station->id])
-                        ->all();
+                        ->where(['station_id' => $stationId])
+                        ->column(); // Retorna um array com os IDs
 
                     if (!empty($userIds)) {
-                        $inchargeCount = (new Query())
+                        $inchargeCount = (new \yii\db\Query())
                             ->from('auth_assignment')
                             ->where(['item_name' => 'Incharge'])
                             ->andWhere(['user_id' => $userIds])
                             ->count();
 
-                        $employeeCount = (new Query())
+                        $employeeCount = (new \yii\db\Query())
                             ->from('auth_assignment')
                             ->where(['item_name' => 'Employee'])
                             ->andWhere(['user_id' => $userIds])
@@ -138,16 +140,20 @@ class SiteController extends Controller
                         $employeeCount = 0;
                     }
 
-                    $invoiceCount = Invoice::find()
-                        ->where(['station_id' => $station->id])
-                        ->count();
+                    $invoiceStates = (new \yii\db\Query())
+                        ->select(['state_id', 'count' => 'COUNT(*)'])
+                        ->from('invoices')
+                        ->where(['station_id' => $stationId])
+                        ->groupBy('state_id')
+                        ->all();
 
-                    $stationUserCounts[$station->name] = [
-                        'incharges' => $inchargeCount,
-                        'employees' => $employeeCount,
-                    ];
-
-                    $invoiceByStation[$station->name] = $invoiceCount;
+                    foreach ($invoiceStates as $state) {
+                        $invoiceByState[$state['state_id']] = $state['count'];
+                    }
+                } else {
+                    $dataProvider = new \yii\data\ArrayDataProvider([
+                        'allModels' => [],
+                    ]);
                 }
                 break;
             case 'Incharge':
@@ -167,16 +173,20 @@ class SiteController extends Controller
         return $this->render(
             'index',
             [
-                'items' => $items,
                 'role' => $role,
                 'userRoleCounts' => $userRoleCounts,
                 'usersCount' => $usersCount,
                 'stations' => $stations,
                 'stationUserCounts' => $stationUserCounts,
-                'stationCount' => $stationCount,
                 'invoiceCount' => $invoiceCount,
+                'stationCount' => $stationCount,
                 'invoiceByStation' => $invoiceByStation,
+
+                'inchargeCount' => $inchargeCount,
+                'employeeCount' => $employeeCount,
+                'invoiceByState' => $invoiceByState,
                 'items' => $items,
+                'stationId' => $stationId,
             ]
         );
     }
