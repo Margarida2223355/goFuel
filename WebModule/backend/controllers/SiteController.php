@@ -83,7 +83,7 @@ class SiteController extends Controller
         $items = 0;
         $invoiceCount = 0;
         $usersCount = 0;
-        $stationId = Yii::$app->request->post('stationId') ?? Yii::$app->request->get('stationId');
+        $stationId = Yii::$app->request->post('stationId') ?? 1;
 
         switch (reset($roles)->name) {
             case 'Admin';

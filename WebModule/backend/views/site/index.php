@@ -106,7 +106,6 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
                             $stationId,
                             \yii\helpers\ArrayHelper::map($stations, 'id', 'name'),
                             [
-                                'prompt' => 'Select a Station',
                                 'id' => 'station-dropdown',
                                 'class' => 'form-control w-100',
                                 'onchange' => 'this.form.submit();'
@@ -141,7 +140,7 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
                         'head' => 'Pendent',
                         'body' => $invoiceByState[2],
                     ]) ?>
-                    </div>
+                </div>
                 <div class="col-4">
                     <?= \hail812\adminlte\widgets\Callout::widget([
                         'type' => 'success',

@@ -37,7 +37,6 @@ if ($alert) {
             $stationId,
             \yii\helpers\ArrayHelper::map($stations, 'id', 'name'),
             [
-                'prompt' => 'Select a Station',
                 'id' => 'station-dropdown',
                 'class' => 'form-control w-100',
                 'onchange' => 'this.form.submit();'
