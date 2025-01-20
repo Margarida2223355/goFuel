@@ -104,7 +104,9 @@ return [
                         'GET userinvoices' => 'get-user-invoices',
                         'GET paidinvoices' => 'get-paid-invoices',
                         'GET pendentinvoices' => 'get-pendent-invoices',
+                        'POST pendentstationinvoices' => 'get-pendent-station-invoices',
                         'PUT, PATCH updateinvoice/{id}' => 'updateinvoice',
+                        'POST createinvoice' => 'createinvoice',
                     ],
                     'tokens' => []
                 ],
@@ -115,7 +117,6 @@ return [
                     'controller' => 'api/invoiceline',
                     'extraPatterns' => [
                         'PUT, PATCH updateline/{id}' => 'updateline',
-                        'DELETE removeline/{id}' => 'removeline',
                     ],
                     'tokens' => []
                 ],
