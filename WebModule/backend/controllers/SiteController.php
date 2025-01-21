@@ -77,12 +77,15 @@ class SiteController extends Controller
             3 => 0,
             4 => 0,
         ];
+        $invoicesToFinish = 0;
         $stationUserCounts = [];
         $userRoleCounts = [];
         $invoiceByStation = [];
+        $dataProvider = [];
         $items = 0;
         $invoiceCount = 0;
         $usersCount = 0;
+        $stations = [];
         $stationId = Yii::$app->request->post('stationId') ?? 1;
 
         switch (reset($roles)->name) {
@@ -114,7 +117,9 @@ class SiteController extends Controller
                 break;
             case 'Manager':
                 $role = 'Manager';
+                $station = Station::findOne(['manager_id' => Yii::$app->user->id]);
                 $stations = Station::find()->where(['manager_id' => $currentUser->id])->all();
+                $stationId = Yii::$app->request->post('stationId') ?? $station->id;
 
                 if ($stationId) {
                     $userIds = (new \yii\db\Query())
@@ -158,12 +163,19 @@ class SiteController extends Controller
                 break;
             case 'Incharge':
                 $role = 'In Charge';
-                $items = new \yii\data\ActiveDataProvider([
-                    'query' => StationItem::find(['id_station' => $currentUser->stationUsers->station_id])->all()
+                $items = StationItem::find(['id_station' => $currentUser->stationUsers->station_id, 'is_deleted' => 0])->all();
+                $station = StationUser::findOne(['user_id' => Yii::$app->user->id]);
+                $invoicesToFinish = Invoice::find()->where(['station_id' => $station->station_id, 'state_id' => 2])->count();
+
+                $dataProvider = new \yii\data\ActiveDataProvider([
+                    'query' => StationItem::find()->where(['station_id' => $station->station_id, 'is_deleted' => 0])->with('item'),
                 ]);
                 break;
             case 'Employee':
                 $role = 'Employee';
+                $station = StationUser::findOne(['user_id' => Yii::$app->user->id]);
+                $invoicesToFinish = Invoice::find()->where(['station_id' => $station->station_id, 'state_id' => 2])->count();
+
                 break;
             case 'Client':
                 $role = 'Client';
@@ -185,7 +197,8 @@ class SiteController extends Controller
                 'inchargeCount' => $inchargeCount,
                 'employeeCount' => $employeeCount,
                 'invoiceByState' => $invoiceByState,
-                'items' => $items,
+                'dataProvider' => $dataProvider,
+                'invoicesToFinish' => $invoicesToFinish,
                 'stationId' => $stationId,
             ]
         );

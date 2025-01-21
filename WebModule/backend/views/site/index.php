@@ -155,6 +155,71 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
                         'body' => $invoiceByState[4],
                     ]) ?>
                 </div>
+            <?php
+                break;
+            case 'In Charge';
+            ?>
+                <h3>Invoices Information</h3>
+                <div class="col-12">
+                    <?= \hail812\adminlte\widgets\Callout::widget([
+                        'type' => 'success',
+                        'head' => 'Invoices to Finish',
+                        'body' => $invoicesToFinish,
+                    ]) ?>
+                </div>
+                <h3>Items Information</h3>
+                <dov class="col-12">
+                    <?= GridView::widget([
+                        'dataProvider' => $dataProvider,
+                        'columns' => [
+                            ['class' => 'yii\grid\SerialColumn'],
+                            'item.description',
+                            [
+                                'attribute' => 'stock',
+                                'label' => 'Current Stock',
+                                'value' => function ($model) use ($stationId) {
+                                    if ($stationId) {
+                                        $item = \common\models\StationItem::findOne(['item_id' => $model->item_id, 'station_id' => $stationId]);
+                                        return $item ? $item->stock : 'No Stock Available';
+                                    }
+                                    return 'Station Not Selected';
+                                },
+                            ],
+
+                            [
+                                'class' => 'yii\grid\ActionColumn',
+                                'template' => '{restock}',
+                                'buttons' => [
+                                    'restock' => function ($url, $model) {
+                                        return Html::a(
+                                            '<i class="fa fa-box-open"></i>',
+                                            ['station-item/restock', 'item_id' => $model->item_id, 'station_id' => $model->station_id],
+                                            [
+                                                'title' => 'Restock Item',
+                                                'data-confirm' => 'Do you want to restock this item?',
+                                                'data-method' => 'post',
+                                                'style' => 'color: #007bff; text-decoration: none;',
+                                            ]
+                                        );
+                                    },
+                                ],
+                            ],
+                        ],
+                        'summary' => false,
+                    ]); ?>
+                </dov>
+            <?php
+                break;
+            case 'Employee':
+            ?>
+                <h3>Invoices Information</h3>
+                <div class="col-12">
+                    <?= \hail812\adminlte\widgets\Callout::widget([
+                        'type' => 'success',
+                        'head' => 'Invoices to Finish',
+                        'body' => $invoicesToFinish,
+                    ]) ?>
+                </div>
                 <?php
                 break;
                 ?>

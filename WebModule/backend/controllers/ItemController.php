@@ -85,6 +85,8 @@ class ItemController extends Controller
                 'isUpdate' => false,
             ]);
         } elseif ($isManager) {
+            $station = Station::findOne(['manager_id' => Yii::$app->user->id]);
+
             $stations = Station::find()->where(['manager_id' => Yii::$app->user->id])->all();
         } else {
             $stations = Station::find()
@@ -95,7 +97,7 @@ class ItemController extends Controller
 
         $model = new ItemStationForm();
 
-        $stationId = Yii::$app->request->post('stationId') ?? Yii::$app->request->get('stationId');
+        $stationId = Yii::$app->request->post('stationId') ?? $station->id;
 
         if (!$stationId && !empty($stations)) {
             $stationId = $stations[0]->id;
