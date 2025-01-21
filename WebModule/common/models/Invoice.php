@@ -17,7 +17,7 @@ use Yii;
  *
  * @property User $client
  * @property InvoiceLine[] $invoiceLines
- * @property InvoiceState $state
+ * @property Invoicestate $state
  * @property Station $station
  */
 class Invoice extends \yii\db\ActiveRecord
@@ -42,7 +42,7 @@ class Invoice extends \yii\db\ActiveRecord
             [['total'], 'number'],
             [['code'], 'string', 'max' => 45],
             [['client_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['client_id' => 'id']],
-            [['state_id'], 'exist', 'skipOnError' => true, 'targetClass' => InvoiceState::class, 'targetAttribute' => ['state_id' => 'id']],
+            [['state_id'], 'exist', 'skipOnError' => true, 'targetClass' => Invoicestate::class, 'targetAttribute' => ['state_id' => 'id']],
             [['station_id'], 'exist', 'skipOnError' => true, 'targetClass' => Station::class, 'targetAttribute' => ['station_id' => 'id']],
         ];
     }
@@ -90,7 +90,7 @@ class Invoice extends \yii\db\ActiveRecord
      */
     public function getState()
     {
-        return $this->hasOne(InvoiceState::class, ['id' => 'state_id']);
+        return $this->hasOne(Invoicestate::class, ['id' => 'state_id']);
     }
 
     /**

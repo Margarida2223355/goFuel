@@ -10,6 +10,18 @@
     class InvoiceController extends ActiveController {
         public $modelClass = Invoice::class;
 
+        public function actionCreateinvoice() {
+            $model = new Invoice();
+            $request = \Yii::$app -> request -> bodyParams;
+
+            if ($model -> load($request, '') && $model -> save()) {
+                $model->generateRandomCode();
+                return self::formatInvoiceFields($model);
+            }
+
+            throw new BadRequestHttpException('Failed to create invoice: ' . json_encode($model->errors));
+        }
+
         public function actionGetUserInvoices() {
             $userID = \Yii::$app -> request -> getHeaders() -> get('X-USER-ID');
 
@@ -48,7 +60,32 @@
 
             return Invoice::find()
                 ->joinWith('state')
-                ->where(['client_id' => $userID, 'invoice_states.description' => 'Pending'])
+                ->where([
+                    'client_id' => $userID,
+                    'invoice_states.description' => 'Pending'
+                    ])
+                ->all();
+        }
+
+        public function actionGetPendentStationInvoices() {
+            $userID = \Yii::$app->request->getBodyParam('userID');
+            $stationID = \Yii::$app->request->getBodyParam('stationID');
+
+            if (!$userID) {
+                throw new UnauthorizedHttpException('No user ID provided');
+            }
+
+            if (!$stationID) {
+                throw new UnauthorizedHttpException('No station ID provided');
+            }
+
+            return Invoice::find()
+                ->joinWith('state')
+                ->where([
+                    'client_id' => $userID,
+                    'station_id' => $stationID,
+                    'invoice_states.description' => 'Pending'
+                    ])
                 ->all();
         }
 
@@ -59,30 +96,29 @@
                 throw new NotFoundHttpException('Invoice not found');
             }
 
-            $request = \Yii::$app -> request -> bodyParams;
+            $model->state_id = 4; // Finished
 
-            if ($model->load($request, '') && ($model->save())) {
-                $model->generateRandomCode();
+            if ($model->save()) {
 
-                return
-                    [
-                        'message' => 'Success: Invoice closed!',
-                    ];
+                return 'Success: Invoice closed!';
             }
 
-            throw new BadRequestHttpException('Failed to remove invoice line: ' . json_encode($model->errors));
+            return 'Failed to remove invoice line: ' . json_encode($model->errors);
+
         }
 
         private static function formatInvoiceFields($data): array {
+            if ($data instanceof Invoice) {
+                $data = [$data -> toArray()];
+            }
             return
                 array_map(function ($invoice) {
-                    $invoice = is_array($invoice) ? $invoice : $invoice->toArray();
 
                     $invoice['client'] = $invoice['client'];
                     $invoice['station'] = $invoice['station'];
                     $invoice['state'] = $invoice['state'];
 
-                    unset($invoice['item_id'], $invoice['invoice_id'], $invoice['state_id']);
+                    unset($invoice['client_id'], $invoice['station_id'], $invoice['state_id']);
                     return $invoice;
                 }, $data);
         }
