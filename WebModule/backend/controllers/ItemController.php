@@ -51,6 +51,11 @@ class ItemController extends Controller
                         'allow' => true,
                         'roles' => ['ItemAssociatePermission'],
                     ],
+                    [
+                        'actions' => ['update-association'],
+                        'allow' => true,
+                        'roles' => ['StationItemUpdateAssociationPermission'],
+                    ],
                 ],
             ],
         ];
@@ -89,8 +94,6 @@ class ItemController extends Controller
                 ->joinWith('stationUsers')
                 ->where(['station_users.user_id' => Yii::$app->user->id])
                 ->one();
-
-                
         }
 
         $model = new ItemStationForm();

@@ -30,7 +30,7 @@ if ($alert) {
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php if (Yii::$app->user->can('manager')): ?>
+    <?php if (Yii::$app->user->can('StationItemAssociatePermission') || Yii::$app->user->can('StationItemUpdateAssociationPermission')): ?>
         <?= Html::beginForm(['item/index'], 'post', ['id' => 'station-form', 'class' => 'w-100']) ?>
         <div class="form-group w-100">
             <?= Html::dropDownList(
