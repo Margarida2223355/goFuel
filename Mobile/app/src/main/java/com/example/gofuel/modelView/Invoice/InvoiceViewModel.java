@@ -34,7 +34,7 @@ public class InvoiceViewModel extends ViewModel {
         state.setValue(new State.Loading());
 
         new Thread(() -> {
-            ResultWrapper<List<PendingInvoice>> result = invoiceRepository.getPendingInvoices();
+            ResultWrapper<List<PendingInvoice>> result = invoiceRepository.getCartInvoices();
 
             if (result.getResult().isEmpty()) {
                 state.postValue(new State.EmptyState());

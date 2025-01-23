@@ -44,6 +44,16 @@ public class InvoiceRepository implements IInvoiceDataSource.Main {
     public ResultWrapper<List<PendingInvoice>> getPendingInvoices() {
         ResultWrapper<List<PendingInvoice>> result = new InvoiceRemoteDataSource(MyApplication.getUser()).getPendingInvoices();
 
+        if (result.getError() != null) {
+            return new ResultWrapper<>(null, "No network. Error: " + result.getError());
+        }
+        return result;
+    }
+
+    @Override
+    public ResultWrapper<List<PendingInvoice>> getCartInvoices() {
+        ResultWrapper<List<PendingInvoice>> result = new InvoiceRemoteDataSource(MyApplication.getUser()).getCartInvoices();
+
         if (result.getResult() != null) {
             pendingInvoiceDB.deleteAll();
             pendingInvoiceDB.addAll(result.getResult());

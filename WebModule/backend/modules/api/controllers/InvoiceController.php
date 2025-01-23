@@ -67,6 +67,22 @@
                 ->all();
         }
 
+        public function actionGetCartInvoices() {
+            $userID = \Yii::$app -> request -> getHeaders() -> get('X-USER-ID');
+
+            if (!$userID) {
+                throw new UnauthorizedHttpException('No user ID provided');
+            }
+
+            return Invoice::find()
+                ->joinWith('state')
+                ->where([
+                    'client_id' => $userID,
+                    'invoice_states.description' => 'Cart'
+                    ])
+                ->all();
+        }
+
         public function actionGetPendentStationInvoices() {
             $userID = \Yii::$app->request->getBodyParam('userID');
             $stationID = \Yii::$app->request->getBodyParam('stationID');
