@@ -22,6 +22,9 @@ public interface InvoiceAPI {
     @GET("invoices/pendentinvoices")
     Call<List<PendingInvoice>> getPendingInvoices();
 
+    @GET("invoices/cartinvoices")
+    Call<List<PendingInvoice>> getCartInvoices();
+
     @POST("invoices/pendentstationinvoices")
     Call<List<PendingInvoice>> getPendingStationInvoices(@Body InvoiceStationPost invoiceStationPost);
 

@@ -16,6 +16,7 @@ public interface IInvoiceDataSource {
     // Remote data source
     interface Remote {
         ResultWrapper<List<PendingInvoice>> getPendingInvoices();
+        ResultWrapper<List<PendingInvoice>> getCartInvoices();
         ResultWrapper<List<PendingInvoice>> getPendingStationInvoices(InvoiceStationPost invoiceStationPost);
         ResultWrapper<List<FinishedInvoice>> getFinishedInvoices();
         ResultWrapper<List<PendingInvoice>> addInvoice(InvoicePost invoicePost);
