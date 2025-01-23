@@ -74,11 +74,12 @@ class InvoiceLine extends \yii\db\ActiveRecord
         return $this->hasOne(Item::class, ['id' => 'item_id']);
     }
 
-    public function afterSave($insert, $changedAttributes) {
+    public function afterSave($insert, $changedAttributes)
+    {
         parent::afterSave($insert, $changedAttributes);
 
-        if ($this -> invoice) {
-            $this -> invoice -> updateTotal();
+        if ($this->invoice) {
+            $this->invoice->updateTotal();
         }
     }
 
@@ -91,17 +92,18 @@ class InvoiceLine extends \yii\db\ActiveRecord
         }
     }
 
-    public function fields() {
+    public function fields()
+    {
         $fields = parent::fields();
 
         unset($fields['item_id'], $fields['invoice_id']);
 
-        $fields['item'] = function() {
+        $fields['item'] = function () {
             $item = $this->getItem()->one();
             return $item ? $item : null;
         };
 
-        $fields['invoice'] = function() {
+        $fields['invoice'] = function () {
             $invoice = $this->getInvoice()->one();
             return $invoice ? $invoice : null;
         };
