@@ -9,6 +9,7 @@ import com.example.gofuel.util.enums.HeaderID;
 import com.example.gofuel.repository.common.ResultWrapper;
 import com.example.gofuel.repository.invoiceLine.IInvoiceLineDataSource;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +61,12 @@ public class InvoiceLineRemoteDataSource implements IInvoiceLineDataSource.Main 
         Map<String, List<Integer>> requestBody = new HashMap<>();
         requestBody.put("ids", lines.stream().map(InvoiceLine::getId).collect(Collectors.toList()));
         Call<List<InvoiceLine>> call = invoiceLineAPI.removeInvoiceLines(requestBody);
+        return ResultWrapper.safeApiCall(call);
+    }
+
+    @Override
+    public ResultWrapper<List<InvoiceLine>> updateInvoiceLines(InvoiceLine line, InvoicelinePost linePost) {
+        Call<List<InvoiceLine>> call = invoiceLineAPI.updateInvoiceLines(line.getId(), linePost);
         return ResultWrapper.safeApiCall(call);
     }
 }

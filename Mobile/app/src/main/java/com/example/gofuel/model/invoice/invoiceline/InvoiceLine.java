@@ -58,4 +58,16 @@ public class InvoiceLine {
     public void setInvoice(PendingInvoice invoice) {
         this.invoice = invoice;
     }
+
+    public int addQty() {
+        return qty++;
+    }
+
+    public int removeQty() {
+        return qty--;
+    }
+
+    public float getUnitPrice() {
+        return (float) (total/qty);
+    }
 }

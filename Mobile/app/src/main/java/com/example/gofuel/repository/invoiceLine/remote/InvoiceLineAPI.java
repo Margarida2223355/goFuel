@@ -12,6 +12,8 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.HTTP;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Query;
 
 public interface InvoiceLineAPI {
     @GET("invoiceline")
@@ -22,4 +24,7 @@ public interface InvoiceLineAPI {
 
     @HTTP(method = "DELETE", path = "invoiceline/delete", hasBody = true)
     Call<List<InvoiceLine>> removeInvoiceLines(@Body Map<String, List<Integer>> linesIds);
+
+    @PUT("invoiceline/updateline")
+    Call<List<InvoiceLine>> updateInvoiceLines(@Query("id") int id, @Body InvoicelinePost line);
 }

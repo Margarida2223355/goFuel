@@ -15,7 +15,9 @@ import androidx.annotation.Nullable;
 import com.example.gofuel.MyApplication;
 import com.example.gofuel.databinding.ItemItemsBinding;
 import com.example.gofuel.model.invoice.invoiceline.InvoiceLine;
+import com.example.gofuel.model.station_item.StationItem;
 import com.example.gofuel.util.callback.OnCheckedBox;
+import com.example.gofuel.util.callback.OnItemQtyChange;
 
 import java.util.ArrayList;
 
@@ -23,11 +25,13 @@ public class InvoicelineAdapter extends BaseAdapter {
     private ArrayList<InvoiceLine> invoiceLines = new ArrayList<>();
     private final Context context;
     private final OnCheckedBox onCheckedBox;
+    private final OnItemQtyChange onItemQtyChange;
 
-    public InvoicelineAdapter(Context context, ArrayList<InvoiceLine> invoiceLines, OnCheckedBox onCheckedBox) {
+    public InvoicelineAdapter(Context context, ArrayList<InvoiceLine> invoiceLines, OnCheckedBox onCheckedBox, OnItemQtyChange onItemQtyChange) {
         this.context = context;
         this.invoiceLines = invoiceLines;
         this.onCheckedBox = onCheckedBox;
+        this.onItemQtyChange = onItemQtyChange;
     }
 
     @Override
@@ -50,6 +54,8 @@ public class InvoicelineAdapter extends BaseAdapter {
         ItemItemsBinding binding;
         InvoicelineItemViewModel viewModel;
 
+        InvoiceLine currentItem = invoiceLines.get(position);
+
         if (convertView == null) {
             binding = ItemItemsBinding.inflate((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
             convertView = binding.getRoot();
@@ -62,15 +68,31 @@ public class InvoicelineAdapter extends BaseAdapter {
             binding = viewModel.getItem();
         }
 
+        viewModel.update(currentItem);
+
         binding.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) { onCheckedBox.onChecked(invoiceLines.get(position)); }
-                else { onCheckedBox.onUnchecked(invoiceLines.get(position)); }
+                if (b) { onCheckedBox.onChecked(currentItem); }
+                else { onCheckedBox.onUnchecked(currentItem); }
             }
         });
 
-        viewModel.update(invoiceLines.get(position));
+        binding.addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                currentItem.addQty();
+                onItemQtyChange.onUpdateQty(currentItem);
+            }
+        });
+
+        binding.removeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                currentItem.removeQty();
+                onItemQtyChange.onUpdateQty(currentItem);
+            }
+        });
 
         return convertView;
     }

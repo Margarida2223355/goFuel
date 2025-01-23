@@ -84,7 +84,7 @@
                 ->where([
                     'client_id' => $userID,
                     'station_id' => $stationID,
-                    'invoice_states.description' => 'Pending'
+                    'invoice_states.description' => 'Cart'
                     ])
                 ->all();
         }

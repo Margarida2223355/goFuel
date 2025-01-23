@@ -17,22 +17,27 @@ import com.example.gofuel.R;
 import com.example.gofuel.databinding.FragmentCartBinding;
 import com.example.gofuel.model.invoice.Invoice;
 import com.example.gofuel.model.invoice.invoiceline.InvoiceLine;
+import com.example.gofuel.model.invoice.invoiceline.InvoicelinePost;
+import com.example.gofuel.model.station_item.StationItem;
 import com.example.gofuel.modelView.Invoice.InvoiceViewModel;
 import com.example.gofuel.modelView.Invoiceline.InvoicelineAdapter;
 import com.example.gofuel.modelView.Invoiceline.InvoicelineViewModel;
 import com.example.gofuel.util.State;
 import com.example.gofuel.util.callback.InvoiceClose;
 import com.example.gofuel.util.callback.OnCheckedBox;
+import com.example.gofuel.util.callback.OnItemQtyChange;
 
+import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CartFragment extends Fragment {
     private FragmentCartBinding binding;
     private Invoice invoice;
     private InvoicelineViewModel viewModel;
     private InvoiceViewModel invoiceViewModel;
-    private ArrayList<InvoiceLine> linesToChange;
+    private ArrayList<InvoiceLine> linesToRemove;
 
     public CartFragment() {
         // Required empty public constructor
@@ -46,7 +51,7 @@ public class CartFragment extends Fragment {
 
         viewModel = new ViewModelProvider(this).get(InvoicelineViewModel.class);
         invoiceViewModel = new ViewModelProvider(this).get(InvoiceViewModel.class);
-        linesToChange = new ArrayList<>();
+        linesToRemove = new ArrayList<>();
 
         viewModel.getState().observe(getViewLifecycleOwner(), state -> {
             if (state instanceof State.Loading) {
@@ -68,12 +73,23 @@ public class CartFragment extends Fragment {
                 binding.linesList.setAdapter(new InvoicelineAdapter(getContext(), lines, new OnCheckedBox() {
                     @Override
                     public void onChecked(InvoiceLine line) {
-                        linesToChange.add(line);
+                        linesToRemove.add(line);
                     }
 
                     @Override
                     public void onUnchecked(InvoiceLine line) {
-                        linesToChange.remove(line);
+                        linesToRemove.remove(line);
+                    }
+                }, new OnItemQtyChange() {
+                    @Override
+                    public void onQtyChanged(Boolean show) {}
+
+                    @Override
+                    public void changeQty(StationItem item, int qty) {}
+
+                    @Override
+                    public void onUpdateQty(InvoiceLine line) {
+                        viewModel.updateLines(line, new InvoicelinePost(line.getItem().getId(), line.getQty(), (float) line.getTotal(), line.getInvoice().getId()));
                     }
                 }));
                 binding.totalValue.setText(String.format("%.2f", total) + "€");
@@ -89,7 +105,7 @@ public class CartFragment extends Fragment {
         binding.removeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!linesToChange.isEmpty()) { viewModel.removeLines(linesToChange); }
+                if (!linesToRemove.isEmpty()) { viewModel.removeLines(linesToRemove); }
                 //Toast.makeText(getContext(), linesToChange.size() + " lines removed", Toast.LENGTH_SHORT).show();
             }
         });

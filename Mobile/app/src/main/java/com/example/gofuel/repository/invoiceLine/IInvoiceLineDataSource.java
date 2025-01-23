@@ -19,6 +19,7 @@ public interface IInvoiceLineDataSource {
         ResultWrapper<List<InvoiceLine>> addInvoiceLines(PendingInvoice invoice, List<InvoicelinePost> lines);
         ResultWrapper<List<InvoiceLine>> addInvoiceLines(List<InvoicelinePost> lines);
         ResultWrapper<List<InvoiceLine>> removeInvoiceLines(List<InvoiceLine> lines);
+        ResultWrapper<List<InvoiceLine>> updateInvoiceLines(InvoiceLine line, InvoicelinePost linePost);
     }
 
     // Local data source
