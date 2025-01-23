@@ -79,11 +79,9 @@ if ($alert) {
                 'header' => 'Actions',
                 'template' => '{view} {update} {delete}',
                 'visibleButtons' => [
-                    // O botão delete só será exibido para os admins
                     'delete' => function ($model) {
                         return Yii::$app->user->can('Admin');
                     },
-                    // O botão update será exibido para admins e managers
                     'update' => function ($model) {
                         return Yii::$app->user->can('Admin') || Yii::$app->user->can('Manager');
                     },

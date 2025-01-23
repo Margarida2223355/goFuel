@@ -39,13 +39,11 @@ $this->params['breadcrumbs'][] = $model->name;
 
     <h3>Available Items</h3>
 
-    <!-- Dropdowns de filtro -->
     <div class="row">
         <div class="col-md-6">
             <?= Html::beginForm(['station/view', 'id' => $model->id], 'get', ['class' => 'form-inline']) ?>
 
             <div class="row">
-                <!-- Dropdown de Categorias -->
                 <div class="col-md-6">
                     <?= Html::dropDownList(
                         'filterCategory',
@@ -54,11 +52,10 @@ $this->params['breadcrumbs'][] = $model->name;
                         [
                             'prompt' => 'All Categories',
                             'class' => 'form-control',
-                            'onchange' => 'this.form.submit()' // Submete o formulário automaticamente ao mudar o valor
+                            'onchange' => 'this.form.submit()'
                         ]
                     ) ?>
                 </div>
-                <!-- Dropdown de Subcategorias -->
                 <div class="col-md-6">
                     <?= Html::dropDownList(
                         'filterSubcategory',
@@ -67,7 +64,7 @@ $this->params['breadcrumbs'][] = $model->name;
                         [
                             'prompt' => 'All Subcategories',
                             'class' => 'form-control',
-                            'onchange' => 'this.form.submit()' // Submete o formulário automaticamente ao mudar o valor
+                            'onchange' => 'this.form.submit()'
                         ]
                     ) ?>
                 </div>
@@ -77,73 +74,80 @@ $this->params['breadcrumbs'][] = $model->name;
         </div>
     </div>
     <br>
-    <!-- GridView -->
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'columns' => [
-            [
-                'label' => 'Item Name',
-                'value' => function ($stationItem) {
-                    return $stationItem->item->description;
-                },
-            ],
-            [
-                'label' => 'Category',
-                'value' => function ($stationItem) {
-                    return $stationItem->item->subcategory->category->name;
-                },
-            ],
-            [
-                'label' => 'Subcategory',
-                'value' => function ($stationItem) {
-                    return $stationItem->item->subcategory->description;
-                },
-            ],
-            [
-                'label' => 'Price',
-                'value' => function ($stationItem) {
-                    return Yii::$app->formatter->asCurrency($stationItem->price, 'EUR');
-                },
-            ],
-            [
-                'class' => 'yii\grid\ActionColumn',
-                'header' => 'Add to Cart',
-                'template' => '{add-to-cart}',
-                'buttons' => [
-                    'add-to-cart' => function ($url, $stationItem, $key) {
-                        return Html::beginForm(['invoice/addtocart', 'item_id' => $stationItem->item_id, 'station_id' => $stationItem->station_id], 'post', [
-                            'style' => 'display: inline-flex; align-items: center;'
-                        ]) .
-                            ($stationItem->item->subcategory->category->id == 1 || $stationItem->item->subcategory->category->id == 2
-                                ? Html::input('number', 'quantity', 1, [
-                                    'class' => 'form-control',
-                                    'style' => 'width: 100px; margin-right: 5px;',
-                                    'min' => 0.1,
-                                    'step' => 0.1,
-                                    'title' => 'Quantidade (decimais permitidos)',
-                                ])
-                                : Html::input('number', 'quantity', 1, [
-                                    'class' => 'form-control',
-                                    'style' => 'width: 100px; margin-right: 5px;',
-                                    'min' => 1,
-                                    'step' => 1,
-                                    'title' => 'Quantidade (apenas inteiros)',
-                                ])
-                            ) .
-                            Html::submitButton('<i class="fa fa-shopping-cart"></i>', [
-                                'class' => 'btn btn-sm',
-                                'style' => 'color: #FFD100; text-decoration: none;',
-                                //'data-confirm' => 'Do you want to add this item to your cart?',
-                                'title' => 'Add to Cart',
-                            ]) .
-                            Html::endForm();
-                    },
-                ],
-            ],
-        ],
-        'summary' => false,
-    ]) ?>
 
+    <?php
+    $columns = [
+        [
+            'label' => 'Item Name',
+            'value' => function ($stationItem) {
+                return $stationItem->item->description;
+            },
+        ],
+        [
+            'label' => 'Category',
+            'value' => function ($stationItem) {
+                return $stationItem->item->subcategory->category->name;
+            },
+        ],
+        [
+            'label' => 'Subcategory',
+            'value' => function ($stationItem) {
+                return $stationItem->item->subcategory->description;
+            },
+        ],
+        [
+            'label' => 'Price',
+            'value' => function ($stationItem) {
+                return Yii::$app->formatter->asCurrency($stationItem->price, 'EUR');
+            },
+        ],
+    ];
+
+    if (!Yii::$app->user->isGuest) {
+        $columns[] = [
+            'class' => 'yii\grid\ActionColumn',
+            'header' => 'Add to Cart',
+            'template' => '{add-to-cart}',
+            'buttons' => [
+                'add-to-cart' => function ($url, $stationItem, $key) {
+                    return Html::beginForm(['invoice/addtocart', 'item_id' => $stationItem->item_id, 'station_id' => $stationItem->station_id], 'post', [
+                        'style' => 'display: inline-flex; align-items: center;'
+                    ]) .
+                        ($stationItem->item->subcategory->category->id == 1 || $stationItem->item->subcategory->category->id == 2
+                            ? Html::input('number', 'quantity', 1, [
+                                'class' => 'form-control',
+                                'style' => 'width: 100px; margin-right: 5px;',
+                                'min' => 0.1,
+                                'step' => 0.1,
+                                'title' => 'Quantidade (decimais permitidos)',
+                            ])
+                            : Html::input('number', 'quantity', 1, [
+                                'class' => 'form-control',
+                                'style' => 'width: 100px; margin-right: 5px;',
+                                'min' => 1,
+                                'step' => 1,
+                                'title' => 'Quantidade (apenas inteiros)',
+                            ])
+                        ) .
+                        Html::submitButton('<i class="fa fa-shopping-cart"></i>', [
+                            'class' => 'btn btn-sm',
+                            'style' => 'color: #FFD100; text-decoration: none;',
+                            //'data-confirm' => 'Do you want to add this item to your cart?',
+                            'title' => 'Add to Cart',
+                        ]) .
+                        Html::endForm();
+                },
+            ],
+        ];
+    }
+
+    // Renderizando o GridView com as colunas dinâmicas
+    echo GridView::widget([
+        'dataProvider' => $dataProvider,
+        'columns' => $columns,
+        'summary' => false,
+    ]);
+    ?>
 
 
 </div>

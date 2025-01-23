@@ -51,11 +51,6 @@ class ItemController extends Controller
                         'allow' => true,
                         'roles' => ['ItemAssociatePermission'],
                     ],
-                    [
-                        'actions' => ['restock'],
-                        'allow' => true,
-                        'roles' => ['ItemRestockPermission'],
-                    ],
                 ],
             ],
         ];
@@ -67,6 +62,7 @@ class ItemController extends Controller
 
         $isAdmin = $auth->checkAccess(Yii::$app->user->id, 'Admin');
         $isManager = $auth->checkAccess(Yii::$app->user->id, 'Manager');
+        $stations = [];
 
         if ($isAdmin) {
             // Se sim, busca os items
@@ -89,10 +85,12 @@ class ItemController extends Controller
 
             $stations = Station::find()->where(['manager_id' => Yii::$app->user->id])->all();
         } else {
-            $stations = Station::find()
+            $station = Station::find()
                 ->joinWith('stationUsers')
                 ->where(['station_users.user_id' => Yii::$app->user->id])
-                ->all();
+                ->one();
+
+                
         }
 
         $model = new ItemStationForm();

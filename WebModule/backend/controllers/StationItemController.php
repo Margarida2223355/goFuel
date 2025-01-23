@@ -37,6 +37,11 @@ class StationItemController extends Controller
                         'allow' => true,
                         'roles' => ['StationItemUpdateAssociationPermission'],
                     ],
+                    [
+                        'actions' => ['restock'],
+                        'allow' => true,
+                        'roles' => ['ItemRestockPermission'],
+                    ],
                 ],
             ],
         ];
@@ -88,7 +93,7 @@ class StationItemController extends Controller
         return $this->redirect(['item/index']);
     }
 
-    public function actionDeleteAssociation($station_id, $item_id)
+    public function actionDeleteAssociation($item_id, $station_id)
     {
 
         if ($station_id || $item_id) {
@@ -180,7 +185,7 @@ class StationItemController extends Controller
             }
         }
 
-        return $this->redirect(['item/index']);
+        return $this->redirect(Yii::$app->request->referrer ?: ['index']);
     }
 
     protected function findModel($station_id, $item_id)

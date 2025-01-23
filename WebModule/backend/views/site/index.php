@@ -1,5 +1,6 @@
 <?php
 
+use hail812\adminlte\widgets\Alert;
 use yii\grid\GridView;
 use yii\helpers\Html;
 
@@ -8,6 +9,18 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
 ?>
 
 <h1><?= Html::encode($this->title) ?></h1>
+
+<?php
+$alert = Yii::$app->session->get('alert');
+if ($alert) {
+    echo Alert::widget([
+        'type' => $alert['type'],
+        'body' => "<strong>{$alert['title']}</strong><br> {$alert['message']}",
+    ]);
+
+    Yii::$app->session->remove('alert');
+}
+?>
 <div class="container-fluid mt-5">
     <div class="row">
         <?php

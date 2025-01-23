@@ -50,14 +50,14 @@ AppAsset::register($this);
         // Menu items
         $menuItems = Yii::$app->user->isGuest ? [
             ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'GII', 'url' => ['/gii']],
+            //['label' => 'About', 'url' => ['/site/about']],
+            ['label' => 'Service Areas', 'url' => ['/station/index']],
         ] : [
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'Service Areas', 'url' => ['/station/index']],
             ['label' => 'Cart', 'url' => ['/invoice/index-cart']],
             ['label' => 'All Invoices', 'url' => ['/invoice/index']],
-            ['label' => 'Profile', 'url' => ['/site/profile', 'id' => Yii::$app->user->identity->id]],
+            ['label' => 'Profile', 'url' => ['/site/profile']],
         ];
 
         // Right items

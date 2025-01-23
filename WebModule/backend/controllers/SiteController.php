@@ -166,6 +166,7 @@ class SiteController extends Controller
                 $items = StationItem::find(['id_station' => $currentUser->stationUsers->station_id, 'is_deleted' => 0])->all();
                 $station = StationUser::findOne(['user_id' => Yii::$app->user->id]);
                 $invoicesToFinish = Invoice::find()->where(['station_id' => $station->station_id, 'state_id' => 2])->count();
+                $stationId = $station->station_id;
 
                 $dataProvider = new \yii\data\ActiveDataProvider([
                     'query' => StationItem::find()->where(['station_id' => $station->station_id, 'is_deleted' => 0])->with('item'),
