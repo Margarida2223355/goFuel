@@ -86,6 +86,8 @@ class InvoiceController extends Controller
                 $invoiceLine->qty = $quantityToAdd;
                 $invoiceLine->invoice_id = $existInvoice->id;
                 $invoiceLine->total = $stationItem->price * $quantityToAdd;
+
+
                 if (!$invoiceLine->save()) {
                     throw new \yii\web\ServerErrorHttpException("Failed to save the new invoicssse line.");
                 }
