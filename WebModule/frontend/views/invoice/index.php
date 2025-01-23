@@ -19,7 +19,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            'client.userInfo.name',
+            [
+                'label' => 'Code',
+                'value' => function ($model) {
+                    return 'F' . date('Y', strtotime($model->invoice_date)) . 'S' .
+                        $model->station_id . '/' .
+                        $model->id;
+                },
+            ],
             'station.name',
             'invoice_date',
             'total',
