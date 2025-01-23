@@ -21,6 +21,7 @@ import com.example.gofuel.databinding.InvoicesPopupBinding;
 import com.example.gofuel.model.invoice.Invoice;
 import com.example.gofuel.model.invoice.InvoicePost;
 import com.example.gofuel.model.invoice.InvoiceStationPost;
+import com.example.gofuel.model.invoice.invoiceline.InvoiceLine;
 import com.example.gofuel.model.invoice.invoiceline.InvoicelinePost;
 import com.example.gofuel.model.invoice.pending.PendingInvoice;
 import com.example.gofuel.model.station.Station;
@@ -92,6 +93,9 @@ public class ItemFragment extends Fragment {
                     public void changeQty(StationItem item, int qty) {
                         viewModel.updateItemsQty(item, qty);
                     }
+
+                    @Override
+                    public void onUpdateQty(InvoiceLine line) {}
                 }));
 
                 //Disable list clicks
