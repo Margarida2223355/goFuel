@@ -22,9 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Code',
                 'value' => function ($model) {
-                    return 'F' . date('Y', strtotime($model->invoice_date)) . 'S' .
-                        $model->station_id . '/' .
-                        $model->id;
+                    return $model->generateFinalCode();
                 },
             ],
             'station.name',

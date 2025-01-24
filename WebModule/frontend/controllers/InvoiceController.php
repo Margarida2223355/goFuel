@@ -49,7 +49,7 @@ class InvoiceController extends Controller
             throw new \yii\web\NotFoundHttpException("The requested station item does not exist.");
         }
 
-        $isFuel = $stationItem->item->subcategory->category->id == 1;
+        $isFuel = $stationItem->item->subcategory->category->id == 1 || $stationItem->item->subcategory->category->id == 2;
         $quantityToAdd = $isFuel ? $quantity / $stationItem->price : $quantity;
 
         if ($stationItem->stock < $quantityToAdd) {

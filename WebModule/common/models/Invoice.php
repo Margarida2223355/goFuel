@@ -143,11 +143,11 @@ class Invoice extends \yii\db\ActiveRecord
 
     public function generateRandomCode()
     {
-        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; // Letras maiúsculas e dígitos
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         $randomCode = '';
 
         for ($i = 0; $i < 6; $i++) {
-            $index = rand(0, strlen($characters) - 1); // Gera um índice aleatório
+            $index = rand(0, strlen($characters) - 1);
             $randomCode .= $characters[$index];
         }
 
@@ -155,7 +155,8 @@ class Invoice extends \yii\db\ActiveRecord
         $this->update();
     }
 
-    public function generateFinalCode() {
-        $this->code = 'F' . date('Y', strtotime($this->invoice_date)) . 'S' . $this->station_id . '/' . $this->id;
+    public function generateFinalCode()
+    {
+        return 'F' . date('Y', strtotime($this->invoice_date)) . 'S' . $this->station_id . '/' . $this->id;
     }
 }
