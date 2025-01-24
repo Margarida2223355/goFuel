@@ -60,11 +60,17 @@ public class InvoiceLine {
     }
 
     public int addQty() {
-        return qty++;
+        qty++;
+        total += qty * (total/qty);
+
+        return qty;
     }
 
     public int removeQty() {
-        return qty--;
+        qty--;
+        total -= qty * (total/qty);
+
+        return qty;
     }
 
     public float getUnitPrice() {
