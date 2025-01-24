@@ -179,7 +179,7 @@ public class ItemFragment extends Fragment {
         invoiceViewModel.getState().observe(getViewLifecycleOwner(), state -> {
             if (state instanceof State.PendingInvoiceList) {
                 List<PendingInvoice> invoices = new ArrayList<>(((State.PendingInvoiceList) state).getInvoices());
-                List<String> codes = invoices.stream().map(PendingInvoice::getCode).collect(Collectors.toList());
+                List<String> codes = invoices.stream().map(invoice -> String.valueOf(invoice.getId())).collect(Collectors.toList());
                 codes.add("Nova Fatura");
 
                 popup.invoiceList.setAdapter(new ArrayAdapter<>(
