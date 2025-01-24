@@ -154,4 +154,8 @@ class Invoice extends \yii\db\ActiveRecord
         $this->code = $randomCode;
         $this->update();
     }
+
+    public function generateFinalCode() {
+        $this->code = 'F' . date('Y', strtotime($this->invoice_date)) . 'S' . $this->station_id . '/' . $this->id;
+    }
 }

@@ -112,7 +112,8 @@
                 throw new NotFoundHttpException('Invoice not found');
             }
 
-            $model->state_id = 4; // Finished
+            $model->state_id = 2; // Pending
+            $model->generateFinaCode();
 
             if ($model->save()) {
 
