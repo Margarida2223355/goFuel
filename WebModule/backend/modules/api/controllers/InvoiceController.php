@@ -113,7 +113,7 @@
             }
 
             $model->state_id = 2; // Pending
-            $model->generateFinaCode();
+            $model->generateFinalCode();
 
             if ($model->save()) {
 

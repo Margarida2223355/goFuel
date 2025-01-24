@@ -39,7 +39,7 @@ public class InvoiceItemViewModel {
             }
         });
 
-        binding.invoiceNumber.setText(String.valueOf(invoice.getCode()));
+        binding.invoiceNumber.setText(String.valueOf(invoice.getId()));
         binding.invoiceStation.setText(invoice.getStation().getName());
         binding.invoiceDate.setText(Util.convertToData(invoice.getInvoice_date()));
     }
