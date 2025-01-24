@@ -15,7 +15,7 @@ class m241107_192749_create_invoices_table extends Migration
             'station_id' => $this->integer()->notNull(),
             'invoice_date' => $this->dateTime()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
             'total' => $this->double()->notNull(),
-            'state_id' => $this->integer()->notNull()->defaultValue(2),
+            'state_id' => $this->integer()->notNull()->defaultValue(1),
             'code' => $this->string(45)->defaultValue(null),
         ]);
 

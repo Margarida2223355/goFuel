@@ -15,7 +15,6 @@
             $request = \Yii::$app -> request -> bodyParams;
 
             if ($model -> load($request, '') && $model -> save()) {
-                $model->generateRandomCode();
                 return self::formatInvoiceFields($model);
             }
 
