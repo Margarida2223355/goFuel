@@ -12,7 +12,7 @@ use Yii;
  * @property int $subcategory_id
  * @property int $restock_qty
  *
- * @property InvoiceLine[] $invoiceLines
+ * @property Invoiceline[] $invoiceLines
  * @property ItemStock[] $itemStocks
  * @property StationItem[] $stationItems
  * @property Subcategory $subcategory

@@ -16,7 +16,7 @@ use Yii;
  * @property string|null $code
  *
  * @property User $client
- * @property InvoiceLine[] $invoiceLines
+ * @property Invoiceline[] $invoiceLines
  * @property Invoicestate $state
  * @property Station $station
  */
