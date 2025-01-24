@@ -18,11 +18,17 @@ public class InvoicelineItemViewModel {
 
     public void update(InvoiceLine item) {
         binding.checkBox.setVisibility(View.VISIBLE);
+        binding.itemUnitPrice.setVisibility(View.GONE);
 
         binding.itemName.setText(item.getItem().getDescription());
         binding.itemCategory.setText(item.getItem().getSubcategory().getCategory().getName());
-        binding.itemTotal.setText(String.format("%.2f", item.getTotal()) + "€");
-        binding.itemUnitPrice.setText(String.format("%.2f", item.getUnitPrice()) + "€/UN");
-        binding.itemQty.setText(String.valueOf(item.getQty()));
+
+        if ((item.getItem().getSubcategory().getCategory().getName().equals("Gasoline") || (item.getItem().getSubcategory().getCategory().getName().equals("Diesel")))) {
+            binding.itemTotal.setText(String.format("%.2f", item.getQty()) + " UN");
+            binding.itemQty.setText(String.format("%.2f", item.getTotal()) + "€");
+        } else {
+            binding.itemTotal.setText(String.format("%.2f", item.getTotal()) + "€");
+            binding.itemQty.setText(String.format("%.2f", item.getQty()));
+        }
     }
 }

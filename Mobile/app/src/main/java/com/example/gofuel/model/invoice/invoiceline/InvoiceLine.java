@@ -4,6 +4,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.example.gofuel.model.category.Category;
 import com.example.gofuel.model.invoice.pending.PendingInvoice;
 import com.example.gofuel.model.item.Item;
 
@@ -12,11 +13,11 @@ public class InvoiceLine {
     @PrimaryKey
     private final int id;
     private Item item;
-    private int qty;
+    private double qty;
     private double total;
     private PendingInvoice invoice;
 
-    public InvoiceLine(int id, Item item, int qty, double total, PendingInvoice invoice) {
+    public InvoiceLine(int id, Item item, double qty, double total, PendingInvoice invoice) {
         this.id = id;
         this.item = item;
         this.qty = qty;
@@ -32,7 +33,7 @@ public class InvoiceLine {
         return item;
     }
 
-    public int getQty() {
+    public double getQty() {
         return qty;
     }
 
@@ -48,7 +49,7 @@ public class InvoiceLine {
         this.item = item;
     }
 
-    public void setQty(int qty) {
+    public void setQty(double qty) {
         this.qty = qty;
     }
 
@@ -60,17 +61,33 @@ public class InvoiceLine {
         this.invoice = invoice;
     }
 
-    public int addQty() {
-        total += getUnitPrice();
-        return qty++;
+    public void addQty() {
+        String category = item.getSubcategory().getCategory().getName();
+
+        if ((category.equals("Gasoline")) || (category.equals("Diesel"))) {
+            double finalTotal = total + 0.1;
+            qty = finalTotal * (qty/total);
+            total = finalTotal;
+        }
+        else {
+            double unitPrice = total/qty;
+            total += unitPrice;
+            qty++;
+        }
     }
 
-    public int removeQty() {
-        total -= getUnitPrice();
-        return qty--;
-    }
+    public void removeQty() {
+        String category = item.getSubcategory().getCategory().getName();
 
-    public float getUnitPrice() {
-        return (float) total/qty;
+        if ((category.equals("Gasoline")) || (category.equals("Diesel"))) {
+            double finalTotal = total - 0.1;
+            qty = finalTotal * (qty/total);
+            total = finalTotal;
+        }
+        else {
+            double unitPrice = total/qty;
+            total -= unitPrice;
+            qty--;
+        }
     }
 }
