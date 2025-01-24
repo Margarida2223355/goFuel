@@ -1,6 +1,7 @@
 package com.example.gofuel.model.invoice.invoiceline;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.example.gofuel.model.invoice.pending.PendingInvoice;
@@ -60,20 +61,16 @@ public class InvoiceLine {
     }
 
     public int addQty() {
-        qty++;
-        total += qty * (total/qty);
-
-        return qty;
+        total += getUnitPrice();
+        return qty++;
     }
 
     public int removeQty() {
-        qty--;
-        total -= qty * (total/qty);
-
-        return qty;
+        total -= getUnitPrice();
+        return qty--;
     }
 
     public float getUnitPrice() {
-        return (float) (total/qty);
+        return (float) total/qty;
     }
 }
