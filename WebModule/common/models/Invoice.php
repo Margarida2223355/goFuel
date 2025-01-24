@@ -80,7 +80,7 @@ class Invoice extends \yii\db\ActiveRecord
      */
     public function getInvoiceLines()
     {
-        return $this->hasMany(InvoiceLine::class, ['invoice_id' => 'id']);
+        return $this->hasMany(Invoiceline::class, ['invoice_id' => 'id']);
     }
 
     /**
