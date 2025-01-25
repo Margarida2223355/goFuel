@@ -1,10 +1,11 @@
 package com.example.gofuel.model.invoice.invoiceline;
 
 public class InvoicelinePost {
-    private int item_id, qty, invoice_id;
+    private int item_id, invoice_id;
+    private double qty;
     private float total;
 
-    public InvoicelinePost(int item_id, int qty, float total, int invoice_id) {
+    public InvoicelinePost(int item_id, double qty, float total, int invoice_id) {
         this.item_id = item_id;
         this.qty = qty;
         this.total = total;
@@ -15,7 +16,7 @@ public class InvoicelinePost {
         return item_id;
     }
 
-    public int getQty() {
+    public double getQty() {
         return qty;
     }
 
