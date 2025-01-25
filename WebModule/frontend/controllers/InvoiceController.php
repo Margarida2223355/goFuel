@@ -3,7 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\Invoice;
-use common\models\InvoiceLine;
+use common\models\Invoiceline;
 use common\models\Item;
 use common\models\Station;
 use common\models\StationItem;
@@ -78,19 +78,18 @@ class InvoiceController extends Controller
                 $existInvoiceLine->qty += $quantityToAdd;
                 $existInvoiceLine->total = $stationItem->price * $existInvoiceLine->qty;
                 if (!$existInvoiceLine->update()) {
-                    Yii::error($existInvoiceLine->errors, __METHOD__);
-                    throw new \yii\web\ServerErrorHttpException("Failed to update the existing invoice line.");
+                    throw new \yii\web\ServerErrorHttpException("Failed to update the existing invoicess line.");
                 }
             } else {
-                $invoiceLine = new InvoiceLine();
+                $invoiceLine = new Invoiceline();
                 $invoiceLine->item_id = $stationItem->item_id;
                 $invoiceLine->qty = $quantityToAdd;
                 $invoiceLine->invoice_id = $existInvoice->id;
                 $invoiceLine->total = $stationItem->price * $quantityToAdd;
 
+
                 if (!$invoiceLine->save()) {
-                    Yii::error($invoiceLine->errors, __METHOD__);
-                    throw new \yii\web\ServerErrorHttpException("Failed to save the new invoice line.");
+                    throw new \yii\web\ServerErrorHttpException("Failed to save the new invoicssse line.");
                 }
             }
             $existInvoice->updateTotal();
@@ -106,15 +105,14 @@ class InvoiceController extends Controller
                 throw new \yii\web\ServerErrorHttpException("Failed to create a new invoice.");
             }
 
-            $invoiceLine = new InvoiceLine();
+            $invoiceLine = new Invoiceline();
             $invoiceLine->item_id = $stationItem->item_id;
             $invoiceLine->qty = $quantityToAdd;
             $invoiceLine->invoice_id = $invoice->id;
             $invoiceLine->total = $stationItem->price * $quantityToAdd;
 
-            if (!$invoice->save()) {
-                Yii::error($invoice->errors, __METHOD__);
-                throw new \yii\web\ServerErrorHttpException("Failed to create a new invoice.");
+            if (!$invoiceLine->save()) {
+                throw new \yii\web\ServerErrorHttpException("Failed to save the invoice line for the new invoice.");
             }
 
             $invoice->updateTotal();
