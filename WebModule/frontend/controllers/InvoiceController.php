@@ -78,7 +78,8 @@ class InvoiceController extends Controller
                 $existInvoiceLine->qty += $quantityToAdd;
                 $existInvoiceLine->total = $stationItem->price * $existInvoiceLine->qty;
                 if (!$existInvoiceLine->update()) {
-                    throw new \yii\web\ServerErrorHttpException("Failed to update the existing invoicess line.");
+                    Yii::error($existInvoiceLine->errors, __METHOD__);
+                    throw new \yii\web\ServerErrorHttpException("Failed to update the existing invoice line.");
                 }
             } else {
                 $invoiceLine = new InvoiceLine();
@@ -87,9 +88,9 @@ class InvoiceController extends Controller
                 $invoiceLine->invoice_id = $existInvoice->id;
                 $invoiceLine->total = $stationItem->price * $quantityToAdd;
 
-
                 if (!$invoiceLine->save()) {
-                    throw new \yii\web\ServerErrorHttpException("Failed to save the new invoicssse line.");
+                    Yii::error($invoiceLine->errors, __METHOD__);
+                    throw new \yii\web\ServerErrorHttpException("Failed to save the new invoice line.");
                 }
             }
             $existInvoice->updateTotal();
@@ -111,8 +112,9 @@ class InvoiceController extends Controller
             $invoiceLine->invoice_id = $invoice->id;
             $invoiceLine->total = $stationItem->price * $quantityToAdd;
 
-            if (!$invoiceLine->save()) {
-                throw new \yii\web\ServerErrorHttpException("Failed to save the invoice line for the new invoice.");
+            if (!$invoice->save()) {
+                Yii::error($invoice->errors, __METHOD__);
+                throw new \yii\web\ServerErrorHttpException("Failed to create a new invoice.");
             }
 
             $invoice->updateTotal();
