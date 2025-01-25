@@ -34,6 +34,7 @@ return [
                 [
                     'class' => \yii\log\FileTarget::class,
                     'levels' => ['error', 'warning'],
+                    'categories' => ['yii\db\*'],
                 ],
             ],
         ],

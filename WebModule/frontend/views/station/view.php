@@ -117,8 +117,8 @@ $this->params['breadcrumbs'][] = $model->name;
                             ? Html::input('number', 'quantity', 1, [
                                 'class' => 'form-control',
                                 'style' => 'width: 100px; margin-right: 5px;',
-                                'min' => 0.1,
-                                'step' => 0.1,
+                                'min' => 1,
+                                'step' => 1,
                                 'title' => 'Quantidade (decimais permitidos)',
                             ])
                             : Html::input('number', 'quantity', 1, [
