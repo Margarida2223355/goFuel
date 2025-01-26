@@ -41,7 +41,6 @@
 
         public function actionCreate() {
             $request = \Yii::$app -> request -> bodyParams;
-            $createdLines = [];
             $transaction = \Yii::$app -> db -> beginTransaction();
 
             try {
@@ -59,15 +58,15 @@
                 $transaction -> commit();
 
                 $lines = Invoiceline::find()
-                            -> where(['id' => $createdLines])
-                            -> with([
-                                'item.subcategory.category',
-                                'invoice.station',
-                                'invoice.client',
-                                'invoice.state',
-                                ])
-                            -> asArray()
-                            -> all();
+                    -> where(['invoice_id' => $model->invoice_id])
+                    -> with([
+                        'item.subcategory.category',
+                        'invoice.station',
+                        'invoice.client',
+                        'invoice.state',
+                        ])
+                    -> asArray()
+                    -> all();
 
                 return self::formatLineFields($lines);
             }
