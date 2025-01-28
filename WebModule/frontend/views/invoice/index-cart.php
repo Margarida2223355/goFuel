@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'total',
             [
                 'class' => ActionColumn::className(),
-                'template' => '{view} {delete}',
+                'template' => '{view} {pay} {cancel}',
                 'buttons' => [
                     'view' => function ($url, $model) {
                         return Html::a('<i class="fa fa-eye" aria-hidden="true"></i>', $url, [
@@ -38,11 +38,17 @@ $this->params['breadcrumbs'][] = $this->title;
                             'style' => 'color: #007bff; text-decoration: none;',
                         ]);
                     },
-                    'delete' => function ($url, $model) {
+                    'pay' => function ($url, $model) {
+                        return Html::a('<i class="fa fa-euro" aria-hidden="true"></i>', $url, [
+                            'title' => 'Pay',
+                            'style' => 'color:#28a745; text-decoration: none;',
+                        ]);
+                    },
+                    'cancel' => function ($url, $model) {
                         return Html::a('<i class="fa fa-trash" aria-hidden="true"></i>', $url, [
-                            'title' => 'Delete',
+                            'title' => 'Cancel',
                             'data-method' => 'post',
-                            'data-confirm' => 'Tem certeza que deseja apagar esta station?',
+                            'data-confirm' => 'Are you sure about cancel this invoice?',
                             'style' => 'color: #dc3545; text-decoration: none;',
                         ]);
                     },

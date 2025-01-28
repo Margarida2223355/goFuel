@@ -8,12 +8,12 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\Invoice $model */
 
-$this->title = Yii::$app->name . ' | Invoice ' . $model->id;
+$this->title = Yii::$app->name . ' | Invoice ' . $model->generateFinalCode();
 $this->params['breadcrumbs'][] = ['label' => 'Invoices', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<h1><?= Html::encode('Invoice ' . $model->id . ' | Details') ?></h1>
+<h1><?= Html::encode('Invoice ' . $model->generateFinalCode()) ?></h1>
 
 <div class="container-xxl py-3 ">
     <div class="container">

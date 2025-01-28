@@ -5,6 +5,7 @@ namespace backend\controllers;
 use common\models\Invoice;
 use common\models\Station;
 use common\models\StationUser;
+use Mpdf\Mpdf;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
@@ -40,6 +41,11 @@ class InvoiceController extends Controller
                         'actions' => ['finish'],
                         'allow' => true,
                         'roles' => ['InvoiceFinishPermission'],
+                    ],
+                    [
+                        'actions' => ['print'],
+                        'allow' => true,
+                        'roles' => ['InvoicePrintPermission'],
                     ],
                 ],
             ],
@@ -120,18 +126,30 @@ class InvoiceController extends Controller
         ]);
     }
 
-    /*public function actionUpdate($id)
+    public function actionPrint($id)
     {
-        $model = $this->findModel($id);
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $model = Invoice::findOne($id);
+        if (!$model) {
+            throw new \yii\web\NotFoundHttpException('Invoice não encontrada.');
         }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-    }*/
+        $htmlContent = $this->renderPartial('print', ['model' => $model]);
+
+        $mpdf = new Mpdf();
+
+        $mpdf->WriteHTML('<style>
+            body { font-family: Arial, sans-serif; }
+            h1 { text-align: center; }
+            table { width: 100%; border-collapse: collapse; }
+            th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }
+            th { background-color: #f4f4f4; }
+        </style>');
+
+        $mpdf->WriteHTML($htmlContent);
+
+        $fileName = 'Invoice_' . $model->generateFinalCode() . '.pdf';
+        return $mpdf->Output($fileName, \Mpdf\Output\Destination::INLINE);
+    }
 
     public function actionDelete($id)
     {

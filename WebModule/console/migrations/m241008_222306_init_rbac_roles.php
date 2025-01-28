@@ -29,10 +29,11 @@ class m241008_222306_init_rbac_roles extends Migration
         // Assign roles to created users
         $auth->assign($admin, 1);
         $auth->assign($manager, 2);
-        $auth->assign($inCharge, 3);
-        $auth->assign($employee, 4);
-        $auth->assign($client, 5);
+        $auth->assign($manager, 3);
+        $auth->assign($inCharge, 4);
+        $auth->assign($employee, 5);
         $auth->assign($client, 6);
+        $auth->assign($client, 7);
         #endregion
 
         #region Permissions
@@ -48,6 +49,7 @@ class m241008_222306_init_rbac_roles extends Migration
                 'InvoiceIndexPermission',
                 'InvoiceViewPermission',
                 'InvoiceFinishPermission',
+                'InvoicePrintPermission',
             ],
             'ItemController' => [
                 'ItemIndexPermission',
@@ -124,6 +126,7 @@ class m241008_222306_init_rbac_roles extends Migration
                 'UserChangerolePermission',
                 'UserCreatePermission',
                 'UserResetPasswordPermission',
+                'InvoicePrintPermission',
             ],
             'Incharge' => [
                 'ItemRestockPermission',
@@ -197,6 +200,7 @@ class m241008_222306_init_rbac_roles extends Migration
                 'InvoiceIndexPermission',
                 'InvoiceViewPermission',
                 'InvoiceFinishPermission',
+                'InvoicePrintPermission',
             ],
             'ItemController' => [
                 'ItemIndexPermission',

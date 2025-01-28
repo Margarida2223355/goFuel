@@ -22,13 +22,25 @@ class m241107_192756_create_station_items_table extends Migration
         $this->addForeignKey('fk_station_items_station', 'station_items', 'station_id', 'stations', 'id', 'CASCADE');
         $this->addForeignKey('fk_station_items_item', 'station_items', 'item_id', 'items', 'id', 'CASCADE');
 
-        $this->batchInsert('{{%station_items}}', ['station_id', 'item_id', 'price', 'stock'], [
-            [1, 1, 1.3, 5000],
-            [1, 2, 1.6, 5000],
-            [1, 3, 1, 25],
-            [2, 5, 1, 1000],
-            [2, 8, 4.3, 1000],
-        ]);
+        $this->batchInsert(
+            '{{%station_items}}',
+            ['station_id', 'item_id', 'price', 'stock'],
+            [
+                [1, 1, 1.56, 1000],
+                [1, 2, 1.63, 1000],
+                [1, 3, 1.61, 1200],
+                [1, 4, 1.72, 1200],
+                [1, 8, 6.99, 16],
+                [2, 1, 1.50, 1000],
+                [2, 2, 1.55, 1000],
+                [2, 3, 1.60, 1200],
+                [2, 4, 1.67, 1200],
+                [2, 5, 2.39, 24],
+                [3, 1, 1.73, 1000],
+                [3, 3, 1.90, 1200],
+                [3, 5, 1.40, 48],
+            ]
+        );
     }
 
     public function safeDown()

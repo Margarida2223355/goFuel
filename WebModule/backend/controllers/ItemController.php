@@ -61,7 +61,7 @@ class ItemController extends Controller
         ];
     }
 
-    public function actionIndex()
+    public function actionIndex($stationId = null)
     {
         $auth = Yii::$app->authManager;
 
@@ -97,8 +97,9 @@ class ItemController extends Controller
         }
 
         $model = new ItemStationForm();
-
-        $stationId = Yii::$app->request->post('stationId') ?? $station->id;
+        if ($stationId == null) {
+            $stationId = Yii::$app->request->post('stationId') ?? $station->id;
+        }
 
         if (!$stationId && !empty($stations)) {
             $stationId = $stations[0]->id;

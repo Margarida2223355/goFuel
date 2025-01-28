@@ -28,11 +28,12 @@ class m130524_201442_init extends Migration
 
         $this->batchInsert('{{%user}}', ['id', 'username', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'status', 'created_at', 'updated_at', 'verification_token'], [
             [1, 'admin', 'adminAuthKey', '$2y$10$aWKuiO3Eqm9iYWqOTZT8.eomK7VLcx/evTLXK1R89MZ9/xJ.1P1O.', null, 'admin@example.com', 10, 0, 0, null],
-            [2, 'manager', 'managerAuthKey', '$2y$10$aWKuiO3Eqm9iYWqOTZT8.eomK7VLcx/evTLXK1R89MZ9/xJ.1P1O.', null, 'manager@example.com', 10, 0, 0, null],
-            [3, 'incharge', 'inchargeAuthKey', '$2y$10$aWKuiO3Eqm9iYWqOTZT8.eomK7VLcx/evTLXK1R89MZ9/xJ.1P1O.', null, 'incharge@example.com', 10, 0, 0, null],
-            [4, 'employee', 'employeeAuthKey', '$2y$10$aWKuiO3Eqm9iYWqOTZT8.eomK7VLcx/evTLXK1R89MZ9/xJ.1P1O.', null, 'employee@example.com', 10, 0, 0, null],
-            [5, 'client', 'clientAuthKey', '$2y$10$aWKuiO3Eqm9iYWqOTZT8.eomK7VLcx/evTLXK1R89MZ9/xJ.1P1O.', null, 'client@example.com', 10, 0, 1731168731, null],
-            [6, 'cliente', 'clienteAuthKey', '$2y$10$aWKuiO3Eqm9iYWqOTZT8.eomK7VLcx/evTLXK1R89MZ9/xJ.1P1O.', null, 'cliente@example.com', 10, 0, 0, null],
+            [2, 'julio.manager', 'managerAuthKey', '$2y$10$aWKuiO3Eqm9iYWqOTZT8.eomK7VLcx/evTLXK1R89MZ9/xJ.1P1O.', null, 'julio.manager@example.com', 10, 0, 0, null],
+            [3, 'joao.manager', 'managerAuthKey', '$2y$10$aWKuiO3Eqm9iYWqOTZT8.eomK7VLcx/evTLXK1R89MZ9/xJ.1P1O.', null, 'joao.manager@example.com', 10, 0, 0, null],
+            [4, 'ines.incharge', 'inchargeAuthKey', '$2y$10$aWKuiO3Eqm9iYWqOTZT8.eomK7VLcx/evTLXK1R89MZ9/xJ.1P1O.', null, 'ines.incharge@example.com', 10, 0, 0, null],
+            [5, 'maria.employee', 'employeeAuthKey', '$2y$10$aWKuiO3Eqm9iYWqOTZT8.eomK7VLcx/evTLXK1R89MZ9/xJ.1P1O.', null, 'maria.employee@example.com', 10, 0, 0, null],
+            [6, 'ricardo.roldao', 'clientAuthKey', '$2y$10$aWKuiO3Eqm9iYWqOTZT8.eomK7VLcx/evTLXK1R89MZ9/xJ.1P1O.', null, 'ricardo.roldao@example.com', 10, 0, 1731168731, null],
+            [7, 'gilberto.silva', 'clienteAuthKey', '$2y$10$aWKuiO3Eqm9iYWqOTZT8.eomK7VLcx/evTLXK1R89MZ9/xJ.1P1O.', null, 'gilberto.silva@example.com', 10, 0, 0, null],
         ]);
     }
 

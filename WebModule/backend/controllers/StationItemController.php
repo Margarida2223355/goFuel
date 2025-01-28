@@ -72,6 +72,7 @@ class StationItemController extends Controller
                         'title' => 'Success!',
                         'message' => 'Item associated successfully.',
                     ]);
+                    return $this->redirect(['item/index', 'stationId' => $stationId]);
                 } else {
                     Yii::$app->session->set('alert', [
                         'type' => 'error',

@@ -9,7 +9,7 @@ use yii\grid\GridView;
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'All Invoices';
+$this->title = 'My Invoices';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="invoice-index">
@@ -31,21 +31,31 @@ $this->params['breadcrumbs'][] = $this->title;
             'state.description',
             [
                 'class' => ActionColumn::className(),
-                'template' => '{view} {delete}',
+                'template' => '{view} {cancel} {print}',
                 'buttons' => [
                     'view' => function ($url, $model) {
                         return Html::a('<i class="fa fa-eye" aria-hidden="true"></i>', $url, [
-                            'title' => 'Visualizar',
+                            'title' => 'View',
                             'style' => 'color: #007bff; text-decoration: none;',
                         ]);
                     },
-                    'delete' => function ($url, $model) {
-                        return Html::a('<i class="fa fa-trash" aria-hidden="true"></i>', $url, [
-                            'title' => 'Delete',
-                            'data-method' => 'post',
-                            'data-confirm' => 'Tem certeza que deseja apagar esta station?',
-                            'style' => 'color: #dc3545; text-decoration: none;',
-                        ]);
+                    'cancel' => function ($url, $model) {
+                        if ($model->state->id === 1) {
+                            return Html::a('<i class="fa fa-trash" aria-hidden="true"></i>', $url, [
+                                'title' => 'Cancel',
+                                'data-method' => 'post',
+                                'data-confirm' => 'Are you sure about cancel this invoice?',
+                                'style' => 'color: #dc3545; text-decoration: none;',
+                            ]);
+                        }
+                    },
+                    'print' => function ($url, $model) {
+                        if ($model->state->id === 4) {
+                            return Html::a('<i class="fa fa-print" aria-hidden="true"></i>', $url, [
+                                'title' => 'Print',
+                                'style' => 'color: #000000; text-decoration: none;',
+                            ]);
+                        }
                     },
                 ],
             ],

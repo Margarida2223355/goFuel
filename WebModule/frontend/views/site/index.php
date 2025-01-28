@@ -45,13 +45,13 @@ $this->title = Yii::$app->name . ' | HomePage';
                     </div>
                 </div>
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                    <h2 class="text-uppercase mb-3">Your Orders</h2>
+                    <h2 class="text-uppercase mb-3">Your Finish Orders</h2>
                     <div class="col-md-10">
                         <?php if ($invoices != null) { ?>
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>Code</th>
                                         <th>Invoice Date</th>
                                         <th>Total</th>
                                     </tr>
@@ -59,7 +59,7 @@ $this->title = Yii::$app->name . ' | HomePage';
                                 <tbody>
                                     <?php foreach ($invoices as $invoice) { ?>
                                         <tr>
-                                            <td><?php echo $invoice->id; ?></td>
+                                            <td><?php echo $invoice->generateFinalCode(); ?></td>
                                             <td><?php echo date('Y-m-d', strtotime($invoice->invoice_date)); ?></td>
                                             <td><?php echo number_format($invoice->total, 2); ?></td>
                                         </tr>

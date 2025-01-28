@@ -10,7 +10,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\Invoice $model */
 
-$this->title = 'Invoice ' . $model->id . ' | Master Detail';
+$this->title = 'Invoice ' . $model->generateFinalCode();
 $this->params['breadcrumbs'][] = ['label' => 'Invoices', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Master Detail';
 \yii\web\YiiAsset::register($this);
@@ -40,11 +40,14 @@ Yii::$app->session->remove('alert');
 
         </div>
         <div class="col-md-2 px-5">
-            <?= Html::a(
-                'Check',
-                Url::to(['invoice/finish', 'id' => $model->id]),
-                ['class' => 'btn btn-success me-2']
-            ) ?>
+            <?php
+            if ($model->state_id === 2) {
+                echo Html::a(
+                    'Check',
+                    Url::to(['invoice/finish', 'id' => $model->id]),
+                    ['class' => 'btn btn-success me-2']
+                );
+            } ?>
         </div>
     </div>
 

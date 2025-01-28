@@ -44,7 +44,9 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'enableStrictParsing' => false,
-            'rules' => [],
+            'rules' => [
+                'invoice/pdf/<id:\d+>' => 'invoice/generate-pdf',
+            ],
         ],
     ],
     'params' => $params,

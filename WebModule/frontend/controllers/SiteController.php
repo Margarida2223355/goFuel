@@ -87,7 +87,7 @@ class SiteController extends Controller
                 $station = null;
             }
 
-            $userInvoices = Invoice::find(['client_id' => $currentUser->id, 'state_id' != 1])->all();
+            $userInvoices = Invoice::find()->where(['client_id' => $currentUser->id, 'state_id' => 4])->all();
 
             return $this->render('index', ['station' => $station, 'invoices' => $userInvoices]);
         } else {

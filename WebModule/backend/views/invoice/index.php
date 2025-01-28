@@ -20,14 +20,19 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            'id',
+            [
+                'label' => 'Code',
+                'value' => function ($model) {
+                    return $model->generateFinalCode();
+                },
+            ],
             'client.userInfo.name',
             'station.name',
             'total',
             'state.description',
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{finish} {view}',
+                'template' => '{finish} {view} {print}',
                 'buttons' => [
                     'finish' => function ($url, $model, $key) {
                         if ($model->state_id == 2) {
@@ -47,6 +52,15 @@ $this->params['breadcrumbs'][] = $this->title;
                             ]);
                         }
                         return '';
+                    },
+                    'print' => function ($url, $model) {
+                        if ($model->state->id === 4) {
+                            return Html::a('<i class="fa fa-print" aria-hidden="true"></i>', $url, [
+                                'title' => 'Print',
+                                'style' => 'color: #000000; text-decoration: none;',
+                                'target' => '_blank',
+                            ]);
+                        }
                     },
                 ],
             ],

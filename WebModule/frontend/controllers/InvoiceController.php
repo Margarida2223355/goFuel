@@ -7,6 +7,7 @@ use common\models\Invoiceline;
 use common\models\Item;
 use common\models\Station;
 use common\models\StationItem;
+use Mpdf\Mpdf;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -183,7 +184,9 @@ class InvoiceController extends Controller
         $invoice = $this->findModel($id);
         $invoice->state_id = 3;
 
-        return $this->redirect('index');
+        if ($invoice->save()) {
+            return $this->redirect('index');
+        }
     }
 
     public function actionView($id)
@@ -211,11 +214,29 @@ class InvoiceController extends Controller
         ]);
     }
 
-    public function actionDelete($id)
+    public function actionPrint($id)
     {
-        $this->findModel($id)->delete();
+        $model = Invoice::findOne($id);
+        if (!$model) {
+            throw new \yii\web\NotFoundHttpException('Invoice não encontrada.');
+        }
 
-        return $this->redirect(['index']);
+        $htmlContent = $this->renderPartial('print', ['model' => $model]);
+
+        $mpdf = new Mpdf();
+
+        $mpdf->WriteHTML('<style>
+            body { font-family: Arial, sans-serif; }
+            h1 { text-align: center; }
+            table { width: 100%; border-collapse: collapse; }
+            th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }
+            th { background-color: #f4f4f4; }
+        </style>');
+
+        $mpdf->WriteHTML($htmlContent);
+
+        $fileName = 'Invoice_' . $model->generateFinalCode() . '.pdf';
+        return $mpdf->Output($fileName, \Mpdf\Output\Destination::INLINE);
     }
 
     protected function findModel($id)

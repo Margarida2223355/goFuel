@@ -28,12 +28,16 @@ if ($alert) {
         <h1><?= Html::encode($this->title) ?></h1>
     </div>
 
-    <?php echo $this->render('_form', [
-        'model' => $model,
-        'managersList' => $managersList,
-        'isUpdate' => $isUpdate,
-        'currentPumpsCount' => $currentPumpsCount,
-    ]);  ?>
+    <?php
+    if (Yii::$app->user->can('admin') && $isUpdate == 0) {
+        echo $this->render('_form', [
+            'model' => $model,
+            'managersList' => $managersList,
+            'isUpdate' => $isUpdate,
+            'currentPumpsCount' => $currentPumpsCount,
+        ]);
+    }  ?>
+
 
     <div class="row">
         <div class="col-6 float-left">

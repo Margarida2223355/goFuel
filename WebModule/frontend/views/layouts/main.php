@@ -56,7 +56,7 @@ AppAsset::register($this);
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'Service Areas', 'url' => ['/station/index']],
             ['label' => 'Cart', 'url' => ['/invoice/index-cart']],
-            ['label' => 'All Invoices', 'url' => ['/invoice/index']],
+            ['label' => 'My Invoices', 'url' => ['/invoice/index']],
             ['label' => 'Profile', 'url' => ['/site/profile']],
         ];
 
