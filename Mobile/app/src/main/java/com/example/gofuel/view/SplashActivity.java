@@ -46,7 +46,7 @@ public class SplashActivity extends AppCompatActivity {
             public void onClick(View view) {
                 showLoginCard();
 
-                binding.username.setText("client");
+                binding.username.setText("ricardo.roldao");
                 binding.password.setText("password");
             }
         });

@@ -2,6 +2,7 @@ package com.example.gofuel.modelView.Item;
 
 import com.example.gofuel.databinding.ItemItemsBinding;
 import com.example.gofuel.model.station_item.StationItem;
+import com.example.gofuel.util.Util;
 
 public class ItemStationItemViewModel {
     private final ItemItemsBinding binding;
@@ -26,6 +27,7 @@ public class ItemStationItemViewModel {
         binding.itemCategory.setText(item.getItem().getSubcategory().getCategory().getName());
         binding.itemUnitPrice.setText(String.format("%.2f", item.getPrice()) + "€");
         binding.itemQty.setText(String.valueOf(qty));
+        binding.itemImage.setImageBitmap(Util.convertToImage(item.getItem().getImage()));
 
         Double finalValue = qty * (item.getPrice());
         binding.itemTotal.setText(String.format("%.2f", finalValue) + "€");

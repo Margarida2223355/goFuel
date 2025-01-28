@@ -11,13 +11,15 @@ public class Station {
     private String name;
     private String address;
     private String postal_code;
+    private String image;
     //endregion
 
-    public Station(int id, String name, String address, String postal_code) {
+    public Station(int id, String name, String address, String postal_code, String image) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.postal_code = postal_code;
+        this.image = image;
     }
 
     //region Getters and Setters
@@ -27,6 +29,10 @@ public class Station {
 
     public String getName() {
         return name;
+    }
+
+    public String getImage() {
+        return image;
     }
 
     public void setName(String name) {
@@ -47,6 +53,10 @@ public class Station {
 
     public void setPostal_code(String postal_code) {
         this.postal_code = postal_code;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
     //endregion
 }

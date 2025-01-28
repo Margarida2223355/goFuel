@@ -9,6 +9,8 @@ class m241107_192744_create_stations_table extends Migration
 {
     public function safeUp()
     {
+        $imagePath = __DIR__ . '/../../images/';
+
         $this->createTable('{{%stations}}', [
             'id' => $this->primaryKey(),
             'name' => $this->string(255)->notNull(),
@@ -17,6 +19,7 @@ class m241107_192744_create_stations_table extends Migration
             'manager_id' => $this->integer()->notNull(),
             'phone' => $this->string(45)->defaultValue(null),
             'is_deleted' => $this->boolean()->defaultValue(false)->notNull(),
+            'image' => 'MEDIUMBLOB'
         ]);
 
         // Criação do índice para a coluna `manager_id`
@@ -36,10 +39,10 @@ class m241107_192744_create_stations_table extends Migration
             'CASCADE'
         );
 
-        $this->batchInsert('{{%stations}}', ['id', 'name', 'address', 'postal_code', 'manager_id', 'phone'], [
-            [1, 'Repsol', 'Nova Leiria', '1000-001', 2, '914241533'],
-            [2, 'Galp', 'Guimarota', '1000-002', 2, '236598556'],
-            [3, 'Prio', 'Dom Dinis', '1000-003', 3, '221896745'],
+        $this->batchInsert('{{%stations}}', ['id', 'name', 'address', 'postal_code', 'manager_id', 'phone', 'image'], [
+            [1, 'Repsol', 'Nova Leiria', '1000-001', 2, '914241533', base64_encode(file_get_contents($imagePath . 'repsol.png'))],
+            [2, 'Galp', 'Guimarota', '1000-002', 2, '236598556', base64_encode(file_get_contents($imagePath . 'galp.png'))],
+            [3, 'Prio', 'Dom Dinis', '1000-003', 3, '221896745', base64_encode(file_get_contents($imagePath . 'prio.png'))],
         ]);
     }
 
