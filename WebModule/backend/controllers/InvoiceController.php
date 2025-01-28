@@ -134,8 +134,11 @@ class InvoiceController extends Controller
         }
 
         $htmlContent = $this->renderPartial('print', ['model' => $model]);
+        $mpdfConfig = [
+            'tempDir' => Yii::getAlias('@runtime/mpdf'), // Define o diretório temporário para o mPDF
+        ];
 
-        $mpdf = new Mpdf();
+        $mpdf = new Mpdf($mpdfConfig);
 
         $mpdf->WriteHTML('<style>
             body { font-family: Arial, sans-serif; }
@@ -145,7 +148,7 @@ class InvoiceController extends Controller
             th { background-color: #f4f4f4; }
         </style>');
 
-        $mpdf->WriteHTML($htmlContent);
+        $mpdf->WriteHTML($mpdfConfig);
 
         $fileName = 'Invoice_' . $model->generateFinalCode() . '.pdf';
         return $mpdf->Output($fileName, \Mpdf\Output\Destination::INLINE);
