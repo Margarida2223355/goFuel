@@ -44,3 +44,6 @@ phpunit.phar
 
 #ignore docker
 /docker/
+
+# ignore images
+/images
