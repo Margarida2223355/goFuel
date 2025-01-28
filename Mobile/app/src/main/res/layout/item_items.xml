@@ -30,8 +30,9 @@
                 android:id="@+id/itemImage"
                 android:src="@drawable/item"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.2"/>
+                android:layout_height="80dp"
+                android:layout_weight="0.3"
+                android:scaleType="fitCenter"/>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -39,7 +40,7 @@
                 android:layout_weight="0.6"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:layout_marginHorizontal="20dp">
+                android:layout_marginHorizontal="16dp">
 
                 <TextView
                     android:id="@+id/itemName"

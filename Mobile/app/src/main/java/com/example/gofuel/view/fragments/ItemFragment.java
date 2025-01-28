@@ -97,9 +97,6 @@ public class ItemFragment extends Fragment {
                     @Override
                     public void onUpdateQty(InvoiceLine line) {}
                 }));
-
-                //Disable list clicks
-                binding.itemList.setEnabled(false);
             } else if (state instanceof State.EmptyState) {
                 binding.itemList.setVisibility(View.GONE);
                 binding.loading.setVisibility(View.GONE);
