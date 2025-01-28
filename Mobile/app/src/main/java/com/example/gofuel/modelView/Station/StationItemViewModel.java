@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.gofuel.R;
 import com.example.gofuel.databinding.ItemStationBinding;
 import com.example.gofuel.model.station.Station;
+import com.example.gofuel.util.Util;
 import com.example.gofuel.view.fragments.ItemFragment;
 
 public class StationItemViewModel {
@@ -40,7 +41,6 @@ public class StationItemViewModel {
         binding.itemName.setText(station.getName());
         binding.itemAddress.setText(station.getAddress());
         binding.itemPostal.setText(station.getPostal_code());
+        binding.itemImage.setImageBitmap(Util.convertToImage(station.getImage()));
     }
-
-
 }
