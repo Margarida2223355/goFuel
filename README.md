@@ -6,10 +6,12 @@ Git: [Margarida2223355/goFuel](https://github.com/Margarida2223355/goFuel)
 
 ### Users logins
 
-| **User**      | **Password** |
-|---------------|--------------|
-| admin         | password     |
-| manager       | password     |
-| incharge      | password     |
-| employee      | password     |
-| client        | password     |
+| **User**         | **Password** |
+|------------------|--------------|
+| admin            | password     |
+| julio.manager    | password     |
+| joao.manager     | password     |
+| ines.incharge    | password     |
+| maria.employee   | password     |
+| ricardo.roldao   | password     |
+| gilberto.silva   | password     |
