@@ -221,26 +221,31 @@ class InvoiceController extends Controller
             throw new \yii\web\NotFoundHttpException('Invoice não encontrada.');
         }
 
-        $htmlContent = $this->renderPartial('print', ['model' => $model]);
-        $mpdfConfig = [
-            'tempDir' => Yii::getAlias('@runtime/mpdf'), // Define o diretório temporário para o mPDF
-        ];
+        // Captura o conteúdo HTML gerado pela renderização da view
+        ob_start(); // Inicia o buffer de saída
+        echo $this->renderPartial('print', ['model' => $model]); // Renderiza a view
+        $htmlContent = ob_get_clean(); // Captura o conteúdo HTML gerado e limpa o buffer
 
-        $mpdf = new Mpdf($mpdfConfig);
+        // Instancia o mPDF
+        $mpdf = new Mpdf();
 
+        // Adiciona o estilo ao PDF
         $mpdf->WriteHTML('<style>
-            body { font-family: Arial, sans-serif; }
-            h1 { text-align: center; }
-            table { width: 100%; border-collapse: collapse; }
-            th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }
-            th { background-color: #f4f4f4; }
-        </style>');
+        body { font-family: Arial, sans-serif; }
+        h1 { text-align: center; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }
+        th { background-color: #f4f4f4; }
+    </style>');
 
-        $mpdf->WriteHTML($mpdfConfig);
+        // Adiciona o conteúdo da view ao PDF
+        $mpdf->WriteHTML($htmlContent);
 
+        // Define o nome do arquivo e envia o PDF para o navegador
         $fileName = 'Invoice_' . $model->generateFinalCode() . '.pdf';
-        return $mpdf->Output($fileName, \Mpdf\Output\Destination::INLINE);
+        return $mpdf->Output($fileName, \Mpdf\Output\Destination::INLINE); // Exibe o PDF no navegador
     }
+
 
     protected function findModel($id)
     {
