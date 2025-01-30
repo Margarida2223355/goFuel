@@ -221,15 +221,11 @@ class InvoiceController extends Controller
             throw new \yii\web\NotFoundHttpException('Invoice não encontrada.');
         }
 
-        // Captura o conteúdo HTML gerado pela renderização da view
-        ob_start(); // Inicia o buffer de saída
-        echo $this->renderPartial('print', ['model' => $model]); // Renderiza a view
-        $htmlContent = ob_get_clean(); // Captura o conteúdo HTML gerado e limpa o buffer
+        ob_start();
+        echo $this->renderPartial('print', ['model' => $model]);
+        $htmlContent = ob_get_clean();
 
-        // Instancia o mPDF
         $mpdf = new Mpdf();
-
-        // Adiciona o estilo ao PDF
         $mpdf->WriteHTML('<style>
         body { font-family: Arial, sans-serif; }
         h1 { text-align: center; }
@@ -238,12 +234,10 @@ class InvoiceController extends Controller
         th { background-color: #f4f4f4; }
     </style>');
 
-        // Adiciona o conteúdo da view ao PDF
         $mpdf->WriteHTML($htmlContent);
-
-        // Define o nome do arquivo e envia o PDF para o navegador
+        
         $fileName = 'Invoice_' . $model->generateFinalCode() . '.pdf';
-        return $mpdf->Output($fileName, \Mpdf\Output\Destination::INLINE); // Exibe o PDF no navegador
+        return $mpdf->Output($fileName, \Mpdf\Output\Destination::INLINE);
     }
 
 
