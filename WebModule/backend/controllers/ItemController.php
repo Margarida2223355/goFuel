@@ -14,6 +14,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\ForbiddenHttpException;
+use yii\web\UploadedFile;
 
 class ItemController extends Controller
 {
@@ -135,8 +136,14 @@ class ItemController extends Controller
     {
         $model = new Item();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect('index');
+        if ($model->load(Yii::$app->request->post())) {
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile'); // Captura a imagem
+
+            //dd($model->imageFile);
+
+            if ($model->save() && $model->upload()) {
+                return $this->redirect(['index']);
+            }
         }
     }
 
@@ -147,14 +154,22 @@ class ItemController extends Controller
         $dataProvider = new \yii\data\ActiveDataProvider([
             'query' => Item::find()->orderBy(['is_deleted' => SORT_ASC]),
         ]);
+
         $stationId = Yii::$app->request->post('stationId') ?? Yii::$app->request->get('stationId');
 
         $subcategories = Subcategory::find()->where(['is_deleted' => false])->all();
-
         $subcategoriesList =  \yii\helpers\ArrayHelper::map($subcategories, 'id', 'description');
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect('index');
+        if ($model->load(Yii::$app->request->post())) {
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+
+            if ($model->imageFile) {
+                $model->upload();
+            }
+
+            if ($model->save(false)) {
+                return $this->redirect(['index']);
+            }
         }
 
         return $this->render('admin-index', [
@@ -164,6 +179,7 @@ class ItemController extends Controller
             'isUpdate' => true,
         ]);
     }
+
 
     public function actionDelete($id)
     {

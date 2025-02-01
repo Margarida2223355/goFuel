@@ -11,90 +11,133 @@ use Yii;
  * @property string $description
  * @property int $subcategory_id
  * @property int $restock_qty
+ * @property int $is_deleted
+ * @property string|null $image
  *
- * @property Invoiceline[] $invoiceLines
- * @property ItemStock[] $itemStocks
+ * @property InvoiceLine[] $invoiceLines
  * @property StationItem[] $stationItems
+ * @property Station[] $stations
  * @property Subcategory $subcategory
  */
 class Item extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
+    public $imageFile;
     public static function tableName()
     {
         return 'items';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
-            [['description', 'subcategory_id'], 'required'],
-            [['subcategory_id', 'restock_qty'], 'integer'],
+            [['description', 'subcategory_id', 'restock_qty'], 'required'],
+            [['subcategory_id', 'restock_qty', 'is_deleted'], 'integer'],
+            [['image'], 'string'],
             [['description'], 'string', 'max' => 255],
             [['subcategory_id'], 'exist', 'skipOnError' => true, 'targetClass' => Subcategory::class, 'targetAttribute' => ['subcategory_id' => 'id']],
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [
             'id' => 'ID',
             'description' => 'Description',
             'subcategory_id' => 'Subcategory ID',
-            'restock_qty' => 'Restock Quantity',
+            'restock_qty' => 'Restock Qty',
+            'is_deleted' => 'Is Deleted',
+            'image' => 'Image',
         ];
     }
 
-    /**
-     * Gets query for [[InvoiceLines]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
     public function getInvoiceLines()
     {
         return $this->hasMany(InvoiceLine::class, ['item_id' => 'id']);
     }
 
-    /**
-     * Gets query for [[StationItems]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
     public function getStationItems()
     {
         return $this->hasMany(StationItem::class, ['item_id' => 'id']);
     }
 
-    /**
-     * Gets query for [[Subcategory]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
+    public function getStations()
+    {
+        return $this->hasMany(Station::class, ['id' => 'station_id'])->viaTable('station_items', ['item_id' => 'id']);
+    }
+
     public function getSubcategory()
     {
         return $this->hasOne(Subcategory::class, ['id' => 'subcategory_id']);
     }
 
-    public function fields() {
+    public function fields()
+    {
         $fields = parent::fields();
 
-        // Remove subcategory_id field
         unset($fields['subcategory_id'],  $fields['category_id']);
 
-        // Add subcategory field
-        $fields['subcategory'] = function() {
-            $subcategory = $this->getSubcategory()->one(); // Busca a subcategoria
+        $fields['subcategory'] = function () {
+            $subcategory = $this->getSubcategory()->one();
             return $subcategory ? $subcategory : null;
         };
 
         return $fields;
+    }
+
+    /*public function upload()
+    {
+        if ($this->imageFile) {
+            $uploadPath = __DIR__ . '/../../images/';
+
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
+            }
+
+            $fileName = 'item_' . $this->id . '.' . $this->imageFile->extension;
+            $filePath = $uploadPath . $fileName;
+
+            if ($this->imageFile->saveAs($filePath)) {
+                $this->image = $fileName;
+                $this->save();
+                return true;
+            }
+        }
+        dd('Erro na imagem');
+        return false;
+    }*/
+
+    public function upload()
+    {
+        if (!$this->imageFile) {
+            dd([
+                'erro' => 'Nenhuma imagem foi carregada.',
+                'imageFile' => $this->imageFile,
+                'postData' => Yii::$app->request->post(),
+                'filesData' => $_FILES
+            ]);
+        }
+
+        $uploadPath = __DIR__ . '/../../images/';
+
+        if (!is_dir($uploadPath) && !mkdir($uploadPath, 0777, true) && !is_dir($uploadPath)) {
+            dd('Erro ao criar diretório: ' . $uploadPath);
+        }
+
+        $fileName = $this->imageFile->name;
+        $filePath = $uploadPath . $fileName;
+
+        if (!$this->imageFile->saveAs($filePath)) {
+            dd([
+                'erro' => 'Erro ao salvar imagem!',
+                'fileError' => $this->imageFile->error
+            ]);
+        }
+
+        $this->image = base64_encode(file_get_contents($uploadPath . $fileName));
+        if (!$this->save(false)) {
+            dd('Erro ao salvar o caminho da imagem no banco.');
+        }
+
+        return true;
     }
 }

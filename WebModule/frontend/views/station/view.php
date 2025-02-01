@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $model->name;
 ?>
 
 <div class="station-view">
-    <h1><?= Html::encode($model->name) ?></h1>
+    <h1><?= Html::encode($model->name) ?>&emsp;<img src="data:image/png;base64,<?= $model->image ?>" alt="<?= Html::encode($model->name) ?>"></h1>
 
     <?= DetailView::widget([
         'model' => $model,
@@ -25,17 +25,19 @@ $this->params['breadcrumbs'][] = $model->name;
             'postal_code',
             'manager.userInfo.name',
         ],
-    ]) ?><?php
-            // Recebendo as variáveis de filtro dos parâmetros GET
-            $filterCategory = Yii::$app->request->get('filterCategory', null);
-            $filterSubcategory = Yii::$app->request->get('filterSubcategory', null);
+    ]) ?>
 
-            // Obtendo as categorias e subcategorias para as dropdowns
-            $categories = \common\models\Category::find()->all(); // Ajuste o namespace e o modelo conforme necessário
-            $subcategories = !empty($filterCategory)
-                ? \common\models\Subcategory::find()->where(['category_id' => $filterCategory])->all()
-                : \common\models\Subcategory::find()->all()
-            ?>
+    <?php
+    // Recebendo as variáveis de filtro dos parâmetros GET
+    $filterCategory = Yii::$app->request->get('filterCategory', null);
+    $filterSubcategory = Yii::$app->request->get('filterSubcategory', null);
+
+    // Obtendo as categorias e subcategorias para as dropdowns
+    $categories = \common\models\Category::find()->all(); // Ajuste o namespace e o modelo conforme necessário
+    $subcategories = !empty($filterCategory)
+        ? \common\models\Subcategory::find()->where(['category_id' => $filterCategory])->all()
+        : \common\models\Subcategory::find()->all()
+    ?>
 
     <h3>Available Items</h3>
 
@@ -77,6 +79,21 @@ $this->params['breadcrumbs'][] = $model->name;
 
     <?php
     $columns = [
+        [
+            'label' => 'Image',
+            'format' => 'raw',
+            'value' => function ($stationItem) {
+                if (!empty($stationItem->item->image)) {
+                    return '<div style="text-align: center;">
+                        <img src="data:image/png;base64,' . $stationItem->item->image . '" 
+                             alt="Station Image" 
+                             style="display: block; margin: 0 auto;">
+                    </div>';
+                }
+                return '<div style="text-align: center;">No Image</div>';
+            },
+            'contentOptions' => ['style' => 'text-align: center;'],
+        ],
         [
             'label' => 'Item Name',
             'value' => function ($stationItem) {

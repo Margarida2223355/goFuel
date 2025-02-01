@@ -55,14 +55,19 @@ Yii::$app->session->remove('alert');
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             [
                 'attribute' => 'description',
                 'format' => 'raw',
                 'value' => function ($model) {
-                    return $model->is_deleted
-                        ? Html::tag('i', '', ['class' => 'fa-regular fa-circle-xmark', 'aria-hidden' => 'true', 'style' => 'color: #dc3545']) . ' ' . $model->description
-                        : Html::tag('i', '', ['class' => 'fa-regular fa-circle-check', 'aria-hidden' => 'true', 'style' => 'color: #28a745']) . ' ' . $model->description;
+                    $icon = $model->is_deleted
+                        ? Html::tag('i', '', ['class' => 'fa-regular fa-circle-xmark', 'aria-hidden' => 'true', 'style' => 'color: #dc3545'])
+                        : Html::tag('i', '', ['class' => 'fa-regular fa-circle-check', 'aria-hidden' => 'true', 'style' => 'color: #28a745']);
+
+                    $image = !empty($model->image)
+                    ? Html::img('data:image/png;base64,' . $model->image, ['alt' => 'Imagem', 'style' => 'width: 40px; height: auto; margin-left: 10px;'])
+                        : '';
+
+                    return $icon . ' ' . $image . '   ' . Html::encode($model->description);
                 },
             ],
             [

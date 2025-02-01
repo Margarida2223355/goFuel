@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <?php foreach ($model->invoiceLines as $line):
                                         $stationItem = StationItem::findOne(['item_id' => $line->item_id, 'station_id' => $model->station_id]); ?>
                                         <tr>
-                                            <td><?= Html::encode($line->item->description) ?></td>
+                                            <td><img src="data:image/png;base64,<?= $line->item->image ?>" alt="<?= Html::encode($line->item->description) ?>">&emsp; <?= Html::encode($line->item->description) ?></td>
                                             <td><?= Html::encode($stationItem->price) ?></td>
                                             <td><?= Html::encode(round($line->qty, 2)) ?></td>
                                             <td><?= Html::encode($line->total) ?></td>

@@ -18,19 +18,23 @@ use yii\widgets\ActiveForm;
             ? Url::to(['update', 'id' => $model->id])
             : Url::to(['create']),
         'method' => 'post',
+        'options' => ['enctype' => 'multipart/form-data'],
     ]); ?>
     <div class="row">
         <div class="col-md-3">
             <?= $form->field($model, 'description')->textInput(['maxlength' => true, 'placeholder' => 'Description'])->label(false) ?>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <?= $form->field($model, 'restock_qty')->textInput(['placeholder' => 'Restock Quantity'])->label(false) ?>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <?= $form->field($model, 'subcategory_id')->dropDownList(
                 $subcategories,
                 ['prompt' => 'Select a Subcategory']
             )->label(false) ?>
+        </div>
+        <div class="col-md-2">
+            <?= $form->field($model, 'imageFile')->fileInput()->label(false) ?>
         </div>
         <div class="col-md-3">
             <div class="form-group">

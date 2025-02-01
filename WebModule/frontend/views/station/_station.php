@@ -36,7 +36,10 @@ use yii\helpers\Url;
 <div class="card border-1 flex-fill">
     <div class="card-body">
         <div class="row">
-            <div class="col-md-10">
+            <div class="col-md-2 d-flex align-items-center">
+                <img src="data:image/png;base64,<?= $model->image ?>" alt="<?= Html::encode($model->name) ?>" class="img-fluid">
+            </div>
+            <div class="col-md-8">
                 <h3><?= Html::a($model->name, ['station/view', 'id' => $model->id], ['style' => 'text-decoration: none; color: inherit;']) ?></h3>
                 <p><i class="fa fa-location-dot"></i>&nbsp;<?= Html::encode($model->address) . ', ' . Html::encode($model->postal_code) ?></p>
                 <p><i class="fa fa-user"></i>&nbsp;<?= Html::encode($model->manager->userInfo->name) ?></p>
