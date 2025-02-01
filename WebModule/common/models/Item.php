@@ -108,36 +108,22 @@ class Item extends \yii\db\ActiveRecord
 
     public function upload()
     {
-        if (!$this->imageFile) {
-            dd([
-                'erro' => 'Nenhuma imagem foi carregada.',
-                'imageFile' => $this->imageFile,
-                'postData' => Yii::$app->request->post(),
-                'filesData' => $_FILES
-            ]);
+        if ($this->imageFile) {
+            $uploadPath = Yii::getAlias('@webroot/images/');
+
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
+            }
+
+            $fileName = $this->imageFile->name;
+            $filePath = $uploadPath . $fileName;
+
+            if ($this->imageFile->saveAs($filePath)) {
+                $this->image = $fileName;
+                return true;
+            }
         }
 
-        $uploadPath = __DIR__ . '/../../images/';
-
-        if (!is_dir($uploadPath) && !mkdir($uploadPath, 0777, true) && !is_dir($uploadPath)) {
-            dd('Erro ao criar diretório: ' . $uploadPath);
-        }
-
-        $fileName = $this->imageFile->name;
-        $filePath = $uploadPath . $fileName;
-
-        if (!$this->imageFile->saveAs($filePath)) {
-            dd([
-                'erro' => 'Erro ao salvar imagem!',
-                'fileError' => $this->imageFile->error
-            ]);
-        }
-
-        $this->image = base64_encode(file_get_contents($uploadPath . $fileName));
-        if (!$this->save(false)) {
-            dd('Erro ao salvar o caminho da imagem no banco.');
-        }
-
-        return true;
+        return false;
     }
 }

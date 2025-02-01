@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
         'options' => ['enctype' => 'multipart/form-data'],
     ]); ?>
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <?= $form->field($model, 'description')->textInput(['maxlength' => true, 'placeholder' => 'Description'])->label(false) ?>
         </div>
         <div class="col-md-2">
@@ -33,8 +33,14 @@ use yii\widgets\ActiveForm;
                 ['prompt' => 'Select a Subcategory']
             )->label(false) ?>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
+            <?php if (!$model->isNewRecord && !empty($model->image)):
+                echo Html::img('data:image/png;base64,' . $model->image, ['alt' => 'Imagem', 'style' => 'width: 20px; height: auto; margin-left: 10px;']);
+            endif; ?>
+
+
             <?= $form->field($model, 'imageFile')->fileInput()->label(false) ?>
+
         </div>
         <div class="col-md-3">
             <div class="form-group">

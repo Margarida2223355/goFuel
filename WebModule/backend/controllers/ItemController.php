@@ -165,9 +165,11 @@ class ItemController extends Controller
 
             if ($model->imageFile) {
                 $model->upload();
+            } else {
+                $model->image = $model->getOldAttribute('image');
             }
 
-            if ($model->save(false)) {
+            if ($model->save()) {
                 return $this->redirect(['index']);
             }
         }
