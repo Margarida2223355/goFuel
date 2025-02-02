@@ -109,7 +109,7 @@ class Item extends \yii\db\ActiveRecord
     public function upload()
     {
         if ($this->imageFile) {
-            $uploadPath = Yii::getAlias('@webroot/images/');
+            $uploadPath = __DIR__ . '/../../images/';
 
             if (!is_dir($uploadPath)) {
                 mkdir($uploadPath, 0777, true);
