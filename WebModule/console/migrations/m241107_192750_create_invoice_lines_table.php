@@ -52,7 +52,7 @@ class m241107_192750_create_invoice_lines_table extends Migration
             ['id', 'item_id', 'qty', 'total', 'invoice_id'],
             [
                 [1, 1, 12.82, 20, 1],
-                [2, 8, 1, 6.99, 1],
+                [2, 6, 1, 6.99, 1],
                 [3, 1, 12, 18, 2],
                 [4, 5, 2, 4.78, 2],
                 [5, 2, 9.68, 15, 3],
