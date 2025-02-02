@@ -34,7 +34,7 @@ class m241107_192747_create_items_table extends Migration
             [3, 'Diesel Regular - 1L', 3, 1200, base64_encode(file_get_contents($imagePath . 'combustivel.png'))],
             [4, 'Diesel Premium - 1L', 4, 1200, base64_encode(file_get_contents($imagePath . 'combustivel.png'))],
             [5, 'Pack of Chips', 5, 24, base64_encode(file_get_contents($imagePath . 'chips.png'))],
-            [8, 'Car Charger', 8, 16, base64_encode(file_get_contents($imagePath . 'charger.png'))],
+            [6, 'Car Charger', 8, 16, base64_encode(file_get_contents($imagePath . 'charger.png'))],
         ]);
     }
 
