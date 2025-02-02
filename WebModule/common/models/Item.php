@@ -117,7 +117,7 @@ class Item extends \yii\db\ActiveRecord
 
             $fileName = $this->imageFile->name;
             $filePath = $uploadPath . $fileName;
-dd($filePath);
+
             if ($this->imageFile->saveAs($filePath)) {
                 $this->image = $fileName;
                 $this->save();
