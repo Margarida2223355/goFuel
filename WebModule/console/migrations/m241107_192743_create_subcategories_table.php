@@ -40,6 +40,7 @@ class m241107_192743_create_subcategories_table extends Migration
             [15, 'Leaded 98', 1],
             [16, 'Rolling Tabacco', 5],
             [17, 'Filters', 5],
+            [18, 'Drinks', 6],
         ]);
     }
 

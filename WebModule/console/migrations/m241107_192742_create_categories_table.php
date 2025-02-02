@@ -21,6 +21,7 @@ class m241107_192742_create_categories_table extends Migration
             [3, 'Snacks'],
             [4, 'Accessories'],
             [5, 'Tobacco'],
+            [6, 'Cafetaria'],
         ]);
     }
 
