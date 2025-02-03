@@ -9,7 +9,7 @@ class m241107_192747_create_items_table extends Migration
 {
     public function safeUp()
     {
-        $imagePath = __DIR__ . '/../../images/';
+        $imagePath = __DIR__ . '/../../images/items/';
 
         $this->createTable('items', [
             'id' => $this->primaryKey(),

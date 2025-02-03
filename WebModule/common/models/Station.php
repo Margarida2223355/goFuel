@@ -192,4 +192,26 @@ class Station extends \yii\db\ActiveRecord
     {
         return $this->hasMany(User::class, ['id' => 'user_id'])->viaTable('station_users', ['station_id' => 'id']);
     }
+
+    public function upload()
+    {
+        if ($this->imageFile) {
+            $uploadPath = __DIR__ . '/../../images/stations/';
+
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
+            }
+
+            $fileName = $this->imageFile->name;
+            $filePath = $uploadPath .  $this->description . '.png';
+
+            if ($this->imageFile->saveAs($filePath)) {
+                $this->image = base64_encode(file_get_contents($uploadPath .  $this->description . '.png'));
+                $this->save();
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

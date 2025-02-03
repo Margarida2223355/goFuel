@@ -9,7 +9,7 @@ class m241107_192744_create_stations_table extends Migration
 {
     public function safeUp()
     {
-        $imagePath = __DIR__ . '/../../images/';
+        $imagePath = __DIR__ . '/../../images/stations/';
 
         $this->createTable('{{%stations}}', [
             'id' => $this->primaryKey(),

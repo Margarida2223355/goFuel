@@ -109,17 +109,17 @@ class Item extends \yii\db\ActiveRecord
     public function upload()
     {
         if ($this->imageFile) {
-            $uploadPath = __DIR__ . '/../../images/';
+            $uploadPath = __DIR__ . '/../../images/items/';
 
             if (!is_dir($uploadPath)) {
                 mkdir($uploadPath, 0777, true);
             }
 
             $fileName = $this->imageFile->name;
-            $filePath = $uploadPath . 'item_' . $this->id . '.png';
+            $filePath = $uploadPath .  $this->description . '.png';
 
             if ($this->imageFile->saveAs($filePath)) {
-                $this->image = base64_encode(file_get_contents($uploadPath . 'item_' . $this->id . '.png'));
+                $this->image = base64_encode(file_get_contents($uploadPath .  $this->description . '.png'));
                 $this->save();
                 return true;
             }
