@@ -29,7 +29,7 @@ if ($alert) {
     </div>
 
     <?php
-    if (Yii::$app->user->can('admin') && $isUpdate == 0) {
+    if (Yii::$app->user->can('Admin') && $isUpdate == 0) {
         echo $this->render('_form', [
             'model' => $model,
             'managersList' => $managersList,
@@ -61,12 +61,18 @@ if ($alert) {
         'columns' => [
             'id',
             [
-                'attribute' => 'name',
+                'attribute' => 'Nme',
                 'format' => 'raw',
                 'value' => function ($model) {
-                    return $model->is_deleted
-                        ? Html::tag('i', '', ['class' => 'fa-regular fa-circle-xmark', 'aria-hidden' => 'true', 'style' => 'color: #dc3545']) . ' ' . $model->name
-                        : Html::tag('i', '', ['class' => 'fa-regular fa-circle-check', 'aria-hidden' => 'true', 'style' => 'color: #28a745']) . ' ' . $model->name;
+                    $icon = $model->is_deleted
+                        ? Html::tag('i', '', ['class' => 'fa-regular fa-circle-xmark', 'aria-hidden' => 'true', 'style' => 'color: #dc3545'])
+                        : Html::tag('i', '', ['class' => 'fa-regular fa-circle-check', 'aria-hidden' => 'true', 'style' => 'color: #28a745']);
+
+                    $image = !empty($model->image)
+                        ? Html::img('data:image/png;base64,' . $model->image, ['alt' => 'Imagem', 'style' => 'width: 40px; height: auto; margin-left: 10px;'])
+                        : '';
+
+                    return $icon . ' ' . $image . '   ' . Html::encode($model->name);
                 },
             ],
             'address',

@@ -17,6 +17,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 class StationController extends Controller
 {
@@ -142,7 +143,8 @@ class StationController extends Controller
             return $model->userInfo ? $model->userInfo->name : 'N/A';
         });
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
             /*$managerId = Yii::$app->request->post('Station')['manager_id'];
             if ($managerId) {
                 $stationUser = new StationUser();
@@ -150,6 +152,10 @@ class StationController extends Controller
                 $stationUser->station_id = $model->id;
                 $stationUser->save();
             }*/
+
+            if ($model->save() && $model->upload()) {
+                return $this->redirect(['index']);
+            }
 
             $pumpsCount = Yii::$app->request->post('Station')['pumps_count'] ?? 0;
 
@@ -188,7 +194,19 @@ class StationController extends Controller
 
         $currentPumpsCount = Pump::find()->where(['station_id' => $id])->count();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+
+            if ($model->imageFile) {
+                $model->upload();
+            } else {
+                $model->image = $model->getOldAttribute('image');
+            }
+
+            if ($model->save()) {
+                return $this->redirect(['index']);
+            }
+
             $pumpsCount = Yii::$app->request->post('Station')['pumps_count'] ?? 0;
 
             Pump::deleteAll(['station_id' => $model->id]);

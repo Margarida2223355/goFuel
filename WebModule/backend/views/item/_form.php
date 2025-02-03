@@ -35,7 +35,7 @@ use yii\widgets\ActiveForm;
         </div>
         <div class="col-md-3">
             <?php if (!$model->isNewRecord && !empty($model->image)):
-                echo Html::img('data:image/png;base64,' . $model->image, ['alt' => 'Imagem', 'style' => 'width: 20px; height: auto; margin-left: 10px;']);
+               // echo Html::img('data:image/png;base64,' . $model->image, ['alt' => 'Imagem', 'style' => 'width: 20px; height: auto; margin-left: 10px;']);
             endif; ?>
             <?= $form->field($model, 'imageFile')->fileInput([
                 'accept' => 'image/png, image/jpeg, image/jpg'

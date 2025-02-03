@@ -29,9 +29,7 @@ use Yii;
  */
 class Station extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
+    public $imageFile;
     public static function tableName()
     {
         return 'stations';
@@ -40,9 +38,6 @@ class Station extends \yii\db\ActiveRecord
 
     // Se usar regras de validação, adicione:
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -56,9 +51,6 @@ class Station extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [
@@ -72,11 +64,6 @@ class Station extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * Gets query for [[ClientStations]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
     public function getClientStations()
     {
         return $this->hasMany(ClientStation::class, ['station_id' => 'id']);
@@ -93,101 +80,52 @@ class Station extends \yii\db\ActiveRecord
             ->where(['client_id' => $userId])
             ->exists();
     }
-    /**
-     * Gets query for [[Clients]]. 
-     *
-     * @return \yii\db\ActiveQuery
-     */
+
     public function getClients()
     {
         return $this->hasMany(User::class, ['id' => 'client_id'])->viaTable('client_station', ['station_id' => 'id']);
     }
 
-    /**
-     * Gets query for [[Invoices]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
     public function getInvoices()
     {
         return $this->hasMany(Invoice::class, ['station_id' => 'id']);
     }
 
-    /**
-     * Gets query for [[Items]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
     public function getItems()
     {
         return $this->hasMany(Item::class, ['id' => 'item_id'])->viaTable('station_items', ['station_id' => 'id']);
     }
 
-    /**
-     * Gets query for [[Manager]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
     public function getManager()
     {
         return $this->hasOne(User::class, ['id' => 'manager_id']);
     }
 
-    /**
-     * Gets query for [[ManagerStations]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
     public function getManagerStations()
     {
         return $this->hasMany(ManagerStation::class, ['station_id' => 'id']);
     }
 
-    /**
-     * Gets query for [[Managers]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
     public function getManagers()
     {
         return $this->hasMany(User::class, ['id' => 'manager_id'])->viaTable('manager_station', ['station_id' => 'id']);
     }
 
-    /**
-     * Gets query for [[Pumps]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
     public function getPumps()
     {
         return $this->hasMany(Pump::class, ['station_id' => 'id']);
     }
 
-    /**
-     * Gets query for [[StationItems]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
     public function getStationItems()
     {
         return $this->hasMany(StationItem::class, ['station_id' => 'id']);
     }
 
-    /**
-     * Gets query for [[StationUsers]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
     public function getStationUsers()
     {
         return $this->hasMany(StationUser::class, ['station_id' => 'id']);
     }
 
-    /**
-     * Gets query for [[Users]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
     public function getUsers()
     {
         return $this->hasMany(User::class, ['id' => 'user_id'])->viaTable('station_users', ['station_id' => 'id']);
@@ -203,10 +141,10 @@ class Station extends \yii\db\ActiveRecord
             }
 
             $fileName = $this->imageFile->name;
-            $filePath = $uploadPath .  $this->description . '.png';
+            $filePath = $uploadPath .  $this->name . '.png';
 
             if ($this->imageFile->saveAs($filePath)) {
-                $this->image = base64_encode(file_get_contents($uploadPath .  $this->description . '.png'));
+                $this->image = base64_encode(file_get_contents($uploadPath .  $this->name . '.png'));
                 $this->save();
                 return true;
             }
