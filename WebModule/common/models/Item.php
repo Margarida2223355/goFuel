@@ -116,10 +116,10 @@ class Item extends \yii\db\ActiveRecord
             }
 
             $fileName = $this->imageFile->name;
-            $filePath = $uploadPath . $fileName;
+            $filePath = $uploadPath . 'item_' . $this->id . '.png';
 
             if ($this->imageFile->saveAs($filePath)) {
-                $this->image = base64_encode(file_get_contents($uploadPath . $fileName));
+                $this->image = base64_encode(file_get_contents($uploadPath . 'item_' . $this->id . '.png'));
                 $this->save();
                 return true;
             }
