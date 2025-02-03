@@ -49,20 +49,25 @@ Yii::$app->session->remove('alert');
             <?php endif; ?>
         </div>
     </div>
-
-    <?= DetailView::widget([
-        'model' => $station,
-        'attributes' => [
-            'id',
-            'name',
-            'address',
-            'postal_code',
-            [
-                'label' => 'Manager',
-                'value' => $station->manager->userInfo->name, // Supondo que o manager tenha uma relação 'name' ou 'username'
-            ],
-        ],
-    ]) ?>
+    <div class="row">
+        <div class="col-sm-2 d-flex justify-content-center align-items-center">
+            <img src="data:image/png;base64,<?= $station->image ?>" alt="<?= Html::encode($station->name) ?>" class="img-fluid" style="width: 100px; height: auto;">
+        </div>
+        <div class="col-sm-10">
+            <?= DetailView::widget([
+                'model' => $station,
+                'attributes' => [
+                    'name',
+                    'address',
+                    'postal_code',
+                    [
+                        'label' => 'Manager',
+                        'value' => $station->manager->userInfo->name,
+                    ],
+                ],
+            ]) ?>
+        </div>
+    </div>
 
     <div style="display: flex; align-items: center; ">
         <h1><?= Html::encode('Available items') ?></h1>

@@ -29,7 +29,7 @@ if ($alert) {
     </div>
 
     <?php
-    if (Yii::$app->user->can('Admin') && $isUpdate == 0) {
+    if (Yii::$app->user->can('StationCtePermission') && Yii::$app->user->can('StationUpdatePermission') && $isUpdate == 0) {
         echo $this->render('_form', [
             'model' => $model,
             'managersList' => $managersList,

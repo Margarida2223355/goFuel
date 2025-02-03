@@ -15,17 +15,27 @@ $this->params['breadcrumbs'][] = $model->name;
 ?>
 
 <div class="station-view">
-    <h1><?= Html::encode($model->name) ?>&emsp;<img src="data:image/png;base64,<?= $model->image ?>" alt="<?= Html::encode($model->name) ?>"></h1>
+    <h1><?= Html::encode($model->name) ?></h1>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'name',
-            'address',
-            'postal_code',
-            'manager.userInfo.name',
-        ],
-    ]) ?>
+    <div class="row">
+        <div class="col-sm-2 d-flex justify-content-center align-items-center">
+            <img src="data:image/png;base64,<?= $model->image ?>" alt="<?= Html::encode($model->name) ?>" class="img-fluid" style="width: 100px; height: auto;">
+        </div>
+        <div class="col-sm-10">
+            <?= DetailView::widget([
+                'model' => $model,
+                'attributes' => [
+                    'name',
+                    'address',
+                    'postal_code',
+                    [
+                        'label' => 'Manager',
+                        'value' => $model->manager->userInfo->name,
+                    ],
+                ],
+            ]) ?>
+        </div>
+    </div>
 
     <?php
     // Recebendo as variáveis de filtro dos parâmetros GET

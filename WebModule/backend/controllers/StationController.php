@@ -188,11 +188,8 @@ class StationController extends Controller
         });
 
         $isUpdate = true;
-        $dataProvider = new \yii\data\ActiveDataProvider([
-            'query' => Station::find()->orderBy(['is_deleted' => SORT_ASC]),
-        ]);
 
-        $currentPumpsCount = Pump::find()->where(['station_id' => $id])->count();
+        $currentPumpsCount = Pump::find(['station_id' => $id])->count();
 
         if ($model->load(Yii::$app->request->post())) {
             $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
@@ -201,10 +198,6 @@ class StationController extends Controller
                 $model->upload();
             } else {
                 $model->image = $model->getOldAttribute('image');
-            }
-
-            if ($model->save()) {
-                return $this->redirect(['index']);
             }
 
             $pumpsCount = Yii::$app->request->post('Station')['pumps_count'] ?? 0;
@@ -216,17 +209,18 @@ class StationController extends Controller
                 $pump->station_id = $model->id;
                 $pump->save();
             }
-
-            return $this->redirect(['index']);
+            $this->redirect(['index']);
         }
 
-        return $this->render('index', [
-            'model' => $model,
-            'managersList' => $managersList,
-            'dataProvider' => $dataProvider,
-            'isUpdate' => $isUpdate,
-            'currentPumpsCount' => $currentPumpsCount,
-        ]);
+        return $this->render(
+            'update',
+            [
+                'model' => $model,
+                'managersList' => $managersList,
+                'currentPumpsCount' => $currentPumpsCount,
+                'isUpdate' => $isUpdate
+            ]
+        );
     }
 
     public function actionDelete($id)

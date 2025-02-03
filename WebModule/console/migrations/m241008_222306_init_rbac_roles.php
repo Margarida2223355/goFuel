@@ -123,6 +123,7 @@ class m241008_222306_init_rbac_roles extends Migration
                 'StationItemAssociatePermission',
                 'StationItemDeleteAssociationPermission',
                 'StationItemUpdateAssociationPermission',
+                'StationUpdatePermission',
                 'UserChangerolePermission',
                 'UserCreatePermission',
                 'UserResetPasswordPermission',
