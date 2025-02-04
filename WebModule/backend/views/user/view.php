@@ -56,11 +56,8 @@ Yii::$app->session->remove('alert');
             [
                 'label' => 'Station Name',
                 'value' => function ($model) {
-                    $userRole = Yii::$app->authManager->getRolesByUser($model->id);
 
-                    if (isset($userRole['Admin'])) {
-                        return null;
-                    } elseif (isset($userRole['Manager'])) {
+                    if (Yii::$app->user->can('Manager')) {
                         $stations = Station::find()
                             ->where(['manager_id' => $model->id])
                             ->all();

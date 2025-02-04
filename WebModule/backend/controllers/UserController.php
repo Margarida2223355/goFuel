@@ -60,7 +60,6 @@ class UserController extends Controller
             ],
         ];
     }
-
     public function actionIndex()
     {
         $currentUser = Yii::$app->user->identity;
@@ -73,22 +72,27 @@ class UserController extends Controller
 
         $auth = Yii::$app->authManager;
         $roles = $auth->getRolesByUser($currentUser->id);
-
         $roleNames = array_keys($roles);
 
         if (in_array('Admin', $roleNames)) {
             $query->all();
         } elseif (in_array('Manager', $roleNames)) {
             $query->leftJoin('stations', 'stations.manager_id = :managerId')
-                ->leftJoin('station_users', 'station_users.station_id = stations.id')
-                ->where([
-                    'or',
-                    ['user.id' => $currentUser->id],
-                    ['user.id' => new \yii\db\Expression('station_users.user_id')]
-                ])
+            ->leftJoin('station_users', 'station_users.station_id = stations.id')
+            ->where([
+                'or',
+                ['user.id' => $currentUser->id],
+                ['user.id' => new \yii\db\Expression('station_users.user_id')]
+            ])
                 ->addParams([':managerId' => $currentUser->id]);
         } else {
             $query->where(['user.id' => $currentUser->id]);
+        }
+
+        $roleFilter = Yii::$app->request->get('role');
+        if ($roleFilter) {
+            $query->innerJoin('auth_assignment', 'auth_assignment.user_id = user.id')
+            ->andWhere(['auth_assignment.item_name' => $roleFilter]);
         }
 
         $dataProvider = new ActiveDataProvider([
@@ -163,6 +167,12 @@ class UserController extends Controller
 
             $user->username = $userForm->username;
             $user->email = $userForm->email;
+
+            if ($userForm->password !== '') {
+                $user->setPassword($userForm->password);
+            } else {
+                $user->password_hash = $user->password_hash;
+            }
 
             $userInfo->phone = $userForm->phone;
             $userInfo->name = $userForm->name;

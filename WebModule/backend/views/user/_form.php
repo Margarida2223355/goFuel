@@ -45,6 +45,9 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-md-6">
+            <?= $form->field($model, 'password')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-6">
             <?php
             if ($model->id == null) :
                 echo $form->field($model, 'role')->dropDownList(

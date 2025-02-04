@@ -64,34 +64,19 @@ use common\models\StationItem;
             background-color: #f4f4f4;
         }
 
-        .actions {
-            text-align: center;
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px;
         }
 
-        .btn {
-            display: inline-block;
-            padding: 5px 10px;
-            color: #fff;
-            text-decoration: none;
-            font-size: 12px;
-            margin: 0 5px;
-            border-radius: 4px;
-        }
-
-        .btn-warning {
-            background-color: #f0ad4e;
-        }
-
-        .btn-danger {
-            background-color: #d9534f;
-        }
-
-        .btn-success {
-            background-color: #5cb85c;
-        }
-
-        .btn-secondary {
-            background-color: #6c757d;
+        .col-sm-6 {
+            flex: 0 0 50%;
+            max-width: 50%;
+            padding-right: 15px;
+            padding-left: 15px;
+            box-sizing: border-box;
         }
     </style>
 </head>
@@ -101,17 +86,17 @@ use common\models\StationItem;
         <h1>Invoice <?= Html::encode($model->generateFinalCode()) ?></h1>
 
         <div class="row">
-            <div class="col">
+            <div class="col-sm-3">
                 <p><b>Station:</b> <?= Html::encode($model->station->name) ?></p>
-                <p><b>Client:</b> <?= Html::encode($model->client->userInfo->name) ?></p>
-                <p><b>State:</b> <?= Html::encode($model->state->description) ?></p>
             </div>
-            <div class="col">
+            <div class="col-sm-3">
+                <p><b>Client:</b> <?= Html::encode($model->client->userInfo->name) ?></p>
+            </div>
+            <div class="col-sm-3">
                 <p><b>Date:</b> <?= Html::encode($model->invoice_date) ?></p>
+            </div>
+            <div class="col-sm-3">
                 <p><b>Total Price:</b> <?= Html::encode($model->total . ' €') ?></p>
-                <?php if ($model->state_id == 2): ?>
-                    <p><b>Code:</b> <?= Html::encode($model->code) ?></p>
-                <?php endif; ?>
             </div>
         </div>
 

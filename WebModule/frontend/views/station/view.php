@@ -38,12 +38,10 @@ $this->params['breadcrumbs'][] = $model->name;
     </div>
 
     <?php
-    // Recebendo as variáveis de filtro dos parâmetros GET
     $filterCategory = Yii::$app->request->get('filterCategory', null);
     $filterSubcategory = Yii::$app->request->get('filterSubcategory', null);
 
-    // Obtendo as categorias e subcategorias para as dropdowns
-    $categories = \common\models\Category::find()->all(); // Ajuste o namespace e o modelo conforme necessário
+    $categories = \common\models\Category::find()->all();
     $subcategories = !empty($filterCategory)
         ? \common\models\Subcategory::find()->where(['category_id' => $filterCategory])->all()
         : \common\models\Subcategory::find()->all()

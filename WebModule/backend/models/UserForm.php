@@ -17,6 +17,7 @@ class UserForm extends Model
     public $name = '';
     public $address = '';
     public $postal_code = '';
+    public $password = '';
     public $role = '';
     public $phone = '';
     public $id = '';
@@ -53,7 +54,7 @@ class UserForm extends Model
     public function rules()
     {
         return [
-            [['username', 'email', 'nif', 'name', 'address', 'postal_code', 'role', 'phone'], 'required'],
+            [['username', 'email', 'nif', 'name', 'address', 'postal_code', 'role', 'phone', 'password'], 'required'],
             ['email', 'email'],
             [['nif', 'station_id'], 'integer'], // Adicione station_id como integer
             [['username', 'email', 'name', 'address'], 'string', 'max' => 255],
@@ -102,7 +103,12 @@ class UserForm extends Model
         $this->_user->username = $this->username;
         $this->_user->email = $this->email;
         $this->_user->auth_key = \Yii::$app->security->generateRandomString();
-        $this->_user->setPassword('password');
+        if ($this->password !== '') {
+            $this->_user->setPassword($this->password);
+        } else {
+            $this->_user->password = $this->_user->password;
+        }
+
         $this->_user->generateEmailVerificationToken();
         $this->_user->status = 10;
         $this->_user->created_at = time();
@@ -189,7 +195,7 @@ class UserForm extends Model
         return [
             'username' => $this->username,
             'email' => $this->email,
-            // 'password' => $this->password,
+            'password' => $this->password,
         ];
     }
 

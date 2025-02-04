@@ -6,6 +6,8 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+use yii\helpers\ArrayHelper;
+use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
@@ -52,6 +54,39 @@ if ($alert) {
             </h6>
         </div>
     </div>
+
+    <?php
+    $authManager = Yii::$app->authManager;
+    $roles = $authManager->getRoles();
+    $userRole = $authManager->getRolesByUser(Yii::$app->user->id);
+    $currentRole = reset($userRole);
+
+    $currentUserRoles = $authManager->getRolesByUser(Yii::$app->user->id);
+    $currentUserRole = reset($currentUserRoles);
+
+    if ($currentUserRole && $currentUserRole->name === 'Manager') {
+        $roles = array_filter($roles, function ($role) {
+            return in_array($role->name, ['Incharge', 'Employee']);
+        });
+    } elseif ($currentUserRole && $currentUserRole->name === 'Incharge') {
+        $roles = array_filter($roles, function ($role) {
+            return $role->name === 'Employee';
+        });
+    }
+
+    $roleOptions = ArrayHelper::map($roles, 'name', 'name');
+    ?>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <?= Html::dropDownList('role', Yii::$app->request->get('role'), $roleOptions, [
+                'prompt' => 'All roles',
+                'class' => 'form-control role-filter',
+                'style' => 'width: 200px; display: inline-block;',
+            ]) ?>
+        </div>
+    </div>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
@@ -209,6 +244,17 @@ if ($alert) {
         'summary' => false,
     ]); ?>
 </div>
+
+<?php
+$script = <<<JS
+$('.role-filter').on('change', function() {
+    let selectedRole = $(this).val();
+    let newUrl = window.location.pathname + (selectedRole ? '?role=' + selectedRole : '');
+    window.location.href = newUrl;
+});
+JS;
+$this->registerJs($script);
+?>
 
 <?php
 $script = <<<JS
