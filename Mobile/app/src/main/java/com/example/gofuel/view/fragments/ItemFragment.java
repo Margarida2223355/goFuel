@@ -120,8 +120,10 @@ public class ItemFragment extends Fragment {
                 view = popup.getRoot();
 
                 for (int i = 0; i < binding.itemList.getCount(); i++) {
-                    ItemStationItemViewModel itemViewModel = (ItemStationItemViewModel) binding.itemList.getChildAt(i).getTag();
-                    cardItems.put(itemViewModel.getStationItem(), Integer.valueOf(itemViewModel.getItem().itemQty.getText().toString()));
+                    if (binding.itemList.getChildAt(i) != null) {
+                        ItemStationItemViewModel itemViewModel = (ItemStationItemViewModel) binding.itemList.getChildAt(i).getTag();
+                        cardItems.put(itemViewModel.getStationItem(), Integer.valueOf(itemViewModel.getItem().itemQty.getText().toString()));
+                    }
                 }
 
                 showInvoicesPopup();
