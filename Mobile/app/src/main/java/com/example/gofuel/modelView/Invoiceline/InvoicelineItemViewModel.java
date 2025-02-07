@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.example.gofuel.databinding.ItemItemsBinding;
 import com.example.gofuel.model.invoice.invoiceline.InvoiceLine;
+import com.example.gofuel.util.Util;
 
 public class InvoicelineItemViewModel {
     private final ItemItemsBinding binding;
@@ -22,6 +23,7 @@ public class InvoicelineItemViewModel {
 
         binding.itemName.setText(item.getItem().getDescription());
         binding.itemCategory.setText(item.getItem().getSubcategory().getCategory().getName());
+        binding.itemImage.setImageBitmap(Util.convertToImage(item.getItem().getImage()));
 
         if ((item.getItem().getSubcategory().getCategory().getName().equals("Gasoline") || (item.getItem().getSubcategory().getCategory().getName().equals("Diesel")))) {
             binding.itemTotal.setText(String.format("%.2f", item.getQty()) + " UN");

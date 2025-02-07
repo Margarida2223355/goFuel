@@ -66,7 +66,7 @@
             android:layout_gravity="center"
             android:indeterminateTint="@color/primary" />
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -76,6 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
+                android:layout_marginBottom="70dp"
                 android:divider="@android:color/transparent" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -87,7 +88,7 @@
                 android:src="@drawable/card_icon"
                 android:visibility="invisible"
                 app:backgroundTint="@color/primary" />
-        </LinearLayout>
+        </FrameLayout>
 
         <ImageView
             android:id="@+id/emptyState"
