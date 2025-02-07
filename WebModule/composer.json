@@ -54,7 +54,8 @@
             "frontend\\tests\\": [
                 "frontend/tests/",
                 "frontend/tests/_support"
-            ]
+            ],
+            "mpdf\\": "vendor/mpdf/mpdf/src/"
         }
     },
     "config": {
