@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'state.description',
             [
                 'class' => ActionColumn::className(),
-                'template' => '{view} {cancel} {print}',
+                'template' => '{view} {cancel}' /*{print}'*/,
                 'buttons' => [
                     'view' => function ($url, $model) {
                         return Html::a('<i class="fa fa-eye" aria-hidden="true"></i>', $url, [

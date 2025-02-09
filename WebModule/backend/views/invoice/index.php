@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'state.description',
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{finish} {view} {print}',
+                'template' => '{finish} {view}' /*{print}'*/,
                 'buttons' => [
                     'finish' => function ($url, $model, $key) {
                         if ($model->state_id == 2) {
